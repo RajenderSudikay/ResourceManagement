@@ -1,0 +1,960 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@*https://www.c-sharpcorner.com/article/timesheet-project-process-using-mvc-5/*@
+
+<style>
+    body {
+        background-color: lightsteelblue;
+        font-size: 13px;
+    }
+
+    .time-header {
+        height: 40px;
+        background-color: #337ab7;
+        border: 5px solid lightsteelblue;
+        color: white;
+        font-size: small;
+    }
+
+    .time-headertitle {
+        padding-left: 150px;
+        text-decoration-color: darkslateblue;
+    }
+
+    .popup-design-header {
+        background-color: #337ab7;
+    }
+
+    .nav-bar-bg {
+        /* ##337ab7*/
+        background-color: #0095a8;
+    }
+
+    .navbar-brand {
+        padding-bottom: 8.3125rem;
+    }
+
+    .btn-custom {
+        background-color: #337ab7;
+    }
+
+    .modal-lg {
+        padding-top: 200px;
+    }
+
+    .close {
+        color: white;
+    }
+
+    .agent-navigation {
+        -webkit-box-ordinal-group: 5;
+        -ms-flex-order: 4;
+        order: 4;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    @@media (min-width: 992px) {
+        .agent-navigation {
+            max-width: 260px;
+        }
+    }
+
+    @@media (min-width: 1200px) {
+        .agent-navigation {
+            max-width: 300px;
+        }
+    }
+
+    .agent-navigation > .component-content {
+        width: 100%;
+    }
+
+    .agent-navigation .dropdownheading {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        cursor: pointer;
+        position: relative;
+        padding-right: 25px;
+        font-size: 16px;
+        margin-top: 14px;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    @@media (min-width: 992px) {
+        .agent-navigation .dropdownheading {
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: end;
+        }
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading {
+            padding: 7px 25px 12px 0;
+            margin-left: -10px;
+            margin-top: 0;
+            font-size: 14px;
+            font-family: "Lato", sans-serif;
+            /*   font-family: "ZurichSans-Regular", Arial, sans-serif;*/
+        }
+    }
+
+    @@media (min-width: 992px) and (max-width: 1199px) {
+        .agent-navigation .dropdownheading {
+            padding-right: 15px;
+        }
+
+            .agent-navigation .dropdownheading p {
+                display: none;
+            }
+    }
+
+    .agent-navigation .dropdownheading p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: 0;
+    }
+
+    @@media (min-width: 1200px) {
+        .agent-navigation .dropdownheading p {
+            max-width: inherit;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .agent-navigation .dropdownheading p {
+            line-height: 2em;
+        }
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading p {
+            max-width: 270px;
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .agent-navigation .dropdownheading p {
+            max-width: 235px;
+        }
+    }
+
+    .agent-navigation .dropdownheading:after {
+        position: absolute;
+        display: block;
+        content: '';
+        width: 9px;
+        height: 9px;
+        top: 15px;
+        right: 0;
+        border-bottom: 1px solid #fff;
+        border-right: 1px solid #fff;
+        -webkit-transform: rotate(45deg) translateY(-50%);
+        -ms-transform: rotate(45deg) translateY(-50%);
+        transform: rotate(45deg) translateY(-50%);
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out;
+        -webkit-transform-origin: 50% 0;
+        -ms-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading:after {
+            top: 18px;
+            right: 5px;
+            border-bottom: 2px solid #23366f;
+            border-right: 2px solid #23366f;
+        }
+    }
+
+    .agent-navigation .dropdownheading.active {
+        color: #2167ae;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: 0;
+    }
+
+        .agent-navigation .dropdownheading.active:after {
+            -webkit-transform: rotate(-135deg) translateY(-50%);
+            -ms-transform: rotate(-135deg) translateY(-50%);
+            transform: rotate(-135deg) translateY(-50%);
+            top: 17px;
+        }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading.active:after {
+            top: 23px;
+        }
+    }
+
+    .agent-navigation .dropdownheading .icon {
+        line-height: 1.7;
+        font-size: 20px;
+        margin-right: 2px;
+        float: left;
+        width: 30px;
+        height: 30px;
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading .icon {
+            margin-right: 5px;
+            line-height: 1.4;
+        }
+    }
+
+    .agent-navigation .dropdownheading .icon.icon--pin_24_outline:before {
+        font-family: 'zurich-icons-delta';
+        content: "\ea8f";
+    }
+
+    .agent-navigation .dropdownheading .profile-img {
+        width: 30px;
+        height: 30px;
+        float: left;
+        margin-right: 10px;
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .dropdownheading .profile-img {
+            margin-right: 5px;
+        }
+    }
+
+    .agent-navigation .dropdownheading .profile-img img {
+        height: 30px;
+        width: 30px;
+        -o-object-fit: cover;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .agent-navigation .agent-description {
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid #cccccc;
+        display: none;
+        background: #ffffff;
+        position: absolute;
+        padding: 20px;
+        width: 750px;
+        right: 0;
+        top: 97px;
+        font-size: 14px;
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .agent-description {
+            width: 100%;
+            z-index: 100;
+        }
+    }
+
+    @@media (min-width: 768px) and (max-width: 991px) {
+        .agent-navigation .agent-description {
+            top: 120px;
+        }
+    }
+
+    .agent-navigation .agent-description.show {
+        display: block;
+    }
+
+    .agent-navigation .agent-description .agent-img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        float: left;
+        margin-right: 50px;
+        margin-bottom: 20px;
+    }
+
+        .agent-navigation .agent-description .agent-img img {
+            height: 100%;
+            width: auto;
+            left: 50%;
+            max-width: inherit;
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .agent-description h4 {
+            margin-bottom: 20px;
+        }
+
+        .agent-navigation .agent-description .component-link {
+            width: 100%;
+        }
+
+            .agent-navigation .agent-description .component-link .btn {
+                width: 100%;
+            }
+
+                .agent-navigation .agent-description .component-link .btn a > div {
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    width: 100%;
+                }
+    }
+
+    .agent-navigation .agent-description ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+
+        .agent-navigation .agent-description ul li {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            margin-bottom: 15px;
+        }
+
+    .agent-navigation .agent-description .bottom-agent-links {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        margin-right: 20px;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .agent-description .bottom-agent-links {
+            margin-right: 0;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .agent-navigation .agent-description .bottom-agent-links .component.component-link {
+            margin-bottom: 0;
+        }
+    }
+
+    .agent-navigation .agent-description .bottom-agent-links .theme--tertiary .btn {
+        color: #23366f;
+        border-color: #23366f;
+    }
+
+        .agent-navigation .agent-description .bottom-agent-links .theme--tertiary .btn .icon {
+            color: #23366f;
+        }
+
+        .agent-navigation .agent-description .bottom-agent-links .theme--tertiary .btn:hover {
+            color: #2167ae;
+            border-color: #2167ae;
+        }
+
+            .agent-navigation .agent-description .bottom-agent-links .theme--tertiary .btn:hover .icon {
+                color: #2167ae;
+            }
+
+    .agent-navigation .agent-description .bottom-agent-links a {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        line-height: 1.5;
+    }
+
+        .agent-navigation .agent-description .bottom-agent-links a.text-link {
+            color: #23366f;
+        }
+
+            .agent-navigation .agent-description .bottom-agent-links a.text-link:hover {
+                color: #2167ae;
+            }
+
+    @@media (max-width: 991px) {
+        .agent-navigation .agent-description .bottom-agent-links a {
+            width: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .agent-navigation .agent-description .noagent-search {
+            max-width: 400px;
+        }
+    }
+
+    .agent-navigation .agent-description .noagent-search .textfield {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+        .agent-navigation .agent-description .noagent-search .textfield .textfield__control {
+            background-color: #eef0f1;
+            color: inherit;
+            height: 56px;
+            border-radius: 28px;
+            padding: 18px 21px 0;
+            border: 2px solid transparent;
+            margin-bottom: 0;
+            display: block;
+            position: relative;
+            width: 100%;
+            font-size: 18px;
+            font-family: "ZurichSans-Light", Arial, sans-serif;
+            color: #23366f;
+        }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control::-webkit-input-placeholder {
+                opacity: 0;
+                color: #23366f;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control:-ms-input-placeholder {
+                opacity: 0;
+                color: #23366f;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control::placeholder {
+                opacity: 0;
+                color: #23366f;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control:focus::-webkit-input-placeholder {
+                opacity: 1;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control:focus:-ms-input-placeholder {
+                opacity: 1;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control:focus::placeholder {
+                opacity: 1;
+            }
+
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control:focus ~ .textfield__label,
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control.is-selected ~ .textfield__label,
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control.is-not-empty ~ .textfield__label,
+            .agent-navigation .agent-description .noagent-search .textfield .textfield__control + .select2-container--open ~ .textfield__label {
+                top: 9px;
+                left: 0;
+                font-size: 12px;
+                font-family: "ZurichSans-Medium", Arial, sans-serif;
+            }
+
+        .agent-navigation .agent-description .noagent-search .textfield .textfield__label {
+            position: absolute;
+            padding-left: 24px;
+            top: 20px;
+            pointer-events: none;
+            white-space: nowrap;
+            -webkit-transition: all .25s ease-in-out;
+            transition: all .25s ease-in-out;
+            height: 16px;
+            line-height: 16px;
+        }
+
+    .agent-fullname {
+        float: left;
+        margin-left: -190px;
+        padding-top: 170px;
+        padding-left: 20px;
+        width: 140px;
+    }
+</style>
+
+<script>
+
+
+    jQuery(document).ready(function () {
+
+        FindAncherTagInHtml();
+
+        jQuery(".dropdownheading").click(function () {
+            jQuery(".agent-description").toggleClass("show");
+            jQuery(this).toggleClass("active");
+        });
+
+        //This logic to handle out side clik of agent popup
+        jQuery(document).on('click', function (e) {
+            if (jQuery(e.target).closest(".agent-navigation").length === 0) {
+                jQuery(".agent-description").hide();
+            }
+
+            if (jQuery(e.target).closest(".agent-navigation").length > 0 && jQuery(".agent-description.show").length > 0) {
+                jQuery(".agent-description").show();
+            }
+            else {
+                jQuery(".agent-description").hide();
+                jQuery(".dropdownheading").removeClass("active");
+                jQuery(".agent-description").removeClass("show");
+            }
+        });
+
+        jQuery('.noagent-search input').val('');
+
+        jQuery('.noagent-search input').on('keyup', function () {
+            var self = jQuery(this);
+            if (self.val() != '') {
+                jQuery(this).addClass('is-not-empty');
+            } else {
+                jQuery(this).removeClass('is-not-empty');
+            }
+        });
+
+        jQuery('.noagent-search input').on('keypress', function (e) {
+            var inputVal = jQuery(this).val();
+            var reqVal = "/de-de/vor-ort?newsearch=true&navSearchTerm=" + inputVal;
+            if (inputVal != '' && e.which == 13) {
+                window.location = reqVal;
+                return false;
+            }
+        });
+
+
+
+        // quick links js
+        function HideFlyout() {
+            jQuery('.main-toggle-flyout').removeClass('active');
+            jQuery('.main-toggle-flyout').find('.column-splitter').removeClass('show');
+        }
+
+        function FindAncherTagInHtml() {
+            var findAncherTag = $('.dropdown-flyout').find('a');
+            var separator = ".";
+            $.each(findAncherTag, function (key, value) {
+                var findClassName = findAncherTag[key].closest('.main-toggle-flyout').className;
+                findClassName = separator + findClassName.replace(/ /g, separator);
+                if (jQuery(findClassName).find('a').attr('href')) {
+                    jQuery(findClassName).addClass('removecss-mobile');
+                }
+            });
+        }
+
+        jQuery(".dropdown-flyout").click(function (e) {
+            var mainContentDiv = jQuery(this).parent().parent();
+            if (mainContentDiv.hasClass('active')) {
+                HideFlyout();
+            }
+            else {
+                if (!$(this).find('a').attr('href')) {
+                    HideFlyout();
+                    mainContentDiv.find(".column-splitter").toggleClass("show");
+                    mainContentDiv.toggleClass("active");
+                }
+            }
+        });
+        jQuery(document).on('click', function (e) {
+            if (jQuery(e.target).closest(".main-toggle-flyout").length === 0) {
+                HideFlyout();
+            }
+        });
+    });
+    (function () {
+        $("#txtFrom").datepicker({
+            numberOfMonths: 2,
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() + 1);
+                $("#txtTo").datepicker("option", "minDate", dt);
+            }
+        });
+        $("#txtTo").datepicker({
+            numberOfMonths: 2,
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() - 1);
+                $("#txtFrom").datepicker("option", "maxDate", dt);
+            }
+        });
+    });
+
+</script>
+
+
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="#"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="">
+        <h2 class="text-uppercase text-white">Employee Time Sheet</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @*<img src="~/Assets/Profile Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">&nbsp;&nbsp;*@
+        <div class="agent-navigation">
+            <div class="">
+                <div class="dropdownheading text-white">
+                    <div class="profile-img">
+                        <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                    </div>
+                    <p>Rajender Sudikay</p>
+                </div>
+
+                <div class="agent-description hide" style="">
+                    <div class="agent-details">
+                        <div class="agent-img">
+                            <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+
+                        </div>
+
+                        <div class="agent-fullname">
+                            <b>Rajender Sudikay</b>
+                        </div>
+
+
+                        <ul>
+                            <li>
+                                <b>Emp ID:</b>
+                                <div class="agent-navdrop-empid">C12345</div>
+
+                            </li>
+
+                            <li>
+                                <b>Designation:</b>
+                                <div class="agent-navdrop-empdesig">Senior Sitecore developer</div>
+
+                            </li>
+
+                            <li>
+                                <b>Supervisor:</b>
+                                <div class="agent-navdrop-empmanager">Seema Ashok</div>
+
+                            </li>
+
+                            <li>
+                                <b>Contact Number:</b>
+                                <br />
+                                <a class="agent-navdrop-phone" href="tel:07531 282590">07531 282590</a>
+                            </li>
+
+                            <li>
+                                <b>Client:</b>
+                                <div class="agent-navdrop-client">LittelFuse</div>
+                            </li>
+
+                            <li>
+                                <b>Project:</b>
+                                <div class="agent-navdrop-project">LittelFuse</div>
+                            </li>
+                            <li>
+                                <b>Project Status:</b>
+                                <div class="agent-navdrop-prostatus">Active</div>
+                            </li>
+
+                            <li>
+                                <b>E-Mail-Adress:</b>
+                                <div class="agent-navdrop-empemail">rajender.sudikay@gmail.com</div>
+                            </li>
+                            @*<li>
+                                    <b>Adresse:</b>
+                                    <div class="agent-navdrop-street">1-12-678/5</div>
+                                    <div class="agent-navdrop-postalcode">500048</div>
+                                    <div class="agent-navdrop-city">Hyderabad</div>
+                                </li>*@
+
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--<div class="col-md-6">
+    <div class="form-group">
+        <label for="timeSheetdate">Start week Date</label>-->
+
+        @*<input id="timeSheetStartWeekdate" type="text" class="form-control" placeholder="Enter Date" />*@
+
+        <!--Date: <input type='text' class='date' id="datepicker">-->
+
+        @*<input type="date" class="form-control" id="timeSheetStartWeekdate" >*@
+    <!--</div>
+</div>-->
+
+
+ Date:
+<input type="text" id="my_date_picker">
+
+<script>
+    jQuery(document).ready(function () {
+
+        jQuery(function () {
+            jQuery("#my_date_picker").datepicker();
+        });
+    })
+</script>
+
+<div class="col-lg-offset-6">
+    <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
+        Add New Entry
+    </button> &nbsp;&nbsp;
+</div>
+
+<div class="table-responsive table">
+    <!--Table-->
+    <table class="table table-striped">
+
+        <!--Table head-->
+        <thead class="table-bordered">
+            <tr>
+                <th class="time-header">Date</th>&nbsp;&nbsp;
+                <th class="time-header">Category</th>
+                <th class="time-header">Incident Number</th>
+                <th class="time-header">Incident Desc</th>
+                <th class="time-header">Requester</th>
+                <th class="time-header">Urgency</th>
+                <th class="time-header">Status</th>
+                <th class="time-header">Date Closed</th>
+                <th class="time-header">Time Spent</th>
+                <th class="time-header">Comments</th>
+            </tr>
+        </thead>
+        <!--Table head-->
+        <!--Table body-->
+        <tbody class="table-bordered">
+            <tr>
+
+                <td>
+                    12/10/22
+                </td>
+                <td>Moss</td>
+                <td>123, 456, 789</td>
+                <td>New York City / Warsaw / Lodz / Amsterdam / London / Chicago</td>
+                <td>Kiran</td>
+                <td>23</td>
+                <td>23</td>
+                <td> 12/10/22</td>
+                <td>23</td>
+                <td>23</td>
+            </tr>
+            <tr>
+
+                <td> 12/10/22</td>
+                <td>Wintour</td>
+                <td>123, 456, 789</td>
+                <td>New York City / Warsaw / Lodz / Amsterdam / London / Chicago</td>
+                <td>Raj</td>
+                <td>36</td>
+                <td>23</td>
+                <td> 12/10/22</td>
+                <td>23</td>
+                <td>23</td>
+
+            </tr>
+            <tr>
+
+                <td> 12/10/22</td>
+                <td>Horwitz</td>
+                <td>123, 456, 789</td>
+                <td>New York City / Warsaw / Lodz / Amsterdam / London / Chicago</td>
+                <td>Ravi</td>
+                <td>41</td>
+                <td>23</td>
+                <td> 12/10/22</td>
+                <td>23</td>
+                <td>23</td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    12/10/22
+                </td>
+                <td>Moss</td>
+                <td>123, 456, 789</td>
+                <td>New York City / Warsaw / Lodz / Amsterdam / London / Chicago</td>
+                <td>Kiran</td>
+                <td>23</td>
+                <td>23</td>
+                <td> 12/10/22</td>
+                <td>23</td>
+                <td>23</td>
+            </tr>
+            <tr>
+
+                <td>
+                    12/10/22
+                </td>
+                <td>Moss</td>
+                <td>123, 456, 789</td>
+                <td>New York City / Warsaw / Lodz / Amsterdam / London / Chicago</td>
+                <td>Kiran</td>
+                <td>23</td>
+                <td>23</td>
+                <td> 12/10/22</td>
+                <td>23</td>
+                <td>23</td>
+            </tr>
+        </tbody>
+        <!--Table body-->
+    </table>
+    <!--Table-->
+</div>
+
+<!-- Button trigger modal -->
+
+
+
+
+
+
+<div class="col-lg-offset-0" style="float:right">
+    <button type="button" class="btn btn-success openmodel btn-lg" data-toggle="modal" data-target="#exampleModalLong">
+        Submit Time Sheet
+    </button>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header popup-design-header text-white">
+                <h5 class="modal-title" id="exampleModalLongTitle">Time Sheet Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="timeSheetdate">Date</label>
+                                <input type="date" class="form-control" id="timeSheetdate" placeholder="Enter Date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="timeSheetCategory">Category</label>
+                                <input type="text" class="form-control" id="timeSheetCategory" placeholder="Category">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="timeSheetIncNumber">Incident Number</label>
+                                @*<input type="text" class="form-control" id="timeSheetIncNumber" placeholder="Incident Number">*@
+                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="timeSheetIncDesc">Incident Description</label>
+                                @*<input type="text" class="form-control" id="timeSheetIncDesc" placeholder="Incident Description">*@
+                                <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetRequester">Requester</label>
+                                <input type="text" class="form-control" id="timeSheetRequester" placeholder="Incident Description">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetUrgency">Urgency</label>
+                                <input type="text" class="form-control" id="timeSheetUrgency" placeholder="Urgency">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetStatus">Status</label>
+                                <input type="text" class="form-control" id="timeSheetStatus" placeholder="Status">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetClosedDate">Closed Date</label>
+                                <input type="date" class="form-control" id="timeSheetClosedDate" placeholder="Closed Date">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetTimeSpent">Time Spent</label>
+                                <input type="text" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="timeSheetComments">Comments</label>
+                                @*<input type="text" class="form-control" id="timeSheetIncDesc" placeholder="Incident Description">*@
+                                <textarea class="form-control" id="timeSheetComments" style="min-width: 100%" placeholder="Comments"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save </button>
+            </div>
+        </div>
+    </div>
+</div>
+

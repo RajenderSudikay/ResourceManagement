@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<style>
+    body {
+        font-family: "Lato", sans-serif;
+       /* padding-top:50px;*/
+    }
+
+    .main-head {
+        height: 150px;
+        background: #FFF;
+    }
+
+    .sidenav {
+        height: 100%;
+        /*background-color: darkslateblue;*/
+        background-color: #0095a8;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+
+    .main {
+        padding: 0px 10px;
+    }
+
+    @@media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+    }
+
+    @@media screen and (max-width: 450px) {
+        .login-form {
+            margin-top: 10%;
+        }
+
+        .register-form {
+            margin-top: 10%;
+        }
+    }
+
+    @@media screen and (min-width: 768px) {
+        .main {
+            margin-left: 40%;
+        }
+
+        .sidenav {
+            width: 40%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+        }
+
+        .login-form {
+            margin-top: 80%;
+        }
+
+        .register-form {
+            margin-top: 20%;
+        }
+    }
+
+
+    .login-main-text {
+        margin-top: 20%;
+        padding: 60px;
+        color: white;
+        font-weight: 500;
+    }
+
+        .login-main-text h2 {
+            font-weight: 900;
+        }
+
+    .btn-black {
+        background-color: #000 !important;
+        color: #fff;
+    }
+
+    .sidenav-position{
+        padding-top:50px;
+    }
+</style>
+
+<div class="sidenav sidenav-position">
+    <div class="px-5 ms-xl-4" style="float:left">
+        <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+        <span class="h1 fw-bold mb-0">   <img src="~/Assets/AMBC_Logo.png" /></span>
+    </div>
+
+    <div class="login-main-text">
+        <h2>Resource Management<br> Dashboard Page</h2>
+        <br />
+        <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+
+<div class="main">
+    @*<div class="px-5 ms-xl-4" style="float:right">
+        <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+        <span class="h1 fw-bold mb-0">   <img src="~/Assets/AMBC_Logo.png" /></span>
+    </div>*@
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/TimeSheet.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-success">Timesheet</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-success">KIA Report</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/Payroll.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-success">Payroll</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/Appraisal.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-success">Appraisal</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
