@@ -494,6 +494,11 @@
         padding-left: 20px;
         width: 140px;
     }
+
+    select.form-control:not([size]):not([multiple]) {
+        height: calc(3.10rem + 2px);
+    }
+
 </style>
 
 <script>
@@ -583,7 +588,7 @@
             }
         });
     });
-   
+
 
 </script>
 
@@ -676,11 +681,24 @@
     </div>
 </nav>
 
-<div class="col-lg-offset-6">
-    <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
-        Add New Entry
-    </button> &nbsp;&nbsp;
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="timeSheetdate">Select Week</label>
+            <input type="date" class="form-control" id="timeSheetSelectWeek" placeholder="Select week start date">
+        </div>
+    </div>
 </div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
+            Add New Entry
+        </button> &nbsp;&nbsp;
+    </div>
+</div>
+
 
 <div class="table-responsive table">
     <!--Table-->
@@ -813,7 +831,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="timeSheetCategory">Category</label>
-                                <input type="text" class="form-control" id="timeSheetCategory" placeholder="Category">
+
+                                <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3">
+                                    <option value="volvo">Category 1</option>
+                                    <option value="saab">Category  2</option>
+                                </select>
+
+                                @*<input type="text" class="form-control" id="" placeholder="Category">*@
                             </div>
                         </div>
                     </div>
@@ -845,19 +869,35 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetRequester">Requester</label>
-                                <input type="text" class="form-control" id="timeSheetRequester" placeholder="Incident Description">
+                                <input type="text" class="form-control" id="timeSheetRequester" placeholder="Requester">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetUrgency">Urgency</label>
-                                <input type="text" class="form-control" id="timeSheetUrgency" placeholder="Urgency">
+                                <label for="timeSheetUrgency">Priority</label>
+                                @*<input type="text" class="form-control" id="timeSheetUrgency" placeholder="Urgency">*@
+
+                            <select id="timeSheetUrgency" name="categories" class="form-control form-select form-select-lg mb-3">
+                                <option value="critical"> Critical </option>
+                                <option value="high"> High </option>
+                                <option value="medium"> Medium </option>
+                                <option value="low"> Low </option>
+                            </select>
+
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetStatus">Status</label>
-                                <input type="text" class="form-control" id="timeSheetStatus" placeholder="Status">
+                                @*<input type="text" class="form-control" id="timeSheetStatus" placeholder="Status">*@
+
+
+                            <select id="timeSheetStatus" name="categories" class="form-control form-select form-select-lg mb-3">
+                                <option value="open"> Open </option>
+                                <option value="closed"> Closed </option>
+                                <option value="inprogress"> In Progress </option>
+                                <option value="ongoing"> On Going </option>
+                            </select>
                             </div>
                         </div>
                     </div>
@@ -893,10 +933,44 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save </button>
+                <input type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" value="Close">
+                <input type="button" class="btn btn-primary timesheet-addreport btn-lg" value="Add Report">
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery(".timesheet-addreport").click(function () {
+
+            var model = {
+                Date: $('#timeSheetdate').val(),
+                Category: "Detroit",
+                IncidentNumber: "",
+                IncidentDescription: "",
+                Requester: "",
+                Urgency: "",
+                Status: "",
+                ClosedDate: "",
+                TimeSpent: "",
+                Comments: ""
+            };
+
+            alert("button");
+
+            jQuery.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+            }).done(function (res) {
+                jQuery("#SomeDivToShowTheResult").html(res);
+            });
+
+
+        });
+    });
+</script>
 
