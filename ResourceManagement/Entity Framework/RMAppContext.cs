@@ -16,5 +16,7 @@ namespace ResourceManagement.Entity_Framework
         }
 
         public virtual DbSet<TimeSheet> ambctaskcapture { get; set; }
+
+        public virtual DbSet<EmployeeModel> emp_info { get; set; }
     }
 }

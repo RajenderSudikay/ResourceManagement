@@ -30,14 +30,14 @@ namespace ResourceManagement.Models
 
     public class EmployeeModel
     {
-        public string empID { get; set; }
-        public string empName { get; set; }
-        public string empDesignation { get; set; }
-        public string empManager { get; set; }
-        public string empPhone { get; set; }
-        public string empClientName { get; set; }
-        public string empProjectName { get; set; }
-        public string empProjectStatus { get; set; }
+        [Key]      
+        public string employee_id { get; set; }
+        public string employee_name { get; set; }
+        public string employee_desg { get; set; }
+        public string employee_mailid { get; set; }
+        public string mployee_mobile { get; set; }
+        public string employee_report_manager { get; set; }
+        public string CategoryTypeID { get; set; }      
     }
 
 
