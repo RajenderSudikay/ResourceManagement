@@ -11,11 +11,13 @@ using System.Web.Mvc;
 namespace ResourceManagement.Controllers
 {
     public class HomeController : Controller
-    {
-        public ActionResult Index()
+    {       
+
+        public ActionResult Login()
         {
             return View();
         }
+
 
         public ActionResult About()
         {
@@ -44,6 +46,27 @@ namespace ResourceManagement.Controllers
 
         public void UpdateTimeSheetStatus(List<TimeSheetAjaxModel> timesheetmodel)
         {
+            SqlDataReader rdr = null;
+            SqlConnection con = null;
+            SqlCommand cmd = null;
+
+            con = new SqlConnection(ConfigurationManager.ConnectionStrings["TimesheetDBEntities"].ToString());
+            String FirstName;
+            String LastName;
+
+            con.Open();
+            string CommandText = "SELECT employee_id, employee_name FROM [emp_info] WHERE employee_id='1001'";
+            cmd = new SqlCommand(CommandText);
+            cmd.Connection = con;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                FirstName = rdr["employee_id"].ToString(); 
+                LastName = rdr["employee_name"].ToString();
+            }
+
+
 
             using (var context = new RMAppContext())
             {
@@ -67,9 +90,24 @@ namespace ResourceManagement.Controllers
                         comments = model.Comments
                     };
 
-                    //Get student name of string type
-                    var studentName = context.Database.SqlQuery<string>("Select * from [emp_info] where employee_id='C4046'")
-                                            .FirstOrDefault();
+                    var abc = new List<string>();
+
+                    abc.Add("employee_id");
+                    abc.Add("employee_name");
+                    abc.Add("employee_desg");
+
+                    var student = (from s in context.emp_info
+                                   where s.employee_id == "1001"
+                                   select s).FirstOrDefault<EmployeeModel>();
+
+
+                    ////Get student name of string type
+                    //var studentName = context.Database.SqlQuery<string>("Select employee_name from [emp_info] where employee_id='1001'")
+                    //                        .FirstOrDefault();
+
+
+                    var studentList = context.Database.SqlQuery<string>("Select * from Students").ToList();
+
 
                     context.Database.ExecuteSqlCommand("insert into ambctaskcapture(taskdate,category) values('" + timesheet.taskdate + "', '" + timesheet.category + "')");
 
