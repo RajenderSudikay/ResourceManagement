@@ -22,6 +22,10 @@ namespace ResourceManagement.Controllers
 
         public ActionResult Contact()
         {
+            //Employye
+            //Database
+            //Employee 
+            //
             ViewBag.Message = "Your contact page.";
 
             return View();

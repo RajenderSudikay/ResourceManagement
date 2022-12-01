@@ -5,7 +5,7 @@
 <style>
     body {
         font-family: "Lato", sans-serif;
-       /* padding-top:50px;*/
+        /* padding-top:50px;*/
     }
 
     .main-head {
@@ -81,8 +81,19 @@
         color: #fff;
     }
 
-    .sidenav-position{
-        padding-top:50px;
+    .sidenav-position {
+        padding-top: 50px;
+    }
+
+
+    .card {
+        border: 0px;
+        background-color: #DDE4E3;
+        border: 1px solid #DDE4E3;
+    }
+
+    .dashboard-card {
+        background-color: #DDE4E3;
     }
 </style>
 
@@ -101,54 +112,74 @@
 
 <div class="main">
     @*<div class="px-5 ms-xl-4" style="float:right">
-        <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
-        <span class="h1 fw-bold mb-0">   <img src="~/Assets/AMBC_Logo.png" /></span>
-    </div>*@
+            <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+            <span class="h1 fw-bold mb-0">   <img src="~/Assets/AMBC_Logo.png" /></span>
+        </div>*@
     <div class="container">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-sm ">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/SignIn.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-custom" >Sign In /  Sign Out</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm ">
                 <div class="card" style="width: 18rem;">
                     <img src="~/Assets/TimeSheet.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-success">Timesheet</a>
+                        <a href="#" class="btn btn-custom">Timesheet</a>
                     </div>
                 </div>
 
             </div>
-            <div class="col-sm">
+            <div class="col-sm ">
                 <div class="card" style="width: 18rem;">
                     <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-success">KIA Report</a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-sm">
-                <div class="card" style="width: 18rem;">
-                    <img src="~/Assets/Payroll.png" class="card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-success">Payroll</a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-sm">
-                <div class="card" style="width: 18rem;">
-                    <img src="~/Assets/Appraisal.png" class="card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-success">Appraisal</a>
+                        <a href="#" class="btn btn-custom">KRA Report</a>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
 
+        <div class="row mt-xl-4">
+            <div class="col-sm ">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/Payroll.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-custom">Payroll</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm ">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/Appraisal.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-custom">Appraisal</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm ">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Assets/hr.jpg" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-custom">HR Letters</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
