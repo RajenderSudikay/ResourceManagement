@@ -41,7 +41,7 @@
           <Property Name="closeddate" Type="date" />
           <Property Name="timespent" Type="int" />
           <Property Name="comments" Type="varchar" MaxLength="500" />
-          <Property Name="submittedsysyem" Type="varchar" MaxLength="250" />
+          <Property Name="submittedsystem" Type="varchar" MaxLength="250" />
           <Property Name="currentyear" Type="int" StoreGeneratedPattern="None" />
           <Property Name="shiftdetails" Type="varchar" MaxLength="50" />
           <Property Name="submittedtime" Type="datetime" />
@@ -733,7 +733,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="projstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="taskdate" Type="DateTime" Precision="0" />
           <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="incidentnumber" Type="String" />
+          <Property Name="incidentnumber" Type="Int32" />
           <Property Name="taskdetails" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="requester" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="callpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -741,7 +741,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="closeddate" Type="DateTime" Precision="0" />
           <Property Name="timespent" Type="Int32" />
           <Property Name="comments" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="submittedsysyem" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="submittedsystem" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="currentyear" Type="Int32" annotation:StoreGeneratedPattern="None" />
           <Property Name="shiftdetails" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="submittedtime" Type="DateTime" Precision="3" />
@@ -1255,7 +1255,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="closeddate" ColumnName="closeddate" />
                 <ScalarProperty Name="timespent" ColumnName="timespent" />
                 <ScalarProperty Name="comments" ColumnName="comments" />
-                <ScalarProperty Name="submittedsysyem" ColumnName="submittedsysyem" />
+                <ScalarProperty Name="submittedsystem" ColumnName="submittedsystem" />
                 <ScalarProperty Name="currentyear" ColumnName="currentyear" />
                 <ScalarProperty Name="shiftdetails" ColumnName="shiftdetails" />
                 <ScalarProperty Name="submittedtime" ColumnName="submittedtime" />

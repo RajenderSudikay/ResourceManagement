@@ -145,7 +145,7 @@ namespace ResourceManagement.Controllers
                     {
                         taskdate = System.Convert.ToDateTime(model.Date),
                         category = model.Category,
-                        incidentnumber = model.IncidentNumber,
+                        incidentnumber = System.Convert.ToInt32(model.IncidentNumber),
                         taskdetails = model.IncidentDescription,
                         requester = model.Requester,
                         callpriority = model.Urgency,

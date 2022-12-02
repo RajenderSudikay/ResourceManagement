@@ -28,7 +28,7 @@ namespace ResourceManagement
         public string projstatus { get; set; }
         public Nullable<System.DateTime> taskdate { get; set; }
         public string category { get; set; }
-        public string incidentnumber { get; set; }
+        public Nullable<int> incidentnumber { get; set; }
         public string taskdetails { get; set; }
         public string requester { get; set; }
         public string callpriority { get; set; }
@@ -36,7 +36,7 @@ namespace ResourceManagement
         public Nullable<System.DateTime> closeddate { get; set; }
         public Nullable<int> timespent { get; set; }
         public string comments { get; set; }
-        public string submittedsysyem { get; set; }
+        public string submittedsystem { get; set; }
         public Nullable<int> currentyear { get; set; }
         public string shiftdetails { get; set; }
         public Nullable<System.DateTime> submittedtime { get; set; }
