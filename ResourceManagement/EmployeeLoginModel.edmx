@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -20,7 +20,7 @@
             <PropertyRef Name="uniquekey" />
           </Key>
           <Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="weekno" Type="int" StoreGeneratedPattern="None" />
+          <Property Name="weekno" Type="int" />
           <Property Name="weekstartdate" Type="date" />
           <Property Name="weekenddate" Type="date" />
           <Property Name="employeeid" Type="varchar" MaxLength="50" />
@@ -33,7 +33,7 @@
           <Property Name="projstatus" Type="varchar" MaxLength="50" />
           <Property Name="taskdate" Type="date" />
           <Property Name="category" Type="varchar" MaxLength="50" />
-          <Property Name="incidentnumber" Type="int" />
+          <Property Name="incidentnumber" Type="varchar" MaxLength="1500" />
           <Property Name="taskdetails" Type="varchar" MaxLength="1500" />
           <Property Name="requester" Type="varchar" MaxLength="250" />
           <Property Name="callpriority" Type="varchar" MaxLength="50" />
@@ -42,10 +42,10 @@
           <Property Name="timespent" Type="int" />
           <Property Name="comments" Type="varchar" MaxLength="500" />
           <Property Name="submittedsystem" Type="varchar" MaxLength="250" />
-          <Property Name="currentyear" Type="int" StoreGeneratedPattern="None" />
+          <Property Name="currentyear" Type="int" />
           <Property Name="shiftdetails" Type="varchar" MaxLength="50" />
           <Property Name="submittedtime" Type="datetime" />
-          <Property Name="uniquekey" Type="varchar" MaxLength="66" StoreGeneratedPattern="None" Nullable="false" />
+          <Property Name="uniquekey" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'TimeSheet-Dev.dbo.Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -285,46 +285,6 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="ErrorTime" Type="datetime" />
           <Property Name="ErrorMsg" Type="varchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TimeSheet-Dev.dbo.IP_Test' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="IP_Test">
-          <Property Name="EmpID" Type="nvarchar" MaxLength="50" />
-          <Property Name="IPAddress" Type="nvarchar" MaxLength="50" />
-          <Property Name="HostName" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TimeSheet-Dev.dbo.leave_rpt_headers' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="leave_rpt_headers">
-          <Property Name="lvdt" Type="varchar" MaxLength="50" />
-          <Property Name="lvempid" Type="varchar" MaxLength="50" />
-          <Property Name="lvreason" Type="varchar" MaxLength="50" />
-          <Property Name="lvsubmittedby" Type="varchar" MaxLength="50" />
-          <Property Name="lvsrc" Type="varchar" MaxLength="50" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TimeSheet-Dev.dbo.report_headers' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="report_headers">
-          <Property Name="field1" Type="varchar" MaxLength="100" />
-          <Property Name="field2" Type="varchar" MaxLength="100" />
-          <Property Name="field3" Type="varchar" MaxLength="100" />
-          <Property Name="field4" Type="varchar" MaxLength="100" />
-          <Property Name="field5" Type="varchar" MaxLength="100" />
-          <Property Name="field6" Type="varchar" MaxLength="100" />
-          <Property Name="field7" Type="varchar" MaxLength="100" />
-          <Property Name="field8" Type="varchar" MaxLength="100" />
-          <Property Name="field9" Type="varchar" MaxLength="100" />
-          <Property Name="field10" Type="varchar" MaxLength="100" />
-          <Property Name="field11" Type="varchar" MaxLength="100" />
-          <Property Name="field12" Type="varchar" MaxLength="100" />
-          <Property Name="field13" Type="varchar" MaxLength="100" />
-          <Property Name="field14" Type="varchar" MaxLength="100" />
-          <Property Name="field15" Type="varchar" MaxLength="100" />
-          <Property Name="field16" Type="varchar" MaxLength="100" />
-          <Property Name="field17" Type="varchar" MaxLength="100" />
-          <Property Name="field18" Type="varchar" MaxLength="100" />
-          <Property Name="field19" Type="varchar" MaxLength="100" />
-          <Property Name="field20" Type="varchar" MaxLength="100" />
-        </EntityType>-->
         <EntityType Name="tbl_ambclogininformation">
           <Key>
             <PropertyRef Name="Concat_loginstring" />
@@ -700,8 +660,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
     FROM [dbo].[today_att] AS [today_att]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TimesheetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -733,7 +692,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="projstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="taskdate" Type="DateTime" Precision="0" />
           <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="incidentnumber" Type="Int32" />
+          <Property Name="incidentnumber" Type="String" />
           <Property Name="taskdetails" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="requester" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="callpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -745,7 +704,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="currentyear" Type="Int32" annotation:StoreGeneratedPattern="None" />
           <Property Name="shiftdetails" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="submittedtime" Type="DateTime" Precision="3" />
-          <Property Name="uniquekey" Type="String" MaxLength="66" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="uniquekey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="con_leaveupdate">
           <Key>
