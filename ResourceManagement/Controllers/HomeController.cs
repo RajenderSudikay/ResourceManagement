@@ -138,6 +138,8 @@ namespace ResourceManagement.Controllers
                 // Create and save a new Students
                 Console.WriteLine("Adding new students");
 
+                var tasks = new List<ambctaskcapture>();
+
                 foreach (var model in timesheetmodel)
                 {
                     //var customers = context.Set<TimeSheet>();
@@ -165,8 +167,7 @@ namespace ResourceManagement.Controllers
                         weekno = 29
                     };
 
-                    context.ambctaskcaptures.Add(timesheet);
-                    context.SaveChanges();
+                    tasks.Add(timesheet);
 
                     //var abc = new List<string>();
 
@@ -192,6 +193,9 @@ namespace ResourceManagement.Controllers
 
 
                 }
+
+                context.ambctaskcaptures.AddRange(tasks);
+                context.SaveChanges();
             }
 
         }
