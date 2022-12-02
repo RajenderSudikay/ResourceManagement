@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace ResourceManagement.Controllers
 {
     public class HomeController : Controller
-    {       
+    {
 
         public ActionResult Login()
         {
@@ -19,16 +19,15 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public ActionResult About()
+        public ActionResult Dashboard()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Message = "Dashboard page.";
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult TimeSheet()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Timesheet page.";
             return View();
         }
 
@@ -62,7 +61,7 @@ namespace ResourceManagement.Controllers
 
             while (rdr.Read())
             {
-                FirstName = rdr["employee_id"].ToString(); 
+                FirstName = rdr["employee_id"].ToString();
                 LastName = rdr["employee_name"].ToString();
             }
 
