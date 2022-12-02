@@ -20,7 +20,8 @@ namespace ResourceManagement
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            SqlDependency.Start(ConfigurationManager.ConnectionStrings["TimesheetDBEntities"].ToString());
+            //SqlDependency.Start(ConfigurationManager.ConnectionStrings["TimesheetDBEntities"].ToString());
+            //SqlDependency.Start(ConfigurationManager.ConnectionStrings["TimeSheetEntities"].ToString());
         }
     }
 }

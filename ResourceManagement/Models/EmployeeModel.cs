@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceManagement.Models
 {
-    public class TimeSheet
+    public class RMA_TimeSheet
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,20 +28,24 @@ namespace ResourceManagement.Models
         public string comments { get; set; }
     }
 
-    public class EmployeeModel
+    public class RMA_EmployeeModel
     {
-        [Key]      
-        public string employee_id { get; set; }
-        public string employee_name { get; set; }
-        public string employee_desg { get; set; }
-        public string employee_mailid { get; set; }
-        public string mployee_mobile { get; set; }
-        public string employee_report_manager { get; set; }
-        public string CategoryTypeID { get; set; }      
+        public emp_info empInfo { get; set; }
+        public emp_project projectInfo { get; set; }
+
+        //public string Employee_Id { get; set; }
+        //public string Employee_Name { get; set; }
+        //public string Employee_Desg { get; set; }
+        //public string Employee_Mailid { get; set; }
+        //public string Employee_Mobile { get; set; }
+        //public string Employee_Report_Manager { get; set; }
+        //public string Employee_Client_Name { get; set; }
+        //public string Employee_Project_Name { get; set; }
+        //public string Employee_Project_Status { get; set; }
     }
 
 
-    public class TimeSheetAjaxModel
+    public class RMA_TimeSheetAjaxModel
     {
         public string Date { get; set; }
         public string Category { get; set; }

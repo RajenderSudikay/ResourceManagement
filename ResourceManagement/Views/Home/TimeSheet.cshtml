@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
     ViewBag.Title = "TimeSheet Page";
 }
 
@@ -6,7 +8,11 @@
     body {
         background-color: lightsteelblue;
         font-size: 13px;
-    }   
+    }
+
+    .sample-label {
+        font-weight: 100;
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
@@ -20,102 +26,105 @@
     </div>
 
     <div class="col-lg-offset-3">
-        @*<img src="~/Assets/Profile Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">&nbsp;&nbsp;*@
-        <div class="agent-navigation">
-            <div class="">
-                <div class="dropdownheading text-white">
-                    <div class="profile-img">
-                        <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+        @if (Model != null)
+        {
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p>@Model.empInfo.employee_name</p>
                     </div>
-                    <p>Rajender Sudikay</p>
-                </div>
 
-                <div class="agent-description hide" style="">
-                    <div class="agent-details">
-                        <div class="agent-img">
-                            <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.empInfo.employee_name</b>
+                            </div>
+
+
+                            <ul>
+                                <li>
+                                    <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid">@Model.empInfo.employee_id</div>
+
+                                </li>
+
+                                <li>
+                                    <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig">@Model.empInfo.employee_desg</div>
+
+                                </li>
+
+                                <li>
+                                    <b>Supervisor:</b>
+                                    <div class="agent-navdrop-empmanager">@Model.empInfo.employee_report_manager</div>
+
+                                </li>
+
+                                <li>
+                                    <b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.empInfo.employee_mobile</a>
+                                </li>
+
+                                <li>
+                                    <b>Client:</b>
+                                    <div class="agent-navdrop-client">@Model.projectInfo.proj_client</div>
+                                </li>
+
+                                <li>
+                                    <b>Project:</b>
+                                    <div class="agent-navdrop-project">@Model.projectInfo.proj_name</div>
+                                </li>
+                                <li>
+                                    <b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus">@Model.projectInfo.project_staus</div>
+                                </li>
+
+                                <li>
+                                    <b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail">@Model.empInfo.employee_mailid</div>
+                                </li>
+
+                            </ul>
 
                         </div>
 
-                        <div class="agent-fullname">
-                            <b>Rajender Sudikay</b>
-                        </div>
-
-
-                        <ul>
-                            <li>
-                                <b>Emp ID:</b>
-                                <div class="agent-navdrop-empid">C12345</div>
-
-                            </li>
-
-                            <li>
-                                <b>Designation:</b>
-                                <div class="agent-navdrop-empdesig">Senior Sitecore developer</div>
-
-                            </li>
-
-                            <li>
-                                <b>Supervisor:</b>
-                                <div class="agent-navdrop-empmanager">Seema Ashok</div>
-
-                            </li>
-
-                            <li>
-                                <b>Contact Number:</b>
-                                <br />
-                                <a class="agent-navdrop-phone" href="tel:07531 282590">07531 282590</a>
-                            </li>
-
-                            <li>
-                                <b>Client:</b>
-                                <div class="agent-navdrop-client">LittelFuse</div>
-                            </li>
-
-                            <li>
-                                <b>Project:</b>
-                                <div class="agent-navdrop-project">LittelFuse</div>
-                            </li>
-                            <li>
-                                <b>Project Status:</b>
-                                <div class="agent-navdrop-prostatus">Active</div>
-                            </li>
-
-                            <li>
-                                <b>E-Mail-Adress:</b>
-                                <div class="agent-navdrop-empemail">rajender.sudikay@gmail.com</div>
-                            </li>
-
-                        </ul>
-
                     </div>
-
                 </div>
             </div>
-        </div>
+        }
+
     </div>
 </nav>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="timeSheetdate">Select Week</label>
-            <input type="date" class="form-control" id="timeSheetSelectWeek" placeholder="Select week start date">
-        </div>
-        <div class="form-group">
-            <label for="timeSheetdate">End Date</label>
-            <input type="date" class="form-control" id="timeSheetSelectWeek" placeholder="Select week start date">
-        </div>
+@*<div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="timeSheetdate">Select Week</label>
+                <input type="date" class="form-control" id="timeSheetSelectWeek" placeholder="Select week start date">
+            </div>
+            <div class="form-group">
+                <label for="timeSheetdate">End Date</label>
+                <input type="date" class="form-control" id="timeSheetSelectWeek" placeholder="Select week start date">
+            </div>
 
-        <button type="button" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-success">Submit</button>
 
-    </div>
-</div>
+        </div>
+    </div>*@
 
 <div class="row">
     <div class="col-md-6">
         <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
-            Add New Entry
+            Click here to add task details
         </button> &nbsp;&nbsp;
     </div>
 </div>
@@ -143,17 +152,17 @@
         <!--Table head-->
         <!--Table body-->
         <tbody class="table-bordered">
-            <tr class="default-table-row">
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row">--</td>
-                <td scope="row">--</td>
-                <td scope="row">--</td>
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row" style="white-space: nowrap;">--</td>
-                <td scope="row">--</td>
+            <tr class="default-table-row ">
+                <td scope="row" style="white-space: nowrap">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row" style="white-space: nowrap">Ex: Enter Category</td>
+                <td scope="row">Ex: 1234, 5678</td>
+                <td scope="row">Ex: Enter details</td>
+                <td scope="row" style="white-space: nowrap">Ex: Requester Name</td>
+                <td scope="row" style="white-space: nowrap">Ex: Critical </td>
+                <td scope="row" style="white-space: nowrap">Ex: In Progress</td>
+                <td scope="row" style="white-space: nowrap">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row" style="white-space: nowrap">Ex: 5</td>
+                <td scope="row">Ex:Enter Comments</td>
             </tr>
         </tbody>
         <!--Table body-->
@@ -164,7 +173,7 @@
 <!-- Button trigger modal -->
 
 <div class="col-lg-offset-0" style="float:right">
-    <button type="button" class="btn btn-success btn-lg timesheet-submit">
+    <button type="button" class="btn btn-info btn-lg timesheet-submit">
         Submit Time Sheet
     </button>
 </div>
@@ -196,7 +205,7 @@
                                     <option value="volvo">Category 1</option>
                                     <option value="saab">Category  2</option>
                                 </select>
-                           
+
                             </div>
                         </div>
                     </div>
@@ -204,7 +213,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncNumber">Incident Number</label>                               
+                                <label for="timeSheetIncNumber">Incident Number</label>
                                 <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number"></textarea>
                             </div>
                         </div>
@@ -214,7 +223,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncDesc">Incident Description</label>                              
+                                <label for="timeSheetIncDesc">Incident Description</label>
                                 <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description"></textarea>
                             </div>
                         </div>
@@ -232,7 +241,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetUrgency">Priority</label>
-                              
+
                                 <select id="timeSheetUrgency" name="urgency" class="form-control form-select form-select-lg mb-3">
                                     <option value="critical"> Critical </option>
                                     <option value="high"> High </option>
@@ -245,7 +254,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetStatus">Status</label>
-                               
+
                                 <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3">
                                     <option value="open"> Open </option>
                                     <option value="closed"> Closed </option>
@@ -277,7 +286,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetComments">Comments</label>                              
+                                <label for="timeSheetComments">Comments</label>
                                 <textarea class="form-control" id="timeSheetComments" style="min-width: 100%" placeholder="Comments"></textarea>
                             </div>
                         </div>
@@ -366,7 +375,7 @@
 
             jQuery.ajax({
                 type: "POST",
-                url: "/Home/AddTimeSheet",
+                url: "/AddTimeSheet",
                 data: JSON.stringify({ timesheetmodel: timeSheetList }),
                 contentType: 'application/json; charset=utf-8',
                 success: function () {
