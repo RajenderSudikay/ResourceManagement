@@ -28,7 +28,7 @@ namespace ResourceManagement
         public string projstatus { get; set; }
         public Nullable<System.DateTime> taskdate { get; set; }
         public string category { get; set; }
-        public Nullable<int> incidentnumber { get; set; }
+        public string incidentnumber { get; set; }
         public string taskdetails { get; set; }
         public string requester { get; set; }
         public string callpriority { get; set; }
