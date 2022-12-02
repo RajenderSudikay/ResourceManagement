@@ -1,5 +1,6 @@
 body {
     font-family: "Lato", sans-serif;
+   background-color: #DDE4E3;
     /* padding-top:50px;*/
 }
 
@@ -83,8 +84,10 @@ body {
 
 .card {
     border: 0px;
-    background-color: #DDE4E3;
-    border: 1px solid #DDE4E3;
+    background-color: #FFF;
+    border-radius: 25px;
+    /*background-color: #DDE4E3;
+    border: 1px solid #DDE4E3;*/
 }
 
 .dashboard-card {
@@ -326,10 +329,11 @@ body {
     background: #ffffff;
     position: absolute;
     padding: 20px;
-    width: 750px;
+    width: 850px;
     right: 0;
     top: 97px;
     font-size: 14px;
+    border-radius: 10px;
 }
 
 @media (max-width: 991px) {
@@ -592,3 +596,74 @@ select.form-control:not([size]):not([multiple]) {
     background-color: #337ab7;
     color: white;
 }
+
+.dashboard-emp-icon {
+    margin-top: -30px;
+    padding-left: 650px;
+}
+
+.dashboard-emp-info {
+    z-index: 1;
+}
+
+.dashboard-navigation .dropdownheading:after {
+    border-bottom: 1px solid #2167ae;
+    border-right: 1px solid #2167ae;
+}
+
+.dashboard-emp-icon {
+    margin-top: -50px;
+    padding-left: 650px;
+    border-bottom: 2px solid #fff;
+}
+
+.agent-navigation .dashboard-emp-info {
+    top: 50px;
+}
+
+.img-fluid-dashboard {
+    max-width: 125px;
+    margin-left: 25px;
+    height: 120px;
+}
+
+.custom-card-img-top {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.dashboard-zoom {
+    transition: transform .2s; /* Animation */
+    width: 60px;
+}
+
+    .dashboard-zoom:hover {
+        transform: scale(1.02); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+@media (min-width: 768px)
+{
+    .login-card {       
+        margin-top: 160px;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .login-card-body {
+        margin-top: -200px
+    }
+}
+
+@media (min-width: 768px) {
+    .login-card-img-top {
+        width: 60%;
+        padding: 20px;
+        margin-top: 30px
+    }
+}
+
+
+
+
