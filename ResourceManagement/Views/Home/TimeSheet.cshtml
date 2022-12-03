@@ -330,15 +330,18 @@
         };
 
         jQuery('.date-timesheet').change(function () {
-            var date = jQuery(this).val();
+            var date = jQuery(this).val();          
 
-            var startDateOfTheWeek = new Date(date).startOfWeek(1);
-            var endDateOfTheWeek = new Date(date).addDays(5);
+            var startOfWeek = moment(new Date(date)).startOf('week').toDate();
+            var endOfWeek = moment(new Date(date)).endOf('week').toDate();
 
-            var startDate = moment(startDateOfTheWeek).format("YYYY-MM-DD");
+            var StartWeekdate = new Date(startOfWeek.addDays(1));
+            var endWeekDate = new Date(endOfWeek.addDays(1))
+
+            var startDate = moment(StartWeekdate).format("YYYY-MM-DD");
             jQuery('#timeSheetStartWeekdate').val(startDate);
 
-            var endDate = moment(endDateOfTheWeek).format("YYYY-MM-DD");
+            var endDate = moment(endWeekDate).format("YYYY-MM-DD");
             jQuery('#timeSheetEndWeekdate').val(endDate);
         });
     });
