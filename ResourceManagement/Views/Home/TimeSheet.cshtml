@@ -5,6 +5,12 @@
 }
 
 
+<style>
+
+
+
+</style>
+
 
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
@@ -103,13 +109,15 @@
             Click here to add task details
         </button>&nbsp;&nbsp;
     </div>
-
     <div class="col-md-9">
         <div class="database-response"></div>
     </div>
 </div>
 
-
+<div id="date-picker-example" class="md-form md-outline input-with-post-icon " inline="true">
+    <label for="timeSheetdate">Date</label>
+    <input type="date" class="form-control" id="timeSheetdate1" required>
+</div>
 
 
 <div class="table-responsive table">
@@ -161,9 +169,6 @@
 </div>
 
 
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -182,7 +187,7 @@
                                 <label for="timeSheetdate">Date</label>
                                 <input type="date" class="form-control" id="timeSheetdate" required>
                                 <div class="invalid-feedback">
-                                    Please enter a valid email address
+                                    Please enter task date
                                 </div>
 
                             </div>
@@ -260,23 +265,21 @@
                                 </select>
                             </div>
                         </div>
-
-
                     </div>
 
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetClosedDate">Closed Date</label>
-                                <input type="date" class="form-control" id="timeSheetClosedDate" placeholder="Closed Date">                              
+                                <input type="date" class="form-control" id="timeSheetClosedDate" placeholder="Closed Date">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="text" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" required>
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" min="1" max="12" required>
                                 <div class="invalid-feedback">
-                                    Please enter Time spent hours
+                                    Please enter Time spent hours between 1 to 12
                                 </div>
                             </div>
                         </div>
@@ -306,9 +309,16 @@
 
 <script>
 
+    jQuery(document).ready(function () {
+        jQuery('#timeSheetdate1').change(function () {
+            var date = jQuery(this).val();
+            console.log(date, 'change');
+            alert();
+        });
+    });
 
-    timeSheetList = new Array();
 
+    var timeSheetList = new Array();
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -423,7 +433,5 @@
         });
     });
 
-
-    /*});*/
 </script>
 
