@@ -83,50 +83,77 @@ namespace ResourceManagement.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult AddTimeSheet(List<RMA_TimeSheetAjaxModel> timesheetmodel)
+        public JsonResult AddTimeSheet(List<RMA_TimeSheetAjaxModel> timesheetmodel)
         {
-            UpdateTimeSheetStatus(timesheetmodel);
-            return View("~/Views/Home/Contact.cshtml");
+            var response = UpdateTimeSheetStatus(timesheetmodel);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
 
-        public void UpdateTimeSheetStatus(List<RMA_TimeSheetAjaxModel> timesheetmodel)
+        public JsonResponseModel UpdateTimeSheetStatus(List<RMA_TimeSheetAjaxModel> timesheetmodel)
         {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-            using (var context = new TimeSheetEntities())
+            var respone = new JsonResponseModel();
+            try
             {
-                var tasks = new List<ambctaskcapture>();
-                foreach (var model in timesheetmodel)
+                var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+                using (var context = new TimeSheetEntities())
                 {
-                    var timesheet = new ambctaskcapture()
+                    var tasks = new List<ambctaskcapture>();
+                    foreach (var model in timesheetmodel)
                     {
-                        taskdate = System.Convert.ToDateTime(model.Date),
-                        category = model.Category,
-                        incidentnumber = model.IncidentNumber,
-                        taskdetails = model.IncidentDescription,
-                        requester = model.Requester,
-                        callpriority = model.Urgency,
-                        callstatus = model.Status,
-                        closeddate = System.Convert.ToDateTime(model.ClosedDate),
-                        timespent = System.Convert.ToInt32(model.TimeSpent),
-                        comments = model.Comments,
-                        employeename = employeeModel.empInfo.employee_name,
-                        employeeid = employeeModel.empInfo.employee_id,
-                        empdesignation = employeeModel.empInfo.employee_desg,
-                        empmanager = employeeModel.empInfo.employee_report_manager,
-                        empcontactnumber = employeeModel.empInfo.employee_mobile,
-                        clientname = employeeModel.projectInfo.proj_client,
-                        projectname = employeeModel.projectInfo.proj_name,
-                        projstatus = employeeModel.projectInfo.project_staus,
-                        uniquekey = model.Date + "_" + model.IncidentNumber + "_" + model.TimeSpent,
-                        weekno = 29
-                    };
-                    tasks.Add(timesheet);
-                }
+                        var timesheet = new ambctaskcapture()
+                        {
+                            taskdate = System.Convert.ToDateTime(model.Date),
+                            category = model.Category,
+                            incidentnumber = model.IncidentNumber,
+                            taskdetails = model.IncidentDescription,
+                            requester = model.Requester,
+                            callpriority = model.Urgency,
+                            callstatus = model.Status,
+                            closeddate = System.Convert.ToDateTime(model.ClosedDate),
+                            timespent = System.Convert.ToInt32(model.TimeSpent),
+                            comments = model.Comments,
+                            employeename = employeeModel.empInfo.employee_name,
+                            employeeid = employeeModel.empInfo.employee_id,
+                            empdesignation = employeeModel.empInfo.employee_desg,
+                            empmanager = employeeModel.empInfo.employee_report_manager,
+                            empcontactnumber = employeeModel.empInfo.employee_mobile,
+                            clientname = employeeModel.projectInfo.proj_client,
+                            projectname = employeeModel.projectInfo.proj_name,
+                            projstatus = employeeModel.projectInfo.project_staus,
+                            uniquekey = model.Date + "_" + model.IncidentNumber + "_" + model.TimeSpent,
+                            weekno = 29
+                        };
+                        tasks.Add(timesheet);
+                    }
 
-                context.ambctaskcaptures.AddRange(tasks);
-                context.SaveChanges();
+                    context.ambctaskcaptures.AddRange(tasks);
+                    context.SaveChanges();
+                    respone.StatusCode = 200;
+                    respone.Message = "TimeSheet added successfully!";
+                }
             }
+            catch (System.Exception ex)
+            {
+                respone.StatusCode = 500;               
+                if(ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                    foreach(var actuallError in actuallErrors)
+                    {
+                        if(actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            respone.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    respone.Message = ex.Message;
+                }
+            }
+            return respone;
 
         }
     }
