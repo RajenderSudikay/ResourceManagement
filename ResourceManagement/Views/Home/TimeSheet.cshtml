@@ -6,9 +6,6 @@
 
 
 <style>
-
-
-
 </style>
 
 
@@ -103,21 +100,35 @@
     </div>
 </nav>
 
-<div class="row">
-    <div class="col-md-3">
-        <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
-            Click here to add task details
-        </button>&nbsp;&nbsp;
-    </div>
-    <div class="col-md-9">
-        <div class="database-response"></div>
-    </div>
-</div>
 
-<div id="date-picker-example" class="md-form md-outline input-with-post-icon " inline="true">
-    <label for="timeSheetdate">Date</label>
-    <input type="date" class="form-control" id="timeSheetdate1" required>
-</div>
+
+<form class="needs-validation-timesheet" novalidate>
+    <div class="form-group">
+        <label for="timeSheetStartWeekdate">Select Week Start Date</label>
+        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required>
+        <div class="invalid-feedback">
+            Please Select Week Start Date
+        </div>
+        <small id="emailHelp" class="form-text text-muted">Please select start date of the week.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="timeSheetEndWeekdate">week End date</label>
+        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-custom openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                Click here to add task details
+            </button>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-9">
+            <div class="database-response"></div>
+        </div>
+    </div>
+</form>
 
 
 <div class="table-responsive table">
@@ -310,10 +321,32 @@
 <script>
 
     jQuery(document).ready(function () {
-        jQuery('#timeSheetdate1').change(function () {
+
+        Date.prototype.startOfWeek = function (pStartOfWeek) {
+            var mDifference = this.getDay() - pStartOfWeek;
+            if (mDifference < 0) {
+                mDifference += 7;
+            }
+            return new Date(this.addDays(mDifference * -1));
+        }
+
+        Date.prototype.addDays = function (pDays) {
+            var mDate = new Date(this.valueOf());
+            mDate.setDate(mDate.getDate() + pDays);
+            return mDate;
+        };
+
+        jQuery('.date-timesheet').change(function () {
             var date = jQuery(this).val();
-            console.log(date, 'change');
-            alert();
+
+            var startDateOfTheWeek = new Date(date).startOfWeek(1);
+            var endDateOfTheWeek = new Date(date).addDays(5);
+
+            var startDate = moment(startDateOfTheWeek).format("YYYY-MM-DD");
+            jQuery('#timeSheetStartWeekdate').val(startDate);
+
+            var endDate = moment(endDateOfTheWeek).format("YYYY-MM-DD");
+            jQuery('#timeSheetEndWeekdate').val(endDate);
         });
     });
 
@@ -332,13 +365,32 @@
                     if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
-                        isModalValidated = false;
                     }
                     form.classList.add('was-validated');
                 });
             });
         });
     })();
+
+    jQuery(".add-task-details").click(function () {
+        jQuery('.needs-validation').removeClass('was-validated');
+        var isStartDateEntered = true;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation-timesheet');
+        // Loop over them and prevent submission
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                isStartDateEntered = false;
+            }
+            form.classList.add('was-validated');
+
+            if (isStartDateEntered) {
+                $('#exampleModalLong').modal('show');
+            }
+        });
+    });
 
 
     jQuery(".timesheet-addreport").click(function () {
