@@ -23,7 +23,7 @@
                         <div class="profile-img">
                             <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
                         </div>
-                        <p>@Model.empInfo.employee_name</p>
+                        <p class="agent-full-name">@Model.empInfo.employee_name</p>
                     </div>
 
                     <div class="agent-description hide" style="">
@@ -108,6 +108,7 @@
     <div class="form-group">
         <label for="timeSheetEndWeekdate">week End date</label>
         <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
+        <input type="hidden" id="weekNumber" />
     </div>
 
     <div class="row">
@@ -394,6 +395,9 @@
 
                 jQuery('#timeSheetdate').val(minDate);
 
+                var weekNum = moment(minDate).week();
+                jQuery('#weekNumber').val(weekNum);
+
                 $('#exampleModalLong').modal('show');
             }
         });
@@ -417,16 +421,28 @@
 
         if (isModalValidated) {
             var model = {
-                Date: jQuery('#timeSheetdate').val(),
-                Category: $('#timeSheetCategory :selected').text(),
-                IncidentNumber: jQuery('#timeSheetIncNumber').val(),
-                IncidentDescription: jQuery('#timeSheetIncDesc').val(),
-                Requester: jQuery('#timeSheetRequester').val(),
-                Urgency: $('#timeSheetUrgency :selected').text(),
-                Status: $('#timeSheetStatus :selected').text(),
-                ClosedDate: jQuery('#timeSheetClosedDate').val(),
-                TimeSpent: jQuery('#timeSheetTimeSpent').val(),
-                Comments: jQuery('#timeSheetComments').val(),
+                weekstartdate: jQuery('#timeSheetStartWeekdate').val(),
+                weekenddate: jQuery('#timeSheetEndWeekdate').val(),
+                weekno: jQuery('#weekNumber').val(),
+                employeeid: jQuery('.agent-navdrop-empid').text(),
+                employeename: jQuery('.agent-full-name').text(),
+                empdesignation: jQuery('.agent-navdrop-empdesig').text(),
+                empmanager: jQuery('.agent-navdrop-empmanager').text(),
+                empcontactnumber: jQuery('.agent-navdrop-phone').text(),
+                clientname: jQuery('.agent-navdrop-client').text(),
+                projectname: jQuery('.agent-navdrop-project').text(),
+                projstatus: jQuery('.agent-navdrop-prostatus').text(),
+                taskdate: jQuery('#timeSheetdate').val(),
+                category: $('#timeSheetCategory :selected').text(),
+                incidentnumber: jQuery('#timeSheetIncNumber').val(),
+                taskdetails: jQuery('#timeSheetIncDesc').val(),
+                requester: jQuery('#timeSheetRequester').val(),
+                callpriority: $('#timeSheetUrgency :selected').text(),
+                callstatus: $('#timeSheetStatus :selected').text(),
+                closeddate: jQuery('#timeSheetClosedDate').val(),
+                timespent: jQuery('#timeSheetTimeSpent').val(),
+                comments: jQuery('#timeSheetComments').val(),
+                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
             };
 
             timeSheetList.push(model);
@@ -444,16 +460,16 @@
                 + '</tr>'
 
             var newRow = jQuery(template);
-            jQuery(newRow).find('.timesheet-date').html(model.Date);
-            jQuery(newRow).find('.timesheet-category').html(model.Category);
-            jQuery(newRow).find('.timesheet-incidentnum').html(model.IncidentNumber);
-            jQuery(newRow).find('.timesheet-incidentdes').html(model.IncidentDescription);
-            jQuery(newRow).find('.timesheet-requester').html(model.Requester);
-            jQuery(newRow).find('.timesheet-urgency').html(model.Urgency);
-            jQuery(newRow).find('.timesheet-status').html(model.Status);
-            jQuery(newRow).find('.timesheet-closeddate').html(model.ClosedDate);
-            jQuery(newRow).find('.timesheet-timespent').html(model.TimeSpent);
-            jQuery(newRow).find('.timesheet-comments').html(model.Comments);
+            jQuery(newRow).find('.timesheet-date').html(model.taskdate);
+            jQuery(newRow).find('.timesheet-category').html(model.category);
+            jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
+            jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
+            jQuery(newRow).find('.timesheet-requester').html(model.requester);
+            jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
+            jQuery(newRow).find('.timesheet-status').html(model.callstatus);
+            jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
+            jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
+            jQuery(newRow).find('.timesheet-comments').html(model.comments);
 
 
             jQuery('.default-table-row').hide();

@@ -83,14 +83,14 @@ namespace ResourceManagement.Controllers
             return RedirectToAction("Login");
         }
 
-        public JsonResult AddTimeSheet(List<RMA_TimeSheetAjaxModel> timesheetmodel)
+        public JsonResult AddTimeSheet(List<ambctaskcapture> timesheetmodel)
         {
             var response = UpdateTimeSheetStatus(timesheetmodel);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
 
-        public JsonResponseModel UpdateTimeSheetStatus(List<RMA_TimeSheetAjaxModel> timesheetmodel)
+        public JsonResponseModel UpdateTimeSheetStatus(List<ambctaskcapture> timesheetmodel)
         {
             var respone = new JsonResponseModel();
             try
@@ -98,51 +98,30 @@ namespace ResourceManagement.Controllers
                 var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
                 using (var context = new TimeSheetEntities())
                 {
-                    var tasks = new List<ambctaskcapture>();
-                    foreach (var model in timesheetmodel)
+                    if (timesheetmodel != null)
                     {
-                        var timesheet = new ambctaskcapture()
-                        {
-                            taskdate = System.Convert.ToDateTime(model.Date),
-                            category = model.Category,
-                            incidentnumber = model.IncidentNumber,
-                            taskdetails = model.IncidentDescription,
-                            requester = model.Requester,
-                            callpriority = model.Urgency,
-                            callstatus = model.Status,
-                            closeddate = System.Convert.ToDateTime(model.ClosedDate),
-                            timespent = System.Convert.ToInt32(model.TimeSpent),
-                            comments = model.Comments,
-                            employeename = employeeModel.empInfo.employee_name,
-                            employeeid = employeeModel.empInfo.employee_id,
-                            empdesignation = employeeModel.empInfo.employee_desg,
-                            empmanager = employeeModel.empInfo.employee_report_manager,
-                            empcontactnumber = employeeModel.empInfo.employee_mobile,
-                            clientname = employeeModel.projectInfo.proj_client,
-                            projectname = employeeModel.projectInfo.proj_name,
-                            projstatus = employeeModel.projectInfo.project_staus,
-                            uniquekey = model.Date + "_" + model.IncidentNumber + "_" + model.TimeSpent,
-                            weekno = 29
-                        };
-                        tasks.Add(timesheet);
+                        context.ambctaskcaptures.AddRange(timesheetmodel);
+                        context.SaveChanges();
+                        respone.StatusCode = 200;
+                        respone.Message = "TimeSheet added successfully!";
                     }
-
-                    context.ambctaskcaptures.AddRange(tasks);
-                    context.SaveChanges();
-                    respone.StatusCode = 200;
-                    respone.Message = "TimeSheet added successfully!";
+                    else
+                    {
+                        respone.StatusCode = 400;
+                        respone.Message = "Bad request. Please enter task details!";
+                    }
                 }
             }
             catch (System.Exception ex)
             {
-                respone.StatusCode = 500;               
-                if(ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                respone.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
                 {
                     var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
 
-                    foreach(var actuallError in actuallErrors)
+                    foreach (var actuallError in actuallErrors)
                     {
-                        if(actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
                         {
                             respone.Message = actuallError;
                         }
@@ -154,7 +133,6 @@ namespace ResourceManagement.Controllers
                 }
             }
             return respone;
-
         }
     }
 }
