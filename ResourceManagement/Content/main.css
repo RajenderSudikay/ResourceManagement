@@ -664,6 +664,27 @@ select.form-control:not([size]):not([multiple]) {
     }
 }
 
+.timesheet-close {
+    color: black;
+}
+
+.custom-model-header {
+    border-bottom: 2px solid #0095a8;
+}
+
+
+
+/* .invalid class prevents CSS from automatically applying */
+.invalid input:required:invalid {
+    background: #BE4C54;
+}
+
+/* Mark valid inputs during .invalid state */
+.invalid input:required:valid {
+    background: #17D654;
+}
+
+
 
 
 

@@ -4,16 +4,8 @@
     ViewBag.Title = "TimeSheet Page";
 }
 
-<style>
-    body {
-        background-color: #DDE4E3;
-        font-size: 13px;
-    }
 
-    .sample-label {
-        font-weight: 100;
-    }
-</style>
+
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
     <a class="navbar-brand" href="#"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
@@ -106,12 +98,18 @@
 </nav>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <button type="button" class="btn btn-custom openmodel btn-lg text-white" data-toggle="modal" data-target="#exampleModalLong">
             Click here to add task details
-        </button> &nbsp;&nbsp;
+        </button>&nbsp;&nbsp;
+    </div>
+
+    <div class="col-md-9">
+        <div class="database-response"></div>
     </div>
 </div>
+
+
 
 
 <div class="table-responsive table">
@@ -137,15 +135,15 @@
         <!--Table body-->
         <tbody class="table-bordered">
             <tr class="default-table-row ">
-                <td scope="row" style="white-space: nowrap">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
-                <td scope="row" style="white-space: nowrap">Ex: Enter Category</td>
+                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row">Ex: Enter Category</td>
                 <td scope="row">Ex: 1234, 5678</td>
                 <td scope="row">Ex: Enter details</td>
-                <td scope="row" style="white-space: nowrap">Ex: Requester Name</td>
-                <td scope="row" style="white-space: nowrap">Ex: Critical </td>
-                <td scope="row" style="white-space: nowrap">Ex: In Progress</td>
-                <td scope="row" style="white-space: nowrap">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
-                <td scope="row" style="white-space: nowrap">Ex: 5</td>
+                <td scope="row">Ex: Requester Name</td>
+                <td scope="row">Ex: Critical </td>
+                <td scope="row">Ex: In Progress</td>
+                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row">Ex: 5</td>
                 <td scope="row">Ex:Enter Comments</td>
             </tr>
         </tbody>
@@ -162,34 +160,41 @@
     </button>
 </div>
 
+
+
+
+
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header popup-design-header text-white">
-                <h5 class="modal-title" id="exampleModalLongTitle">Time Sheet Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header custom-model-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #0095a8">Time Sheet Form</b></h5>
+                <button type="button" class="close timesheet-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form class="needs-validation" novalidate>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="timeSheetdate">Date</label>
-                                <input type="date" class="form-control" id="timeSheetdate" placeholder="Enter Date">
+                                <input type="date" class="form-control" id="timeSheetdate" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="timeSheetCategory">Category</label>
-
                                 <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3">
                                     <option value="volvo">Category 1</option>
                                     <option value="saab">Category  2</option>
                                 </select>
-
                             </div>
                         </div>
                     </div>
@@ -197,31 +202,39 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncNumber">Incident Number</label>
-                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number"></textarea>
+                                <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number</label>
+                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter Incident Number(s)
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncDesc">Incident Description</label>
-                                <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description"></textarea>
+                                <label for="timeSheetIncDesc" id="inputGroupPrepend">Incident Description</label>
+                                <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter Incident Description
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetRequester">Requester</label>
-                                <input type="text" class="form-control" id="timeSheetRequester" placeholder="Requester">
+                                <input type="text" class="form-control" id="timeSheetRequester" aria-describedby="emailHelp" placeholder="Requester">
+                                <div class="invalid-feedback">
+                                    Please enter requester
+                                </div>
+                                <small id="emailHelp" class="form-text text-muted">Requester help text.</small>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetUrgency">Priority</label>
@@ -232,9 +245,9 @@
                                     <option value="medium"> Medium </option>
                                     <option value="low"> Low </option>
                                 </select>
-
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetStatus">Status</label>
@@ -247,55 +260,93 @@
                                 </select>
                             </div>
                         </div>
+
+
                     </div>
 
-
                     <div class="row">
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetClosedDate">Closed Date</label>
-                                <input type="date" class="form-control" id="timeSheetClosedDate" placeholder="Closed Date">
+                                <input type="date" class="form-control" id="timeSheetClosedDate" placeholder="Closed Date">                              
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="text" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent">
+                                <input type="text" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" required>
+                                <div class="invalid-feedback">
+                                    Please enter Time spent hours
+                                </div>
                             </div>
                         </div>
                     </div>
-
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="timeSheetComments">Comments</label>
                                 <textarea class="form-control" id="timeSheetComments" style="min-width: 100%" placeholder="Comments"></textarea>
+
                             </div>
                         </div>
                     </div>
 
+                    <div class="modal-footer mt-xl-4">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary timesheet-addreport">Add Report</button>
+                    </div>
+
                 </form>
             </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" value="Close">
-                <input type="button" class="btn btn-primary timesheet-addreport btn-lg" value="Add Report">
-            </div>
+
         </div>
     </div>
 </div>
 
-
 <script>
 
 
+    timeSheetList = new Array();
 
-    jQuery(document).ready(function () {
-        timeSheetList = new Array();
 
-        jQuery(".timesheet-addreport").click(function () {
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        isModalValidated = false;
+                    }
+                    form.classList.add('was-validated');
+                });
+            });
+        });
+    })();
 
+
+    jQuery(".timesheet-addreport").click(function () {
+        var isModalValidated = true;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                isModalValidated = false;
+            }
+
+            form.classList.add('was-validated');
+        });
+
+        if (isModalValidated) {
             var model = {
                 Date: jQuery('#timeSheetdate').val(),
                 Category: $('#timeSheetCategory :selected').text(),
@@ -310,7 +361,6 @@
             };
 
             timeSheetList.push(model);
-
 
             var template = '<tr><td class="timesheet-date"></td>'
                 + '<td class="timesheet-category" ></td >'
@@ -351,23 +401,29 @@
             jQuery('#timeSheetClosedDate').val('');
             jQuery('#timeSheetTimeSpent').val('');
             jQuery('#timeSheetComments').val('');
-
-        });
-
-
-        jQuery(".timesheet-submit").click(function () {
-
-            jQuery.ajax({
-                type: "POST",
-                url: "/AddTimeSheet",
-                data: JSON.stringify({ timesheetmodel: timeSheetList }),
-                contentType: 'application/json; charset=utf-8',
-                success: function () {
-
-                }
-            });
-        });
-
+        }
     });
+
+
+    jQuery(".timesheet-submit").click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/AddTimeSheet",
+            data: JSON.stringify({ timesheetmodel: timeSheetList }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    jQuery('.database-response').addClass('text-success')
+                }
+                else {
+                    jQuery('.database-response').addClass('text-danger')
+                }
+                jQuery('.database-response').text(data.Message);
+            }
+        });
+    });
+
+
+    /*});*/
 </script>
 
