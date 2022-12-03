@@ -1,11 +1,14 @@
-﻿namespace ResourceManagement.Models
+﻿using System.Collections.Generic;
+
+namespace ResourceManagement.Models
 {
     public class RMA_EmployeeModel
     {
         public emp_info empInfo { get; set; }
         public emp_project projectInfo { get; set; }
+        public List<con_leaveupdate> empLeaveInfo { get; set; }
+        public List<tblambcholiday> ambcHolidayInfo { get; set; }
     }
-
 
     public class RMA_TimeSheetAjaxModel
     {
@@ -19,6 +22,12 @@
         public string ClosedDate { get; set; }
         public string TimeSpent { get; set; }
         public string Comments { get; set; }
+    }
 
+    public class RMA_TimeSheetWeekData
+    {
+        public string EmpId { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 }

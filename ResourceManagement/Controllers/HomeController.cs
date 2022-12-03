@@ -5,6 +5,10 @@ using System.Web.Mvc;
 namespace ResourceManagement.Controllers
 {
     using Models;
+    using System;
+    using System.Globalization;
+    using System.Text.Json;
+
     public class HomeController : Controller
     {
         public ActionResult Login()
@@ -43,6 +47,50 @@ namespace ResourceManagement.Controllers
                 }
             }
             return View(loginModel);
+        }
+
+        [HttpGet]        
+        public JsonResult GetLeaveandHolidayInfofromDb(RMA_TimeSheetWeekData timeSheetWeekInputModel)
+        {
+            var leaveOrHolidayData = new List<string>();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                DateTime startDate = DateTime.Parse(timeSheetWeekInputModel.StartDate);
+                DateTime endDate = DateTime.Parse(timeSheetWeekInputModel.EndDate);
+
+                var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(timeSheetWeekInputModel.EmpId) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
+                if (conleaves != null && conleaves.Count > 0)
+                {
+                    //leaveOrHolidayData.AddRange(conleaves.Select(x => x.leavedate.ToString()));
+                    foreach (var conleave in conleaves)
+                    {
+                        var conLaveDate = DateTime.ParseExact(conleave.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString();
+                        leaveOrHolidayData.Add(conLaveDate);
+                    }
+                }
+
+                DateTime startDate1 = DateTime.Parse(timeSheetWeekInputModel.StartDate);
+                DateTime endDate1 = DateTime.Parse(timeSheetWeekInputModel.EndDate);
+
+                var ambcLeaves = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate1).ToList();
+                if (ambcLeaves != null && ambcLeaves.Count > 0)
+                {
+
+                    //leaveOrHolidayData.AddRange(ambcLeaves.Select(x => x.holiday_date.ToString()));
+                    foreach (var ambcLeave in ambcLeaves)
+                    {
+                        var conLaveDate = DateTime.ParseExact(ambcLeave.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString();
+                        leaveOrHolidayData.Add(ambcLeave.holiday_date.ToString());
+                    }
+                }
+            }
+
+            if (leaveOrHolidayData != null && leaveOrHolidayData.Count > 0)
+            {
+                return Json(JsonSerializer.Serialize(leaveOrHolidayData), JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null);
         }
 
         public ActionResult Dashboard()

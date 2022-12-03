@@ -330,7 +330,7 @@
         };
 
         jQuery('.date-timesheet').change(function () {
-            var date = jQuery(this).val();          
+            var date = jQuery(this).val();
 
             var startOfWeek = moment(new Date(date)).startOf('week').toDate();
             var endOfWeek = moment(new Date(date)).endOf('week').toDate();
@@ -348,6 +348,7 @@
 
 
     var timeSheetList = new Array();
+    var empLeaveAndHoliday = new Array();
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -392,6 +393,26 @@
                 var maxDate = jQuery('#timeSheetEndWeekdate').val();
                 maxDate = new Date(maxDate);
                 maxDate = moment(maxDate).format("YYYY-MM-DD");
+
+                var timeSheetWeekInputModel = {
+                    EmpId: jQuery('.agent-navdrop-empid').text(),
+                    StartDate: jQuery('#timeSheetStartWeekdate').val(),
+                    EndDate: jQuery('#timeSheetEndWeekdate').val(),
+                };
+
+                jQuery.ajax({
+                    type: "GET",
+                    url: "/GetLeaveandHolidayInfofromDb",
+                    data: timeSheetWeekInputModel,
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        console.log(data);
+                        if (data != "") {
+                            empLeaveAndHoliday = jQuery.parseJSON(data);
+                            alert(empLeaveAndHoliday);
+                        }                      
+                    }
+                });
 
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
