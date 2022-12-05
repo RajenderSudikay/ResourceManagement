@@ -12,7 +12,12 @@ namespace ResourceManagement.Controllers
     using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
-    {
+    {      
+        public ActionResult Error()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
+
         public ActionResult Login()
         {
             return View();
@@ -22,33 +27,40 @@ namespace ResourceManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(emplogin loginModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var employeeModel = new RMA_EmployeeModel();
-                using (TimeSheetEntities db = new TimeSheetEntities())
+                if (ModelState.IsValid)
                 {
-                    var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
-                    if (loginObj != null)
+                    var employeeModel = new RMA_EmployeeModel();
+                    using (TimeSheetEntities db = new TimeSheetEntities())
                     {
-                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
-                        if (employeeInfo != null)
+                        var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
+                        if (loginObj != null)
                         {
-                            employeeModel.AMBC_Active_Emp_view = employeeInfo;
-                            //var projectInfo = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).FirstOrDefault();
-                            //if (projectInfo != null)
-                            //{
-                            //    employeeModel.projectInfo = projectInfo;
-                            //}
+                            var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
+                            if (employeeInfo != null)
+                            {
+                                employeeModel.AMBC_Active_Emp_view = employeeInfo;
+                                //var projectInfo = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).FirstOrDefault();
+                                //if (projectInfo != null)
+                                //{
+                                //    employeeModel.projectInfo = projectInfo;
+                                //}
 
+                            }
+
+                            Session["UserModel"] = employeeModel;
+
+                            return RedirectToAction("Dashboard");
                         }
-
-                        Session["UserModel"] = employeeModel;
-
-                        return RedirectToAction("Dashboard");
                     }
                 }
+                return View(loginModel);
             }
-            return View(loginModel);
+            catch (Exception ex)
+            {
+               return RedirectToAction("Error");
+            }
         }
 
         private string GetDateInRequiredFormat(string actualdate)

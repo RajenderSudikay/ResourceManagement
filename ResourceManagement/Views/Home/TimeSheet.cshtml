@@ -316,17 +316,23 @@
 
     var timeSheetList = new Array();
 
-    var template = '<tr class="user-added-timesheet"><td class="timesheet-date"></td>'
-        + '<td class="timesheet-category" ></td >'
-        + '<td class="timesheet-incidentnum" ></td >'
-        + '<td class="timesheet-incidentdes" ></td >'
-        + '<td class="timesheet-requester" ></td >'
-        + '<td class="timesheet-urgency" ></td >'
-        + '<td class="timesheet-status" ></td >'
-        + '<td class="timesheet-closeddate" ></td >'
-        + '<td class="timesheet-timespent" ></td >'
-        + '<td class="timesheet-comments" ></td >'
-        + '</tr>'
+    function TimeSheetTemplate(rowDisable) {
+        var isEntryDisbaled = "";
+        if (rowDisable != undefined && rowDisable == true) {
+            isEntryDisbaled = "row-disabled";
+        }
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled +'"><td class="timesheet-date"></td>'
+            + '<td class="timesheet-category" ></td >'
+            + '<td class="timesheet-incidentnum" ></td >'
+            + '<td class="timesheet-incidentdes" ></td >'
+            + '<td class="timesheet-requester" ></td >'
+            + '<td class="timesheet-urgency" ></td >'
+            + '<td class="timesheet-status" ></td >'
+            + '<td class="timesheet-closeddate" ></td >'
+            + '<td class="timesheet-timespent" ></td >'
+            + '<td class="timesheet-comments" ></td >'
+            + '</tr>'
+    }
 
     function InputTimeSheetdates(selectedWeekStartDate, empInputDates) {
         for (var i = 0; i < 7; i++) {
@@ -415,8 +421,23 @@
                             uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
                         };
 
-                        var newRow = jQuery(template);  
                         jQuery('.default-table-row').hide();
+
+                        var dynamicTemplate = TimeSheetTemplate(true);
+
+                        var newRow = jQuery(dynamicTemplate);
+
+                        jQuery(newRow).find('.timesheet-date').html(model.taskdate);
+                        jQuery(newRow).find('.timesheet-category').html(model.category);
+                        jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
+                        jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
+                        jQuery(newRow).find('.timesheet-requester').html(model.requester);
+                        jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
+                        jQuery(newRow).find('.timesheet-status').html(model.callstatus);
+                        jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
+                        jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
+                        jQuery(newRow).find('.timesheet-comments').html(model.comments);
+                     
                         jQuery(".timesheet-table-grid").append(jQuery(newRow));
                     }
                 });
@@ -536,9 +557,11 @@
 
             timeSheetList.push(model);
 
+            var dynamicTemplate = TimeSheetTemplate(true);
 
+            var newRow = jQuery(dynamicTemplate);
 
-            var newRow = jQuery(template);
+         /*   var newRow = jQuery(template);*/
             jQuery(newRow).find('.timesheet-date').html(model.taskdate);
             jQuery(newRow).find('.timesheet-category').html(model.category);
             jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
@@ -565,6 +588,33 @@
             jQuery('#timeSheetClosedDate').val('');
             jQuery('#timeSheetTimeSpent').val('');
             jQuery('#timeSheetComments').val('');
+
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Current week chart report"
+                },
+                subtitles: [
+                    { text: "Try Resizing the Browser" }
+                ],
+                data: [
+                    {
+                        type: "column", //change type to bar, line, area, pie, etc
+                        dataPoints: [
+                            { x: Monday, y: 71 },
+                            { x: Tuesday, y: 55 },
+                            { x: Wednesday, y: 50 },
+                            { x: Thursday, y: 65 },
+                            { x: Friday, y: 95 },
+                            { x: Saturday, y: 68 },
+                            { x: Sunday, y: 28 }
+                        ]
+                    }
+                ]
+            });
+            chart.render();
         }
     });
 
