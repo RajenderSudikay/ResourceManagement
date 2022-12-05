@@ -8,6 +8,8 @@ namespace ResourceManagement.Controllers
     using System;
     using System.Globalization;
     using System.Text.Json;
+    using System.Web.Helpers;
+    using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
     {
@@ -28,15 +30,15 @@ namespace ResourceManagement.Controllers
                     var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
                     if (loginObj != null)
                     {
-                        var employeeInfo = db.emp_info.Where(a => a.employee_id.Equals(loginModel.att_username)).FirstOrDefault();
+                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
                         if (employeeInfo != null)
                         {
-                            employeeModel.empInfo = employeeInfo;
-                            var projectInfo = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).FirstOrDefault();
-                            if (projectInfo != null)
-                            {
-                                employeeModel.projectInfo = projectInfo;
-                            }
+                            employeeModel.AMBC_Active_Emp_view = employeeInfo;
+                            //var projectInfo = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).FirstOrDefault();
+                            //if (projectInfo != null)
+                            //{
+                            //    employeeModel.projectInfo = projectInfo;
+                            //}
 
                         }
 
@@ -49,48 +51,60 @@ namespace ResourceManagement.Controllers
             return View(loginModel);
         }
 
-        [HttpGet]        
-        public JsonResult GetLeaveandHolidayInfofromDb(RMA_TimeSheetWeekData timeSheetWeekInputModel)
+        private string GetDateInRequiredFormat(string actualdate)
         {
-            var leaveOrHolidayData = new List<string>();
+            string dateString = actualdate;
+            DateTime dateTime = DateTime.Parse(dateString);
+            return dateTime.ToString("yyyy-MM-dd");
+        }
+
+        public string GetLeaveandHolidayInfofromDb(RMA_EmployeeModel empModel)
+        {
+            var leaveOrHolidayData = new List<RMA_LeaveOrHolidayInfo>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                DateTime startDate = DateTime.Parse(timeSheetWeekInputModel.StartDate);
-                DateTime endDate = DateTime.Parse(timeSheetWeekInputModel.EndDate);
+                var startDate = System.DateTime.Now.AddMonths(-2);
+                var endDate = System.DateTime.Now;
 
-                var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(timeSheetWeekInputModel.EmpId) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
+                //DateTime startDate = DateTime.Parse(InitialDate);
+                //DateTime endDate = DateTime.Parse(todayDate);
+
+                var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(empModel.AMBC_Active_Emp_view.Employee_ID) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
                 if (conleaves != null && conleaves.Count > 0)
                 {
                     //leaveOrHolidayData.AddRange(conleaves.Select(x => x.leavedate.ToString()));
                     foreach (var conleave in conleaves)
                     {
-                        var conLaveDate = DateTime.ParseExact(conleave.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString();
-                        leaveOrHolidayData.Add(conLaveDate);
+                        leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                        {
+                            LeaveOrHolidayDate = GetDateInRequiredFormat(conleave.leavedate.ToString()),
+                            Reason = conleave.leave_reason
+                        }); ;
                     }
                 }
 
-                DateTime startDate1 = DateTime.Parse(timeSheetWeekInputModel.StartDate);
-                DateTime endDate1 = DateTime.Parse(timeSheetWeekInputModel.EndDate);
-
-                var ambcLeaves = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate1).ToList();
-                if (ambcLeaves != null && ambcLeaves.Count > 0)
+                var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == empModel.AMBC_Active_Emp_view.Location).ToList();
+                if (ambcHolidays != null && ambcHolidays.Count > 0)
                 {
-
                     //leaveOrHolidayData.AddRange(ambcLeaves.Select(x => x.holiday_date.ToString()));
-                    foreach (var ambcLeave in ambcLeaves)
+                    foreach (var ambcLeave in ambcHolidays)
                     {
-                        var conLaveDate = DateTime.ParseExact(ambcLeave.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString();
-                        leaveOrHolidayData.Add(ambcLeave.holiday_date.ToString());
+                        leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                        {
+                            LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),                          
+                            Reason = ambcLeave.holiday_name
+                        });
                     }
                 }
             }
 
             if (leaveOrHolidayData != null && leaveOrHolidayData.Count > 0)
             {
-                return Json(JsonSerializer.Serialize(leaveOrHolidayData), JsonRequestBehavior.AllowGet);
+                return JsonSerializer.Serialize(leaveOrHolidayData);
             }
 
-            return Json(null);
+
+            return string.Empty;
         }
 
         public ActionResult Dashboard()
@@ -99,7 +113,7 @@ namespace ResourceManagement.Controllers
             {
                 var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
 
-                if (employeeModel != null && employeeModel.empInfo != null && !string.IsNullOrWhiteSpace(employeeModel.empInfo.employee_id))
+                if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
                     ViewBag.Message = "Dashboard page.";
                     return View(employeeModel);
@@ -119,8 +133,9 @@ namespace ResourceManagement.Controllers
             {
                 var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
 
-                if (employeeModel != null && employeeModel.empInfo != null && !string.IsNullOrWhiteSpace(employeeModel.empInfo.employee_id))
+                if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
+                    employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
                     return View(employeeModel);
                 }
                 else
@@ -133,12 +148,12 @@ namespace ResourceManagement.Controllers
 
         public JsonResult AddTimeSheet(List<ambctaskcapture> timesheetmodel)
         {
-            var response = UpdateTimeSheetStatus(timesheetmodel);
+            var response = AddOrUpdateTimeSheetstoDB(timesheetmodel);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
 
-        public JsonResponseModel UpdateTimeSheetStatus(List<ambctaskcapture> timesheetmodel)
+        public JsonResponseModel AddOrUpdateTimeSheetstoDB(List<ambctaskcapture> timesheetmodel)
         {
             var respone = new JsonResponseModel();
             try

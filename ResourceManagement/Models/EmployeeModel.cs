@@ -4,10 +4,12 @@ namespace ResourceManagement.Models
 {
     public class RMA_EmployeeModel
     {
-        public emp_info empInfo { get; set; }
+        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
         public emp_project projectInfo { get; set; }
-        public List<con_leaveupdate> empLeaveInfo { get; set; }
-        public List<tblambcholiday> ambcHolidayInfo { get; set; }
+        public string leaveOrHolidayInfo { get; set; }
+
+        //public List<con_leaveupdate> empLeaveInfo { get; set; }
+        //public List<tblambcholiday> ambcHolidayInfo { get; set; }
     }
 
     public class RMA_TimeSheetAjaxModel
@@ -29,5 +31,11 @@ namespace ResourceManagement.Models
         public string EmpId { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+    }
+
+    public class RMA_LeaveOrHolidayInfo
+    {
+        public string LeaveOrHolidayDate { get; set; }
+        public string Reason { get; set; }
     }
 }

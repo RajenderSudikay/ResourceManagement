@@ -23,7 +23,7 @@
                         <div class="profile-img">
                             <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
                         </div>
-                        <p class="agent-full-name">@Model.empInfo.employee_name</p>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
                     </div>
 
                     <div class="agent-description hide" style="">
@@ -34,52 +34,52 @@
                             </div>
 
                             <div class="agent-fullname">
-                                <b>@Model.empInfo.employee_name</b>
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
                             </div>
 
 
                             <ul>
                                 <li>
                                     <b>Emp ID:</b>
-                                    <div class="agent-navdrop-empid">@Model.empInfo.employee_id</div>
+                                    <div class="agent-navdrop-empid">@Model.AMBC_Active_Emp_view.Employee_ID</div>
 
                                 </li>
 
                                 <li>
                                     <b>Designation:</b>
-                                    <div class="agent-navdrop-empdesig">@Model.empInfo.employee_desg</div>
+                                    <div class="agent-navdrop-empdesig">@Model.AMBC_Active_Emp_view.Designation</div>
 
                                 </li>
 
                                 <li>
                                     <b>Supervisor:</b>
-                                    <div class="agent-navdrop-empmanager">@Model.empInfo.employee_report_manager</div>
+                                    <div class="agent-navdrop-empmanager">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
 
                                 </li>
 
                                 <li>
                                     <b>Contact Number:</b>
                                     <br />
-                                    <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.empInfo.employee_mobile</a>
+                                    <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
                                 </li>
 
                                 <li>
                                     <b>Client:</b>
-                                    <div class="agent-navdrop-client">@Model.projectInfo.proj_client</div>
+                                    <div class="agent-navdrop-client">@Model.AMBC_Active_Emp_view.Client</div>
                                 </li>
 
                                 <li>
                                     <b>Project:</b>
-                                    <div class="agent-navdrop-project">@Model.projectInfo.proj_name</div>
+                                    <div class="agent-navdrop-project">@Model.AMBC_Active_Emp_view.Project_Name</div>
                                 </li>
                                 <li>
                                     <b>Project Status:</b>
-                                    <div class="agent-navdrop-prostatus">@Model.projectInfo.project_staus</div>
+                                    <div class="agent-navdrop-prostatus">@Model.AMBC_Active_Emp_view.Project_Status</div>
                                 </li>
 
                                 <li>
                                     <b>E-Mail Address:</b>
-                                    <div class="agent-navdrop-empemail">@Model.empInfo.employee_mailid</div>
+                                    @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
                                 </li>
 
                             </ul>
@@ -121,12 +121,13 @@
             <div class="database-response"></div>
         </div>
     </div>
+    <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
 </form>
 
 
 <div class="table-responsive table">
     <!--Table-->
-    <table class="table table-striped timesheet-table-grid">
+    <table class="table table-striped">
 
         <!--Table head-->
         <thead class="table-bordered">
@@ -145,7 +146,7 @@
         </thead>
         <!--Table head-->
         <!--Table body-->
-        <tbody class="table-bordered">
+        <tbody class="table-bordered timesheet-table-grid">
             <tr class="default-table-row ">
                 <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
                 <td scope="row">Ex: Enter Category</td>
@@ -313,6 +314,35 @@
 
 <script>
 
+    var timeSheetList = new Array();
+
+    var template = '<tr class="user-added-timesheet"><td class="timesheet-date"></td>'
+        + '<td class="timesheet-category" ></td >'
+        + '<td class="timesheet-incidentnum" ></td >'
+        + '<td class="timesheet-incidentdes" ></td >'
+        + '<td class="timesheet-requester" ></td >'
+        + '<td class="timesheet-urgency" ></td >'
+        + '<td class="timesheet-status" ></td >'
+        + '<td class="timesheet-closeddate" ></td >'
+        + '<td class="timesheet-timespent" ></td >'
+        + '<td class="timesheet-comments" ></td >'
+        + '</tr>'
+
+    function InputTimeSheetdates(selectedWeekStartDate, empInputDates) {
+        for (var i = 0; i < 7; i++) {
+            empInputDates.push(moment(selectedWeekStartDate.addDays(i)).format("YYYY-MM-DD"));
+        }
+    }
+
+
+    //Employee Leave or holiday data from database
+    var empLeaveAndHolidays = new Array();
+
+    if (jQuery('.leave-or-holiday-info').text() != undefined && jQuery('.leave-or-holiday-info').text() != "") {
+        empLeaveAndHolidays = jQuery.parseJSON(jQuery('.leave-or-holiday-info').text());
+    }
+
+
     jQuery(document).ready(function () {
 
         Date.prototype.startOfWeek = function (pStartOfWeek) {
@@ -330,25 +360,74 @@
         };
 
         jQuery('.date-timesheet').change(function () {
+            timeSheetList = new Array();
+            //On Date change removing all the selected sheets previosuly if any
+            $('.user-added-timesheet').empty();
+            jQuery('.default-table-row').show();
+
             var date = jQuery(this).val();
 
             var startOfWeek = moment(new Date(date)).startOf('week').toDate();
             var endOfWeek = moment(new Date(date)).endOf('week').toDate();
 
             var StartWeekdate = new Date(startOfWeek.addDays(1));
-            var endWeekDate = new Date(endOfWeek.addDays(1))
+            var endWeekDate = new Date(endOfWeek.addDays(1));
 
             var startDate = moment(StartWeekdate).format("YYYY-MM-DD");
             jQuery('#timeSheetStartWeekdate').val(startDate);
 
             var endDate = moment(endWeekDate).format("YYYY-MM-DD");
             jQuery('#timeSheetEndWeekdate').val(endDate);
+
+            var weekNum = moment(startDate).week();
+
+            var empInputDates = new Array();
+
+            InputTimeSheetdates(StartWeekdate, empInputDates);
+
+            jQuery.each(empLeaveAndHolidays, function (i, item) {
+                var leaveOrHolidayDate = item.LeaveOrHolidayDate;
+
+                jQuery.each(empInputDates, function (key, value) {
+                    if (value == leaveOrHolidayDate) {
+                        var model = {
+                            weekstartdate: startDate,
+                            weekenddate: endDate,
+                            weekno: weekNum,
+                            employeeid: jQuery('.agent-navdrop-empid').text(),
+                            employeename: jQuery('.agent-full-name').text(),
+                            empdesignation: jQuery('.agent-navdrop-empdesig').text(),
+                            empmanager: jQuery('.agent-navdrop-empmanager').text(),
+                            empcontactnumber: jQuery('.agent-navdrop-phone').text(),
+                            clientname: jQuery('.agent-navdrop-client').text(),
+                            projectname: jQuery('.agent-navdrop-project').text(),
+                            projstatus: jQuery('.agent-navdrop-prostatus').text(),
+                            taskdate: value,
+                            category: "NA",
+                            incidentnumber: "NA",
+                            taskdetails: "NA",
+                            requester: "NA",
+                            callpriority: "NA",
+                            callstatus: "NA",
+                            closeddate: "",
+                            timespent: "0",
+                            comments: item.Reason,
+                            uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
+                        };
+
+                        var newRow = jQuery(template);  
+                        jQuery('.default-table-row').hide();
+                        jQuery(".timesheet-table-grid").append(jQuery(newRow));
+                    }
+                });
+            });
+
         });
     });
 
 
-    var timeSheetList = new Array();
-    var empLeaveAndHoliday = new Array();
+    
+
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -399,20 +478,6 @@
                     StartDate: jQuery('#timeSheetStartWeekdate').val(),
                     EndDate: jQuery('#timeSheetEndWeekdate').val(),
                 };
-
-                jQuery.ajax({
-                    type: "GET",
-                    url: "/GetLeaveandHolidayInfofromDb",
-                    data: timeSheetWeekInputModel,
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        console.log(data);
-                        if (data != "") {
-                            empLeaveAndHoliday = jQuery.parseJSON(data);
-                            alert(empLeaveAndHoliday);
-                        }                      
-                    }
-                });
 
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
@@ -471,17 +536,7 @@
 
             timeSheetList.push(model);
 
-            var template = '<tr><td class="timesheet-date"></td>'
-                + '<td class="timesheet-category" ></td >'
-                + '<td class="timesheet-incidentnum" ></td >'
-                + '<td class="timesheet-incidentdes" ></td >'
-                + '<td class="timesheet-requester" ></td >'
-                + '<td class="timesheet-urgency" ></td >'
-                + '<td class="timesheet-status" ></td >'
-                + '<td class="timesheet-closeddate" ></td >'
-                + '<td class="timesheet-timespent" ></td >'
-                + '<td class="timesheet-comments" ></td >'
-                + '</tr>'
+
 
             var newRow = jQuery(template);
             jQuery(newRow).find('.timesheet-date').html(model.taskdate);

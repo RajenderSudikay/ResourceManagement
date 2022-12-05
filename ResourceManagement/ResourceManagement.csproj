@@ -237,6 +237,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
