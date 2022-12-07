@@ -38,22 +38,22 @@ namespace ResourceManagement.Controllers
 
                 foreach (var weekday in weekdays)
                 {
+                    double currentDayHoursSpent = 0;
                     //foreach (var weekreport in weekreportmodel)
                     //{
-                        hoursSpent += weekreportmodel.Where(x => x.weekday == weekday).Count() > 0 ? weekreportmodel.Where(x => x.weekday == weekday).FirstOrDefault().hoursspent : 0;
-                        dataPoints.Add(new DataPoint(weekday, weekreportmodel.Where(x => x.weekday == weekday).Count() > 0 ? weekreportmodel.Where(x => x.weekday == weekday).FirstOrDefault().hoursspent : 0));
-                    //}
+                    var daySpecificEntries = weekreportmodel.Where(x => x.weekday == weekday).Count() > 0 ? weekreportmodel.Where(x => x.weekday == weekday).ToList() : null;
+                    if (daySpecificEntries != null)
+                    {
+                        foreach (var daySpecificEntrie in daySpecificEntries)
+                        {
+                            hoursSpent += daySpecificEntrie.hoursspent;
+                            currentDayHoursSpent += daySpecificEntrie.hoursspent;
+                        }
+                    }
+
+                    dataPoints.Add(new DataPoint(weekday, currentDayHoursSpent));
                 }
             }
-
-            //dataPoints.Add(new DataPoint("Monday", weekreportmodel.Where(x => x.weekday == "Monday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Monday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Tuesday", weekreportmodel.Where(x => x.weekday == "Tuesday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Tuesday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Wednesday", weekreportmodel.Where(x => x.weekday == "Wednesday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Wednesday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Thursday", weekreportmodel.Where(x => x.weekday == "Thursday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Thursday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Friday", weekreportmodel.Where(x => x.weekday == "Friday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Friday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Saturday", weekreportmodel.Where(x => x.weekday == "Saturday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Saturday").FirstOrDefault().hoursspent : 0));
-            //dataPoints.Add(new DataPoint("Sunday", weekreportmodel.Where(x => x.weekday == "Sunday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Sunday").FirstOrDefault().hoursspent : 0));
-
 
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
