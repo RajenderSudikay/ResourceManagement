@@ -4,6 +4,8 @@
     ViewBag.Title = "TimeSheet Page";
 }
 
+<div id="timespentabc"></div>
+
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
     <a class="navbar-brand" href="#"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,81 +17,7 @@
     </div>
 
     <div class="col-lg-offset-3">
-        @if (Model != null)
-        {
-            <div class="agent-navigation">
-                <div class="">
-                    <div class="dropdownheading text-white">
-                        <div class="profile-img">
-                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
-                        </div>
-                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
-                    </div>
 
-                    <div class="agent-description hide" style="">
-                        <div class="agent-details">
-                            <div class="agent-img">
-                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
-
-                            </div>
-
-                            <div class="agent-fullname">
-                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
-                            </div>
-
-
-                            <ul>
-                                <li>
-                                    <b>Emp ID:</b>
-                                    <div class="agent-navdrop-empid">@Model.AMBC_Active_Emp_view.Employee_ID</div>
-
-                                </li>
-
-                                <li>
-                                    <b>Designation:</b>
-                                    <div class="agent-navdrop-empdesig">@Model.AMBC_Active_Emp_view.Designation</div>
-
-                                </li>
-
-                                <li>
-                                    <b>Supervisor:</b>
-                                    <div class="agent-navdrop-empmanager">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
-
-                                </li>
-
-                                <li>
-                                    <b>Contact Number:</b>
-                                    <br />
-                                    <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
-                                </li>
-
-                                <li>
-                                    <b>Client:</b>
-                                    <div class="agent-navdrop-client">@Model.AMBC_Active_Emp_view.Client</div>
-                                </li>
-
-                                <li>
-                                    <b>Project:</b>
-                                    <div class="agent-navdrop-project">@Model.AMBC_Active_Emp_view.Project_Name</div>
-                                </li>
-                                <li>
-                                    <b>Project Status:</b>
-                                    <div class="agent-navdrop-prostatus">@Model.AMBC_Active_Emp_view.Project_Status</div>
-                                </li>
-
-                                <li>
-                                    <b>E-Mail Address:</b>
-                                    @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        }
 
     </div>
 </nav>
@@ -121,7 +49,7 @@
             <div class="database-response"></div>
         </div>
     </div>
-    <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+    @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
 </form>
 
 
@@ -172,6 +100,12 @@
         Submit Time Sheet
     </button>
 </div>
+
+<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+
+<div id="chartContainer" style="height: 250px; width: 70%;"></div>
+@*<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>*@
 
 
 <!-- Modal -->
@@ -315,13 +249,14 @@
 <script>
 
     var timeSheetList = new Array();
+    var timeSheetWeeklyHours = new Array();
 
     function TimeSheetTemplate(rowDisable) {
         var isEntryDisbaled = "";
         if (rowDisable != undefined && rowDisable == true) {
             isEntryDisbaled = "row-disabled";
         }
-        return '<tr class="user-added-timesheet ' + isEntryDisbaled +'"><td class="timesheet-date"></td>'
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled + '"><td class="timesheet-date"></td>'
             + '<td class="timesheet-category" ></td >'
             + '<td class="timesheet-incidentnum" ></td >'
             + '<td class="timesheet-incidentdes" ></td >'
@@ -437,7 +372,7 @@
                         jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
                         jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
                         jQuery(newRow).find('.timesheet-comments').html(model.comments);
-                     
+
                         jQuery(".timesheet-table-grid").append(jQuery(newRow));
                     }
                 });
@@ -447,7 +382,7 @@
     });
 
 
-    
+
 
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -514,10 +449,23 @@
     });
 
 
+
+    var timeSheetDayWiseHoursEneterdList = new Array();
+
+    var abc = 0;
+
+
+    $("#timeSheetTimeSpent").focusout(function () {
+        jQuery('#timespentabc').text(jQuery('#timeSheetTimeSpent').val());
+    });
+
     jQuery(".timesheet-addreport").click(function () {
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
+
+
+
         // Loop over them and prevent submission
         Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() === false) {
@@ -528,6 +476,7 @@
 
             form.classList.add('was-validated');
         });
+
 
         if (isModalValidated) {
             var model = {
@@ -561,7 +510,7 @@
 
             var newRow = jQuery(dynamicTemplate);
 
-         /*   var newRow = jQuery(template);*/
+            /*   var newRow = jQuery(template);*/
             jQuery(newRow).find('.timesheet-date').html(model.taskdate);
             jQuery(newRow).find('.timesheet-category').html(model.category);
             jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
@@ -589,32 +538,28 @@
             jQuery('#timeSheetTimeSpent').val('');
             jQuery('#timeSheetComments').val('');
 
+            var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
+            var dayName = oneDate.format('dddd');
 
-            var chart = new CanvasJS.Chart("chartContainer", {
-                theme: "light2",
-                animationEnabled: true,
-                title: {
-                    text: "Current week chart report"
-                },
-                subtitles: [
-                    { text: "Try Resizing the Browser" }
-                ],
-                data: [
-                    {
-                        type: "column", //change type to bar, line, area, pie, etc
-                        dataPoints: [
-                            { x: Monday, y: 71 },
-                            { x: Tuesday, y: 55 },
-                            { x: Wednesday, y: 50 },
-                            { x: Thursday, y: 65 },
-                            { x: Friday, y: 95 },
-                            { x: Saturday, y: 68 },
-                            { x: Sunday, y: 28 }
-                        ]
-                    }
-                ]
+            console.log(dayName);
+
+            var weeklyDataModel = {
+                weekday: dayName,
+                hoursspent: model.timespent
+            };
+
+            timeSheetWeeklyHours.push(weeklyDataModel);
+
+            jQuery.ajax({
+                url: "/index",
+                type: "POST",
+                dataType: "html",
+                /*  data: { 'dayName': dayName, "hourspent": model.timespent },*/
+                data: { weekreportmodel: timeSheetWeeklyHours },
+                success: function (data) {
+                    $('#chartContainer').html(data);
+                }
             });
-            chart.render();
         }
     });
 

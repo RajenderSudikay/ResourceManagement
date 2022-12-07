@@ -15,4 +15,14 @@ namespace ResourceManagement.Models
         public int StatusCode { get; set; } = 500;
 
     }
+
+    public class WeekReportModel
+    {
+        [JsonPropertyName("weekday")]
+        public string weekday { get; set; } = string.Empty;
+
+        [JsonPropertyName("hoursspent")]
+        public int hoursspent { get; set; } = 500;
+
+    }
 }

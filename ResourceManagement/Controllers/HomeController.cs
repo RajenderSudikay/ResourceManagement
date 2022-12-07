@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+
 
 namespace ResourceManagement.Controllers
 {
@@ -12,11 +14,70 @@ namespace ResourceManagement.Controllers
     using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
-    {      
+    {
         public ActionResult Error()
         {
             return View("~/Views/Shared/Error.cshtml");
         }
+
+        public ActionResult Charts()
+        {
+            return View("");
+        }
+
+        public ActionResult Index(List<WeekReportModel> weekreportmodel)
+        {
+            List<DataPoint> dataPoints = new List<DataPoint>();
+
+            dataPoints.Add(new DataPoint("Monday", weekreportmodel.Where(x => x.weekday == "Monday") != null ? weekreportmodel.Where(x => x.weekday == "Monday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Tuesday", weekreportmodel.Where(x => x.weekday == "Tuesday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Tuesday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Wednesday", weekreportmodel.Where(x => x.weekday == "Wednesday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Wednesday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Thursday", weekreportmodel.Where(x => x.weekday == "Thursday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Thursday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Friday", weekreportmodel.Where(x => x.weekday == "Friday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Friday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Saturday", weekreportmodel.Where(x => x.weekday == "Saturday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Saturday").FirstOrDefault().hoursspent : 0));
+            dataPoints.Add(new DataPoint("Sunday", weekreportmodel.Where(x => x.weekday == "Sunday").Count() > 0 ? weekreportmodel.Where(x => x.weekday == "Sunday").FirstOrDefault().hoursspent : 0));
+
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+
+            return PartialView();
+        }
+
+        //public JsonResult WeeklyChartReport()
+        //{
+        //    var weekReport = new List<WeekReportModel>();
+
+        //    weekReport.Add(new WeekReportModel() { Day= "Monday", Units=123  });
+        //    weekReport.Add(new WeekReportModel() { Day = "Tuesday", Units = 552 });
+        //    weekReport.Add(new WeekReportModel() { Day = "Wednesday", Units = 342 });
+        //    weekReport.Add(new WeekReportModel() { Day = "Thursday", Units = 431 });
+        //    weekReport.Add(new WeekReportModel() { Day = "Friday", Units = 251 });
+        //    weekReport.Add(new WeekReportModel() { Day = "Saturday", Units = 100 });
+
+
+        //    var usersList = new List<WeekReportModel>
+        //    {
+        //        new WeekReportModel
+        //        {
+        //            Day = "Monday",
+        //            Units = 123,
+
+        //        },
+        //        new WeekReportModel
+        //        {
+        //            Day = "Tuesday",
+        //            Units = 456,
+
+        //        },
+        //        new WeekReportModel
+        //        {
+        //            Day = "Wednesday",
+        //            Units = 345                   
+        //        }
+        //    };
+
+
+        //    return Json(usersList, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult Login()
         {
@@ -59,7 +120,7 @@ namespace ResourceManagement.Controllers
             }
             catch (Exception ex)
             {
-               return RedirectToAction("Error");
+                return RedirectToAction("Error");
             }
         }
 
@@ -103,7 +164,7 @@ namespace ResourceManagement.Controllers
                     {
                         leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
                         {
-                            LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),                          
+                            LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),
                             Reason = ambcLeave.holiday_name
                         });
                     }
@@ -141,21 +202,23 @@ namespace ResourceManagement.Controllers
         public ActionResult TimeSheet()
         {
             ViewBag.Message = "Timesheet page.";
-            if (Session["UserModel"] != null)
-            {
-                var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            //if (Session["UserModel"] != null)
+            //{
+            //    var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
 
-                if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
-                {
-                    employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
-                    return View(employeeModel);
-                }
-                else
-                {
-                    return RedirectToAction("Login");
-                }
-            }
-            return RedirectToAction("Login");
+            //    if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
+            //    {
+            //        employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
+            //        return View(employeeModel);
+            //    }
+            //    else
+            //    {
+            //        return RedirectToAction("Login");
+            //    }
+            //}
+            //return RedirectToAction("Login");
+
+            return View();
         }
 
         public JsonResult AddTimeSheet(List<ambctaskcapture> timesheetmodel)
