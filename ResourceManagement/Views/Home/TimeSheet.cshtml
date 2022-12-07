@@ -21,34 +21,41 @@
 </nav>
 
 
+<div class="card timesheet-card">
+    <div class="card-body ">
 
-<form class="needs-validation-timesheet" novalidate>
-    <div class="form-group">
-        <label for="timeSheetStartWeekdate">Select Week Start Date</label>
-        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-03">
-        <div class="invalid-feedback">
-            Please Select Week Start Date
-        </div>
-    </div>
+        <form class="needs-validation-timesheet" novalidate>
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="timeSheetStartWeekdate">Select Week Start Date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-03">
+                    <div class="invalid-feedback">
+                        Please Select Week Start Date
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label for="timeSheetEndWeekdate">week End date</label>
-        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
-        <input type="hidden" id="weekNumber" />
-    </div>
+                <div class="form-group col-lg-6">
+                    <label for="timeSheetEndWeekdate">Week End date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
+                    <input type="hidden" id="weekNumber" />
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-md-3">
-            <button type="button" class="btn btn-custom openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
-                Click here to add task details
-            </button>&nbsp;&nbsp;
-        </div>
-        <div class="col-md-9">
-            <div class="database-response"></div>
-        </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-custom openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                        Click here to add task details
+                    </button>&nbsp;&nbsp;
+                </div>
+                <div class="col-md-9">
+                    <div class="database-response"></div>
+                </div>
+            </div>
+            @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
+        </form>
     </div>
-    @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
-</form>
+</div>
+
 
 
 <div class="table-responsive table">
@@ -489,7 +496,7 @@
             timeSheetList.push(model);
             var dynamicTemplate = TimeSheetTemplate(true);
             var newRow = jQuery(dynamicTemplate);
-      
+
             jQuery(newRow).find('.timesheet-date').html(model.taskdate);
             jQuery(newRow).find('.timesheet-category').html(model.category);
             jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
@@ -529,9 +536,9 @@
             timeSheetWeeklyHours.push(weeklyDataModel);
 
             jQuery.ajax({
-                url: "/index",
+                url: "/timesheetweeklychart",
                 type: "POST",
-                dataType: "html",            
+                dataType: "html",
                 data: { weekreportmodel: timeSheetWeeklyHours },
                 success: function (data) {
                     $('#chartContainer').html(data);

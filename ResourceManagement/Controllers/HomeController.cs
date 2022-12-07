@@ -25,7 +25,7 @@ namespace ResourceManagement.Controllers
             return View("");
         }
 
-        public ActionResult Index(List<WeekReportModel> weekreportmodel)
+        public ActionResult TimesheetWeeklyChart(List<WeekReportModel> weekreportmodel)
         {
             List<DataPoint> dataPoints = new List<DataPoint>();
 

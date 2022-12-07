@@ -1,5 +1,5 @@
 body {
-    font-family: "Lato", sans-serif;
+  /*  font-family: "Lato", sans-serif;*/
    background-color: #DDE4E3;
     /* padding-top:50px;*/
 }
@@ -692,6 +692,10 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+.timesheet-card{
+    border-radius: 10px;
 }
 
 
