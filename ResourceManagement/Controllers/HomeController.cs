@@ -51,6 +51,13 @@ namespace ResourceManagement.Controllers
                     dataPoints.Add(new DataPoint(weekday, currentDayHoursSpent));
                 }
             }
+            else
+            {
+                foreach (var weekday in weekdays)
+                {                   
+                    dataPoints.Add(new DataPoint(weekday, 0));
+                }
+            }
 
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
