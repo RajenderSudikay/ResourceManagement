@@ -1,59 +1,27 @@
-﻿@*<script type="text/javascript">
-
-        window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                theme: "light2",
-                animationEnabled: true,
-                title: {
-                    text: "Current week chart report"
-                },
-                subtitles: [
-                    /*  { text: "Try Resizing the Browser" }*/
-                ],
-                data: [
-                    {
-                        type: "column", //change type to bar, line, area, pie, etc
-                        dataPoints: [
-                            { label: "Monday", y: 10 },
-                            { label: "Tuesday", y: 5 },
-                            { label: "Wednesday", y: 4 },
-                            { label: "Thursday", y: 12 },
-                            { label: "Friday", y: 5 },
-                            { label: "Saturday", y: 3 },
-                            { label: "Sunday", y: 2 }
-                        ]
-                    }
-                ]
-            });
-            chart.render();
-        };
-    </script>
-
-
-    <div id="chartContainer" style="height: 200px; width: 100%;"></div>*@
-
-
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html>
 <head>
     <script>
-/*window.onload = function () {*/
+        var chart = new CanvasJS.Chart("chartContainer", {
+	        animationEnabled: true,
+	        theme: "light2", // "light1", "dark1", "dark2"
+	        exportEnabled: true,
+	        title: {
+		        text: "Total hours spent in the week"
+            },
+            axisY: {
+                title: "Hours Spent",
+                titleMaxWidth: 400,
+                titleFontWeight: "bold"
+            },
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light2", // "light1", "dark1", "dark2"
-	exportEnabled: true,
-	title: {
-		text: "Total hours spent in the week"
-	},
-	data: [{
-		type: "column",
-		dataPoints:  @Html.Raw(ViewBag.DataPoints),
-	}]
-});
-chart.render();
+	        data: [{
+		        type: "column",
+		        dataPoints:  @Html.Raw(ViewBag.DataPoints),
+	        }]
+        });
+        chart.render();
 
-/*}*/
     </script>
 </head>
 <body>
