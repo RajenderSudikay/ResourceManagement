@@ -7,7 +7,7 @@
 	        theme: "light2", // "light1", "dark1", "dark2"
 	        exportEnabled: true,
 	        title: {
-		        text: "Total hours spent in the week"
+		        text: "Total hours spent in the week (" +  @Html.Raw(ViewBag.TotalHoursSpent) + ")"
             },
             axisY: {
                 title: "Hours Spent",
