@@ -15,7 +15,93 @@
     </div>
 
     <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
 
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+
+
+                            <ul>
+                                <li>
+
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig">@Model.AMBC_Active_Emp_view.Designation</div>
+
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Supervisor:</b>
+                                    <div class="agent-navdrop-empmanager">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    <div class="agent-navdrop-client">@Model.AMBC_Active_Emp_view.Client</div>
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    <div class="agent-navdrop-project">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                </li>
+                                <li>
+
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+
+                                <li>
+
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation"></div>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
 
     </div>
 </nav>

@@ -179,23 +179,23 @@ namespace ResourceManagement.Controllers
         public ActionResult TimeSheet()
         {
             ViewBag.Message = "Timesheet page.";
-            //if (Session["UserModel"] != null)
-            //{
-            //    var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            if (Session["UserModel"] != null)
+            {
+                var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
 
-            //    if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
-            //    {
-            //        employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
-            //        return View(employeeModel);
-            //    }
-            //    else
-            //    {
-            //        return RedirectToAction("Login");
-            //    }
-            //}
-            //return RedirectToAction("Login");
+                if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
+                {
+                    employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
+                    return View(employeeModel);
+                }
+                else
+                {
+                    return RedirectToAction("Login");
+                }
+            }
+            return RedirectToAction("Login");
 
-            return View();
+            //return View();
         }
 
         public JsonResult AddTimeSheet(List<ambctaskcapture> timesheetmodel)
