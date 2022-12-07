@@ -53,7 +53,7 @@
 
 <div class="table-responsive table">
     <!--Table-->
-    <table class="table table-striped">
+    <table class="table table-hover">
 
         <!--Table head-->
         <thead class="table-bordered">
@@ -358,9 +358,7 @@
                         };
 
                         jQuery('.default-table-row').hide();
-
                         var dynamicTemplate = TimeSheetTemplate(true);
-
                         var newRow = jQuery(dynamicTemplate);
 
                         jQuery(newRow).find('.timesheet-date').html(model.taskdate);
@@ -381,10 +379,6 @@
 
         });
     });
-
-
-
-
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -449,23 +443,10 @@
         });
     });
 
-
-
-    var timeSheetDayWiseHoursEneterdList = new Array();
-
-    var abc = 0;
-
-
-    $("#timeSheetTimeSpent").focusout(function () {
-        jQuery('#timespentabc').text(jQuery('#timeSheetTimeSpent').val());
-    });
-
     jQuery(".timesheet-addreport").click(function () {
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
-
-
 
         // Loop over them and prevent submission
         Array.prototype.filter.call(forms, function (form) {
@@ -506,12 +487,9 @@
             };
 
             timeSheetList.push(model);
-
             var dynamicTemplate = TimeSheetTemplate(true);
-
             var newRow = jQuery(dynamicTemplate);
-
-            /*   var newRow = jQuery(template);*/
+      
             jQuery(newRow).find('.timesheet-date').html(model.taskdate);
             jQuery(newRow).find('.timesheet-category').html(model.category);
             jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
@@ -522,7 +500,6 @@
             jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
             jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
             jQuery(newRow).find('.timesheet-comments').html(model.comments);
-
 
             jQuery('.default-table-row').hide();
             jQuery(".timesheet-table-grid").append(jQuery(newRow))
@@ -554,8 +531,7 @@
             jQuery.ajax({
                 url: "/index",
                 type: "POST",
-                dataType: "html",
-                /*  data: { 'dayName': dayName, "hourspent": model.timespent },*/
+                dataType: "html",            
                 data: { weekreportmodel: timeSheetWeeklyHours },
                 success: function (data) {
                     $('#chartContainer').html(data);
