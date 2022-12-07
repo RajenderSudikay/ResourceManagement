@@ -237,6 +237,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -340,6 +342,7 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\TimeSheet.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

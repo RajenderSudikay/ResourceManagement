@@ -29,7 +29,7 @@
                                 <div class="profile-img">
                                     <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Employee profile image">&nbsp;&nbsp;
                                 </div>
-                                <p style="color: #2167ae">@Model.empInfo.employee_name</p>
+                                <p style="color: #2167ae">@Model.AMBC_Active_Emp_view.Employee_Name</p>
                             </div>
 
                             <div class="agent-description hide dashboard-emp-info" style="">
@@ -40,52 +40,52 @@
                                     </div>
 
                                     <div class="agent-fullname">
-                                        <b>@Model.empInfo.employee_name</b>
+                                        <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
                                     </div>
 
 
                                     <ul>
                                         <li>
                                             <b>Emp ID:</b>
-                                            <div class="agent-navdrop-empid">@Model.empInfo.employee_id</div>
+                                            <div class="agent-navdrop-empid">@Model.AMBC_Active_Emp_view.Employee_ID</div>
 
                                         </li>
 
                                         <li>
                                             <b>Designation:</b>
-                                            <div class="agent-navdrop-empdesig">@Model.empInfo.employee_desg</div>
+                                            <div class="agent-navdrop-empdesig">@Model.AMBC_Active_Emp_view.Designation</div>
 
                                         </li>
 
                                         <li>
                                             <b>Supervisor:</b>
-                                            <div class="agent-navdrop-empmanager">@Model.empInfo.employee_report_manager</div>
+                                            <div class="agent-navdrop-empmanager">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
 
                                         </li>
 
                                         <li>
                                             <b>Contact Number:</b>
                                             <br />
-                                            <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.empInfo.employee_mobile</a>
+                                            <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
                                         </li>
 
                                         <li>
                                             <b>Client:</b>
-                                            <div class="agent-navdrop-client">@Model.projectInfo.proj_client</div>
+                                            <div class="agent-navdrop-client">@Model.AMBC_Active_Emp_view.Client</div>
                                         </li>
 
                                         <li>
                                             <b>Project:</b>
-                                            <div class="agent-navdrop-project">@Model.projectInfo.proj_name</div>
+                                            <div class="agent-navdrop-project">@Model.AMBC_Active_Emp_view.Project_Name</div>
                                         </li>
                                         <li>
                                             <b>Project Status:</b>
-                                            <div class="agent-navdrop-prostatus">@Model.projectInfo.project_staus</div>
+                                            <div class="agent-navdrop-prostatus">@Model.AMBC_Active_Emp_view.Project_Status</div>
                                         </li>
 
                                         <li>
                                             <b>E-Mail Address:</b>
-                                            <div class="agent-navdrop-empemail">@Model.empInfo.employee_mailid</div>
+                                            @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
                                         </li>
 
                                     </ul>
