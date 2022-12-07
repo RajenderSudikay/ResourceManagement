@@ -39,8 +39,6 @@ namespace ResourceManagement.Controllers
                 foreach (var weekday in weekdays)
                 {
                     double currentDayHoursSpent = 0;
-                    //foreach (var weekreport in weekreportmodel)
-                    //{
                     var daySpecificEntries = weekreportmodel.Where(x => x.weekday == weekday).Count() > 0 ? weekreportmodel.Where(x => x.weekday == weekday).ToList() : null;
                     if (daySpecificEntries != null)
                     {
@@ -50,7 +48,6 @@ namespace ResourceManagement.Controllers
                             currentDayHoursSpent += daySpecificEntrie.hoursspent;
                         }
                     }
-
                     dataPoints.Add(new DataPoint(weekday, currentDayHoursSpent));
                 }
             }
@@ -62,43 +59,6 @@ namespace ResourceManagement.Controllers
 
             return PartialView();
         }
-
-        //public JsonResult WeeklyChartReport()
-        //{
-        //    var weekReport = new List<WeekReportModel>();
-
-        //    weekReport.Add(new WeekReportModel() { Day= "Monday", Units=123  });
-        //    weekReport.Add(new WeekReportModel() { Day = "Tuesday", Units = 552 });
-        //    weekReport.Add(new WeekReportModel() { Day = "Wednesday", Units = 342 });
-        //    weekReport.Add(new WeekReportModel() { Day = "Thursday", Units = 431 });
-        //    weekReport.Add(new WeekReportModel() { Day = "Friday", Units = 251 });
-        //    weekReport.Add(new WeekReportModel() { Day = "Saturday", Units = 100 });
-
-
-        //    var usersList = new List<WeekReportModel>
-        //    {
-        //        new WeekReportModel
-        //        {
-        //            Day = "Monday",
-        //            Units = 123,
-
-        //        },
-        //        new WeekReportModel
-        //        {
-        //            Day = "Tuesday",
-        //            Units = 456,
-
-        //        },
-        //        new WeekReportModel
-        //        {
-        //            Day = "Wednesday",
-        //            Units = 345                   
-        //        }
-        //    };
-
-
-        //    return Json(usersList, JsonRequestBehavior.AllowGet);
-        //}
 
         public ActionResult Login()
         {
@@ -122,13 +82,7 @@ namespace ResourceManagement.Controllers
                             var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
                             if (employeeInfo != null)
                             {
-                                employeeModel.AMBC_Active_Emp_view = employeeInfo;
-                                //var projectInfo = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).FirstOrDefault();
-                                //if (projectInfo != null)
-                                //{
-                                //    employeeModel.projectInfo = projectInfo;
-                                //}
-
+                                employeeModel.AMBC_Active_Emp_view = employeeInfo;                              
                             }
 
                             Session["UserModel"] = employeeModel;
@@ -159,14 +113,10 @@ namespace ResourceManagement.Controllers
             {
                 var startDate = System.DateTime.Now.AddMonths(-2);
                 var endDate = System.DateTime.Now;
-
-                //DateTime startDate = DateTime.Parse(InitialDate);
-                //DateTime endDate = DateTime.Parse(todayDate);
-
+                            
                 var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(empModel.AMBC_Active_Emp_view.Employee_ID) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
                 if (conleaves != null && conleaves.Count > 0)
-                {
-                    //leaveOrHolidayData.AddRange(conleaves.Select(x => x.leavedate.ToString()));
+                {                  
                     foreach (var conleave in conleaves)
                     {
                         leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
@@ -179,8 +129,7 @@ namespace ResourceManagement.Controllers
 
                 var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == empModel.AMBC_Active_Emp_view.Location).ToList();
                 if (ambcHolidays != null && ambcHolidays.Count > 0)
-                {
-                    //leaveOrHolidayData.AddRange(ambcLeaves.Select(x => x.holiday_date.ToString()));
+                {                  
                     foreach (var ambcLeave in ambcHolidays)
                     {
                         leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()

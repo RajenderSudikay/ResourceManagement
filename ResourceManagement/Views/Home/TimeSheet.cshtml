@@ -225,7 +225,7 @@
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
                                 <input type="number" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 12
                                 </div>
                             </div>
@@ -307,6 +307,30 @@
             mDate.setDate(mDate.getDate() + pDays);
             return mDate;
         };
+
+
+
+        jQuery('#timeSheetTimeSpent').focusout(function (element) {
+            var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
+            jQuery.each(timeSheetList, function (i, item) {
+                var selectedDate = jQuery('#timeSheetdate').val();
+               
+                if (item.taskdate == selectedDate) {
+                    totalHoursAdded +=  + parseInt(item.timespent);
+
+                    if (totalHoursAdded > 12) {
+                        jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
+                        jQuery('#timeSheetTimeSpent').val('');                     
+                        $(".timeSpenterror-msg").css("display", "block");
+                        $("#timeSheetTimeSpent").focus();
+                    }
+                    else {
+                        $(".timeSpenterror-msg").css("display", "none");
+                      
+                    }
+                };
+            });
+        });
 
         jQuery('.date-timesheet').change(function () {
             timeSheetList = new Array();
