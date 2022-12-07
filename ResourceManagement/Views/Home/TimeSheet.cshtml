@@ -26,7 +26,7 @@
 
         <form class="needs-validation-timesheet" novalidate>
             <div class="row">
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-4">
                     <label for="timeSheetStartWeekdate">Select Week Start Date</label>
                     <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-03">
                     <div class="invalid-feedback">
@@ -34,21 +34,24 @@
                     </div>
                 </div>
 
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-4">
                     <label for="timeSheetEndWeekdate">Week End date</label>
-                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
-                    <input type="hidden" id="weekNumber" />
+                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+                </div>
+                <div class="form-group col-lg-2">
+                    <label for="weekNumber">Week Number</label>
+                    <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mt-xl-4">
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-custom openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                    <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
                         Click here to add task details
                     </button>&nbsp;&nbsp;
                 </div>
                 <div class="col-md-9">
-                    <div class="database-response"></div>
+                    <h2 class="database-response"></h2>
                 </div>
             </div>
             @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
@@ -314,19 +317,19 @@
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
             jQuery.each(timeSheetList, function (i, item) {
                 var selectedDate = jQuery('#timeSheetdate').val();
-               
+
                 if (item.taskdate == selectedDate) {
-                    totalHoursAdded +=  + parseInt(item.timespent);
+                    totalHoursAdded += + parseInt(item.timespent);
 
                     if (totalHoursAdded > 12) {
                         jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
-                        jQuery('#timeSheetTimeSpent').val('');                     
+                        jQuery('#timeSheetTimeSpent').val('');
                         $(".timeSpenterror-msg").css("display", "block");
                         $("#timeSheetTimeSpent").focus();
                     }
                     else {
                         $(".timeSpenterror-msg").css("display", "none");
-                      
+
                     }
                 };
             });
@@ -353,6 +356,7 @@
             jQuery('#timeSheetEndWeekdate').val(endDate);
 
             var weekNum = moment(startDate).week();
+            jQuery('#weekNumber').val(weekNum);
 
             var empInputDates = new Array();
 
@@ -594,6 +598,17 @@
                 jQuery('.database-response').text(data.Message);
             }
         });
+    });
+
+    //On Page load will display empty chart report
+    jQuery.ajax({
+        url: "/timesheetweeklychart",
+        type: "POST",
+        dataType: "html",
+        data: { weekreportmodel: timeSheetWeeklyHours },
+        success: function (data) {
+            $('#chartContainer').html(data);
+        }
     });
 
 </script>
