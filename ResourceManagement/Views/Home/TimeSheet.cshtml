@@ -368,7 +368,10 @@
                         var dynamicTemplate = TimeSheetTemplate(true);
                         var newRow = jQuery(dynamicTemplate);
 
-                        jQuery(newRow).find('.timesheet-date').html(model.taskdate);
+                        var displayDate = model.taskdate.split('-');
+                        var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+
+                        jQuery(newRow).find('.timesheet-date').html(newDate);
                         jQuery(newRow).find('.timesheet-category').html(model.category);
                         jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
                         jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
@@ -497,7 +500,10 @@
             var dynamicTemplate = TimeSheetTemplate(true);
             var newRow = jQuery(dynamicTemplate);
 
-            jQuery(newRow).find('.timesheet-date').html(model.taskdate);
+            var displayDate = model.taskdate.split('-');
+            var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+
+            jQuery(newRow).find('.timesheet-date').html(newDate);
             jQuery(newRow).find('.timesheet-category').html(model.category);
             jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
             jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
