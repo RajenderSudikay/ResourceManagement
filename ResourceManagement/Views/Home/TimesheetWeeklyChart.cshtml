@@ -5,7 +5,8 @@
         var chart = new CanvasJS.Chart("chartContainer", {
 	        animationEnabled: true,
 	        theme: "light2", // "light1", "dark1", "dark2"
-	        exportEnabled: true,
+            exportEnabled: true,
+            willReadFrequently: true,
 	        title: {
 		        text: "Total hours spent in the week (" +  @Html.Raw(ViewBag.TotalHoursSpent) + ")"
             },

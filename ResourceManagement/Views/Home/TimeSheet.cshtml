@@ -257,10 +257,31 @@
     </div>
 </div>
 
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-warning-message-popup">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custom-model-header">
+                <h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message-popup"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     var timeSheetList = new Array();
     var timeSheetWeeklyHours = new Array();
+    var empInputDates = new Array();
 
     function TimeSheetTemplate(rowDisable) {
         var isEntryDisbaled = "";
@@ -335,7 +356,10 @@
             });
         });
 
+
+
         jQuery('.date-timesheet').change(function () {
+            jQuery('.database-response').text("");
             timeSheetList = new Array();
             //On Date change removing all the selected sheets previosuly if any
             $('.user-added-timesheet').empty();
@@ -358,7 +382,7 @@
             var weekNum = moment(startDate).week();
             jQuery('#weekNumber').val(weekNum);
 
-            var empInputDates = new Array();
+            empInputDates = new Array();
 
             InputTimeSheetdates(StartWeekdate, empInputDates);
 
@@ -439,6 +463,7 @@
 
 
     jQuery(".add-task-details").click(function () {
+        jQuery('.database-response').text("");
         jQuery('.needs-validation').removeClass('was-validated');
         var isStartDateEntered = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -583,21 +608,51 @@
 
 
     jQuery(".timesheet-submit").click(function () {
-        jQuery.ajax({
-            type: "POST",
-            url: "/AddTimeSheet",
-            data: JSON.stringify({ timesheetmodel: timeSheetList }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                if (data.StatusCode == 200) {
-                    jQuery('.database-response').addClass('text-success')
+        if (timeSheetList.length <= 0) {
+            //jQuery('.database-response').addClass('text-danger');
+            //jQuery('.database-response').html("Bad request. Please enter task details!!");
+
+            jQuery('.warning-message-popup').html("Bad request. Please enter task details!");
+            jQuery('#modal-warning-message-popup').modal('show');
+        }
+        else {
+            var allDataEntered = true;
+            var missedDatesData = "";
+            jQuery.each(empInputDates, function (key, value) {
+                const isAllTasksEntered = timeSheetList.filter(v => v.taskdate === value);
+                var dt = moment(value, "YYYY-MM-DD")
+                var dayName = dt.format('dddd');
+
+                if (isAllTasksEntered.length <= 0 && dayName != "Saturday" && dayName != "Sunday") {
+                    allDataEntered = false;
+                    missedDatesData += "<p>'" + dayName + "': '" + value + "'</p>";
                 }
-                else {
-                    jQuery('.database-response').addClass('text-danger')
-                }
-                jQuery('.database-response').text(data.Message);
+            });
+
+            if (allDataEntered == true) {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/AddTimeSheet",
+                    data: JSON.stringify({ timesheetmodel: timeSheetList }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.StatusCode == 200) {
+                            jQuery('.database-response').addClass('text-success');
+                        }
+                        else {
+                            jQuery('.database-response').addClass('text-danger');
+                        }
+                        jQuery('.database-response').text(data.Message);
+                    }
+                });
             }
-        });
+            else {
+                jQuery('.database-response').addClass('text-danger');
+                jQuery('.warning-message-popup').html(missedDatesData + " Dates data is missing!!");
+                jQuery('#modal-warning-message-popup').modal('show');
+            }
+        }
+
     });
 
     //On Page load will display empty chart report
@@ -610,10 +665,6 @@
             $('#chartContainer').html(data);
         }
     });
-
-    $('body').click(function () {
-        jQuery('.database-response').text("");
-    })
 
 </script>
 

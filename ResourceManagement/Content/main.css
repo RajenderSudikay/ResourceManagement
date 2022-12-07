@@ -697,6 +697,9 @@ input[type=number] {
 .timesheet-card{
     border-radius: 10px;
 }
+#modal-warning-message-popup{
+    padding-top:250px;
+}
 
 
 
