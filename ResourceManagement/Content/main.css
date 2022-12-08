@@ -734,3 +734,18 @@ input[type=number] {
 .emp-data-nav{
     padding-left:30px;
 }
+
+.header-nav-modalfooter {
+    background-color: #eee;
+}
+
+.modal-header {
+    background-color: #eee;
+}
+.modal-footer {
+    background-color: #eee;
+}
+
+.exampleModalLabel{
+    font-size:large !important;
+}

@@ -112,7 +112,8 @@
                     <img src="~/Assets/Rajender_Passport_Photo.jpg" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/timesheet" class="btn btn-custom">Check Out</a>
+                        @*<a href="/timesheet" class="btn btn-custom"></a>*@
+                        <button type="submit" class="signin-signout btn-info">Check-In</button>
                     </div>
                 </div>
 
@@ -122,7 +123,7 @@
                     <img src="~/Assets/TimeSheet.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/timesheet" class="btn btn-custom">Timesheet</a>
+                        <a href="/timesheet" class="btn btn-info">Timesheet</a>
                     </div>
                 </div>
 
@@ -132,7 +133,7 @@
                     <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-custom">KRA Report</a>
+                        <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info">KRA Report</a>
                     </div>
                 </div>
 
@@ -145,7 +146,7 @@
                     <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-custom">Payroll</a>
+                        <a href="#" class="btn btn-info">Payroll</a>
                     </div>
                 </div>
 
@@ -155,7 +156,7 @@
                     <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-custom">Appraisal</a>
+                        <a href="#" class="btn btn-info">Appraisal</a>
                     </div>
                 </div>
             </div>
@@ -164,13 +165,29 @@
                     <img src="~/Assets/hr.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-custom">HR Letters</a>
+                        <a href="#" class="btn btn-info">HR Letters</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    jQuery(".signin-signout").click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/signinsignout",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                }
+                else {
+                }
+            }
+        });
+    });
+</script>
 
 
 

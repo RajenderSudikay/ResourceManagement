@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 
 
 namespace ResourceManagement.Controllers
 {
     using Models;
     using System;
-    using System.Globalization;
+    using System.Net;
     using System.Text.Json;
-    using System.Web.Helpers;
     using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
@@ -31,17 +31,77 @@ namespace ResourceManagement.Controllers
             return RedirectToAction("Login");
         }
 
+        public JsonResult SignInSignOut()
+        {
+            var respone = new JsonResponseModel();
+
+            try
+            {
+                if (Session["UserModel"] != null)
+                {
+                    var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+                    var todayDate = System.DateTime.Now;
+                    string hostName = Dns.GetHostName(); // Retrive the Name of HOST
+
+                    // Get the IP
+                    string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+
+                    var ambcEmpLoginInfo = new tbl_ambclogininformation()
+                    {
+                        AMBCLogin_id = "AMBC_LoginInfo_" + employeeModel.AMBC_Active_Emp_view.Employee_ID,
+                        Employee_Code = employeeModel.AMBC_Active_Emp_view.Employee_ID,
+                        Employee_Name = employeeModel.AMBC_Active_Emp_view.Employee_Name,
+                        Employee_Designation = employeeModel.AMBC_Active_Emp_view.Designation,
+                        Employee_Shift = employeeModel.AMBC_Active_Emp_view.Shift,
+                        Login_date = todayDate,
+                        Signin_Time = todayDate,
+                        Employee_Hostname = hostName,
+                        Employee_IP = myIP
+                    };
+
+                    using (var context = new TimeSheetEntities())
+                    {
+                        context.tbl_ambclogininformation.Add(ambcEmpLoginInfo);
+                        context.SaveChanges();
+                        respone.StatusCode = 200;
+                        respone.Message = "TimeSheet added successfully!";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respone.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            respone.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    respone.Message = ex.Message;
+                }
+            }
+
+            return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult TimesheetWeeklyChart(List<WeekReportModel> weekreportmodel)
         {
             List<DataPoint> dataPoints = new List<DataPoint>();
 
             var weekdays = WeekdaysList();
-
             double hoursSpent = 0;
 
             if (weekreportmodel != null && weekreportmodel.Any() && weekdays != null && weekdays.Any())
             {
-
                 foreach (var weekday in weekdays)
                 {
                     double currentDayHoursSpent = 0;
@@ -60,7 +120,7 @@ namespace ResourceManagement.Controllers
             else
             {
                 foreach (var weekday in weekdays)
-                {                   
+                {
                     dataPoints.Add(new DataPoint(weekday, 0));
                 }
             }
@@ -95,7 +155,7 @@ namespace ResourceManagement.Controllers
                             var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
                             if (employeeInfo != null)
                             {
-                                employeeModel.AMBC_Active_Emp_view = employeeInfo;                              
+                                employeeModel.AMBC_Active_Emp_view = employeeInfo;
                             }
 
                             Session["UserModel"] = employeeModel;
@@ -126,10 +186,10 @@ namespace ResourceManagement.Controllers
             {
                 var startDate = System.DateTime.Now.AddMonths(-2);
                 var endDate = System.DateTime.Now;
-                            
+
                 var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(empModel.AMBC_Active_Emp_view.Employee_ID) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
                 if (conleaves != null && conleaves.Count > 0)
-                {                  
+                {
                     foreach (var conleave in conleaves)
                     {
                         leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
@@ -142,7 +202,7 @@ namespace ResourceManagement.Controllers
 
                 var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == empModel.AMBC_Active_Emp_view.Location).ToList();
                 if (ambcHolidays != null && ambcHolidays.Count > 0)
-                {                  
+                {
                     foreach (var ambcLeave in ambcHolidays)
                     {
                         leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
@@ -158,7 +218,6 @@ namespace ResourceManagement.Controllers
             {
                 return JsonSerializer.Serialize(leaveOrHolidayData);
             }
-
 
             return string.Empty;
         }

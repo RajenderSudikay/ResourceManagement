@@ -36,56 +36,37 @@
                             <div class="agent-fullname">
                                 <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
                             </div>
-
-
                             <ul>
                                 <li>
-
                                     <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
                                     <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
-
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
                                     <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
-
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Supervisor:</b>
                                     <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
-
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
                                     <br />
                                     <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
                                     <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
                                     <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
                                 </li>
                                 <li>
-
                                     <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
                                     <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
                                 </li>
-
                                 <li>
-
                                     <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
                                     @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
                                 </li>
@@ -93,13 +74,11 @@
                                     <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
                                     <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
                                 </li>
-
                             </ul>
 
                         </div>
 
-                        <div class="modal-footer">
-
+                        <div class="modal-footer header-nav-modalfooter">
                             <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
                         </div>
                     </div>
@@ -146,12 +125,10 @@
                     <h2 class="database-response"></h2>
                 </div>
             </div>
-            @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
+            <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
         </form>
     </div>
 </div>
-
-
 
 <div class="table-responsive table">
     <!--Table-->
@@ -217,8 +194,8 @@
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header custom-model-header">
-                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #0095a8">Time Sheet Form</b></h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #0095a8; font-size:large">Time Sheet Form</b></h5>
                 <button type="button" class="close timesheet-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -355,11 +332,12 @@
 <div class="modal" tabindex="-1" role="dialog" id="modal-warning-message-popup">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header custom-model-header">
-                <h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
+            <div class="modal-header">
+                @*<h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
                     <span aria-hidden="true">&times;</span>
-                </button>
+                </button>*@
+                <div style="height: 60px; background-color: #92d0e8"></div>
             </div>
             <div class="modal-body">
                 <div class="warning-message-popup"></div>
@@ -867,7 +845,6 @@
     }
 
     function DeleteTimeSheetRow(ele) {
-
         timeSheetWeeklyHours = new Array();
         var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
         var requiredIndexNum = "";
@@ -880,7 +857,6 @@
 
         //DELETE SELECTED ROW FROM ARRAY LIST
         timeSheetList.splice(requiredIndexNum, 1);
-
         AddUpdateRecords(timeSheetList);
 
         var requiredIndexClass = "." + selectedUniqueItemKey;
@@ -905,17 +881,6 @@
             $('#chartContainer').html(data);
         }
     });
-
-    //jQuery(".emp-logout").click(function () {
-    //    jQuery.ajax({
-    //        url: "/logout",
-    //        success: function (redirect) {
-    //            window.location = "/";
-    //        }
-    //    });
-    //});
-
-
 
 </script>
 
