@@ -1,0 +1,43 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+
+    <script>
+        var chart = new CanvasJS.Chart("chartContainer", {
+	        animationEnabled: true,
+	        theme: "light2", // "light1", "dark1", "dark2"
+            exportEnabled: true,
+            willReadFrequently: true,
+	        title: {
+		        text: "Total hours spent in this week => " +  @Html.Raw(ViewBag.TotalHoursSpent),
+            },
+            axisY: {
+                title: "Hours Spent",
+                titleMaxWidth: 400,
+                titleFontWeight: "bold",
+                gridThickness: 0,
+                stripLines: [
+                    {
+                        value: 0,
+                        showOnTop: true,
+                        color: "gray",
+                        thickness: 0
+                    }
+                ]
+            },
+
+	        data: [{
+		        type: "column",
+		        dataPoints:  @Html.Raw(ViewBag.DataPoints),
+	        }]
+        });
+        chart.render();
+
+    </script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body>
+</html> 

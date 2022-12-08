@@ -178,6 +178,7 @@
     <Compile Include="CategoryType.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -280,6 +281,17 @@
     <Content Include="Assets\AMBC_Logo.png" />
     <Content Include="Assets\Appraisal.png" />
     <Content Include="Assets\hr.jpg" />
+    <Content Include="Assets\Icons\email.png" />
+    <Content Include="Assets\Icons\graphic-designer.png" />
+    <Content Include="Assets\Icons\hierarchical-structure.png" />
+    <Content Include="Assets\Icons\id-card.png" />
+    <Content Include="Assets\Icons\location.png" />
+    <Content Include="Assets\Icons\logout.png" />
+    <Content Include="Assets\Icons\phone.png" />
+    <Content Include="Assets\Icons\project-status.png" />
+    <Content Include="Assets\Icons\project.png" />
+    <Content Include="Assets\Icons\supervisor.png" />
+    <Content Include="Assets\Icons\woman.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\Profile Photo.jpg" />
     <Content Include="Assets\Rajender_Passport_Photo.jpg" />
@@ -342,7 +354,7 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\TimeSheet.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\TimesheetWeeklyChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

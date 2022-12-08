@@ -1,6 +1,6 @@
 body {
-    font-family: "Lato", sans-serif;
-   background-color: #DDE4E3;
+    /*  font-family: "Lato", sans-serif;*/
+    background-color: #DDE4E3;
     /* padding-top:50px;*/
 }
 
@@ -411,6 +411,7 @@ body {
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
         margin-bottom: 15px;
+        list-style-type: none;
     }
 
 .agent-navigation .agent-description .bottom-agent-links {
@@ -642,11 +643,9 @@ select.form-control:not([size]):not([multiple]) {
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
-@media (min-width: 768px)
-{
-    .login-card {       
+@media (min-width: 768px) {
+    .login-card {
         margin-top: 160px;
-
     }
 }
 
@@ -694,6 +693,59 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+.timesheet-card {
+    border-radius: 10px;
+}
+
+#modal-warning-message-popup {
+    padding-top: 250px;
+}
+
+.glyphicon-edit {
+    font-size: 15px;  
+}
+
+.glyphicon-remove {
+    font-size: 15px;
+}
 
 
+.glyphicon-edit:before {
+    /* color: inherit; */
+    color: #0095a8 !important;
+}
 
+.glyphicon-remove:before {
+    /* color: inherit; */
+    color: red !important;
+}
+.timesheet-edit-delete{
+    padding-left:25px !important;
+}
+
+.default-table-row {
+    padding-left: 25px !important;
+
+}
+
+.finalsubmit-message-popup{
+    color: orange;
+}
+.emp-data-nav{
+    padding-left:30px;
+}
+
+.header-nav-modalfooter {
+    background-color: #eee;
+}
+
+.modal-header {
+    background-color: #eee;
+}
+.modal-footer {
+    background-color: #eee;
+}
+
+.exampleModalLabel{
+    font-size:large !important;
+}

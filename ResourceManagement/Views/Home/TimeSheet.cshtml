@@ -4,8 +4,6 @@
     ViewBag.Title = "TimeSheet Page";
 }
 
-<div id="timespentabc"></div>
-
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
     <a class="navbar-brand" href="#"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,50 +15,130 @@
     </div>
 
     <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
 
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Supervisor:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        }
 
     </div>
 </nav>
 
 
+<div class="card timesheet-card">
+    <div class="card-body ">
 
-<form class="needs-validation-timesheet" novalidate>
-    <div class="form-group">
-        <label for="timeSheetStartWeekdate">Select Week Start Date</label>
-        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-03">
-        <div class="invalid-feedback">
-            Please Select Week Start Date
-        </div>
+        <form class="needs-validation-timesheet" novalidate>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetStartWeekdate">Select Week Start Date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-03">
+                    <div class="invalid-feedback">
+                        Please Select Week Start Date
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetEndWeekdate">Week End date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+                </div>
+                <div class="form-group col-lg-2">
+                    <label for="weekNumber">Week Number</label>
+                    <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
+                </div>
+            </div>
+
+            <div class="row mt-xl-4">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                        Click here to add task details
+                    </button>&nbsp;&nbsp;
+                </div>
+                <div class="col-md-9">
+                    <h2 class="database-response"></h2>
+                </div>
+            </div>
+            <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label for="timeSheetEndWeekdate">week End date</label>
-        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled>
-        <input type="hidden" id="weekNumber" />
-    </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <button type="button" class="btn btn-custom openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
-                Click here to add task details
-            </button>&nbsp;&nbsp;
-        </div>
-        <div class="col-md-9">
-            <div class="database-response"></div>
-        </div>
-    </div>
-    @*<div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>*@
-</form>
-
+</div>
 
 <div class="table-responsive table">
     <!--Table-->
-    <table class="table table-striped">
+    <table class="table table-hover" id="timesheet-table">
 
         <!--Table head-->
         <thead class="table-bordered">
             <tr>
-                <th class="time-header" scope="col">Date</th>&nbsp;&nbsp;
+                <th class="time-header" scope="col">Edit/Delete</th>
+                <th class="time-header" scope="col">Date</th>
                 <th class="time-header" scope="col">Category</th>
                 <th class="time-header" scope="col">Incident Number</th>
                 <th class="time-header" scope="col">Incident Desc</th>
@@ -76,7 +154,8 @@
         <!--Table body-->
         <tbody class="table-bordered timesheet-table-grid">
             <tr class="default-table-row ">
-                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row" style="padding-left: 25px"><a class='glyphicon glyphicon-edit' href='javascript:void(0);'></a>&nbsp;&nbsp; <a class='timesheet-delete-row glyphicon glyphicon-remove' href='javascript:void(0);'></a></td>
+                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>&nbsp;&nbsp;
                 <td scope="row">Ex: Enter Category</td>
                 <td scope="row">Ex: 1234, 5678</td>
                 <td scope="row">Ex: Enter details</td>
@@ -101,19 +180,22 @@
     </button>
 </div>
 
-<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+<br />
+<br />
+<br />
 
-<div id="chartContainer" style="height: 250px; width: 70%;"></div>
-@*<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>*@
+<div class="">
+    <div id="chartContainer" style="height: 250px;"></div>
+</div>
 
+@*<div id="chartContainer"></div>*@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header custom-model-header">
-                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #0095a8">Time Sheet Form</b></h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #0095a8; font-size:large">Time Sheet Form</b></h5>
                 <button type="button" class="close timesheet-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -216,8 +298,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="number" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
-                                <div class="invalid-feedback">
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
+                                <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 12
                                 </div>
                             </div>
@@ -236,7 +318,7 @@
 
                     <div class="modal-footer mt-xl-4">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary timesheet-addreport">Add Report</button>
+                        <button type="submit" class="btn btn-primary timesheet-addreport" data-updatedindexid="" data-uniqueid="">Add Report</button>
                     </div>
 
                 </form>
@@ -246,17 +328,60 @@
     </div>
 </div>
 
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-warning-message-popup">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+                <div style="height: 60px; background-color: #92d0e8"></div>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message-popup"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-final-submit-alert">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custom-model-header">
+                <h5 class="modal-title"><b class="text-info">Are you sure you want to submit the report with below details</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="finalsubmit-message-popup text-info"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-success timesheet-submit-final" data-updatedindexid="" data-uniqueid="">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     var timeSheetList = new Array();
     var timeSheetWeeklyHours = new Array();
+    var empInputDates = new Array();
 
-    function TimeSheetTemplate(rowDisable) {
+    function TimeSheetTemplate(rowDisable, uniqueID) {
         var isEntryDisbaled = "";
         if (rowDisable != undefined && rowDisable == true) {
             isEntryDisbaled = "row-disabled";
         }
-        return '<tr class="user-added-timesheet ' + isEntryDisbaled + '"><td class="timesheet-date"></td>'
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete"></td>'
+            + '<td class="timesheet-date"></td>'
             + '<td class="timesheet-category" ></td >'
             + '<td class="timesheet-incidentnum" ></td >'
             + '<td class="timesheet-incidentdes" ></td >'
@@ -300,10 +425,41 @@
             return mDate;
         };
 
+
+        jQuery('#timeSheetTimeSpent').focusout(function (element) {
+            var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
+            var updatingRecordUniqueID = "";
+            updatingRecordUniqueID = jQuery('#timeSheetTimeSpent').attr('data-time-data-uniqueid');
+            jQuery.each(timeSheetList, function (i, item) {
+                var selectedDate = jQuery('#timeSheetdate').val();
+
+                if (updatingRecordUniqueID == "" || item.uniquekey != updatingRecordUniqueID) {
+
+                    if (item.taskdate == selectedDate) {
+                        totalHoursAdded += + parseInt(item.timespent);
+
+                        if (totalHoursAdded > 12) {
+                            jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
+                            jQuery('#timeSheetTimeSpent').val('');
+                            $(".timeSpenterror-msg").css("display", "block");
+                            $("#timeSheetTimeSpent").focus();
+                        }
+                        else {
+                            $(".timeSpenterror-msg").css("display", "none");
+
+                        }
+                    };
+                }
+            });
+        });
+
+
+
         jQuery('.date-timesheet').change(function () {
+            jQuery('.database-response').text("");
             timeSheetList = new Array();
             //On Date change removing all the selected sheets previosuly if any
-            $('.user-added-timesheet').empty();
+            $('.user-added-timesheet').remove();
             jQuery('.default-table-row').show();
 
             var date = jQuery(this).val();
@@ -321,8 +477,9 @@
             jQuery('#timeSheetEndWeekdate').val(endDate);
 
             var weekNum = moment(startDate).week();
+            jQuery('#weekNumber').val(weekNum);
 
-            var empInputDates = new Array();
+            empInputDates = new Array();
 
             InputTimeSheetdates(StartWeekdate, empInputDates);
 
@@ -357,12 +514,13 @@
                         };
 
                         jQuery('.default-table-row').hide();
-
-                        var dynamicTemplate = TimeSheetTemplate(true);
-
+                        var dynamicTemplate = TimeSheetTemplate(true, model.uniquekey);
                         var newRow = jQuery(dynamicTemplate);
 
-                        jQuery(newRow).find('.timesheet-date').html(model.taskdate);
+                        var displayDate = model.taskdate.split('-');
+                        var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+
+                        jQuery(newRow).find('.timesheet-date').html(newDate);
                         jQuery(newRow).find('.timesheet-category').html(model.category);
                         jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
                         jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
@@ -380,10 +538,6 @@
 
         });
     });
-
-
-
-
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -406,6 +560,9 @@
 
 
     jQuery(".add-task-details").click(function () {
+        //jQuery('.timesheet-updatereport').hide();
+        //jQuery('.timesheet-addreport').show();
+        jQuery('.database-response').text("");
         jQuery('.needs-validation').removeClass('was-validated');
         var isStartDateEntered = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -443,28 +600,15 @@
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
 
-                $('#exampleModalLong').modal('show');
+                jQuery('#exampleModalLong').modal('show');
             }
         });
-    });
-
-
-
-    var timeSheetDayWiseHoursEneterdList = new Array();
-
-    var abc = 0;
-
-
-    $("#timeSheetTimeSpent").focusout(function () {
-        jQuery('#timespentabc').text(jQuery('#timeSheetTimeSpent').val());
     });
 
     jQuery(".timesheet-addreport").click(function () {
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
-
-
 
         // Loop over them and prevent submission
         Array.prototype.filter.call(forms, function (form) {
@@ -477,9 +621,8 @@
             form.classList.add('was-validated');
         });
 
-
         if (isModalValidated) {
-            var model = {
+            var pushModel = {
                 weekstartdate: jQuery('#timeSheetStartWeekdate').val(),
                 weekenddate: jQuery('#timeSheetEndWeekdate').val(),
                 weekno: jQuery('#weekNumber').val(),
@@ -504,67 +647,155 @@
                 uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
             };
 
-            timeSheetList.push(model);
+            //Find index of specific object using findIndex method.
+            /*objIndex = myArray.findIndex((obj => obj.id == 1));*/
+            var updatedTimesheetIndexNum = jQuery(".timesheet-addreport").attr("data-updatedindexid");
+            var uniqueIdNum = jQuery(".timesheet-addreport").attr("data-uniqueid");
 
-            var dynamicTemplate = TimeSheetTemplate(true);
+            jQuery(".timesheet-addreport").attr("data-updatedindexid", "");
+            jQuery(".timesheet-addreport").attr("data-uniqueid", "");
 
-            var newRow = jQuery(dynamicTemplate);
+            //DELETE SELECTED ROW FROM ARRAY LIST
+            if (updatedTimesheetIndexNum != "") {
+                timeSheetList.splice(updatedTimesheetIndexNum, 1);
+            }
 
-            /*   var newRow = jQuery(template);*/
-            jQuery(newRow).find('.timesheet-date').html(model.taskdate);
-            jQuery(newRow).find('.timesheet-category').html(model.category);
-            jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
-            jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
-            jQuery(newRow).find('.timesheet-requester').html(model.requester);
-            jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
-            jQuery(newRow).find('.timesheet-status').html(model.callstatus);
-            jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
-            jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
-            jQuery(newRow).find('.timesheet-comments').html(model.comments);
+            timeSheetList.push(pushModel);
+            timeSheetWeeklyHours = new Array();
 
+            AddUpdateRecords(timeSheetList);
 
-            jQuery('.default-table-row').hide();
-            jQuery(".timesheet-table-grid").append(jQuery(newRow))
-            jQuery('.modal').modal('hide');
-
-            jQuery('#timeSheetdate').val('');
-            $("#timeSheetCategory option:first").attr('selected', 'selected');
-            jQuery('#timeSheetIncNumber').val('');
-            jQuery('#timeSheetIncDesc').val('');
-            jQuery('#timeSheetRequester').val('');
-            $("#timeSheetUrgency option:first").attr('selected', 'selected');
-            $("#timeSheetStatus option:first").attr('selected', 'selected');
-            jQuery('#timeSheetClosedDate').val('');
-            jQuery('#timeSheetTimeSpent').val('');
-            jQuery('#timeSheetComments').val('');
-
-            var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
-            var dayName = oneDate.format('dddd');
-
-            console.log(dayName);
-
-            var weeklyDataModel = {
-                weekday: dayName,
-                hoursspent: model.timespent
-            };
-
-            timeSheetWeeklyHours.push(weeklyDataModel);
-
-            jQuery.ajax({
-                url: "/index",
-                type: "POST",
-                dataType: "html",
-                /*  data: { 'dayName': dayName, "hourspent": model.timespent },*/
-                data: { weekreportmodel: timeSheetWeeklyHours },
-                success: function (data) {
-                    $('#chartContainer').html(data);
-                }
-            });
         }
     });
 
+    function AddUpdateRecords(timeSheetList) {
+        $('.user-added-timesheet').remove();
+        jQuery.each(empInputDates, function (key, value) {
+            jQuery.each(timeSheetList, function (i, model) {
+                if (model.uniquekey.indexOf(value) != -1) {
+
+                    var dynamicTemplate = TimeSheetTemplate(false, model.uniquekey);
+                    var newRow = jQuery(dynamicTemplate);
+
+                    var displayDate = model.taskdate.split('-');
+                    var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+
+                    var editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' onclick=EditTimeSheetRow(this)></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' onclick=DeleteTimeSheetRow(this)></a>";
+
+                    jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
+                    jQuery(newRow).find('.timesheet-date').html(newDate);
+                    jQuery(newRow).find('.timesheet-category').html(model.category);
+                    jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
+                    jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
+                    jQuery(newRow).find('.timesheet-requester').html(model.requester);
+                    jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
+                    jQuery(newRow).find('.timesheet-status').html(model.callstatus);
+                    jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
+                    jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
+                    jQuery(newRow).find('.timesheet-comments').html(model.comments);
+
+                    jQuery('.default-table-row').hide();
+                    jQuery(".timesheet-table-grid").append(jQuery(newRow))
+                    jQuery('.modal').modal('hide');
+
+                    jQuery('#timeSheetdate').val('');
+                    $("#timeSheetCategory option:first").attr('selected', 'selected');
+                    jQuery('#timeSheetIncNumber').val('');
+                    jQuery('#timeSheetIncDesc').val('');
+                    jQuery('#timeSheetRequester').val('');
+                    $("#timeSheetUrgency option:first").attr('selected', 'selected');
+                    $("#timeSheetStatus option:first").attr('selected', 'selected');
+                    jQuery('#timeSheetClosedDate').val('');
+                    jQuery('#timeSheetTimeSpent').val('');
+                    jQuery('#timeSheetComments').val('');
+
+                    var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
+                    var dayName = oneDate.format('dddd');
+
+                    console.log(dayName);
+
+                    var weeklyDataModel = {
+                        weekday: dayName,
+                        hoursspent: model.timespent
+                    };
+
+                    timeSheetWeeklyHours.push(weeklyDataModel);
+                }
+            });
+        });
+
+        jQuery.ajax({
+            url: "/timesheetweeklychart",
+            type: "POST",
+            dataType: "html",
+            data: { weekreportmodel: timeSheetWeeklyHours },
+            success: function (data) {
+                $('#chartContainer').html(data);
+            }
+        });
+    }
+
 
     jQuery(".timesheet-submit").click(function () {
+        if (timeSheetList.length <= 0) {
+            jQuery('.warning-message-popup').html("Bad request. Please enter task details!");
+            jQuery('#modal-warning-message-popup').modal('show');
+        }
+        else {
+            var allDataEntered = true;
+            var missedDatesData = "";
+            jQuery.each(empInputDates, function (key, value) {
+                const isAllTasksEntered = timeSheetList.filter(v => v.taskdate === value);
+                var dt = moment(value, "YYYY-MM-DD")
+                var dayName = dt.format('dddd');
+
+                if (isAllTasksEntered.length <= 0 && dayName != "Saturday" && dayName != "Sunday") {
+                    allDataEntered = false;
+                    missedDatesData += "<p>" + dayName + ": " + value + "</p>";
+                }
+            });
+
+            if (allDataEntered == true) {
+
+                var finalConfirmationMessage = "";
+
+                jQuery.each(empInputDates, function (key, value) {
+                    var tasksEnteredInSpecifcDate = timeSheetList.filter(v => v.taskdate === value);
+                    var dt = moment(value, "YYYY-MM-DD")
+                    var dayName = dt.format('dddd');
+
+                    var totalHours = 0;
+                    if (tasksEnteredInSpecifcDate.length > 1) {
+                        finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "";
+
+                        jQuery.each(tasksEnteredInSpecifcDate, function (i, task) {
+                            totalHours += + parseInt(task.timespent);
+                        });
+                        finalConfirmationMessage += "<b>" + totalHours + "</b>" + "</p>";
+                    }
+                    else {
+                        if (tasksEnteredInSpecifcDate.length > 0) {
+                            var totalTimeSpent = tasksEnteredInSpecifcDate[0].timespent;
+                            finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "<b>" + totalTimeSpent + "</b>" + "";
+                        }
+                    }
+
+                });
+
+                jQuery('.finalsubmit-message-popup').html(finalConfirmationMessage);
+                jQuery('#modal-final-submit-alert').modal('show');
+            }
+            else {
+                jQuery('.database-response').addClass('text-danger');
+                jQuery('.warning-message-popup').html(missedDatesData + " Dates data is missing!!");
+                jQuery('#modal-warning-message-popup').modal('show');
+            }
+        }
+
+    });
+
+    //Final submit post confirmation
+    jQuery(".timesheet-submit-final").click(function () {
         jQuery.ajax({
             type: "POST",
             url: "/AddTimeSheet",
@@ -572,14 +803,83 @@
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 if (data.StatusCode == 200) {
-                    jQuery('.database-response').addClass('text-success')
+                    jQuery('.database-response').addClass('text-success');
                 }
                 else {
-                    jQuery('.database-response').addClass('text-danger')
+                    jQuery('.database-response').addClass('text-danger');
                 }
                 jQuery('.database-response').text(data.Message);
+                jQuery('#modal-final-submit-alert').modal('hide');
             }
         });
+    });
+
+    function EditTimeSheetRow(ele) {
+        var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
+        var requiredIndexNum = "";
+
+        jQuery.each(timeSheetList, function (i, item) {
+            if (item.uniquekey == selectedUniqueItemKey) {
+                requiredIndexNum = i;
+
+                jQuery('.timesheet-addreport').attr('data-updatedindexid', requiredIndexNum);
+                jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);
+
+                jQuery('#timeSheetdate').val(item.taskdate);
+                $('#timeSheetCategory :selected').text(item.category);
+                jQuery('#timeSheetIncNumber').val(item.incidentnumber);
+                jQuery('#timeSheetIncDesc').val(item.taskdetails);
+                jQuery('#timeSheetRequester').val(item.requester);
+                $('#timeSheetUrgency :selected').text(item.callpriority);
+                $('#timeSheetStatus :selected').text(item.callstatus);
+                jQuery('#timeSheetClosedDate').val(item.closeddate);
+                jQuery('#timeSheetTimeSpent').val(item.timespent);
+                jQuery('#timeSheetComments').val(item.comments);
+
+                jQuery('#timeSheetTimeSpent').attr("data-time-data-uniqueid", item.uniquekey);
+
+                $(".timesheet-addreport").text("Update Report");
+                $('#exampleModalLong').modal('show');
+            }
+        });
+    }
+
+    function DeleteTimeSheetRow(ele) {
+        timeSheetWeeklyHours = new Array();
+        var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
+        var requiredIndexNum = "";
+
+        jQuery.each(timeSheetList, function (i, item) {
+            if (item.uniquekey == selectedUniqueItemKey) {
+                requiredIndexNum = i;
+            }
+        });
+
+        //DELETE SELECTED ROW FROM ARRAY LIST
+        timeSheetList.splice(requiredIndexNum, 1);
+        AddUpdateRecords(timeSheetList);
+
+        var requiredIndexClass = "." + selectedUniqueItemKey;
+        var selectedRowFromTheTable = $('.timesheet-table-grid').find(requiredIndexClass).index();
+
+        if (selectedRowFromTheTable >= 0) {
+            $('.timesheet-table-grid > tr')[selectedRowFromTheTable].remove();
+        }
+
+        if ($('.user-added-timesheet').length <= 0) {
+            jQuery('.default-table-row').show();
+        }
+    }
+
+    //On Page load will display empty chart report
+    jQuery.ajax({
+        url: "/timesheetweeklychart",
+        type: "POST",
+        dataType: "html",
+        data: { weekreportmodel: timeSheetWeeklyHours },
+        success: function (data) {
+            $('#chartContainer').html(data);
+        }
     });
 
 </script>
