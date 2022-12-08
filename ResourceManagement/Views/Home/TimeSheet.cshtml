@@ -149,12 +149,13 @@
 
 <div class="table-responsive table">
     <!--Table-->
-    <table class="table table-hover">
+    <table class="table table-hover" id="timesheet-table">
 
         <!--Table head-->
         <thead class="table-bordered">
             <tr>
-                <th class="time-header" scope="col">Date</th>&nbsp;&nbsp;
+                <th class="time-header" scope="col">Edit/Delete</th>
+                <th class="time-header" scope="col">Date</th>
                 <th class="time-header" scope="col">Category</th>
                 <th class="time-header" scope="col">Incident Number</th>
                 <th class="time-header" scope="col">Incident Desc</th>
@@ -170,7 +171,8 @@
         <!--Table body-->
         <tbody class="table-bordered timesheet-table-grid">
             <tr class="default-table-row ">
-                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>
+                <td scope="row" style="padding-left: 25px"><a class='glyphicon glyphicon-edit' href='javascript:void(0);'></a>&nbsp;&nbsp; <a class='timesheet-delete-row glyphicon glyphicon-remove' href='javascript:void(0);'></a></td>
+                <td scope="row">Ex: @System.DateTime.Now.ToString("dd/MM/yyyy")</td>&nbsp;&nbsp;
                 <td scope="row">Ex: Enter Category</td>
                 <td scope="row">Ex: 1234, 5678</td>
                 <td scope="row">Ex: Enter details</td>
@@ -313,7 +315,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="number" class="form-control" id="timeSheetTimeSpent" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
                                 <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 12
                                 </div>
@@ -333,7 +335,8 @@
 
                     <div class="modal-footer mt-xl-4">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary timesheet-addreport">Add Report</button>
+                        <button type="submit" class="btn btn-primary timesheet-addreport" data-updatedindexid="" data-uniqueid="">Add Report</button>
+                        @*<button type="submit" class="btn btn-primary timesheet-updatereport" data-updatedindexid="" data-uniqueid="">Update Report</button>*@
                     </div>
 
                 </form>
@@ -369,12 +372,13 @@
     var timeSheetWeeklyHours = new Array();
     var empInputDates = new Array();
 
-    function TimeSheetTemplate(rowDisable) {
+    function TimeSheetTemplate(rowDisable, uniqueID) {
         var isEntryDisbaled = "";
         if (rowDisable != undefined && rowDisable == true) {
             isEntryDisbaled = "row-disabled";
         }
-        return '<tr class="user-added-timesheet ' + isEntryDisbaled + '"><td class="timesheet-date"></td>'
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete"></td>'
+            + '<td class="timesheet-date"></td>'
             + '<td class="timesheet-category" ></td >'
             + '<td class="timesheet-incidentnum" ></td >'
             + '<td class="timesheet-incidentdes" ></td >'
@@ -419,26 +423,30 @@
         };
 
 
-
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
+            var updatingRecordUniqueID = "";
+            updatingRecordUniqueID = jQuery('#timeSheetTimeSpent').attr('data-time-data-uniqueid');
             jQuery.each(timeSheetList, function (i, item) {
                 var selectedDate = jQuery('#timeSheetdate').val();
 
-                if (item.taskdate == selectedDate) {
-                    totalHoursAdded += + parseInt(item.timespent);
+                if (updatingRecordUniqueID == "" || item.uniquekey != updatingRecordUniqueID) {
 
-                    if (totalHoursAdded > 12) {
-                        jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
-                        jQuery('#timeSheetTimeSpent').val('');
-                        $(".timeSpenterror-msg").css("display", "block");
-                        $("#timeSheetTimeSpent").focus();
-                    }
-                    else {
-                        $(".timeSpenterror-msg").css("display", "none");
+                    if (item.taskdate == selectedDate) {
+                        totalHoursAdded += + parseInt(item.timespent);
 
-                    }
-                };
+                        if (totalHoursAdded > 12) {
+                            jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
+                            jQuery('#timeSheetTimeSpent').val('');
+                            $(".timeSpenterror-msg").css("display", "block");
+                            $("#timeSheetTimeSpent").focus();
+                        }
+                        else {
+                            $(".timeSpenterror-msg").css("display", "none");
+
+                        }
+                    };
+                }
             });
         });
 
@@ -448,7 +456,7 @@
             jQuery('.database-response').text("");
             timeSheetList = new Array();
             //On Date change removing all the selected sheets previosuly if any
-            $('.user-added-timesheet').empty();
+            $('.user-added-timesheet').remove();
             jQuery('.default-table-row').show();
 
             var date = jQuery(this).val();
@@ -503,7 +511,7 @@
                         };
 
                         jQuery('.default-table-row').hide();
-                        var dynamicTemplate = TimeSheetTemplate(true);
+                        var dynamicTemplate = TimeSheetTemplate(true, model.uniquekey);
                         var newRow = jQuery(dynamicTemplate);
 
                         var displayDate = model.taskdate.split('-');
@@ -549,6 +557,8 @@
 
 
     jQuery(".add-task-details").click(function () {
+        //jQuery('.timesheet-updatereport').hide();
+        //jQuery('.timesheet-addreport').show();
         jQuery('.database-response').text("");
         jQuery('.needs-validation').removeClass('was-validated');
         var isStartDateEntered = true;
@@ -610,7 +620,7 @@
 
 
         if (isModalValidated) {
-            var model = {
+            var pushModel = {
                 weekstartdate: jQuery('#timeSheetStartWeekdate').val(),
                 weekenddate: jQuery('#timeSheetEndWeekdate').val(),
                 weekno: jQuery('#weekNumber').val(),
@@ -635,62 +645,93 @@
                 uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
             };
 
-            timeSheetList.push(model);
-            var dynamicTemplate = TimeSheetTemplate(true);
-            var newRow = jQuery(dynamicTemplate);
+            //Find index of specific object using findIndex method.
+            /*objIndex = myArray.findIndex((obj => obj.id == 1));*/
+            var updatedTimesheetIndexNum = jQuery(".timesheet-addreport").attr("data-updatedindexid");
+            var uniqueIdNum = jQuery(".timesheet-addreport").attr("data-uniqueid");
 
-            var displayDate = model.taskdate.split('-');
-            var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+            jQuery(".timesheet-addreport").attr("data-updatedindexid", "");
+            jQuery(".timesheet-addreport").attr("data-uniqueid", "");
 
-            jQuery(newRow).find('.timesheet-date').html(newDate);
-            jQuery(newRow).find('.timesheet-category').html(model.category);
-            jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
-            jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
-            jQuery(newRow).find('.timesheet-requester').html(model.requester);
-            jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
-            jQuery(newRow).find('.timesheet-status').html(model.callstatus);
-            jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
-            jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
-            jQuery(newRow).find('.timesheet-comments').html(model.comments);
+            //DELETE SELECTED ROW FROM ARRAY LIST
+            if (updatedTimesheetIndexNum != "") {
+                timeSheetList.splice(updatedTimesheetIndexNum, 1);
+            }
 
-            jQuery('.default-table-row').hide();
-            jQuery(".timesheet-table-grid").append(jQuery(newRow))
-            jQuery('.modal').modal('hide');
+            timeSheetList.push(pushModel);
+            timeSheetWeeklyHours = new Array();
 
-            jQuery('#timeSheetdate').val('');
-            $("#timeSheetCategory option:first").attr('selected', 'selected');
-            jQuery('#timeSheetIncNumber').val('');
-            jQuery('#timeSheetIncDesc').val('');
-            jQuery('#timeSheetRequester').val('');
-            $("#timeSheetUrgency option:first").attr('selected', 'selected');
-            $("#timeSheetStatus option:first").attr('selected', 'selected');
-            jQuery('#timeSheetClosedDate').val('');
-            jQuery('#timeSheetTimeSpent').val('');
-            jQuery('#timeSheetComments').val('');
+            AddUpdateRecords(timeSheetList);
 
-            var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
-            var dayName = oneDate.format('dddd');
-
-            console.log(dayName);
-
-            var weeklyDataModel = {
-                weekday: dayName,
-                hoursspent: model.timespent
-            };
-
-            timeSheetWeeklyHours.push(weeklyDataModel);
-
-            jQuery.ajax({
-                url: "/timesheetweeklychart",
-                type: "POST",
-                dataType: "html",
-                data: { weekreportmodel: timeSheetWeeklyHours },
-                success: function (data) {
-                    $('#chartContainer').html(data);
-                }
-            });
         }
     });
+
+    function AddUpdateRecords(timeSheetList) {
+        $('.user-added-timesheet').remove();
+        jQuery.each(empInputDates, function (key, value) {
+            jQuery.each(timeSheetList, function (i, model) {
+                if (model.uniquekey.indexOf(value) != -1) {
+
+                    var dynamicTemplate = TimeSheetTemplate(false, model.uniquekey);
+                    var newRow = jQuery(dynamicTemplate);
+
+                    var displayDate = model.taskdate.split('-');
+                    var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+
+                    var editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' onclick=EditTimeSheetRow(this)></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' onclick=DeleteTimeSheetRow(this)></a>";
+
+                    jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
+                    jQuery(newRow).find('.timesheet-date').html(newDate);
+                    jQuery(newRow).find('.timesheet-category').html(model.category);
+                    jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
+                    jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
+                    jQuery(newRow).find('.timesheet-requester').html(model.requester);
+                    jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
+                    jQuery(newRow).find('.timesheet-status').html(model.callstatus);
+                    jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
+                    jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
+                    jQuery(newRow).find('.timesheet-comments').html(model.comments);
+
+                    jQuery('.default-table-row').hide();
+                    jQuery(".timesheet-table-grid").append(jQuery(newRow))
+                    jQuery('.modal').modal('hide');
+
+                    jQuery('#timeSheetdate').val('');
+                    $("#timeSheetCategory option:first").attr('selected', 'selected');
+                    jQuery('#timeSheetIncNumber').val('');
+                    jQuery('#timeSheetIncDesc').val('');
+                    jQuery('#timeSheetRequester').val('');
+                    $("#timeSheetUrgency option:first").attr('selected', 'selected');
+                    $("#timeSheetStatus option:first").attr('selected', 'selected');
+                    jQuery('#timeSheetClosedDate').val('');
+                    jQuery('#timeSheetTimeSpent').val('');
+                    jQuery('#timeSheetComments').val('');
+
+                    var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
+                    var dayName = oneDate.format('dddd');
+
+                    console.log(dayName);
+
+                    var weeklyDataModel = {
+                        weekday: dayName,
+                        hoursspent: model.timespent
+                    };
+
+                    timeSheetWeeklyHours.push(weeklyDataModel);
+                }
+            });
+        });
+
+        jQuery.ajax({
+            url: "/timesheetweeklychart",
+            type: "POST",
+            dataType: "html",
+            data: { weekreportmodel: timeSheetWeeklyHours },
+            success: function (data) {
+                $('#chartContainer').html(data);
+            }
+        });
+    }
 
 
     jQuery(".timesheet-submit").click(function () {
@@ -740,6 +781,65 @@
         }
 
     });
+
+    function EditTimeSheetRow(ele) {
+        var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
+        var requiredIndexNum = "";
+
+        jQuery.each(timeSheetList, function (i, item) {
+            if (item.uniquekey == selectedUniqueItemKey) {
+                requiredIndexNum = i;
+
+                jQuery('.timesheet-addreport').attr('data-updatedindexid', requiredIndexNum);
+                jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);
+
+                jQuery('#timeSheetdate').val(item.taskdate);
+                $('#timeSheetCategory :selected').text(item.category);
+                jQuery('#timeSheetIncNumber').val(item.incidentnumber);
+                jQuery('#timeSheetIncDesc').val(item.taskdetails);
+                jQuery('#timeSheetRequester').val(item.requester);
+                $('#timeSheetUrgency :selected').text(item.callpriority);
+                $('#timeSheetStatus :selected').text(item.callstatus);
+                jQuery('#timeSheetClosedDate').val(item.closeddate);
+                jQuery('#timeSheetTimeSpent').val(item.timespent);
+                jQuery('#timeSheetComments').val(item.comments);
+
+                jQuery('#timeSheetTimeSpent').attr("data-time-data-uniqueid", item.uniquekey);
+
+                $(".timesheet-addreport").text("Update Report");
+                $('#exampleModalLong').modal('show');
+            }
+        });
+    }
+
+    function DeleteTimeSheetRow(ele) {
+
+        timeSheetWeeklyHours = new Array();
+        var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
+        var requiredIndexNum = "";
+
+        jQuery.each(timeSheetList, function (i, item) {
+            if (item.uniquekey == selectedUniqueItemKey) {
+                requiredIndexNum = i;
+            }
+        });
+
+        //DELETE SELECTED ROW FROM ARRAY LIST
+        timeSheetList.splice(requiredIndexNum, 1);
+
+        AddUpdateRecords(timeSheetList);
+
+        var requiredIndexClass = "." + selectedUniqueItemKey;
+        var selectedRowFromTheTable = $('.timesheet-table-grid').find(requiredIndexClass).index();
+
+        if (selectedRowFromTheTable >= 0) {
+            $('.timesheet-table-grid > tr')[selectedRowFromTheTable].remove();
+        }
+
+        if ($('.user-added-timesheet').length <= 0) {
+            jQuery('.default-table-row').show();
+        }
+    }
 
     //On Page load will display empty chart report
     jQuery.ajax({
