@@ -336,7 +336,6 @@
                     <div class="modal-footer mt-xl-4">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary timesheet-addreport" data-updatedindexid="" data-uniqueid="">Add Report</button>
-                        @*<button type="submit" class="btn btn-primary timesheet-updatereport" data-updatedindexid="" data-uniqueid="">Update Report</button>*@
                     </div>
 
                 </form>
@@ -361,6 +360,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-final-submit-alert">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custom-model-header">
+                <h5 class="modal-title"><b class="text-info">Are you sure you want to submit the report with below details</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="finalsubmit-message-popup text-info"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-success timesheet-submit-final" data-updatedindexid="" data-uniqueid="">Yes</button>
             </div>
         </div>
     </div>
@@ -597,7 +616,7 @@
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
 
-                $('#exampleModalLong').modal('show');
+                jQuery('#exampleModalLong').modal('show');
             }
         });
     });
@@ -617,7 +636,6 @@
 
             form.classList.add('was-validated');
         });
-
 
         if (isModalValidated) {
             var pushModel = {
@@ -736,9 +754,6 @@
 
     jQuery(".timesheet-submit").click(function () {
         if (timeSheetList.length <= 0) {
-            //jQuery('.database-response').addClass('text-danger');
-            //jQuery('.database-response').html("Bad request. Please enter task details!!");
-
             jQuery('.warning-message-popup').html("Bad request. Please enter task details!");
             jQuery('#modal-warning-message-popup').modal('show');
         }
@@ -752,26 +767,39 @@
 
                 if (isAllTasksEntered.length <= 0 && dayName != "Saturday" && dayName != "Sunday") {
                     allDataEntered = false;
-                    missedDatesData += "<p>'" + dayName + "': '" + value + "'</p>";
+                    missedDatesData += "<p>" + dayName + ": " + value + "</p>";
                 }
             });
 
             if (allDataEntered == true) {
-                jQuery.ajax({
-                    type: "POST",
-                    url: "/AddTimeSheet",
-                    data: JSON.stringify({ timesheetmodel: timeSheetList }),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        if (data.StatusCode == 200) {
-                            jQuery('.database-response').addClass('text-success');
-                        }
-                        else {
-                            jQuery('.database-response').addClass('text-danger');
-                        }
-                        jQuery('.database-response').text(data.Message);
+
+                var finalConfirmationMessage = "";
+
+                jQuery.each(empInputDates, function (key, value) {
+                    var tasksEnteredInSpecifcDate = timeSheetList.filter(v => v.taskdate === value);
+                    var dt = moment(value, "YYYY-MM-DD")
+                    var dayName = dt.format('dddd');
+
+                    var totalHours = 0;
+                    if (tasksEnteredInSpecifcDate.length > 1) {
+                        finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "";
+
+                        jQuery.each(tasksEnteredInSpecifcDate, function (i, task) {
+                            totalHours += + parseInt(task.timespent);
+                        });
+                        finalConfirmationMessage += "<b>" + totalHours + "</b>" + "</p>";
                     }
+                    else {
+                        if (tasksEnteredInSpecifcDate.length > 0) {
+                            var totalTimeSpent = tasksEnteredInSpecifcDate[0].timespent;
+                            finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "<b>" + totalTimeSpent + "</b>" + "";
+                        }
+                    }
+
                 });
+
+                jQuery('.finalsubmit-message-popup').html(finalConfirmationMessage);
+                jQuery('#modal-final-submit-alert').modal('show');
             }
             else {
                 jQuery('.database-response').addClass('text-danger');
@@ -780,6 +808,26 @@
             }
         }
 
+    });
+
+    //Final submit post confirmation
+    jQuery(".timesheet-submit-final").click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/AddTimeSheet",
+            data: JSON.stringify({ timesheetmodel: timeSheetList }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    jQuery('.database-response').addClass('text-success');
+                }
+                else {
+                    jQuery('.database-response').addClass('text-danger');
+                }
+                jQuery('.database-response').text(data.Message);
+                jQuery('#modal-final-submit-alert').modal('hide');
+            }
+        });
     });
 
     function EditTimeSheetRow(ele) {

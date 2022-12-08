@@ -727,3 +727,7 @@ input[type=number] {
     padding-left: 25px !important;
 
 }
+
+.finalsubmit-message-popup{
+    color: orange;
+}
