@@ -286,6 +286,7 @@
     <Content Include="Assets\Icons\hierarchical-structure.png" />
     <Content Include="Assets\Icons\id-card.png" />
     <Content Include="Assets\Icons\location.png" />
+    <Content Include="Assets\Icons\logout.png" />
     <Content Include="Assets\Icons\phone.png" />
     <Content Include="Assets\Icons\project-status.png" />
     <Content Include="Assets\Icons\project.png" />

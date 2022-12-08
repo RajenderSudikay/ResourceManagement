@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
+
     <script>
         var chart = new CanvasJS.Chart("chartContainer", {
 	        animationEnabled: true,
@@ -8,12 +9,21 @@
             exportEnabled: true,
             willReadFrequently: true,
 	        title: {
-		        text: "Total hours spent in this week =>" +  @Html.Raw(ViewBag.TotalHoursSpent),
+		        text: "Total hours spent in this week => " +  @Html.Raw(ViewBag.TotalHoursSpent),
             },
             axisY: {
                 title: "Hours Spent",
                 titleMaxWidth: 400,
-                titleFontWeight: "bold"
+                titleFontWeight: "bold",
+                gridThickness: 0,
+                stripLines: [
+                    {
+                        value: 0,
+                        showOnTop: true,
+                        color: "gray",
+                        thickness: 0
+                    }
+                ]
             },
 
 	        data: [{

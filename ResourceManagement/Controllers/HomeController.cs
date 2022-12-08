@@ -25,6 +25,12 @@ namespace ResourceManagement.Controllers
             return View("");
         }
 
+        public ActionResult Logout()
+        {
+            Session["UserModel"] = null;
+            return RedirectToAction("Login");
+        }
+
         public ActionResult TimesheetWeeklyChart(List<WeekReportModel> weekreportmodel)
         {
             List<DataPoint> dataPoints = new List<DataPoint>();
