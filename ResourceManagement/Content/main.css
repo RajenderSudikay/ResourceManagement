@@ -731,3 +731,6 @@ input[type=number] {
 .finalsubmit-message-popup{
     color: orange;
 }
+.emp-data-nav{
+    padding-left:30px;
+}

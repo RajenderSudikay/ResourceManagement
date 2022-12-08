@@ -20,7 +20,7 @@
 <div class="main">
     <div class="container">
         <div class="row">
-            <div class="dashboard-emp-icon">               
+            <div class="dashboard-emp-icon">
                 @if (Model != null)
                 {
                     <div class="agent-navigation dashboard-navigation">
@@ -35,7 +35,7 @@
                             <div class="agent-description hide dashboard-emp-info" style="">
                                 <div class="agent-details">
                                     <div class="agent-img">
-                                        <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+                                        <img alt="profile-photo" src="~/Assets/Rajender_Passport_Photo.jpg" loading="lazy">
 
                                     </div>
 
@@ -43,51 +43,51 @@
                                         <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
                                     </div>
 
-
                                     <ul>
                                         <li>
-                                            <b>Emp ID:</b>
-                                            <div class="agent-navdrop-empid">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+
+                                            <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                            <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
 
                                         </li>
-
                                         <li>
-                                            <b>Designation:</b>
-                                            <div class="agent-navdrop-empdesig">@Model.AMBC_Active_Emp_view.Designation</div>
+                                            <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                            <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
 
                                         </li>
-
                                         <li>
-                                            <b>Supervisor:</b>
-                                            <div class="agent-navdrop-empmanager">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                            <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Report Manager:</b>
+                                            <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
 
                                         </li>
-
                                         <li>
-                                            <b>Contact Number:</b>
+                                            <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
                                             <br />
-                                            <a class="agent-navdrop-phone" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                            <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
                                         </li>
 
                                         <li>
-                                            <b>Client:</b>
-                                            <div class="agent-navdrop-client">@Model.AMBC_Active_Emp_view.Client</div>
+                                            <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                            <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
                                         </li>
 
                                         <li>
-                                            <b>Project:</b>
-                                            <div class="agent-navdrop-project">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                            <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                            <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
                                         </li>
                                         <li>
-                                            <b>Project Status:</b>
-                                            <div class="agent-navdrop-prostatus">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                            <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                            <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
                                         </li>
 
                                         <li>
-                                            <b>E-Mail Address:</b>
+                                            <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
                                             @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
                                         </li>
-
+                                        <li>
+                                            <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                            <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
+                                        </li>
                                     </ul>
 
                                 </div>
