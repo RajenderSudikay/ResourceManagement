@@ -333,10 +333,6 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                @*<h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
-                        <span aria-hidden="true">&times;</span>
-                    </button>*@
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                      viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: 80px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
 <g>
@@ -388,21 +384,69 @@
     </div>
 </div>
 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-final-submit-alert">
+    Launch demo modal
+</button>
+
 <div class="modal" tabindex="-1" role="dialog" id="modal-final-submit-alert">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="padding-top:0px">
         <div class="modal-content">
-            <div class="modal-header custom-model-header">
-                <h5 class="modal-title"><b class="text-info">Are you sure you want to submit the report with below details</b></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header modal-header-alert-custommessage">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 490.667 490.667" style="enable-background: new 0 0 490.667 490.667; margin-left: 0px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
+<g>
+                <g>
+                <g>
+                <circle cx="245.333" cy="362.667" r="21.333" />
+                <path d="M245.333,0C110.059,0,0,110.059,0,245.333s110.059,245.333,245.333,245.333s245.333-110.059,245.333-245.333
+				S380.608,0,245.333,0z M245.333,469.333c-123.52,0-224-100.48-224-224s100.48-224,224-224s224,100.48,224,224
+				S368.853,469.333,245.333,469.333z" />
+                <path d="M245.333,96C207.104,96,176,127.904,176,167.115c0,5.891,4.776,10.667,10.667,10.667c5.891,0,10.667-4.776,10.667-10.667
+				c0-27.445,21.536-49.781,48-49.781s48,21.792,48,48.597c0,25.888-22.4,48.587-48,48.587c-5.891,0-10.667,4.776-10.667,10.667V288
+				c0,5.891,4.776,10.667,10.667,10.667c5.891,0,10.667-4.776,10.667-10.667v-53.013c32.736-5.333,58.667-34.805,58.667-69.056
+				C314.667,127.371,283.563,96,245.333,96z" />
+		</g>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
             </div>
             <div class="modal-body">
-                <div class="finalsubmit-message-popup text-info"></div>
+                <h2 class="modal-boday-title">Are you sure you want to submit the timesheet with below details.</h2>
+                <div class="finalsubmit-message-popup"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-success timesheet-submit-final" data-updatedindexid="" data-uniqueid="">Yes</button>
+            <div class="model-footerbtn-custom">
+                <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-warning btn-lg timesheet-submit-final btn-alert-yes" data-updatedindexid="" data-uniqueid="">Yes</button>
             </div>
         </div>
     </div>
@@ -799,28 +843,37 @@
 
                 var finalConfirmationMessage = "";
 
+                var wholeWeekTimeSpent = 0;
+
                 jQuery.each(empInputDates, function (key, value) {
                     var tasksEnteredInSpecifcDate = timeSheetList.filter(v => v.taskdate === value);
                     var dt = moment(value, "YYYY-MM-DD")
                     var dayName = dt.format('dddd');
 
+                    var actualDate = value.split('-');
+                    value = actualDate[2] + "-" + actualDate[1] + "-" + actualDate[0];
+
                     var totalHours = 0;
                     if (tasksEnteredInSpecifcDate.length > 1) {
-                        finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "";
+                        finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "";
 
                         jQuery.each(tasksEnteredInSpecifcDate, function (i, task) {
                             totalHours += + parseInt(task.timespent);
                         });
-                        finalConfirmationMessage += "<b>" + totalHours + "</b>" + "</p>";
+                        finalConfirmationMessage += "<b>" + totalHours + "</b>" + "</h2><br>";
+
+                        wholeWeekTimeSpent += parseInt(totalHours);
                     }
                     else {
                         if (tasksEnteredInSpecifcDate.length > 0) {
                             var totalTimeSpent = tasksEnteredInSpecifcDate[0].timespent;
-                            finalConfirmationMessage += "<p>" + dayName + "(" + value + ") " + "==>" + "<b>" + totalTimeSpent + "</b>" + "";
+                            wholeWeekTimeSpent += parseInt(totalTimeSpent);
+                            finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "<b>" + totalTimeSpent + "</b></h2><br>" + "";
                         }
                     }
-
                 });
+
+                finalConfirmationMessage += "<h2><b>Total hours spent in this week is: " + wholeWeekTimeSpent + "</b><h2><hr class='modal-final-alert-msg' />";
 
                 jQuery('.finalsubmit-message-popup').html(finalConfirmationMessage);
                 jQuery('#modal-final-submit-alert').modal('show');

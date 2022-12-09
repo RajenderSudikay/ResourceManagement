@@ -697,17 +697,17 @@ input[type=number] {
     border-radius: 10px;
 }
 
-#modal-warning-message-popup {  
+#modal-warning-message-popup {
     color: #2167ae;
     text-align: center;
     padding-top: 30px;
     padding-bottom: 30px;
-    margin-bottom:30px;
-    margin-left:0px;
+    margin-bottom: 30px;
+    margin-left: 0px;
 }
 
 .glyphicon-edit {
-    font-size: 15px;  
+    font-size: 15px;
 }
 
 .glyphicon-remove {
@@ -724,20 +724,23 @@ input[type=number] {
     /* color: inherit; */
     color: red !important;
 }
-.timesheet-edit-delete{
-    padding-left:25px !important;
+
+.timesheet-edit-delete {
+    padding-left: 25px !important;
 }
 
 .default-table-row {
     padding-left: 25px !important;
-
 }
 
-.finalsubmit-message-popup{
-    color: orange;
+.finalsubmit-message-popup {
+    color: #2167ae;
+    text-align: center;
+    padding-top: 30px;
 }
-.emp-data-nav{
-    padding-left:30px;
+
+.emp-data-nav {
+    padding-left: 30px;
 }
 
 .header-nav-modalfooter {
@@ -747,6 +750,7 @@ input[type=number] {
 .modal-header {
     background-color: #779ecb;
 }
+
 .modal-footer {
     background-color: #eee;
 }
@@ -757,13 +761,16 @@ input[type=number] {
 }
 
 .timesheet-addreport-cancel {
-    background-color: #e5a4b4;
+    background-color: #d85261;
     border-radius: 20px;
+    width: 100px;
+    margin-left: 0px;
 }
 
 .exampleModalLabel {
     font-size: large !important;
 }
+
 .modal-header-success-custommessage {
     background-color: #2dd284;
 }
@@ -773,7 +780,8 @@ input[type=number] {
     color: #2167ae;
     height: 200px;
 }
-.modal-success-popup-btn {   
+
+.modal-success-popup-btn {
     border-radius: 20px;
     width: 100px;
     margin-bottom: 30px;
@@ -811,3 +819,30 @@ input[type=number] {
     margin-top: 30px;
 }
 
+.modal-header-alert-custommessage {
+    background-color: #fada5e;
+}
+
+.btn-alert-yes {
+    background-color: #fada5e;
+    border-radius: 20px;
+    width: 100px;
+}
+
+.model-footerbtn-custom {
+    margin-left: 280px;
+    margin-bottom: 30px;
+    padding-top: 30px;
+}
+
+.modal-boday-title {
+    color: #2167ae;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.modal-final-alert-msg {
+    width: 330px;
+    background-color: #2167ae;
+    border: 1px solid #2167ae;
+}
