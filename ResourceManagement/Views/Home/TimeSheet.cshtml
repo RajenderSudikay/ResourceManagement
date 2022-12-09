@@ -46,7 +46,7 @@
                                     <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
                                 </li>
                                 <li>
-                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Supervisor:</b>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
                                     <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
                                 </li>
                                 <li>
@@ -68,7 +68,7 @@
                                 </li>
                                 <li>
                                     <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
-                                    @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
                                 </li>
                                 <li>
                                     <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
@@ -334,9 +334,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 @*<h5 class="modal-title"><b class="text-danger">Please correct below warnings to submit the data</b></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
                 <div style="height: 60px; background-color: #92d0e8"></div>
             </div>
             <div class="modal-body">

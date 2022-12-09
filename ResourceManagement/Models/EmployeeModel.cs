@@ -7,9 +7,7 @@ namespace ResourceManagement.Models
         public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
         public emp_project projectInfo { get; set; }
         public string leaveOrHolidayInfo { get; set; }
-
-        //public List<con_leaveupdate> empLeaveInfo { get; set; }
-        //public List<tblambcholiday> ambcHolidayInfo { get; set; }
+        public tbld_ambclogininformation signInOutInfo { get; set; }
     }
 
     public class RMA_TimeSheetAjaxModel

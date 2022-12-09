@@ -25,7 +25,7 @@ namespace ResourceManagement
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        //public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<ambctaskcapture> ambctaskcaptures { get; set; }
         public virtual DbSet<con_leaveupdate> con_leaveupdate { get; set; }
         public virtual DbSet<desk_att_taskcapture> desk_att_taskcapture { get; set; }
@@ -41,7 +41,7 @@ namespace ResourceManagement
         public virtual DbSet<tblambcholiday> tblambcholidays { get; set; }
         public virtual DbSet<tblambcholidaylog> tblambcholidaylogs { get; set; }
         public virtual DbSet<timesheet_submission_log> timesheet_submission_log { get; set; }
-        public virtual DbSet<TimeSheet> TimeSheets { get; set; }
+        //public virtual DbSet<TimeSheet> TimeSheets { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryList> CategoryLists { get; set; }
         public virtual DbSet<CategoryType> CategoryTypes { get; set; }
@@ -50,10 +50,11 @@ namespace ResourceManagement
         public virtual DbSet<con_leaveupdate20220510> con_leaveupdate20220510 { get; set; }
         public virtual DbSet<tbl_LoginInformation_bkp> tbl_LoginInformation_bkp { get; set; }
         public virtual DbSet<tblambcholiday_06May2022> tblambcholiday_06May2022 { get; set; }
-        public virtual DbSet<ticket_category> ticket_category { get; set; }
+        //public virtual DbSet<ticket_category> ticket_category { get; set; }
         public virtual DbSet<ticket_priority> ticket_priority { get; set; }
         public virtual DbSet<AMBC_Active_Emp> AMBC_Active_Emp { get; set; }
         public virtual DbSet<AMBC_Active_Emp_view> AMBC_Active_Emp_view { get; set; }
         public virtual DbSet<today_att> today_att { get; set; }
+        public virtual DbSet<tbld_ambclogininformation> tbld_ambclogininformation { get; set; }
     }
 }

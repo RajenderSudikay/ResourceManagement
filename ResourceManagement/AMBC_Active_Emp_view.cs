@@ -27,5 +27,7 @@ namespace ResourceManagement
         public string Project_Status { get; set; }
         public bool Employee_Status { get; set; }
         public string Location { get; set; }
+        public string AMBC_Mail_Address { get; set; }
+        public Nullable<System.DateTime> Employee_Joining_Day { get; set; }
     }
 }

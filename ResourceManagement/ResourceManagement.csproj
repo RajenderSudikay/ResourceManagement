@@ -252,6 +252,9 @@
     <Compile Include="tblambcholiday_06May2022.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tbld_ambclogininformation.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tbl_ambclogininformation.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>

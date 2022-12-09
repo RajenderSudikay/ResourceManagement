@@ -5,18 +5,11 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.ambctaskcapture' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ambctaskcapture">
           <Key>
+            
             <PropertyRef Name="uniquekey" />
           </Key>
           <Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -45,10 +38,10 @@
           <Property Name="currentyear" Type="int" />
           <Property Name="shiftdetails" Type="varchar" MaxLength="50" />
           <Property Name="submittedtime" Type="datetime" />
-          <Property Name="uniquekey" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -59,7 +52,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.Category' does not have a primar
           <Property Name="categoryType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.CategoryList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CategoryList">
           <Key>
             <PropertyRef Name="CategoryListItem" />
@@ -69,7 +62,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.CategoryList' does not have a pr
           <Property Name="CategoryTypeID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.CategoryType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CategoryType">
           <Key>
             <PropertyRef Name="CategoryTypeID" />
@@ -91,7 +84,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.CategoryType' does not have a pr
           <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate_12072021' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_12072021' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="con_leaveupdate_12072021">
           <Key>
             <PropertyRef Name="leaveno" />
@@ -106,7 +99,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate_12072021' does n
           <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate_20220517' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_20220517' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="con_leaveupdate_20220517">
           <Key>
             <PropertyRef Name="leaveno" />
@@ -121,7 +114,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate_20220517' does n
           <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate20220510' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="con_leaveupdate20220510">
           <Key>
             <PropertyRef Name="leaveno" />
@@ -204,6 +197,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="CategoryTypeID" Type="int" />
           <Property Name="ambc_manager" Type="varchar" MaxLength="250" />
           <Property Name="ambc_manager_mailid" Type="varchar" MaxLength="250" />
+          <Property Name="emp_joindate" Type="date" />
         </EntityType>
         <EntityType Name="emp_info_log">
           <Key>
@@ -326,7 +320,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.tbl_LoginInformation_bkp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.tbl_LoginInformation_bkp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tbl_LoginInformation_bkp">
           <Key>
             <PropertyRef Name="login_id" />
@@ -364,7 +358,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.tbl_LoginInformation_bkp' does n
           <Property Name="region" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.tblambcholiday_06May2022' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.tblambcholiday_06May2022' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblambcholiday_06May2022">
           <Key>
             <PropertyRef Name="holidayno" />
@@ -388,23 +382,42 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.tblambcholiday_06May2022' does n
           <Property Name="empcontact_no" Type="varchar" MaxLength="50" />
           <Property Name="empidhldydt" Type="varchar" MaxLength="90" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbld_ambclogininformation">
+          <Key>
+            <PropertyRef Name="login_id" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login_date" Type="date" Nullable="false" />
+          <Property Name="Signin_Time" Type="datetime" Nullable="false" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="int" />
+          <Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Concat_loginstring" Type="varchar" MaxLength="255" />
+          <Property Name="IsSignOutBySystem" Type="bit" />
+          <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.ticket_category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.ticket_category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ticket_category">
           <Key>
             <PropertyRef Name="sno" />
           </Key>
           <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="category_type" Type="varchar" MaxLength="200" />
+          <Property Name="ticketcategory" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.ticket_priority' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.ticket_priority' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ticket_priority">
           <Key>
             <PropertyRef Name="sno" />
           </Key>
           <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="tpriority" Type="varchar" MaxLength="200" />
+          <Property Name="ticketpriority" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="timesheet_submission_log">
           <Key>
@@ -421,32 +434,8 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.ticket_priority' does not have a
           <Property Name="submitted_ipaddress" Type="varchar" MaxLength="255" />
           <Property Name="submitted_hostname" Type="varchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="TimeSheets">
-          <Key>
-            <PropertyRef Name="tslogno" />
-          </Key>
-          <Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="employeeid" Type="nvarchar(max)" />
-          <Property Name="employeename" Type="nvarchar(max)" />
-          <Property Name="empdesignation" Type="nvarchar(max)" />
-          <Property Name="empmanager" Type="nvarchar(max)" />
-          <Property Name="empcontactnumber" Type="nvarchar(max)" />
-          <Property Name="clientname" Type="nvarchar(max)" />
-          <Property Name="projectname" Type="nvarchar(max)" />
-          <Property Name="projstatus" Type="nvarchar(max)" />
-          <Property Name="taskdate" Type="nvarchar(max)" />
-          <Property Name="category" Type="nvarchar(max)" />
-          <Property Name="incidentnumber" Type="nvarchar(max)" />
-          <Property Name="taskdetails" Type="nvarchar(max)" />
-          <Property Name="requester" Type="nvarchar(max)" />
-          <Property Name="callpriority" Type="nvarchar(max)" />
-          <Property Name="callstatus" Type="nvarchar(max)" />
-          <Property Name="closeddate" Type="nvarchar(max)" />
-          <Property Name="timespent" Type="nvarchar(max)" />
-          <Property Name="comments" Type="nvarchar(max)" />
-        </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.AMBC_Active_Emp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AMBC_Active_Emp">
           <Key>
             <PropertyRef Name="employee_id" />
@@ -463,7 +452,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.AMBC_Active_Emp' does not have a
           <Property Name="region" Type="varchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.AMBC_Active_Emp_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AMBC_Active_Emp_view">
           <Key>
             <PropertyRef Name="Employee ID" />
@@ -471,23 +460,26 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.AMBC_Active_Emp_view' does not h
             <PropertyRef Name="Contact Number" />
             <PropertyRef Name="Designation" />
             <PropertyRef Name="Employee Status" />
+            <PropertyRef Name="AMBC Mail Address" />
           </Key>
           <Property Name="Employee ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Employee Name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Contact Number" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Designation" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Client Report Manager" Type="varchar" MaxLength="50" />
-          <Property Name="AMBC Project Manager" Type="varchar" MaxLength="250" />
-          <Property Name="AMBC PM Mail Address" Type="varchar" MaxLength="250" />
           <Property Name="Client" Type="varchar" MaxLength="255" />
           <Property Name="Shift" Type="varchar" MaxLength="15" />
           <Property Name="Project Name" Type="varchar" MaxLength="255" />
           <Property Name="Project Status" Type="varchar" MaxLength="15" />
           <Property Name="Employee Status" Type="bit" Nullable="false" />
           <Property Name="Location" Type="varchar" MaxLength="150" />
+          <Property Name="AMBC Mail Address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="AMBC Project Manager" Type="varchar" MaxLength="250" />
+          <Property Name="AMBC PM Mail Address" Type="varchar" MaxLength="250" />
+          <Property Name="Employee Joining Day" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="today_att">
           <Key>
             <PropertyRef Name="employee_id" />
@@ -509,8 +501,6 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_IP" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="emp_info" EntityType="Self.emp_info" Schema="dbo" store:Type="Tables" />
@@ -524,8 +514,39 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tbl_LoginInformation" EntityType="Self.tbl_LoginInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblambcholiday" EntityType="Self.tblambcholiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TimeSheets" EntityType="Self.TimeSheets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ambctaskcapture].[tslogno] AS [tslogno], 
+    [ambctaskcapture].[weekno] AS [weekno], 
+    [ambctaskcapture].[weekstartdate] AS [weekstartdate], 
+    [ambctaskcapture].[weekenddate] AS [weekenddate], 
+    [ambctaskcapture].[employeeid] AS [employeeid], 
+    [ambctaskcapture].[employeename] AS [employeename], 
+    [ambctaskcapture].[empdesignation] AS [empdesignation], 
+    [ambctaskcapture].[empmanager] AS [empmanager], 
+    [ambctaskcapture].[empcontactnumber] AS [empcontactnumber], 
+    [ambctaskcapture].[clientname] AS [clientname], 
+    [ambctaskcapture].[projectname] AS [projectname], 
+    [ambctaskcapture].[projstatus] AS [projstatus], 
+    [ambctaskcapture].[taskdate] AS [taskdate], 
+    [ambctaskcapture].[category] AS [category], 
+    [ambctaskcapture].[incidentnumber] AS [incidentnumber], 
+    [ambctaskcapture].[taskdetails] AS [taskdetails], 
+    [ambctaskcapture].[requester] AS [requester], 
+    [ambctaskcapture].[callpriority] AS [callpriority], 
+    [ambctaskcapture].[callstatus] AS [callstatus], 
+    [ambctaskcapture].[closeddate] AS [closeddate], 
+    [ambctaskcapture].[timespent] AS [timespent], 
+    [ambctaskcapture].[comments] AS [comments], 
+    [ambctaskcapture].[submittedsystem] AS [submittedsystem], 
+    [ambctaskcapture].[currentyear] AS [currentyear], 
+    [ambctaskcapture].[shiftdetails] AS [shiftdetails], 
+    [ambctaskcapture].[submittedtime] AS [submittedtime], 
+    [ambctaskcapture].[uniquekey] AS [uniquekey]
+    FROM [dbo].[ambctaskcapture] AS [ambctaskcapture]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
@@ -603,16 +624,16 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
     [tblambcholiday_06May2022].[region] AS [region]
     FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="ticket_category" EntityType="Self.ticket_category" store:Type="Tables" store:Schema="dbo">
+          <!--<EntitySet Name="ticket_category" EntityType="Self.ticket_category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ticket_category].[sno] AS [sno], 
-    [ticket_category].[category_type] AS [category_type]
+    [ticket_category].[ticketcategory] AS [ticketcategory]
     FROM [dbo].[ticket_category] AS [ticket_category]</DefiningQuery>
-          </EntitySet>
+          </EntitySet>-->
           <EntitySet Name="ticket_priority" EntityType="Self.ticket_priority" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ticket_priority].[sno] AS [sno], 
-    [ticket_priority].[tpriority] AS [tpriority]
+    [ticket_priority].[ticketpriority] AS [ticketpriority]
     FROM [dbo].[ticket_priority] AS [ticket_priority]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
@@ -633,14 +654,16 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
     [AMBC_Active_Emp_view].[Contact Number] AS [Contact Number], 
     [AMBC_Active_Emp_view].[Designation] AS [Designation], 
     [AMBC_Active_Emp_view].[Client Report Manager] AS [Client Report Manager], 
-    [AMBC_Active_Emp_view].[AMBC Project Manager] AS [AMBC Project Manager], 
-    [AMBC_Active_Emp_view].[AMBC PM Mail Address] AS [AMBC PM Mail Address], 
     [AMBC_Active_Emp_view].[Client] AS [Client], 
     [AMBC_Active_Emp_view].[Shift] AS [Shift], 
     [AMBC_Active_Emp_view].[Project Name] AS [Project Name], 
     [AMBC_Active_Emp_view].[Project Status] AS [Project Status], 
     [AMBC_Active_Emp_view].[Employee Status] AS [Employee Status], 
-    [AMBC_Active_Emp_view].[Location] AS [Location]
+    [AMBC_Active_Emp_view].[Location] AS [Location], 
+    [AMBC_Active_Emp_view].[AMBC Mail Address] AS [AMBC Mail Address], 
+    [AMBC_Active_Emp_view].[AMBC Project Manager] AS [AMBC Project Manager], 
+    [AMBC_Active_Emp_view].[AMBC PM Mail Address] AS [AMBC PM Mail Address], 
+    [AMBC_Active_Emp_view].[Employee Joining Day] AS [Employee Joining Day]
     FROM [dbo].[AMBC_Active_Emp_view] AS [AMBC_Active_Emp_view]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="today_att" EntityType="Self.today_att" store:Type="Views" store:Schema="dbo">
@@ -664,7 +687,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TimesheetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="C__MigrationHistory">
+        <!--<EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
             <PropertyRef Name="ContextKey" />
@@ -673,7 +696,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
+        </EntityType>-->
         <EntityType Name="ambctaskcapture">
           <Key>
             <PropertyRef Name="uniquekey" />
@@ -692,7 +715,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="projstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="taskdate" Type="DateTime" Precision="0" />
           <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="incidentnumber" Type="String" />
+          <Property Name="incidentnumber" Type="String" MaxLength="1500" Unicode="false" FixedLength="false" />
           <Property Name="taskdetails" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="requester" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="callpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -704,7 +727,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="currentyear" Type="Int32" annotation:StoreGeneratedPattern="None" />
           <Property Name="shiftdetails" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="submittedtime" Type="DateTime" Precision="3" />
-          <Property Name="uniquekey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="uniquekey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="con_leaveupdate">
           <Key>
@@ -787,6 +810,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="CategoryTypeID" Type="Int32" />
           <Property Name="ambc_manager" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="ambc_manager_mailid" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="emp_joindate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="emp_info_log">
           <Key>
@@ -945,31 +969,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="submitted_time" Type="DateTime" Precision="3" />
           <Property Name="submitted_ipaddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="submitted_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="TimeSheet">
-          <Key>
-            <PropertyRef Name="tslogno" />
-          </Key>
-          <Property Name="tslogno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="employeeid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="employeename" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="empdesignation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="empmanager" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="empcontactnumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="clientname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="projectname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="projstatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="taskdate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="category" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="incidentnumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="taskdetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="requester" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="callpriority" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="callstatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="closeddate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="timespent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
+        </EntityType>        
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -1070,19 +1070,19 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="holiday_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="ticket_category">
+        <!--<EntityType Name="ticket_category">
           <Key>
-            <PropertyRef Name="sno" />
+            <PropertyRef Name="CategoryTypeID" />
           </Key>
-          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="category_type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-        </EntityType>
+          <Property Name="CategoryTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>-->
         <EntityType Name="ticket_priority">
           <Key>
             <PropertyRef Name="sno" />
           </Key>
-          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tpriority" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />          
+          <Property Name="ticketpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AMBC_Active_Emp">
           <Key>
@@ -1106,6 +1106,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
             <PropertyRef Name="Contact_Number" />
             <PropertyRef Name="Designation" />
             <PropertyRef Name="Employee_Status" />
+            <PropertyRef Name="AMBC_Mail_Address" />
           </Key>
           <Property Name="Employee_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Employee_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -1120,6 +1121,8 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Project_Status" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Employee_Status" Type="Boolean" Nullable="false" />
           <Property Name="Location" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AMBC_Mail_Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Joining_Day" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="today_att">
           <Key>
@@ -1142,7 +1145,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_IP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="TimeSheetEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <!--<EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />-->
           <EntitySet Name="ambctaskcaptures" EntityType="Self.ambctaskcapture" />
           <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" />
           <EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" />
@@ -1158,7 +1161,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidays" EntityType="Self.tblambcholiday" />
           <EntitySet Name="tblambcholidaylogs" EntityType="Self.tblambcholidaylog" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" />
-          <EntitySet Name="TimeSheets" EntityType="Self.TimeSheet" />
+          <!--<EntitySet Name="TimeSheets" EntityType="Self.TimeSheet" />-->
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="CategoryLists" EntityType="Self.CategoryList" />
           <EntitySet Name="CategoryTypes" EntityType="Self.CategoryType" />
@@ -1167,28 +1170,38 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="con_leaveupdate20220510" EntityType="Self.con_leaveupdate20220510" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" />
           <EntitySet Name="tblambcholiday_06May2022" EntityType="Self.tblambcholiday_06May2022" />
-          <EntitySet Name="ticket_category" EntityType="Self.ticket_category" />
+          <!--<EntitySet Name="ticket_category" EntityType="Self.ticket_category" />-->
           <EntitySet Name="ticket_priority" EntityType="Self.ticket_priority" />
           <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" />
           <EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" />
           <EntitySet Name="today_att" EntityType="Self.today_att" />
+          <EntitySet Name="tbld_ambclogininformation" EntityType="TimesheetDBModel.tbld_ambclogininformation" />
         </EntityContainer>
+        <EntityType Name="tbld_ambclogininformation">
+          <Key>
+            <PropertyRef Name="login_id" />
+          </Key>
+          <Property Name="login_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Employee_Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Designation" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Shift" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Login_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Signin_Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Signout_Time" Type="DateTime" Precision="3" />
+          <Property Name="Working_Hours" Type="Int32" />
+          <Property Name="Employee_Hostname" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_IP" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Concat_loginstring" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsSignOutBySystem" Type="Boolean" />
+          <Property Name="Employee_LoginLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TimesheetDBModelStoreContainer" CdmEntityContainer="TimeSheetEntities">
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="TimesheetDBModel.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ambctaskcaptures">
             <EntityTypeMapping TypeName="TimesheetDBModel.ambctaskcapture">
               <MappingFragment StoreEntitySet="ambctaskcapture">
@@ -1292,6 +1305,7 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="emp_info">
             <EntityTypeMapping TypeName="TimesheetDBModel.emp_info">
               <MappingFragment StoreEntitySet="emp_info">
+                <ScalarProperty Name="emp_joindate" ColumnName="emp_joindate" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
                 <ScalarProperty Name="employee_name" ColumnName="employee_name" />
                 <ScalarProperty Name="employee_desg" ColumnName="employee_desg" />
@@ -1476,31 +1490,6 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TimeSheets">
-            <EntityTypeMapping TypeName="TimesheetDBModel.TimeSheet">
-              <MappingFragment StoreEntitySet="TimeSheets">
-                <ScalarProperty Name="tslogno" ColumnName="tslogno" />
-                <ScalarProperty Name="employeeid" ColumnName="employeeid" />
-                <ScalarProperty Name="employeename" ColumnName="employeename" />
-                <ScalarProperty Name="empdesignation" ColumnName="empdesignation" />
-                <ScalarProperty Name="empmanager" ColumnName="empmanager" />
-                <ScalarProperty Name="empcontactnumber" ColumnName="empcontactnumber" />
-                <ScalarProperty Name="clientname" ColumnName="clientname" />
-                <ScalarProperty Name="projectname" ColumnName="projectname" />
-                <ScalarProperty Name="projstatus" ColumnName="projstatus" />
-                <ScalarProperty Name="taskdate" ColumnName="taskdate" />
-                <ScalarProperty Name="category" ColumnName="category" />
-                <ScalarProperty Name="incidentnumber" ColumnName="incidentnumber" />
-                <ScalarProperty Name="taskdetails" ColumnName="taskdetails" />
-                <ScalarProperty Name="requester" ColumnName="requester" />
-                <ScalarProperty Name="callpriority" ColumnName="callpriority" />
-                <ScalarProperty Name="callstatus" ColumnName="callstatus" />
-                <ScalarProperty Name="closeddate" ColumnName="closeddate" />
-                <ScalarProperty Name="timespent" ColumnName="timespent" />
-                <ScalarProperty Name="comments" ColumnName="comments" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="TimesheetDBModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -1594,19 +1583,19 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ticket_category">
+          <!--<EntitySetMapping Name="ticket_category">
             <EntityTypeMapping TypeName="TimesheetDBModel.ticket_category">
               <MappingFragment StoreEntitySet="ticket_category">
+                <ScalarProperty Name="ticketcategory" ColumnName="ticketcategory" />
                 <ScalarProperty Name="sno" ColumnName="sno" />
-                <ScalarProperty Name="category_type" ColumnName="category_type" />
               </MappingFragment>
             </EntityTypeMapping>
-          </EntitySetMapping>
+          </EntitySetMapping>-->
           <EntitySetMapping Name="ticket_priority">
             <EntityTypeMapping TypeName="TimesheetDBModel.ticket_priority">
               <MappingFragment StoreEntitySet="ticket_priority">
+                <ScalarProperty Name="ticketpriority" ColumnName="ticketpriority" />
                 <ScalarProperty Name="sno" ColumnName="sno" />
-                <ScalarProperty Name="tpriority" ColumnName="tpriority" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1626,6 +1615,8 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AMBC_Active_Emp_view">
             <EntityTypeMapping TypeName="TimesheetDBModel.AMBC_Active_Emp_view">
               <MappingFragment StoreEntitySet="AMBC_Active_Emp_view">
+                <ScalarProperty Name="Employee_Joining_Day" ColumnName="Employee Joining Day" />
+                <ScalarProperty Name="AMBC_Mail_Address" ColumnName="AMBC Mail Address" />
                 <ScalarProperty Name="Employee_ID" ColumnName="Employee ID" />
                 <ScalarProperty Name="Employee_Name" ColumnName="Employee Name" />
                 <ScalarProperty Name="Contact_Number" ColumnName="Contact Number" />
@@ -1657,6 +1648,26 @@ warning 6002: The table/view 'TimeSheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="Signout_Time" ColumnName="Signout_Time" />
                 <ScalarProperty Name="Working_Hours" ColumnName="Working_Hours" />
                 <ScalarProperty Name="Employee_IP" ColumnName="Employee_IP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbld_ambclogininformation">
+            <EntityTypeMapping TypeName="TimesheetDBModel.tbld_ambclogininformation">
+              <MappingFragment StoreEntitySet="tbld_ambclogininformation">
+                <ScalarProperty Name="Employee_LoginLocation" ColumnName="Employee_LoginLocation" />
+                <ScalarProperty Name="IsSignOutBySystem" ColumnName="IsSignOutBySystem" />
+                <ScalarProperty Name="Concat_loginstring" ColumnName="Concat_loginstring" />
+                <ScalarProperty Name="Employee_IP" ColumnName="Employee_IP" />
+                <ScalarProperty Name="Employee_Hostname" ColumnName="Employee_Hostname" />
+                <ScalarProperty Name="Working_Hours" ColumnName="Working_Hours" />
+                <ScalarProperty Name="Signout_Time" ColumnName="Signout_Time" />
+                <ScalarProperty Name="Signin_Time" ColumnName="Signin_Time" />
+                <ScalarProperty Name="Login_date" ColumnName="Login_date" />
+                <ScalarProperty Name="Employee_Shift" ColumnName="Employee_Shift" />
+                <ScalarProperty Name="Employee_Designation" ColumnName="Employee_Designation" />
+                <ScalarProperty Name="Employee_Name" ColumnName="Employee_Name" />
+                <ScalarProperty Name="Employee_Code" ColumnName="Employee_Code" />
+                <ScalarProperty Name="login_id" ColumnName="login_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

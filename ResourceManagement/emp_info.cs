@@ -26,5 +26,6 @@ namespace ResourceManagement
         public Nullable<int> CategoryTypeID { get; set; }
         public string ambc_manager { get; set; }
         public string ambc_manager_mailid { get; set; }
+        public Nullable<System.DateTime> emp_joindate { get; set; }
     }
 }

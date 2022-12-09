@@ -31,9 +31,9 @@ namespace ResourceManagement.Controllers
             return RedirectToAction("Login");
         }
 
-        public JsonResult SignInSignOut()
+        public JsonResult SignIn()
         {
-            var respone = new JsonResponseModel();
+            var respone = new SignInOurResponseModel();
 
             try
             {
@@ -45,11 +45,10 @@ namespace ResourceManagement.Controllers
                     string hostName = Dns.GetHostName(); // Retrive the Name of HOST
 
                     // Get the IP
-                    string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                    string myIP = Dns.GetHostEntry(hostName).AddressList[0].ToString();
 
-                    var ambcEmpLoginInfo = new tbl_ambclogininformation()
+                    var ambcEmpLoginInfo = new tbld_ambclogininformation()
                     {
-                        AMBCLogin_id = "AMBC_LoginInfo_" + employeeModel.AMBC_Active_Emp_view.Employee_ID,
                         Employee_Code = employeeModel.AMBC_Active_Emp_view.Employee_ID,
                         Employee_Name = employeeModel.AMBC_Active_Emp_view.Employee_Name,
                         Employee_Designation = employeeModel.AMBC_Active_Emp_view.Designation,
@@ -57,21 +56,23 @@ namespace ResourceManagement.Controllers
                         Login_date = todayDate,
                         Signin_Time = todayDate,
                         Employee_Hostname = hostName,
-                        Employee_IP = myIP
+                        Employee_IP = myIP,
+                        Employee_LoginLocation = employeeModel.AMBC_Active_Emp_view.Location
                     };
 
                     using (var context = new TimeSheetEntities())
                     {
-                        context.tbl_ambclogininformation.Add(ambcEmpLoginInfo);
+                        context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
                         context.SaveChanges();
-                        respone.StatusCode = 200;
-                        respone.Message = "TimeSheet added successfully!";
+                        respone.jsonResponse.StatusCode = 200;
+                        respone.jsonResponse.Message = "TimeSheet added successfully!";
+                        respone.signin = true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                respone.StatusCode = 500;
+                respone.jsonResponse.StatusCode = 500;
                 if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
                 {
                     var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
@@ -80,18 +81,87 @@ namespace ResourceManagement.Controllers
                     {
                         if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
                         {
-                            respone.Message = actuallError;
+                            respone.jsonResponse.Message = actuallError;
                         }
                     }
                 }
                 else
                 {
-                    respone.Message = ex.Message;
+                    respone.jsonResponse.Message = ex.Message;
                 }
             }
 
             return Json(respone, JsonRequestBehavior.AllowGet);
         }
+
+
+        public JsonResult SignOut()
+        {
+            var respone = new SignInOurResponseModel();
+
+            try
+            {
+                if (Session["UserModel"] != null)
+                {
+                    var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+                    using (var context = new TimeSheetEntities())
+                    {
+                        var result = context.tbld_ambclogininformation.SingleOrDefault(b => b.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && b.Login_date == DateTime.Today);
+                        if (result != null)
+                        {
+                            result.Signout_Time = System.DateTime.Now;                        
+                            context.SaveChanges();
+                            respone.jsonResponse.StatusCode = 200;
+                            respone.jsonResponse.Message = "TimeSheet added successfully!";
+                        }
+                        else
+                        {
+                            respone.jsonResponse.StatusCode = 400;
+                            respone.jsonResponse.Message = "No results found to update!";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respone.jsonResponse.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            respone.jsonResponse.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    respone.jsonResponse.Message = ex.Message;
+                }
+            }
+
+            return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
+        private tbld_ambclogininformation GetSignInDetails(RMA_EmployeeModel employeeModel)
+        {
+            var todayDate = DateTime.Today;
+            using (var context = new TimeSheetEntities())
+            {
+                var result = context.tbld_ambclogininformation.SingleOrDefault(b => b.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && b.Login_date == todayDate);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
+
+
 
         public ActionResult TimesheetWeeklyChart(List<WeekReportModel> weekreportmodel)
         {
@@ -158,6 +228,12 @@ namespace ResourceManagement.Controllers
                                 employeeModel.AMBC_Active_Emp_view = employeeInfo;
                             }
 
+                            var empSignInOutInfo = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(loginObj.employee_id) && a.Login_date == DateTime.Today).FirstOrDefault();
+                            if (empSignInOutInfo != null)
+                            {
+                                employeeModel.signInOutInfo = empSignInOutInfo;
+                            }
+
                             Session["UserModel"] = employeeModel;
 
                             return RedirectToAction("Dashboard");
@@ -184,8 +260,8 @@ namespace ResourceManagement.Controllers
             var leaveOrHolidayData = new List<RMA_LeaveOrHolidayInfo>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var startDate = System.DateTime.Now.AddMonths(-2);
-                var endDate = System.DateTime.Now;
+                var startDate = DateTime.Today.AddMonths(-2);
+                var endDate = DateTime.Today;
 
                 var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(empModel.AMBC_Active_Emp_view.Employee_ID) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
                 if (conleaves != null && conleaves.Count > 0)
@@ -230,6 +306,7 @@ namespace ResourceManagement.Controllers
 
                 if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
+                    employeeModel.signInOutInfo = GetSignInDetails(employeeModel);
                     ViewBag.Message = "Dashboard page.";
                     return View(employeeModel);
                 }

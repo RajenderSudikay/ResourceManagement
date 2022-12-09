@@ -56,7 +56,7 @@
 
                                         </li>
                                         <li>
-                                            <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Report Manager:</b>
+                                            <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
                                             <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
 
                                         </li>
@@ -82,7 +82,7 @@
 
                                         <li>
                                             <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
-                                            @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
+                                            <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
                                         </li>
                                         <li>
                                             <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
@@ -113,8 +113,22 @@
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         @*<a href="/timesheet" class="btn btn-custom"></a>*@
-                        <button type="submit" class="signin-signout btn-info">Check-In</button>
+
                     </div>
+                    <div class="modal-footer header-nav-modalfooter">
+                        @{
+                            var showCheckIn = Model.signInOutInfo == null ? "show" : "hide";
+                            var showCheckOut = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time == null ? "show" : "hide";
+                            var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
+                        }
+
+                        <button type="submit" class="signin btn-info @showCheckIn">Check-In</button>
+                        <button type="submit" class="signout btn-info @showCheckOut">Check-Out</button>
+                        <label class="@showLabel done-forday">Have a nice day! See you tomorrow!</label>
+
+
+                    </div>
+
                 </div>
 
             </div>
@@ -123,6 +137,9 @@
                     <img src="~/Assets/TimeSheet.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
                         <a href="/timesheet" class="btn btn-info">Timesheet</a>
                     </div>
                 </div>
@@ -133,6 +150,9 @@
                     <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
                         <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info">KRA Report</a>
                     </div>
                 </div>
@@ -146,7 +166,9 @@
                     <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-info">Payroll</a>
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
+                        <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info">KRA Report</a>
                     </div>
                 </div>
 
@@ -156,6 +178,8 @@
                     <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
                         <a href="#" class="btn btn-info">Appraisal</a>
                     </div>
                 </div>
@@ -165,6 +189,9 @@
                     <img src="~/Assets/hr.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
                         <a href="#" class="btn btn-info">HR Letters</a>
                     </div>
                 </div>
@@ -174,15 +201,47 @@
 </div>
 
 <script>
-    jQuery(".signin-signout").click(function () {
+    jQuery(".signin").click(function () {
         jQuery.ajax({
             type: "POST",
-            url: "/signinsignout",
+            url: "/signin",
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                if (data.StatusCode == 200) {
+                if (data.jsonResponse.StatusCode == 200) {
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                    jQuery('.signout').show();
+                    jQuery('.signout').removeClass('hide');
                 }
                 else {
+                    jQuery('.signin').show();
+                    jQuery('.signin').removeClass('hide');
+                    jQuery('.signout').hide();
+                    jQuery('.signout').removeClass('show');
+                }
+            }
+        });
+    });
+
+    jQuery(".signout").click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/signout",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.jsonResponse.StatusCode == 200) {
+                    jQuery('.done-forday').show();
+                    jQuery('.done-forday').removeClass('hide');
+                    jQuery('.signout').hide();
+                    jQuery('.signout').removeClass('show');
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                }
+                else {
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                    jQuery('.signout').show();
+                    jQuery('.signout').removeClass('hide');
                 }
             }
         });

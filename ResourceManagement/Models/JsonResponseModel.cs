@@ -16,6 +16,18 @@ namespace ResourceManagement.Models
 
     }
 
+    public class SignInOurResponseModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+
+        [JsonPropertyName("signin")]
+        public bool signin { get; set; } = false;
+
+        [JsonPropertyName("signout")]
+        public bool signout { get; set; } = false;
+
+    }
+
     public class WeekReportModel
     {
         [JsonPropertyName("weekday")]

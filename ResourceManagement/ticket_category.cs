@@ -16,5 +16,6 @@ namespace ResourceManagement
     {
         public int sno { get; set; }
         public string category_type { get; set; }
+        public string ticketcategory { get; set; }
     }
 }

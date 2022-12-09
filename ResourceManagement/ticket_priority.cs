@@ -16,5 +16,6 @@ namespace ResourceManagement
     {
         public int sno { get; set; }
         public string tpriority { get; set; }
+        public string ticketpriority { get; set; }
     }
 }
