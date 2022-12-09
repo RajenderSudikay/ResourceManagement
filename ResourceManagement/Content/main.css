@@ -697,8 +697,13 @@ input[type=number] {
     border-radius: 10px;
 }
 
-#modal-warning-message-popup {
-    padding-top: 250px;
+#modal-warning-message-popup {  
+    color: #2167ae;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom:30px;
+    margin-left:0px;
 }
 
 .glyphicon-edit {
@@ -740,14 +745,24 @@ input[type=number] {
 }
 
 .modal-header {
-    background-color: #eee;
+    background-color: #779ecb;
 }
 .modal-footer {
     background-color: #eee;
 }
 
-.exampleModalLabel{
-    font-size:large !important;
+.timesheet-addreport {
+    background-color: #779ecb;
+    border-radius: 20px;
+}
+
+.timesheet-addreport-cancel {
+    background-color: #e5a4b4;
+    border-radius: 20px;
+}
+
+.exampleModalLabel {
+    font-size: large !important;
 }
 .modal-header-success-custommessage {
     background-color: #2dd284;
@@ -785,3 +800,14 @@ input[type=number] {
     height: 40px;
     background-color: #88cef7
 }
+
+.modal-warning-popup-btn {
+    border-radius: 20px;
+    width: 100px;
+    margin-bottom: 30px;
+    margin-left: 0px;
+    height: 40px;
+    background-color: #779ecb;
+    margin-top: 30px;
+}
+
