@@ -749,3 +749,39 @@ input[type=number] {
 .exampleModalLabel{
     font-size:large !important;
 }
+.modal-header-success-custommessage {
+    background-color: #2dd284;
+}
+
+.modal-body-custom-success {
+    padding-top: 60px;
+    color: #2167ae;
+    height: 200px;
+}
+.modal-success-popup-btn {   
+    border-radius: 20px;
+    width: 100px;
+    margin-bottom: 30px;
+    margin-left: 192px;
+    height: 40px;
+    background-color: #2dd284
+}
+
+.modal-header-information-custommessage {
+    background-color: #88cef7;
+}
+
+.modal-body-custom-information {
+    padding-top: 60px;
+    color: #2167ae;
+    height: 200px;
+}
+
+.modal-information-popup-btn {
+    border-radius: 20px;
+    width: 100px;
+    margin-bottom: 30px;
+    margin-left: 192px;
+    height: 40px;
+    background-color: #88cef7
+}

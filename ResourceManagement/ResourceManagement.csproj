@@ -296,6 +296,11 @@
     <Content Include="Assets\Icons\supervisor.png" />
     <Content Include="Assets\Icons\woman.png" />
     <Content Include="Assets\Payroll.png" />
+    <Content Include="Assets\PopupIcons\error.svg" />
+    <Content Include="Assets\PopupIcons\info.svg" />
+    <Content Include="Assets\PopupIcons\question.svg" />
+    <Content Include="Assets\PopupIcons\success.svg" />
+    <Content Include="Assets\PopupIcons\warning.svg" />
     <Content Include="Assets\Profile Photo.jpg" />
     <Content Include="Assets\Rajender_Passport_Photo.jpg" />
     <Content Include="Assets\Report.png" />
