@@ -8,6 +8,7 @@ using System.Web.Mvc;
 namespace ResourceManagement.Controllers
 {
     using Models;
+    using SelectPdf;
     using System;
     using System.Net;
     using System.Text.Json;
@@ -15,6 +16,57 @@ namespace ResourceManagement.Controllers
 
     public class HomeController : Controller
     {
+      
+        public ActionResult Convert()
+        {
+            // read parameters from the webpage
+            string url = "https://localhost:44375/dashboard";
+
+            string pdf_page_size = "10";
+            PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), pdf_page_size, true);
+
+            string pdf_orientation = "Landscape";
+            PdfPageOrientation pdfOrientation = (PdfPageOrientation)Enum.Parse(
+                typeof(PdfPageOrientation), pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            try
+            {
+                webPageWidth = System.Convert.ToInt32(1024);
+            }
+            catch { }
+
+            int webPageHeight = 0;
+            try
+            {
+                webPageHeight = System.Convert.ToInt32(700);
+            }
+            catch { }
+
+            // instantiate a html to pdf converter object
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            PdfDocument doc = converter.ConvertUrl(url);
+
+            // save pdf document
+            byte[] pdf = doc.Save();
+
+            // close pdf document
+            doc.Close();
+
+            // return resulted pdf document
+            FileResult fileResult = new FileContentResult(pdf, "application/pdf");
+            fileResult.FileDownloadName = "Document.pdf";
+            return fileResult;
+        }
+
         public ActionResult Error()
         {
             return View("~/Views/Shared/Error.cshtml");
@@ -110,7 +162,7 @@ namespace ResourceManagement.Controllers
                         var result = context.tbld_ambclogininformation.SingleOrDefault(b => b.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && b.Login_date == DateTime.Today);
                         if (result != null)
                         {
-                            result.Signout_Time = System.DateTime.Now;                        
+                            result.Signout_Time = System.DateTime.Now;
                             context.SaveChanges();
                             respone.jsonResponse.StatusCode = 200;
                             respone.jsonResponse.Message = "TimeSheet added successfully!";
