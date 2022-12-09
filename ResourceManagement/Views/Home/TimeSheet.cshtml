@@ -317,8 +317,8 @@
                     </div>
 
                     <div class="modal-footer mt-xl-4">
-                        <button type="button" class="btn btn-secondary btn-lg timesheet-addreport-cancel btn-lg" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-lg timesheet-addreport" data-updatedindexid="" data-uniqueid="">Add Report</button>
+                        <button type="button" class="btn btn-secondary btn-lg timesheet-addreport-cancel btn-lg" data-dismiss="modal"><b>Close</b></button>
+                        <button type="submit" class="btn btn-primary btn-lg timesheet-addreport" data-updatedindexid="" data-uniqueid=""><b>Add Report</b></button>
                     </div>
 
                 </form>
@@ -375,6 +375,7 @@
                 <div style="height: 60px; background-color: #92d0e8"></div>
             </div>
             <div class="modal-body">
+                <h2 class="warning-message-popup-title"></h2>
                 <div class="warning-message-popup" style="padding-top:30px"></div>
             </div>
             <div class="">
@@ -383,10 +384,6 @@
         </div>
     </div>
 </div>
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-final-submit-alert">
-    Launch demo modal
-</button>
 
 <div class="modal" tabindex="-1" role="dialog" id="modal-final-submit-alert">
     <div class="modal-dialog modal-lg" role="document" style="padding-top:0px">
@@ -447,6 +444,64 @@
             <div class="model-footerbtn-custom">
                 <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal">No</button>
                 <button type="submit" class="btn btn-warning btn-lg timesheet-submit-final btn-alert-yes" data-updatedindexid="" data-uniqueid="">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-delete-alert">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-delete-custommessage">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: -20px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
+<g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M35.707,16.293c-0.391-0.391-1.023-0.391-1.414,0L26,24.586l-8.293-8.293c-0.391-0.391-1.023-0.391-1.414,0
+		s-0.391,1.023,0,1.414L24.586,26l-8.293,8.293c-0.391,0.391-0.391,1.023,0,1.414C16.488,35.902,16.744,36,17,36
+		s0.512-0.098,0.707-0.293L26,27.414l8.293,8.293C34.488,35.902,34.744,36,35,36s0.512-0.098,0.707-0.293
+		c0.391-0.391,0.391-1.023,0-1.414L27.414,26l8.293-8.293C36.098,17.316,36.098,16.684,35.707,16.293z" />
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-boday-title">Are you sure you want to delete the record.</h2>
+                <div class="delete-message-popup"></div>
+            </div>
+            <div class="model-footerbtn-delete-custom">
+                <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-secondary modal-delete-popup-btn" data-updatedindexid="" data-uniqueid="">Yes</button>
             </div>
         </div>
     </div>
@@ -643,8 +698,7 @@
 
 
     jQuery(".add-task-details").click(function () {
-        //jQuery('.timesheet-updatereport').hide();
-        //jQuery('.timesheet-addreport').show();
+        $(".timesheet-addreport").text("Add Report");
         jQuery('.database-response').text("");
         jQuery('.needs-validation').removeClass('was-validated');
         var isStartDateEntered = true;
@@ -821,7 +875,7 @@
 
     jQuery(".timesheet-submit").click(function () {
         if (timeSheetList.length <= 0) {
-            jQuery('.warning-message-popup').html("Bad request. Please enter task details!");
+            jQuery('.warning-message-popup').html("<h2>Bad request. Please enter task details!</h2>");
             jQuery('#modal-warning-message-popup').modal('show');
         }
         else {
@@ -879,8 +933,9 @@
                 jQuery('#modal-final-submit-alert').modal('show');
             }
             else {
-                jQuery('.database-response').addClass('text-danger');
-                jQuery('.warning-message-popup').html(missedDatesData + "<br><h2>Please fill the task details for the date(s) mentioned.</h2>");
+                jQuery('.database-response').addClass('text-danger');                
+                jQuery('.warning-message-popup-title').html("Please fill the task details for the date(s) mentioned.")
+                jQuery('.warning-message-popup').html(missedDatesData + "<br><h2></h2>");
                 jQuery('#modal-warning-message-popup').modal('show');
             }
         }
@@ -938,8 +993,45 @@
     }
 
     function DeleteTimeSheetRow(ele) {
-        timeSheetWeeklyHours = new Array();
         var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
+        jQuery('.modal-delete-popup-btn').attr("data-uniqueid", selectedUniqueItemKey);
+        var deleteMessageText = "";
+
+        jQuery.each(timeSheetList, function (i, item) {
+            if (item.uniquekey == selectedUniqueItemKey) {
+                requiredIndexNum = i;
+                deleteMessageText += "<b>" + "Task Date: </b>" + item.taskdate + "<br>"
+                    + "<b>" + "Category: </b>" + item.callpriority + "<br>"
+                    + "<b>" + "Incident Number: </b>" + item.incidentnumber + "<br>"
+                    + "<b>" + "Incident Desc: </b>" + item.taskdetails + "<br>"
+                    + "<b>" + "Requester: </b>" + item.requester + "<br>"
+                    + "<b>" + "Urgency: </b>" + item.callpriority + "<br>"
+                    + "<b>" + "Status: </b>" + item.callstatus + "<br>"
+                    + "<b>" + "Date Closed: </b>" + item.closeddate + "<br>"
+                    + "<b>" + "Comments: </b>" + item.comments + "<br>"
+            }
+        });
+
+        jQuery('.delete-message-popup').html(deleteMessageText);
+
+        jQuery('#modal-delete-alert').modal('show');
+    }
+
+    //On Page load will display empty chart report
+    jQuery.ajax({
+        url: "/timesheetweeklychart",
+        type: "POST",
+        dataType: "html",
+        data: { weekreportmodel: timeSheetWeeklyHours },
+        success: function (data) {
+            $('#chartContainer').html(data);
+        }
+    });
+
+    //Final submit post confirmation
+    jQuery(".modal-delete-popup-btn").click(function () {
+        timeSheetWeeklyHours = new Array();
+        var selectedUniqueItemKey = jQuery('.modal-delete-popup-btn').attr("data-uniqueid");
         var requiredIndexNum = "";
 
         jQuery.each(timeSheetList, function (i, item) {
@@ -962,17 +1054,9 @@
         if ($('.user-added-timesheet').length <= 0) {
             jQuery('.default-table-row').show();
         }
-    }
 
-    //On Page load will display empty chart report
-    jQuery.ajax({
-        url: "/timesheetweeklychart",
-        type: "POST",
-        dataType: "html",
-        data: { weekreportmodel: timeSheetWeeklyHours },
-        success: function (data) {
-            $('#chartContainer').html(data);
-        }
+
+        jQuery('#modal-delete-alert').modal('hide');
     });
 
 </script>

@@ -758,13 +758,16 @@ input[type=number] {
 .timesheet-addreport {
     background-color: #779ecb;
     border-radius: 20px;
+    height: 40px;
 }
 
 .timesheet-addreport-cancel {
     background-color: #d85261;
-    border-radius: 20px;
+    border-radius: 20px !important;
     width: 100px;
     margin-left: 0px;
+    border-radius: 20px;
+    height: 40px;
 }
 
 .exampleModalLabel {
@@ -815,7 +818,7 @@ input[type=number] {
     margin-bottom: 30px;
     margin-left: 0px;
     height: 40px;
-    background-color: #779ecb;
+    background-color: #d85261;
     margin-top: 30px;
 }
 
@@ -845,4 +848,35 @@ input[type=number] {
     width: 330px;
     background-color: #2167ae;
     border: 1px solid #2167ae;
+}
+
+.modal-header-delete-custommessage {
+    background-color: #d85261;
+}
+
+.model-footerbtn-delete-custom {
+    margin-left: 150px;
+    margin-bottom: 10px;
+    padding-top: 30px;
+}
+
+.modal-delete-popup-btn {
+    border-radius: 20px;
+    width: 100px;
+    margin-bottom: 30px;
+    margin-left: 0px;
+    height: 40px;
+    background-color: #779ecb;
+    margin-top: 30px;
+}
+
+.delete-message-popup {
+    text-align: center;
+    color: #2167ae;
+    font-size: medium;
+    padding-top: 30px;
+}
+
+.warning-message-popup-title{
+    padding-top:30px;
 }
