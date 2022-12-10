@@ -19,7 +19,7 @@
             <img class="card-img-top login-card-img-top" src="~/Assets/AMBC_Logo.png" alt="Card image cap">
             <div class="card-body login-card-body">
                 <div class="login-form">
-                    
+
                     <br />
                     <br />
 
@@ -39,8 +39,11 @@
                             @Html.PasswordFor(a => a.att_password, new { @class = "form-control" })
                             @Html.ValidationMessageFor(a => a.att_password, "", new { @class = "text-danger" })
                         </div>
-                        <button type="submit" class="btn btn-info btn-lg">Login</button>
-                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        <div class="model-footer">
+                            <button type="submit" class="btn btn-info btn-lg">Login</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        </div>
+
                     }
                 </div>
             </div>

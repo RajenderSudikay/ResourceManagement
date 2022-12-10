@@ -830,6 +830,7 @@ input[type=number] {
     background-color: #fada5e;
     border-radius: 20px;
     width: 100px;
+    height: 40px;
 }
 
 .model-footerbtn-custom {
@@ -877,6 +878,20 @@ input[type=number] {
     padding-top: 30px;
 }
 
-.warning-message-popup-title{
-    padding-top:30px;
+.warning-message-popup-title {
+    padding-top: 30px;
+}
+
+.database-response {
+    padding-top: 60px;
+    color: #2167ae;
+    height: 146px;
+    text-align: center;
+    font-size: medium;
+}
+
+.model-footerbtn-dberror-custom {
+    margin-left: 190px;
+    margin-bottom: 25px;
+    padding-top: 20px;
 }

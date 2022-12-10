@@ -5,7 +5,7 @@
 }
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="#"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -121,9 +121,9 @@
                         Click here to add task details
                     </button>&nbsp;&nbsp;
                 </div>
-                <div class="col-md-9">
-                    <h2 class="database-response"></h2>
-                </div>
+                @*<div class="col-md-9">
+                        <h2 class="database-response"></h2>
+                    </div>*@
             </div>
             <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
         </form>
@@ -502,6 +502,138 @@
             <div class="model-footerbtn-delete-custom">
                 <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal">No</button>
                 <button type="submit" class="btn btn-secondary modal-delete-popup-btn" data-updatedindexid="" data-uniqueid="">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal message-success-popup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-success-custommessage">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: 190px; padding-top: 30px; margin-bottom: 30px;" xml:space="preserve" width="50px">
+                <g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M38.252,15.336l-15.369,17.29l-9.259-7.407c-0.43-0.345-1.061-0.274-1.405,0.156c-0.345,0.432-0.275,1.061,0.156,1.406
+		l10,8C22.559,34.928,22.78,35,23,35c0.276,0,0.551-0.114,0.748-0.336l16-18c0.367-0.412,0.33-1.045-0.083-1.411
+		C39.251,14.885,38.62,14.922,38.252,15.336z" />
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                                </svg>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <h2 class="modal-body-custom-success">
+                    Hey @Model.AMBC_Active_Emp_view.Employee_Name
+                    <br />
+                    <br />
+                    Thank you for submitting the timesheet.
+                </h2>
+            </div>
+
+            <div class="">
+                <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-db-error-alert">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-delete-custommessage">
+
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: -20px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
+<g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M35.707,16.293c-0.391-0.391-1.023-0.391-1.414,0L26,24.586l-8.293-8.293c-0.391-0.391-1.023-0.391-1.414,0
+		s-0.391,1.023,0,1.414L24.586,26l-8.293,8.293c-0.391,0.391-0.391,1.023,0,1.414C16.488,35.902,16.744,36,17,36
+		s0.512-0.098,0.707-0.293L26,27.414l8.293,8.293C34.488,35.902,34.744,36,35,36s0.512-0.098,0.707-0.293
+		c0.391-0.391,0.391-1.023,0-1.414L27.414,26l8.293-8.293C36.098,17.316,36.098,16.684,35.707,16.293z" />
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-boday-title">
+                    Hey @Model.AMBC_Active_Emp_view.Employee_Name <br />
+                    Please correct the below duplicate recored details
+                </h2>
+                <div class="database-response"></div>
+                <br />
+                <div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of TaskDate_IncidentNumber_TimeSpentHours</p></div>
+
+            </div>
+            <div class="model-footerbtn-dberror-custom">
+                <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal"><b>Ok</b></button>
             </div>
         </div>
     </div>
@@ -950,14 +1082,17 @@
             data: JSON.stringify({ timesheetmodel: timeSheetList }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
+                jQuery('#modal-final-submit-alert').modal('hide');
                 if (data.StatusCode == 200) {
                     jQuery('.database-response').addClass('text-success');
+                    jQuery('.message-success-popup').modal('show');
                 }
                 else {
-                    jQuery('.database-response').addClass('text-danger');
+                    /* jQuery('.database-response').addClass('text-danger');*/
+                    jQuery('.database-response').text(data.Message);
+                    jQuery('#modal-db-error-alert').modal('show');
                 }
-                jQuery('.database-response').text(data.Message);
-                jQuery('#modal-final-submit-alert').modal('hide');
+                /* jQuery('.database-response').text(data.Message);   */
             }
         });
     });

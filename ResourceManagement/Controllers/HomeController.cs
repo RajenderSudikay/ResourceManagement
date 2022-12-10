@@ -16,7 +16,7 @@ namespace ResourceManagement.Controllers
 
     public class HomeController : Controller
     {
-      
+
         public ActionResult Convert()
         {
             // read parameters from the webpage
@@ -442,6 +442,15 @@ namespace ResourceManagement.Controllers
                 }
             }
             return respone;
+        }
+
+
+        public List<ambctaskcapture> GetEmployeeTimeSheets(TimeSheetViewModel timeSheetViewModel)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                return db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetViewModel.EmpId) && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)).ToList();
+            }
         }
     }
 }

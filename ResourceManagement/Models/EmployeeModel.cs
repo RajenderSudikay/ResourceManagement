@@ -36,4 +36,12 @@ namespace ResourceManagement.Models
         public string LeaveOrHolidayDate { get; set; }
         public string Reason { get; set; }
     }
+
+    public class TimeSheetViewModel
+    {
+        public string EmpId { get; set; }
+        public string WeekStartDate { get; set; }
+        public string WeekEndDate { get; set; }
+        public string WeekNumber { get; set; }
+    }
 }
