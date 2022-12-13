@@ -13,6 +13,7 @@ namespace ResourceManagement.Controllers
     using System.Net;
     using System.Text.Json;
     using static ResourceManagement.Helpers.DateHelper;
+    using static ResourceManagement.Models.TimesheetReportModel;
 
     public class HomeController : Controller
     {
@@ -451,6 +452,34 @@ namespace ResourceManagement.Controllers
             {
                 return db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetViewModel.EmpId) && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)).ToList();
             }
+        }
+
+
+        public ActionResult TimeSheetEmailReport(TimeSheetViewModel timeSheetViewModel)
+        {
+            var timeSheetReport = new TimeSheetReport();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var loginObj = db.emplogins.Where(a => a.att_username.Equals("C4046") && a.att_password.Equals("abc@123") && a.emp_status).FirstOrDefault();
+                if (loginObj != null)
+                {
+
+                    timeSheetReport.reports = db.ambctaskcaptures.Where(a => a.employeeid.Equals(loginObj.employee_id)).ToList();
+                    timeSheetReport.empData = loginObj;
+
+                    // && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)
+
+                }
+
+                timeSheetReport.MondayHours = "10";
+                timeSheetReport.TuesdayHours = "6";
+                timeSheetReport.WednesdayHours = "8";
+                timeSheetReport.ThursdayHours = "12";
+                timeSheetReport.FriidayHours = "4";
+            }
+
+            return View(timeSheetReport);
         }
     }
 }

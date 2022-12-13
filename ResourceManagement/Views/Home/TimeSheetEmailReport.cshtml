@@ -1,0 +1,199 @@
+﻿@model ResourceManagement.Models.TimesheetReportModel.TimeSheetReport
+
+@{
+    ViewBag.Title = "TimeSheet Email Report Page";
+}
+
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    table {
+        font-family: "Lato", sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        /*  border: 1px solid #dddddd;*/
+        /*  border-bottom: 1px solid black;*/
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+</style>
+
+@if (Model != null)
+{
+
+    @*<div class="card timesheet-card">
+            <div class="card-body ">
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="timeSheetStartWeekdate">Employee Name</label>
+                        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" value="@Model.empData.employee_name">
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="timeSheetEndWeekdate">Emp ID</label>
+                        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" value="@Model.empData.employee_id">
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="week-Number">Reporting Manager</label>
+                        <input type="text" class="form-control" id="weekNumber" value="Seema Ashok">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="timeSheetStartWeekdate">Start Date</label>
+                        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" value="@Model.reports[0].weekstartdate">
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="timeSheetEndWeekdate">End Date</label>
+                        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" value="@Model.reports[0].weekenddate">
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="week-Number">Week Number</label>
+                        <input type="text" class="form-control" id="weekNumber" value="@Model.reports[0].weekno">
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+    <div class="emailbodycontent">
+
+        <table>
+            <tr>
+                <td style="width: 60%">
+                    <div class="emailbody">
+                        <h2>Hi <b>@Model.empData.employee_name</b>,</h2>
+                        <br />
+                        Your timesheet has been successfully submitted, please find the below details for reference.
+                        <br /> <br />
+                    </div>
+                </td>
+                <td style="width: 45%; float: right; margin-right: 13px;">
+                    <div>
+                        <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <div class="table-responsive table">
+
+
+            <table class="table table-hover table-striped" id="timesheet-table" style="border:1px solid black;">
+
+                <thead class="table-bordered">
+                    <tr style="background-color: #337ab7">
+                        <th class="time-header" scope="col" style="max-width:50px">Date</th>
+                        <th class="time-header" scope="col">Category</th>
+                        <th class="time-header" scope="col">Incident Number</th>
+                        <th class="time-header" scope="col">Incident Desc</th>
+                        <th class="time-header" scope="col">Requester</th>
+                        <th class="time-header" scope="col">Urgency</th>
+                        <th class="time-header" scope="col">Status</th>
+                        <th class="time-header" scope="col">Date Closed</th>
+                        <th class="time-header" scope="col">Time Spent</th>
+                        <th class="time-header" scope="col">Comments</th>
+                    </tr>
+                </thead>
+
+                <tbody class="timesheet-table-grid">
+
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var report in Model.reports)
+                    {
+                        var color = "";
+
+                        /* Check even condition before printing */
+                        if (i % 2 == 0)
+                        {
+                            color = "#f2f2f2";
+                        }
+
+                        i++;
+
+
+                        <tr class="default-table-row" style="background-color: @color">
+                            <td scope="row">@report.taskdate</td>
+                            <td scope="row">@report.category.TrimStart().TrimEnd()</td>
+                            <td scope="row">@report.incidentnumber</td>
+                            <td scope="row">@report.taskdetails</td>
+                            <td scope="row">@report.requester</td>
+                            <td scope="row">@report.callpriority</td>
+                            <td scope="row">@report.projstatus</td>
+                            <td scope="row">@report.closeddate</td>
+                            <td scope="row">@report.timespent</td>
+                            <td scope="row">@report.comments</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            <table>
+                <tr>
+                    <td>
+                        <img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br />
+        <br />
+        <div class="emailbody">
+            <h2> <b>AMBC Technologies. </b></h2>
+        </div>
+        <br />
+        <br />
+        <div class="email-footer" style="text-align: center; padding-top: 6px,">
+            Autogenarted email. Please do  not reply.
+        </div>
+    </div>
+
+}
+
+
+
+
+
