@@ -368,6 +368,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\TimesheetWeeklyChart.cshtml" />
     <Content Include="Views\Home\TimeSheetEmailReport.cshtml" />
+    <Content Include="Views\Home\TimeSheetReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,445 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "TimeSheets Report Page";
+}
+
+<style>
+    .headerrow {
+        border: 0px !important;
+        padding: 2px !important;
+        background-color: LightGray;
+    }
+
+    .headertd {
+        font-size: small;
+        border-right: 1px solid lightgray !important;
+    }
+
+    .center {
+        margin-top: 3px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 6px;
+        background-color: LightGray;
+    }
+
+    #timesheet-table th, td {
+        border: 1px solid gray;
+    }
+
+    .table-leaveinfo th, td {
+        border: 1px solid gray;
+    }
+</style>
+
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="">
+        <h2 class="text-uppercase text-white">TimeSheet Reports</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+
+    </div>
+</nav>
+
+<div class="card timesheet-card">
+    <div class="card-body ">
+
+        <form class="needs-validation-timesheet" novalidate>
+
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetStatus">Reports By</label>
+
+                    <select id="timesheerreportsby" name="reportsby" class="form-control form-select form-select-lg mb-3">
+                        <option value="client"> Client </option>
+                        <option value="individual"> Individual </option>
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label for="timesheetreportsclients">Clients</label>
+                    <select id="timesheerreportclients" name="clients" class="form-control form-select form-select-lg mb-3">
+                        <option value="littelfuse"> Littelfuse </option>
+                        <option value="federalsignal"> Federal Signal </option>
+                        <option value="modine"> Modine </option>
+                        <option value="ambc"> AMBC </option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-2">
+                    <label for="exampleFormControlSelect2">Consultants</label>
+                    <select multiple class="form-control" id="exampleFormControlSelect2" style="width: 280px;">
+                        <option>Ravi</option>
+                        <option>Kalyan</option>
+                        <option>Rajender</option>
+                        <option>Asif</option>
+                        <option>Jan</option>
+                        <option>Anil</option>
+
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetStartWeekdate">Week Start Date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
+                    <div class="invalid-feedback">
+                        Please Select Week Start Date
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetEndWeekdate">Week End date</label>
+                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+                </div>
+                <div class="form-group col-lg-2">
+                    <label for="weekNumber">Week Number</label>
+                    <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
+                </div>
+            </div>
+
+            <div class="row mt-xl-4">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                        Genarate Report
+                    </button>&nbsp;&nbsp;
+                </div>
+
+            </div>
+            <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+        </form>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="card timesheet-card">
+    <div class="card-body ">
+        <div class="emailbodycontent">
+            <div class="table-responsive table">
+                <table>
+                    <tr>
+                        <td style="width: 100%; padding-left: 0px; text-align: center; border: 1px solid black; padding-top: 0px; padding-right: 0px; padding-bottom:0px">
+                            <table style="width:100%">
+                                <tr><td colspan="4" class="headerrow"><h2><b>Sitecore Developer Weekly Project Status Report</b></h2></td></tr>
+                                <tr style="text-align:left">
+                                    <td class="headertd">
+                                        <b>Resource Name</b>
+                                    </td>
+                                    <td class="headertd">
+                                        Rajender Sudikay
+                                    </td>
+                                    <td class="headertd"><b>Project Manager</b></td>
+                                    <td class="headertd">
+                                        Seema Ashok
+                                    </td>
+                                </tr>
+                                <tr style="text-align:left">
+                                    <td class="headertd"><b>Week Start Date</b></td>
+                                    <td class="headertd">11/28/2022</td>
+                                    <td class="headertd">
+                                        <b>Week End Date</b>
+                                    </td>
+                                    <td class="headertd">
+                                        12/5/2022
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 30%">
+                            <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center"><b>EFFORT DETAILS (current week)</b></div>
+                <table class="table" id="timesheet-table" style="margin-top: 2px">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            <th class="" scope="col" style="max-width:50px">Day</th>
+                            <th class="" scope="col">Category</th>
+                            <th class="" scope="col">Incident Number</th>
+                            <th class="" scope="col">Incident Desc</th>
+                            <th class="" scope="col">Requester</th>
+                            <th class="" scope="col">Priority</th>
+                            <th class="" scope="col">Status</th>
+                            <th class="" scope="col">Time Spent</th>
+                            <th class="" scope="col">Comments</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+
+                        @*@{
+                                int i = 0;
+                            }
+                            @foreach (var report in Model.reports)
+                            {
+                                var color = "";
+
+                                /* Check even condition before printing */
+                                if (i % 2 == 0)
+                                {
+                                    color = "#f2f2f2";
+                                }
+
+                                i++;*@
+
+                        @*//style="background-color: @color"*@
+                        <tr style="background-color: #fff">
+                            @*<td scope="row">@report.taskdate</td>
+                                <td scope="row">@report.category.TrimStart().TrimEnd()</td>
+                                <td scope="row">@report.incidentnumber</td>
+                                <td scope="row">@report.taskdetails</td>
+                                <td scope="row">@report.requester</td>
+                                <td scope="row">@report.callpriority</td>
+                                <td scope="row">@report.projstatus</td>
+                                <td scope="row">@report.closeddate</td>
+                                <td scope="row">@report.timespent</td>
+                                <td scope="row">@report.comments</td>*@
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        <tr style="background-color: #fff ">
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        <tr style="background-color: #fff ">
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        <tr style="background-color: #fff ">
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        <tr style="background-color: #fff ">
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        <tr style="background-color: #fff ">
+
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                            <td scope="row">5555</td>
+                            <td scope="row">666666</td>
+                            <td scope="row">555555</td>
+                            <td scope="row">6666</td>
+
+                            <td scope="row">6666</td>
+                            <td scope="row">7777</td>
+                            <td scope="row">888</td>
+                        </tr>
+                        @*}*@
+
+                    </tbody>
+                </table>
+
+                <div class="center"><b>Leave Information</b></div>
+
+                <table class="table-leaveinfo" style="margin-top: 4px; width:34%">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            <th class="" scope="col">Leave Date</th>
+                            <th class="" scope="col">Leave Type</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+                        <tr style="background-color: #ccffcc">
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                        </tr>
+                        <tr style="background-color: #ccffcc">
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>40</b></td>
+                    </tr>
+                </table>
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                    </tr>
+                </table>
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                    </tr>
+                </table>
+
+                <!--<table>
+                <tr>
+                    <td>-->
+                @*<img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">*@
+
+                <!--<img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[5,6,7,8,9],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">
+                        </td>
+                    </tr>
+                </table>-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("DownloadFile", "Home", FormMethod.Post))
+{
+    <input type="hidden" name="GridHtml" />
+    <input type="submit" id="btnSubmit" value="Export" />
+}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>
+
