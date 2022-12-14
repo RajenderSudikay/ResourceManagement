@@ -131,30 +131,25 @@
                     <label for="timeSheetStatus">Reports By</label>
 
                     <select id="timesheerreportsby" name="reportsby" class="form-control form-select form-select-lg mb-3">
+                        <option value="defaultselectreporttype"> Select Report Type </option>
                         <option value="client"> Client </option>
                         <option value="individual"> Individual </option>
                     </select>
                 </div>
 
-                <div class="form-group col-lg-4">
+                <div class="form-group col-lg-4 clientdrodwn" style="display:none">
                     <label for="timesheetreportsclients">Clients</label>
                     <select id="timesheerreportclients" name="clients" class="form-control form-select form-select-lg mb-3">
-                        <option value="littelfuse"> Littelfuse </option>
-                        <option value="federalsignal"> Federal Signal </option>
-                        <option value="modine"> Modine </option>
-                        <option value="ambc"> AMBC </option>
+                        <option value="selectclientname"> Select Client Name </option>
+                        <option value="Littelfuse"> Littelfuse </option>
+                        <option value="Federal Signal"> Federal Signal </option>
+                        <option value="Modine"> Modine </option>
+                        <option value="AMBC"> AMBC </option>
                     </select>
                 </div>
-                <div class="form-group col-lg-2">
-                    <label for="exampleFormControlSelect2">Consultants</label>
-                    <select multiple class="form-control" id="exampleFormControlSelect2" style="width: 280px;">
-                        <option>Ravi</option>
-                        <option>Kalyan</option>
-                        <option>Rajender</option>
-                        <option>Asif</option>
-                        <option>Jan</option>
-                        <option>Anil</option>
-
+                <div class="form-group col-lg-2 consultantmultilistdrodown" style="display:none">
+                    <label for="timesheetreportconsultants">Consultants</label>
+                    <select multiple class="form-control" id="timesheetreportconsultants" style="width: 280px;">
                     </select>
                 </div>
             </div>
@@ -180,9 +175,17 @@
             </div>
 
             <div class="row mt-xl-4">
-                <div class="col-md-3">
+
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view">
+                        View Report
+                    </button>
+                </div>
+
+
+                <div class="col-md-2">
                     <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
-                        Genarate Report
+                        Download Report
                     </button>&nbsp;&nbsp;
                 </div>
 
@@ -195,7 +198,7 @@
 <br />
 <br />
 
-<div class="card timesheet-card">
+<div class="card timesheet-card sample-timesheet-report">
     <div class="card-body ">
         <div class="emailbodycontent">
             <div class="table-responsive table">
@@ -252,33 +255,7 @@
 
                     <tbody class="timesheet-table-grid">
 
-                        @*@{
-                                int i = 0;
-                            }
-                            @foreach (var report in Model.reports)
-                            {
-                                var color = "";
-
-                                /* Check even condition before printing */
-                                if (i % 2 == 0)
-                                {
-                                    color = "#f2f2f2";
-                                }
-
-                                i++;*@
-
-                        @*//style="background-color: @color"*@
                         <tr style="background-color: #fff">
-                            @*<td scope="row">@report.taskdate</td>
-                                <td scope="row">@report.category.TrimStart().TrimEnd()</td>
-                                <td scope="row">@report.incidentnumber</td>
-                                <td scope="row">@report.taskdetails</td>
-                                <td scope="row">@report.requester</td>
-                                <td scope="row">@report.callpriority</td>
-                                <td scope="row">@report.projstatus</td>
-                                <td scope="row">@report.closeddate</td>
-                                <td scope="row">@report.timespent</td>
-                                <td scope="row">@report.comments</td>*@
 
                             <td scope="row">1111</td>
                             <td scope="row">3333</td>
@@ -388,7 +365,7 @@
                 <table class="table-billableinfo" style="margin-top: 15px;">
 
                     <tr style="background-color: #ccffcc; ">
-                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
                         <td style="border:none; background-color:white"></td>
                         <td style="border:1px solid black; background-color:white; width: 30px"><b>40</b></td>
                     </tr>
@@ -397,7 +374,7 @@
                 <table class="table-billableinfo" style="margin-top: 15px;">
 
                     <tr style="background-color: #ccffcc; ">
-                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
                         <td style="border:none; background-color:white"></td>
                         <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
                     </tr>
@@ -406,40 +383,146 @@
                 <table class="table-billableinfo" style="margin-top: 15px;">
 
                     <tr style="background-color: #ccffcc; ">
-                        <td style="width: 370px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
                         <td style="border:none; background-color:white"></td>
                         <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
                     </tr>
                 </table>
-
-                <!--<table>
-                <tr>
-                    <td>-->
-                @*<img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">*@
-
-                <!--<img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[5,6,7,8,9],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">
-                        </td>
-                    </tr>
-                </table>-->
             </div>
 
         </div>
     </div>
 </div>
 
+<div id="timesheetreports-container"></div>
+
+<br />
+<br />
+
 
 @using (Html.BeginForm("DownloadFile", "Home", FormMethod.Post))
 {
     <input type="hidden" name="GridHtml" />
-    <input type="submit" id="btnSubmit" value="Export" />
+    @*<input type="submit" id="btnSubmit" value="Export" />*@
 }
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        $("#btnSubmit").click(function () {
+    jQuery(function () {
+        jQuery("#btnSubmit").click(function () {
             $("input[name='GridHtml']").val($("#Grid").html());
         });
     });
+
+    Date.prototype.startOfWeek = function (pStartOfWeek) {
+        var mDifference = this.getDay() - pStartOfWeek;
+        if (mDifference < 0) {
+            mDifference += 7;
+        }
+        return new Date(this.addDays(mDifference * -1));
+    }
+
+    Date.prototype.addDays = function (pDays) {
+        var mDate = new Date(this.valueOf());
+        mDate.setDate(mDate.getDate() + pDays);
+        return mDate;
+    };
+
+
+    jQuery(document).ready(function () {
+        jQuery('.date-timesheet').change(function () {
+            var date = jQuery(this).val();
+            var startOfWeek = moment(new Date(date)).startOf('week').toDate();
+            var endOfWeek = moment(new Date(date)).endOf('week').toDate();
+
+            var StartWeekdate = new Date(startOfWeek.addDays(1));
+            var endWeekDate = new Date(endOfWeek.addDays(1));
+
+            var startDate = moment(StartWeekdate).format("YYYY-MM-DD");
+            jQuery('#timeSheetStartWeekdate').val(startDate);
+
+            var endDate = moment(endWeekDate).format("YYYY-MM-DD");
+            jQuery('#timeSheetEndWeekdate').val(endDate);
+
+            var weekNum = moment(startDate).week();
+            jQuery('#weekNumber').val(weekNum);
+
+        });
+    });
+
+    function GetEmployees(type) {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                if (type != undefined && type != "") {
+                    obj = obj.filter(v => v.Client === type);
+                }
+
+                jQuery.each(obj, function (i, item) {
+                    $('#timesheetreportconsultants').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+
+            }
+        });
+    }
+
+    $("#timesheerreportsby").on("change", function () {
+        if (jQuery(this).val() == "client") {
+            $("#timesheerreportclients").prop("selectedIndex", 0);
+            jQuery('.clientdrodwn').show();
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+        if (jQuery(this).val() == "individual") {
+            jQuery('.clientdrodwn').hide();
+            $('#timesheetreportconsultants').empty();
+            GetEmployees();
+            jQuery('.consultantmultilistdrodown').show();
+        }
+
+        if (jQuery(this).val() == "defaultselectreporttype") {
+            $("#timesheerreportclients").prop("selectedIndex", 0);
+            $("#timesheetreportconsultants").prop("selectedIndex", 0);
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+    });
+
+
+    $("#timesheerreportclients").on("change", function () {
+        if (jQuery(this).val() != "selectclientname") {
+            $('#timesheetreportconsultants').empty();
+            GetEmployees(jQuery(this).val());
+            jQuery('.consultantmultilistdrodown').show();
+        }
+        else {
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+    });
+
+    jQuery(".reports-view").on("click", function () {
+        var ajaxReportModel = {
+            Employees: $('#timesheetreportconsultants').val(),
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val()
+        }
+
+        $.ajax({
+            url: "/TimeSheetReportsPartial",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ timeSheetAjaxReportModel: ajaxReportModel }),
+            success: function (data) {
+                jQuery('.sample-timesheet-report').hide();
+                $('#timesheetreports-container').html(data);
+            }
+        });
+    });
+
+  
+
+
 </script>
 

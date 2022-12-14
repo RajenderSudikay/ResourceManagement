@@ -29,5 +29,24 @@ namespace ResourceManagement.Models
             public string FriidayHours { get; set; }
 
         }
+
+        public class TimeSheetAjaxReportModel
+        {
+            public string WeekStartDate { get; set; }
+
+            public string WeekEndDate { get; set; }
+
+            public string WeekNumber { get; set; }
+
+            public List<string> Employees { get; set; }
+        }
+
+        public class TimeSheetReportViewModel
+        {
+            public AMBC_Active_Emp_view EmployeeInfo { get; set; }
+            public List<ambctaskcapture> timeSheetInfo { get; set; }
+
+
+        }
     }
 }

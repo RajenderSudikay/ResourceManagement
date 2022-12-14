@@ -503,11 +503,56 @@ namespace ResourceManagement.Controllers
                     if (empSignInOutInfo != null)
                     {
                         employeeModel.signInOutInfo = empSignInOutInfo;
-                    }                  
+                    }
                 }
             }
 
             return View(employeeModel);
+        }
+
+        public ActionResult TimeSheetReportsPartial(TimeSheetAjaxReportModel timeSheetAjaxReportModel)
+        {
+            var employeeReports = new RMA_EmployeeModel();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                employeeReports.TimeSheetReports = new List<TimeSheetReportViewModel>();
+               
+                if (timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
+                {
+                    foreach (var employee in timeSheetAjaxReportModel.Employees)
+                    {
+                        var reportModel = new TimeSheetReportViewModel();
+
+                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employee)).FirstOrDefault();
+                        if (employeeInfo != null)
+                        {
+                            reportModel.EmployeeInfo = employeeInfo;
+                        }
+
+                        int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
+
+                        var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employee) && a.weekno == weekNumber).ToList();
+                        if (empTimeSheetInfo != null)
+                        {
+                            reportModel.timeSheetInfo = empTimeSheetInfo;
+                        }
+
+                        employeeReports.TimeSheetReports.Add(reportModel);
+                    }
+                }
+            }
+
+            return PartialView(employeeReports);
+        }
+
+        public JsonResult GetEmployees()
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeesDetails = db.AMBC_Active_Emp_view.ToList();
+                var employeeJson = JsonConvert.SerializeObject(employeesDetails);
+                return Json(employeeJson);
+            }
         }
     }
 }

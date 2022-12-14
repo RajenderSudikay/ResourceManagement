@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static ResourceManagement.Models.TimesheetReportModel;
 
 namespace ResourceManagement.Models
 {
@@ -8,6 +9,8 @@ namespace ResourceManagement.Models
         public emp_project projectInfo { get; set; }
         public string leaveOrHolidayInfo { get; set; }
         public tbld_ambclogininformation signInOutInfo { get; set; }
+
+        public List<TimeSheetReportViewModel> TimeSheetReports { get; set; }
     }
 
     public class RMA_TimeSheetAjaxModel
@@ -36,5 +39,11 @@ namespace ResourceManagement.Models
         public string LeaveOrHolidayDate { get; set; }
         public string Reason { get; set; }
     }
-   
+
+    public class RMA_ReportEmployeeModel
+    {
+        public string Employee_Name { get; set; }
+        public string Employee_ID { get; set; }
+    }
+
 }

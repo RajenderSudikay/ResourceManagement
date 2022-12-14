@@ -1,0 +1,211 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "TimeSheets View Report partial Page";
+}
+
+<style>
+    .headerrow {
+        border: 0px !important;
+        padding: 2px !important;
+        background-color: LightGray;
+    }
+
+    .headertd {
+        font-size: small;
+        border-right: 1px solid lightgray !important;
+    }
+
+    .center {
+        margin-top: 3px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 6px;
+        background-color: LightGray;
+    }
+
+    #timesheet-table th, td {
+        border: 1px solid gray;
+    }
+
+    .table-leaveinfo th, td {
+        border: 1px solid gray;
+    }
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+@if (Model != null)
+{
+    <div id="demo" class="carousel slide" data-ride="carousel">
+
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+        </ul>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            @{
+                int i = 0;
+            }
+            @foreach (var employeeReport in Model.TimeSheetReports)
+            {
+                var isactiveclass = i == 0 ? "active" : "";
+                i++;
+                <div class="carousel-item @isactiveclass">
+                    <div class="card timesheet-card partialview-reports">
+                        <div class="card-body ">
+                            <div class="emailbodycontent">
+                                <div class="table-responsive table">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 100%; padding-left: 0px; text-align: center; border: 1px solid black; padding-top: 0px; padding-right: 0px; padding-bottom:0px">
+                                                <table style="width:100%">
+                                                    <tr><td colspan="4" class="headerrow"><h2><b>@employeeReport.EmployeeInfo.Designation Weekly Project Status Report</b></h2></td></tr>
+                                                    <tr style="text-align:left">
+                                                        <td class="headertd">
+                                                            <b>Resource Name</b>
+                                                        </td>
+                                                        <td class="headertd">
+                                                            @employeeReport.EmployeeInfo.Employee_Name
+                                                        </td>
+                                                        <td class="headertd"><b>Project Manager</b></td>
+                                                        <td class="headertd">
+                                                            @employeeReport.EmployeeInfo.Client_Report_Manager
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="text-align:left">
+                                                        <td class="headertd"><b>Week Start Date</b></td>
+                                                        <td class="headertd">11/28/2022</td>
+                                                        <td class="headertd">
+                                                            <b>Week End Date</b>
+                                                        </td>
+                                                        <td class="headertd">
+                                                            12/5/2022
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td style="width: 30%">
+                                                <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="center"><b>EFFORT DETAILS (current week)</b></div>
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #BCD2E8">
+                                                <th class="" scope="col" style="max-width:50px">Day</th>
+                                                <th class="" scope="col">Category</th>
+                                                <th class="" scope="col">Incident Number</th>
+                                                <th class="" scope="col">Incident Desc</th>
+                                                <th class="" scope="col">Requester</th>
+                                                <th class="" scope="col">Priority</th>
+                                                <th class="" scope="col">Status</th>
+                                                <th class="" scope="col">Time Spent</th>
+                                                <th class="" scope="col">Comments</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @foreach (var task in employeeReport.timeSheetInfo)
+                                            {
+                                                <tr style="background-color: #fff">
+
+                                                    <td scope="row">@task.taskdate</td>
+                                                    <td scope="row">@task.category</td>
+                                                    <td scope="row">@task.incidentnumber</td>
+                                                    <td scope="row">@task.taskdetails</td>
+                                                    <td scope="row">@task.requester</td>
+                                                    <td scope="row">@task.callpriority</td>
+                                                    <td scope="row">@task.projstatus</td>
+                                                    <td scope="row">@task.timespent</td>
+                                                    <td scope="row">@task.comments</td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="center"><b>Leave Information</b></div>
+
+                                    <table class="table-leaveinfo" style="margin-top: 4px; width:34%">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #BCD2E8">
+                                                <th class="" scope="col">Leave Date</th>
+                                                <th class="" scope="col">Leave Type</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+                                            <tr style="background-color: #ccffcc">
+                                                <td scope="row">1111</td>
+                                                <td scope="row">3333</td>
+                                            </tr>
+                                            <tr style="background-color: #ccffcc">
+                                                <td scope="row">1111</td>
+                                                <td scope="row">3333</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>40</b></td>
+                                        </tr>
+                                    </table>
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                                        </tr>
+                                    </table>
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon" style="background-color: gray; height: 40px; margin-right: -164px;"></span>
+        </a>
+
+    </div>
+}
+
+<br />
+<br />
+<br />
+
