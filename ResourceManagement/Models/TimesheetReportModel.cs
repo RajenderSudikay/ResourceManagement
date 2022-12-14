@@ -39,6 +39,8 @@ namespace ResourceManagement.Models
             public string WeekNumber { get; set; }
 
             public List<string> Employees { get; set; }
+
+            public string Type { get; set; }
         }
 
         public class TimeSheetReportViewModel
@@ -47,6 +49,13 @@ namespace ResourceManagement.Models
             public List<ambctaskcapture> timeSheetInfo { get; set; }
 
 
+        }
+
+        public class SourceFile
+        {
+            public string Name { get; set; }
+            public string Extension { get; set; }
+            public Byte[] FileBytes { get; set; }
         }
     }
 }

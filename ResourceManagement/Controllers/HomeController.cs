@@ -11,6 +11,7 @@ namespace ResourceManagement.Controllers
     using SelectPdf;
     using System;
     using System.Net;
+    using System.Text;
     using System.Text.Json;
     using static ResourceManagement.Helpers.DateHelper;
     using static ResourceManagement.Models.TimesheetReportModel;
@@ -516,7 +517,7 @@ namespace ResourceManagement.Controllers
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
                 employeeReports.TimeSheetReports = new List<TimeSheetReportViewModel>();
-               
+
                 if (timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
                 {
                     foreach (var employee in timeSheetAjaxReportModel.Employees)
@@ -553,6 +554,113 @@ namespace ResourceManagement.Controllers
                 var employeeJson = JsonConvert.SerializeObject(employeesDetails);
                 return Json(employeeJson);
             }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Export(string GridHtml)
+        {
+            var ccc = GridHtml;
+            //return File(Encoding.ASCII.GetBytes(GridHtml), "application/vnd.ms-excel", "Grid.xls");
+
+            TimeSheetAjaxReportModel timeSheetAjaxReportModel = JsonConvert.DeserializeObject<TimeSheetAjaxReportModel>(GridHtml);
+
+            List<SourceFile> sourceFiles = new List<SourceFile>();
+
+            //TimeSheetAjaxReportModel timeSheetAjaxReportModel = new TimeSheetAjaxReportModel();
+
+            //timeSheetAjaxReportModel.Employees.Add("C4046");
+            //timeSheetAjaxReportModel.WeekNumber = "49";
+            //timeSheetAjaxReportModel.WeekStartDate = "1bc";
+            //timeSheetAjaxReportModel.WeekEndDate = "111";
+
+            if (timeSheetAjaxReportModel != null && timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
+            {
+                foreach (var employee in timeSheetAjaxReportModel.Employees)
+                {
+                    string urlAddress = "https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
+
+                    string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
+
+                    byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
+
+                    sourceFiles.Add(new SourceFile()
+                    {
+                        FileBytes = byteArray,
+                        Extension = timeSheetAjaxReportModel.Type,
+                        Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
+                    });
+                }
+            }
+
+
+
+            byte[] fileBytes = null;
+
+            // create a working memory stream
+            using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+            {
+                // create a zip
+                using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
+                {
+                    // interate through the source files
+                    foreach (SourceFile f in sourceFiles)
+                    {
+                        // add the item name to the zip
+                        System.IO.Compression.ZipArchiveEntry zipItem = zip.CreateEntry(f.Name + "." + f.Extension);
+                        // add the item bytes to the zip entry by opening the original file and copying the bytes
+                        using (System.IO.MemoryStream originalFileMemoryStream = new System.IO.MemoryStream(f.FileBytes))
+                        {
+                            using (System.IO.Stream entryStream = zipItem.Open())
+                            {
+                                originalFileMemoryStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+                fileBytes = memoryStream.ToArray();
+            }
+
+            // download the constructed zip
+            Response.AddHeader("Content-Disposition", "attachment; filename=download.zip");
+            return File(fileBytes, "application/zip");
+
+
+
+            //return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", "attachment;filename=ExportedHtml.xls");
+
+            //return View("~/Views/Shared/Error.cshtml");
+        }
+
+
+        public ActionResult TimeSheetDownloadReportsPartial(string employeeId, string weekNum)
+        {
+            var employeeReports = new RMA_EmployeeModel();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                employeeReports.TimeSheetReports = new List<TimeSheetReportViewModel>();
+
+                var reportModel = new TimeSheetReportViewModel();
+
+                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId)).FirstOrDefault();
+                if (employeeInfo != null)
+                {
+                    reportModel.EmployeeInfo = employeeInfo;
+                }
+
+                int weekNumber = System.Convert.ToInt32(weekNum);
+
+                var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber).ToList();
+                if (empTimeSheetInfo != null)
+                {
+                    reportModel.timeSheetInfo = empTimeSheetInfo;
+                }
+
+                employeeReports.TimeSheetReports.Add(reportModel);
+
+            }
+
+            return PartialView(employeeReports);
         }
     }
 }
