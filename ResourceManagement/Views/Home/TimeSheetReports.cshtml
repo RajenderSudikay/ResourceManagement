@@ -207,49 +207,6 @@
 <br />
 <br />
 
-<div id="Grid">
-    <table cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
-        <tr>
-            <th style="background-color: #B8DBFD;border: 1px solid #ccc">CustomerID</th>
-            <th style="background-color: #B8DBFD;border: 1px solid #ccc">ContactName</th>
-            <th style="background-color: #B8DBFD;border: 1px solid #ccc">City</th>
-            <th style="background-color: #B8DBFD;border: 1px solid #ccc">Country</th>
-        </tr>
-        @*@foreach (Customer customer in Model)
-            {*@
-        <tr>
-            <td style="width:120px;border: 1px solid #ccc">123</td>
-            <td style="width:120px;border: 1px solid #ccc">444</td>
-            <td style="width:120px;border: 1px solid #ccc">555</td>
-            <td style="width:120px;border: 1px solid #ccc">777</td>
-        </tr>
-        @*}*@
-    </table>
-</div>
-<br />
-<br />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript">
-
-    jQuery(".btn-report-generate").on("click", function () {
-        alert($(this).attr("id"));
-        var ajaxDownloadReportModel = {
-            Employees: $('#timesheetreportconsultants').val(),
-            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
-            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-            WeekNumber: jQuery('#weekNumber').val(),
-            Type: $(this).attr("id") == "btnExcelSubmit" ? ".xls" : ".pdf"
-        }
-        var GridHtml = JSON.stringify(ajaxDownloadReportModel).toString();
-
-        $("input[name='GridHtml']").val(GridHtml);
-
-    });
-
-
-
-</script>
-
 <div class="card timesheet-card sample-timesheet-report">
     <div class="card-body ">
         <div class="emailbodycontent">
@@ -456,19 +413,22 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
-    //jQuery(function () {
-    //    jQuery("#btnSubmit").click(function () {
-    //        var ajaxDownloadReportModel = {
-    //            Employees: $('#timesheetreportconsultants').val(),
-    //            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
-    //            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-    //            WeekNumber: jQuery('#weekNumber').val(),
-    //            Type: ".xls"
-    //        }
 
+    jQuery(".btn-report-generate").on("click", function () {
+        alert($(this).attr("id"));
+        var ajaxDownloadReportModel = {
+            Employees: $('#timesheetreportconsultants').val(),
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val(),
+            Type: $(this).attr("id") == "btnExcelSubmit" ? ".xls" : ".pdf"
+        }
+        var GridHtml = JSON.stringify(ajaxDownloadReportModel).toString();
 
-    //    });
-    //});
+        $("input[name='GridHtml']").val(GridHtml);
+
+    });
+
 
     Date.prototype.startOfWeek = function (pStartOfWeek) {
         var mDifference = this.getDay() - pStartOfWeek;

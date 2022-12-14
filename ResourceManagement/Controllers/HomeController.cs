@@ -18,10 +18,10 @@ namespace ResourceManagement.Controllers
     public class HomeController : Controller
     {
 
-        public ActionResult Convert()
+        public PdfDocument Convert(string pageURl)
         {
             // read parameters from the webpage
-            string url = "https://localhost:44375/dashboard";
+            string url = pageURl;
 
             string pdf_page_size = "10";
             PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), pdf_page_size, true);
@@ -40,7 +40,7 @@ namespace ResourceManagement.Controllers
             int webPageHeight = 0;
             try
             {
-                webPageHeight = System.Convert.ToInt32(700);
+                webPageHeight = System.Convert.ToInt32(1024);
             }
             catch { }
 
@@ -56,16 +56,18 @@ namespace ResourceManagement.Controllers
             // create a new pdf document converting an url
             PdfDocument doc = converter.ConvertUrl(url);
 
-            // save pdf document
-            byte[] pdf = doc.Save();
+            //// save pdf document
+            //byte[] pdf = doc.Save();
 
-            // close pdf document
-            doc.Close();
+            //// close pdf document
+            //doc.Close();
 
-            // return resulted pdf document
-            FileResult fileResult = new FileContentResult(pdf, "application/pdf");
-            fileResult.FileDownloadName = "Document.pdf";
-            return fileResult;
+            return doc;
+
+            //// return resulted pdf document
+            //FileResult fileResult = new FileContentResult(pdf, "application/pdf");
+            //fileResult.FileDownloadName = "Document.pdf";
+            //return fileResult;
         }
 
         public ActionResult Error()
@@ -559,7 +561,7 @@ namespace ResourceManagement.Controllers
         [ValidateInput(false)]
         public ActionResult Export(string GridHtml)
         {
-           
+
             TimeSheetAjaxReportModel timeSheetAjaxReportModel = JsonConvert.DeserializeObject<TimeSheetAjaxReportModel>(GridHtml);
 
             List<SourceFile> sourceFiles = new List<SourceFile>();
@@ -568,18 +570,40 @@ namespace ResourceManagement.Controllers
             {
                 foreach (var employee in timeSheetAjaxReportModel.Employees)
                 {
-                    string urlAddress = "https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
 
-                    string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
-
-                    byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
-
-                    sourceFiles.Add(new SourceFile()
+                    if (timeSheetAjaxReportModel.Type == ".xls")
                     {
-                        FileBytes = byteArray,
-                        Extension = timeSheetAjaxReportModel.Type,
-                        Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
-                    });
+                        string urlAddress = "https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
+
+                        string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
+
+                        byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
+
+                        sourceFiles.Add(new SourceFile()
+                        {
+                            FileBytes = byteArray,
+                            Extension = timeSheetAjaxReportModel.Type,
+                            Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
+                        });
+                    }
+                    else
+                    {
+                        PdfDocument pdfData = Convert("https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "");
+
+                        byte[] pdfArray = pdfData.Save();
+
+                        //// close pdf document
+                        pdfData.Close();
+
+                        sourceFiles.Add(new SourceFile()
+                        {
+                            FileBytes = pdfArray,
+                            Extension = timeSheetAjaxReportModel.Type,
+                            Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
+                        });
+                    }
+
+
                 }
             }
 
@@ -614,12 +638,6 @@ namespace ResourceManagement.Controllers
             // download the constructed zip
             Response.AddHeader("Content-Disposition", "attachment; filename=download.zip");
             return File(fileBytes, "application/zip");
-
-
-
-            //return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", "attachment;filename=ExportedHtml.xls");
-
-            //return View("~/Views/Shared/Error.cshtml");
         }
 
 
