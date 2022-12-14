@@ -288,7 +288,9 @@
     <Content Include="Assets\AMBC_Logo.png" />
     <Content Include="Assets\Appraisal.png" />
     <Content Include="Assets\Arrows\back-arrow.png" />
+    <Content Include="Assets\Arrows\pdf.png" />
     <Content Include="Assets\Arrows\right-arrow.png" />
+    <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\email.png" />
     <Content Include="Assets\Icons\graphic-designer.png" />

@@ -177,16 +177,28 @@
             <div class="row mt-xl-4">
 
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view">
+                    <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px">
                         View Report
                     </button>
                 </div>
 
 
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
-                        Download Report
-                    </button>&nbsp;&nbsp;
+                    <!-- Example single danger button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 15px">
+                            Download
+                        </button>
+                        <div class="dropdown-menu" style="width: 120px; border-radius:15px">
+                            <a class="dropdown-item" href="#">
+                                <img src="~/Assets/Arrows/xls.png" style="width:23px" /><b>Excel Report</b>
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <img src="~/Assets/Arrows/pdf.png" style="width:23px" /><b>PDF Report</b>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -521,7 +533,7 @@
         });
     });
 
-  
+
 
 
 </script>
