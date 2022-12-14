@@ -124,92 +124,83 @@
 <div class="card timesheet-card">
     <div class="card-body ">
 
-        <form class="needs-validation-timesheet" novalidate>
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label for="timeSheetStatus">Reports By</label>
 
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetStatus">Reports By</label>
+                <select id="timesheerreportsby" name="reportsby" class="form-control form-select form-select-lg mb-3">
+                    <option value="defaultselectreporttype"> Select Report Type </option>
+                    <option value="client"> Client </option>
+                    <option value="individual"> Individual </option>
+                </select>
+            </div>
 
-                    <select id="timesheerreportsby" name="reportsby" class="form-control form-select form-select-lg mb-3">
-                        <option value="defaultselectreporttype"> Select Report Type </option>
-                        <option value="client"> Client </option>
-                        <option value="individual"> Individual </option>
-                    </select>
-                </div>
+            <div class="form-group col-lg-4 clientdrodwn" style="display:none">
+                <label for="timesheetreportsclients">Clients</label>
+                <select id="timesheerreportclients" name="clients" class="form-control form-select form-select-lg mb-3">
+                    <option value="selectclientname"> Select Client Name </option>
+                    <option value="Littelfuse"> Littelfuse </option>
+                    <option value="Federal Signal"> Federal Signal </option>
+                    <option value="Modine"> Modine </option>
+                    <option value="AMBC"> AMBC </option>
+                </select>
+            </div>
+            <div class="form-group col-lg-2 consultantmultilistdrodown" style="display:none">
+                <label for="timesheetreportconsultants">Consultants</label>
+                <select multiple class="form-control" id="timesheetreportconsultants" style="width: 280px;">
+                </select>
+            </div>
+        </div>
 
-                <div class="form-group col-lg-4 clientdrodwn" style="display:none">
-                    <label for="timesheetreportsclients">Clients</label>
-                    <select id="timesheerreportclients" name="clients" class="form-control form-select form-select-lg mb-3">
-                        <option value="selectclientname"> Select Client Name </option>
-                        <option value="Littelfuse"> Littelfuse </option>
-                        <option value="Federal Signal"> Federal Signal </option>
-                        <option value="Modine"> Modine </option>
-                        <option value="AMBC"> AMBC </option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-2 consultantmultilistdrodown" style="display:none">
-                    <label for="timesheetreportconsultants">Consultants</label>
-                    <select multiple class="form-control" id="timesheetreportconsultants" style="width: 280px;">
-                    </select>
+
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label for="timeSheetStartWeekdate">Week Start Date</label>
+                <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
+                <div class="invalid-feedback">
+                    Please Select Week Start Date
                 </div>
             </div>
 
+            <div class="form-group col-lg-4">
+                <label for="timeSheetEndWeekdate">Week End date</label>
+                <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+            </div>
+            <div class="form-group col-lg-2">
+                <label for="weekNumber">Week Number</label>
+                <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetStartWeekdate">Week Start Date</label>
-                    <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
-                    <div class="invalid-feedback">
-                        Please Select Week Start Date
-                    </div>
-                </div>
+        <div class="row mt-xl-4">
 
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetEndWeekdate">Week End date</label>
-                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="weekNumber">Week Number</label>
-                    <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
-                </div>
+            <div class="form-group col-lg-1">
+                <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px">
+                    View Report
+                </button>
             </div>
 
-            <div class="row mt-xl-4">
+            @using (Html.BeginForm("Export", "Home", FormMethod.Post))
+            {
 
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px">
-                        View Report
-                    </button>
-                </div>
+                <input type="hidden" name="GridHtml" />
 
-                @*@using (Html.BeginForm("DownloadReports", "Home", FormMethod.Post))
-                {
-                    <input type="hidden" name="GridHtml" />
-                    <input type="submit" id="btnSubmit" value="Export1" />*@
-                }
-
-
-                <div class="col-md-2">
-                    <!-- Example single danger button -->
+                <div class="form-group col-lg-4">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 15px">
-                            Download
-                        </button>
-                        <div class="dropdown-menu" style="width: 120px; border-radius:15px">
-                            <a class="dropdown-item download-report" id="downloadexcel" href="#" onclick="DownloadReport(this)">
-                                <img src="~/Assets/Arrows/xls.png" style="width:23px" /><b>Excel Report</b>
-                            </a>
-                            <a class="dropdown-item download-report" id="downloadpdf" href="#" onclick="DownloadReport(this)">
-                                <img src="~/Assets/Arrows/pdf.png" style="width:23px" /><b>PDF Report</b>
-                            </a>
-                        </div>
+                        <input type="submit" class="btn btn-success btn-lg text-white btn-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius:15px" />
                     </div>
-
                 </div>
 
-            </div>
-            <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
-        </form>
+                <div class="form-group col-lg-4">
+                    <div class="btn-group" style="margin-left:13px">
+                        <input type="submit" id="btnPdfSubmit" class="btn btn-danger btn-lg text-white btn-report-generate" value="PDF Report" style="border-radius:15px" />
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+
     </div>
 </div>
 
@@ -237,28 +228,26 @@
 </div>
 <br />
 <br />
-@using (Html.BeginForm("Export", "Home", FormMethod.Post))
-{
-    <input type="hidden" name="GridHtml" />
-    <input type="submit" id="btnSubmit" value="Export" />
-}
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        $("#btnSubmit").click(function () {
 
-            var ajaxDownloadReportModel = {
-                Employees: $('#timesheetreportconsultants').val(),
-                WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
-                WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-                WeekNumber: jQuery('#weekNumber').val(),
-                Type: ".xls"
-            }
-            var GridHtml = JSON.stringify(ajaxDownloadReportModel).toString();
-          
-            $("input[name='GridHtml']").val(GridHtml);
-        });
+    jQuery(".btn-report-generate").on("click", function () {
+        alert($(this).attr("id"));
+        var ajaxDownloadReportModel = {
+            Employees: $('#timesheetreportconsultants').val(),
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val(),
+            Type: $(this).attr("id") == "btnExcelSubmit" ? ".xls" : ".pdf"
+        }
+        var GridHtml = JSON.stringify(ajaxDownloadReportModel).toString();
+
+        $("input[name='GridHtml']").val(GridHtml);
+
     });
+
+
+
 </script>
 
 <div class="card timesheet-card sample-timesheet-report">

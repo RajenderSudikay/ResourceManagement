@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-
 namespace ResourceManagement.Controllers
 {
     using Models;
@@ -560,19 +559,10 @@ namespace ResourceManagement.Controllers
         [ValidateInput(false)]
         public ActionResult Export(string GridHtml)
         {
-            var ccc = GridHtml;
-            //return File(Encoding.ASCII.GetBytes(GridHtml), "application/vnd.ms-excel", "Grid.xls");
-
+           
             TimeSheetAjaxReportModel timeSheetAjaxReportModel = JsonConvert.DeserializeObject<TimeSheetAjaxReportModel>(GridHtml);
 
             List<SourceFile> sourceFiles = new List<SourceFile>();
-
-            //TimeSheetAjaxReportModel timeSheetAjaxReportModel = new TimeSheetAjaxReportModel();
-
-            //timeSheetAjaxReportModel.Employees.Add("C4046");
-            //timeSheetAjaxReportModel.WeekNumber = "49";
-            //timeSheetAjaxReportModel.WeekStartDate = "1bc";
-            //timeSheetAjaxReportModel.WeekEndDate = "111";
 
             if (timeSheetAjaxReportModel != null && timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
             {
