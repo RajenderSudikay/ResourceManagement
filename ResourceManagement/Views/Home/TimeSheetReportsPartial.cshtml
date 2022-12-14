@@ -117,21 +117,33 @@
 
                                         <tbody class="timesheet-table-grid">
 
-                                            @foreach (var task in employeeReport.timeSheetInfo)
+                                            @if (employeeReport.timeSheetInfo.Count > 0)
                                             {
-                                                <tr style="background-color: #fff">
+                                                foreach (var task in employeeReport.timeSheetInfo)
+                                                {
+                                                    <tr style="background-color: #fff" class="time">
 
-                                                    <td scope="row">@task.taskdate</td>
-                                                    <td scope="row">@task.category</td>
-                                                    <td scope="row" style="max-width:200px">@task.incidentnumber</td>
-                                                    <td scope="row" style="max-width:200px">@task.taskdetails</td>
-                                                    <td scope="row">@task.requester</td>
-                                                    <td scope="row">@task.callpriority</td>
-                                                    <td scope="row">@task.projstatus</td>
-                                                    <td scope="row">@task.timespent</td>
-                                                    <td scope="row" style="max-width:200px">@task.comments</td>
+                                                        <td scope="row">@task.taskdate</td>
+                                                        <td scope="row">@task.category</td>
+                                                        <td scope="row" style="max-width:200px">@task.incidentnumber</td>
+                                                        <td scope="row" style="max-width:200px">@task.taskdetails</td>
+                                                        <td scope="row">@task.requester</td>
+                                                        <td scope="row">@task.callpriority</td>
+                                                        <td scope="row">@task.projstatus</td>
+                                                        <td scope="row">@task.timespent</td>
+                                                        <td scope="row" style="max-width:200px">@task.comments</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2>NO RECORDS FOUND</h2>
+                                                    </td>
                                                 </tr>
                                             }
+
 
 
                                         </tbody>
@@ -194,13 +206,18 @@
             }
         </div>
 
-        <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-            <span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>
-        </a>
-        <a class="carousel-control-next" href="#demo" data-slide="next">
-            <span class="carousel-control-next-icon" style="background-color: gray; height: 40px; margin-right: -164px;"></span>
-        </a>
+        @if (Model.TimeSheetReports != null && Model.TimeSheetReports.Count > 1)
+        {
+            var abc = Model.TimeSheetReports[0].timeSheetInfo;
+
+
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon" style="background-color: gray; height: 40px; margin-right: -164px;"></span>
+            </a>
+        }
 
     </div>
 }

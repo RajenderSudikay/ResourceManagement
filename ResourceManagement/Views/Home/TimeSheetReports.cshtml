@@ -250,8 +250,8 @@
                 <table class="table" id="timesheet-table" style="margin-top: 2px">
                     <thead class="table-bordered">
                         <tr style="background-color: #BCD2E8">
-                            <th class="" scope="col" style="max-width:50px">Day</th>
-                            <th class="" scope="col">Category</th>
+                            <th class="" scope="col" style="max-width:60px">Day</th>
+                            <th class="" scope="col" style="max-width:100px">Category</th>
                             <th class="" scope="col">Incident Number</th>
                             <th class="" scope="col">Incident Desc</th>
                             <th class="" scope="col">Requester</th>
@@ -263,86 +263,29 @@
                     </thead>
 
                     <tbody class="timesheet-table-grid">
-
                         <tr style="background-color: #fff">
-
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
+                            <td scope="row" style="max-width:60px">01/01/2023</td>
+                            <td scope="row" style="max-width:100px">Support ticket</td>
+                            <td scope="row" style="max-width:200px">INC123, INC3456</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </td>
+                            <td scope="row">Aron</td>
+                            <td scope="row">Medium</td>
+                            <td scope="row">Active</td>
+                            <td scope="row">10</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</td>
                         </tr>
-                        <tr style="background-color: #fff ">
-
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
+                        <tr style="background-color: #fff">
+                            <td scope="row" style="max-width:60px">02/01/2023</td>
+                            <td scope="row" style="max-width:100px">Support ticket</td>
+                            <td scope="row" style="max-width:200px">INC123, INC3456</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </td>
+                            <td scope="row">Aron</td>
+                            <td scope="row">Medium</td>
+                            <td scope="row">Active</td>
+                            <td scope="row">10</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</td>
                         </tr>
-                        <tr style="background-color: #fff ">
 
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
-                        </tr>
-                        <tr style="background-color: #fff ">
-
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
-                        </tr>
-                        <tr style="background-color: #fff ">
-
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
-                        </tr>
-                        <tr style="background-color: #fff ">
-
-                            <td scope="row">1111</td>
-                            <td scope="row">3333</td>
-                            <td scope="row">5555</td>
-                            <td scope="row">666666</td>
-                            <td scope="row">555555</td>
-                            <td scope="row">6666</td>
-
-                            <td scope="row">6666</td>
-                            <td scope="row">7777</td>
-                            <td scope="row">888</td>
-                        </tr>
-                        @*}*@
 
                     </tbody>
                 </table>
@@ -408,10 +351,6 @@
 <br />
 <br />
 
-
-
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
 
     jQuery(".btn-report-generate").on("click", function () {
@@ -536,29 +475,6 @@
             }
         });
     });
-
-
-    function DownloadReport(ele) {
-        var reporType = $(ele).attr('id');
-
-        var ajaxDownloadReportModel = {
-            Employees: $('#timesheetreportconsultants').val(),
-            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
-            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-            WeekNumber: jQuery('#weekNumber').val(),
-            Type: reporType == "downloadexcel" ? ".xls" : ".pdf"
-        }
-
-
-        jQuery.ajax({
-            url: "/DownloadReports",
-            data: JSON.stringify({ timeSheetAjaxReportModel: ajaxDownloadReportModel }),
-            success: function (data) {
-                window.location = "/Error";
-            }
-        });
-    }
-
 
 </script>
 
