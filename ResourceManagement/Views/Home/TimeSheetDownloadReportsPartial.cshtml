@@ -66,7 +66,7 @@
                                 <tr>
                                     <td style="width: 100%; padding-left: 0px; text-align: center; border: 1px solid black; padding-top: 0px; padding-right: 0px; padding-bottom:0px">
                                         <table style="width:100%">
-                                            <tr style="background-color: #D3D3D3; text-align:center"><td colspan="8"><h2><b>@employeeReport.EmployeeInfo.Project_Name Weekly Project Status Report</b></h2></td></tr>
+                                            <tr style="background-color: #D3D3D3; text-align:center"><td colspan="7"><h2><b>@employeeReport.EmployeeInfo.Project_Name Weekly Project Status Report</b></h2></td></tr>
                                             <tr style="text-align:left">
                                                 <td class="headertd">
                                                     <b>Resource Name</b>
@@ -97,7 +97,6 @@
                                 </tr>
                             </table>
 
-
                             <table>
 
                                 <tr>
@@ -106,22 +105,22 @@
                             </table>
                             <table>
                                 <tr>
-                                    <td colspan="9" style="background-color: #D3D3D3"><b>EFFORT DETAILS (current week)</td>
+                                    <td colspan="9" style="background-color: #D3D3D3"><b>EFFORT DETAILS (current week)</b></td>
                                 </tr>
                             </table>
 
                             <table class="table" id="timesheet-table" style="margin-top: 2px">
                                 <thead class="table-bordered">
                                     <tr style="background-color: #BCD2E8">
-                                        <th class="" scope="col" style="max-width:50px">Day</th>
-                                        <th class="" scope="col">Category</th>
-                                        <th class="" scope="col">Incident Number</th>
-                                        <th class="" scope="col">Incident Desc</th>
-                                        <th class="" scope="col">Requester</th>
-                                        <th class="" scope="col">Priority</th>
-                                        <th class="" scope="col">Status</th>
-                                        <th class="" scope="col">Time Spent</th>
-                                        <th class="" scope="col">Comments</th>
+                                        <th class="" scope="col" style="max-width:50px; text-align:left">Day</th>
+                                        <th class="" scope="col" style="text-align: left">Category</th>
+                                        <th class="" scope="col" style="text-align: left">Incident Number</th>
+                                        <th class="" scope="col" style="text-align: left">Incident Desc</th>
+                                        <th class="" scope="col" style="text-align: left">Requester</th>
+                                        <th class="" scope="col" style="text-align: left">Priority</th>
+                                        <th class="" scope="col" style="text-align: left">Status</th>
+                                        <th class="" scope="col" style="text-align: left">Time Spent</th>
+                                        <th class="" scope="col" style="text-align: left">Comments</th>
                                     </tr>
                                 </thead>
 
@@ -131,15 +130,18 @@
                                     {
                                         <tr style="background-color: #fff">
 
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.taskdate</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.category</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left; max-width:200px">@task.incidentnumber</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px">@task.taskdetails</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.requester</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.callpriority</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.projstatus</td>
-                                            <td scope="row" style="font-family:Calibri; text-align:left">@task.timespent</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px">@task.comments</td>
+                                            @{ 
+                                                var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Split(' ')[0]: task.taskdate.ToString();
+                                            }
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@requiredDate</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@task.timespent</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
                                         </tr>
                                     }
 
@@ -194,7 +196,7 @@
 
                                     <td style="background-color: white; width: 30px;text-align:left"><b>3</b></td>
                                 </tr>
-                            </table>                          
+                            </table>
                             <div style="height:10px">
                                 <b>          </b>
                             </div>
