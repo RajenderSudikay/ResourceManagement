@@ -9,7 +9,9 @@ namespace ResourceManagement.Controllers
     using Models;
     using SelectPdf;
     using System;
+    using System.IO;
     using System.Net;
+    using System.Net.Mail;
     using System.Text;
     using System.Text.Json;
     using static ResourceManagement.Helpers.DateHelper;
@@ -416,6 +418,8 @@ namespace ResourceManagement.Controllers
                         context.SaveChanges();
                         respone.StatusCode = 200;
                         respone.Message = "TimeSheet added successfully!";
+
+                        TimeSheetReportEmail();
                     }
                     else
                     {
@@ -467,7 +471,7 @@ namespace ResourceManagement.Controllers
                 if (loginObj != null)
                 {
 
-                    timeSheetReport.reports = db.ambctaskcaptures.Where(a => a.employeeid.Equals(loginObj.employee_id)).ToList();
+                    timeSheetReport.reports = db.ambctaskcaptures.Where(a => a.employeeid.Equals(loginObj.employee_id) && a.weekno == 49).ToList();
                     timeSheetReport.empData = loginObj;
 
                     // && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)
@@ -669,6 +673,36 @@ namespace ResourceManagement.Controllers
             }
 
             return PartialView(employeeReports);
+        }
+
+
+        public void TimeSheetReportEmail()
+        {
+            string urlAddress = "https://localhost:44375/TimeSheetEmailReport";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
+
+            using (MailMessage mm = new MailMessage("noreply-report@ambconline.com", "rajendersudikay@ambconline.com"))
+            {
+                mm.Subject = "Time sheet report for Rajender Sudikay week 49";
+                mm.Body = htmlContent;
+
+                mm.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+                System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+                credentials.UserName = "rajender.patel17@gmail.com";
+                credentials.Password = "etwzfbsnslayzbmm";
+                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = credentials;
+                smtp.Port = 587;
+                smtp.Send(mm);
+            }
+
         }
     }
 }

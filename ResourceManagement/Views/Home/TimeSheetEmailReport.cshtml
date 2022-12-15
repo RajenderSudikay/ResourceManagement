@@ -16,8 +16,6 @@
     }
 
     td, th {
-        /*  border: 1px solid #dddddd;*/
-        /*  border-bottom: 1px solid black;*/
         text-align: left;
         padding: 8px;
         border: 0px !important;
@@ -55,46 +53,7 @@
 
 @if (Model != null)
 {
-
-    @*<div class="card timesheet-card">
-            <div class="card-body ">
-
-                <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label for="timeSheetStartWeekdate">Employee Name</label>
-                        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" value="@Model.empData.employee_name">
-                    </div>
-
-                    <div class="form-group col-lg-4">
-                        <label for="timeSheetEndWeekdate">Emp ID</label>
-                        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" value="@Model.empData.employee_id">
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="week-Number">Reporting Manager</label>
-                        <input type="text" class="form-control" id="weekNumber" value="Seema Ashok">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label for="timeSheetStartWeekdate">Start Date</label>
-                        <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" value="@Model.reports[0].weekstartdate">
-                    </div>
-
-                    <div class="form-group col-lg-4">
-                        <label for="timeSheetEndWeekdate">End Date</label>
-                        <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" value="@Model.reports[0].weekenddate">
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="week-Number">Week Number</label>
-                        <input type="text" class="form-control" id="weekNumber" value="@Model.reports[0].weekno">
-                    </div>
-                </div>
-
-            </div>
-        </div>*@
     <div class="emailbodycontent">
-
         <table>
             <tr>
                 <td style="width: 60%">
@@ -116,22 +75,19 @@
 
 
         <div class="table-responsive table">
-
-
             <table class="table table-hover table-striped" id="timesheet-table" style="border:1px solid black;">
-
                 <thead class="table-bordered">
                     <tr style="background-color: #337ab7">
-                        <th class="time-header" scope="col" style="max-width:50px">Date</th>
-                        <th class="time-header" scope="col">Category</th>
-                        <th class="time-header" scope="col">Incident Number</th>
-                        <th class="time-header" scope="col">Incident Desc</th>
-                        <th class="time-header" scope="col">Requester</th>
-                        <th class="time-header" scope="col">Urgency</th>
-                        <th class="time-header" scope="col">Status</th>
-                        <th class="time-header" scope="col">Date Closed</th>
-                        <th class="time-header" scope="col">Time Spent</th>
-                        <th class="time-header" scope="col">Comments</th>
+                        <th scope="col" style="max-width:80px; color:white">Date</th>
+                        <th scope="col" style="max-width:100px; color:white">Category</th>
+                        <th scope="col" style="max-width:200px; color:white">Incident Number</th>
+                        <th scope="col" style="max-width:200px; color:white">Incident Desc</th>
+                        <th scope="col" style="color:white">Requester</th>
+                        <th scope="col" style="color:white">Urgency</th>
+                        <th scope="col" style="color:white">Status</th>
+                        <th scope="col" style="color:white">Date Closed</th>
+                        <th scope="col" style="color:white">Time Spent</th>
+                        <th scope="col" style="max-width:200px; color:white">Comments</th>
                     </tr>
                 </thead>
 
@@ -152,18 +108,17 @@
 
                         i++;
 
-
                         <tr class="default-table-row" style="background-color: @color">
-                            <td scope="row">@report.taskdate</td>
-                            <td scope="row">@report.category.TrimStart().TrimEnd()</td>
-                            <td scope="row">@report.incidentnumber</td>
-                            <td scope="row">@report.taskdetails</td>
+                            <td scope="row" style="max-width:80px;">@report.taskdate.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="max-width:100px;">@report.category.TrimStart().TrimEnd()</td>
+                            <td scope="row" style="max-width:200px;">@report.incidentnumber</td>
+                            <td scope="row" style="max-width:200px;">@report.taskdetails</td>
                             <td scope="row">@report.requester</td>
                             <td scope="row">@report.callpriority</td>
                             <td scope="row">@report.projstatus</td>
                             <td scope="row">@report.closeddate</td>
                             <td scope="row">@report.timespent</td>
-                            <td scope="row">@report.comments</td>
+                            <td scope="row" style="max-width:200px;">@report.comments</td>
                         </tr>
                     }
 
