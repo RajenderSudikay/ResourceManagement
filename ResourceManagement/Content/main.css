@@ -895,3 +895,7 @@ input[type=number] {
     margin-bottom: 25px;
     padding-top: 20px;
 }
+
+.row-disabled{
+    background-color: lightgray;
+}

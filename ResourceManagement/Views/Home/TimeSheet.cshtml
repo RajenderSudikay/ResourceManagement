@@ -139,7 +139,7 @@
         <!--Table head-->
         <thead class="table-bordered">
             <tr>
-                <th class="time-header" scope="col">Edit/Delete</th>
+                <th class="time-header" scope="col">Actions</th>
                 <th class="time-header" scope="col">Date</th>
                 <th class="time-header" scope="col">Category</th>
                 <th class="time-header" scope="col">Incident Number</th>
@@ -209,6 +209,9 @@
                             <div class="form-group">
                                 <label for="timeSheetdate">Date</label>
                                 <input type="date" class="form-control" id="timeSheetdate" required>
+                                <div class="leave-or-holiday-msg" style="display:none; color: red">
+                                    You are on Leave or Holiday on this date.
+                                </div>
                                 <div class="invalid-feedback">
                                     Please enter task date
                                 </div>
@@ -725,6 +728,37 @@
             });
         });
 
+        // Everything except weekend days
+        const validate = dateString => {
+
+            var isLeaveOrHoliday = false;
+            jQuery.each(empLeaveAndHolidays, function (i, item) {
+                if (item.LeaveOrHolidayDate == dateString) {
+                    isLeaveOrHoliday = true;
+                }
+            });
+
+            if (isLeaveOrHoliday == true) {
+                var displayDate = dateString.split('-');
+                var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+                var msg = "You are on Leave or Holiday on " + newDate;
+                jQuery('.leave-or-holiday-msg').html(msg)
+                jQuery('.leave-or-holiday-msg').show();
+                return false;
+            }
+            return true;
+        }
+
+        // Sets the value to '' in case of an invalid date
+
+
+        jQuery('#timeSheetdate').change(function (evt) {
+            $('.leave-or-holiday-msg').hide();
+            if (!validate(evt.target.value)) {
+                evt.target.value = '';
+            }
+        });
+
 
 
         jQuery('.date-timesheet').change(function () {
@@ -760,7 +794,7 @@
 
                 jQuery.each(empInputDates, function (key, value) {
                     if (value == leaveOrHolidayDate) {
-                        var model = {
+                        var leaveOrHolidayPushModel = {
                             weekstartdate: startDate,
                             weekenddate: endDate,
                             weekno: weekNum,
@@ -782,28 +816,13 @@
                             closeddate: "",
                             timespent: "0",
                             comments: item.Reason,
-                            uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
+                            uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
                         };
 
-                        jQuery('.default-table-row').hide();
-                        var dynamicTemplate = TimeSheetTemplate(true, model.uniquekey);
-                        var newRow = jQuery(dynamicTemplate);
+                        timeSheetList.push(leaveOrHolidayPushModel);
+                        timeSheetWeeklyHours = new Array();
 
-                        var displayDate = model.taskdate.split('-');
-                        var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
-
-                        jQuery(newRow).find('.timesheet-date').html(newDate);
-                        jQuery(newRow).find('.timesheet-category').html(model.category);
-                        jQuery(newRow).find('.timesheet-incidentnum').html(model.incidentnumber);
-                        jQuery(newRow).find('.timesheet-incidentdes').html(model.taskdetails);
-                        jQuery(newRow).find('.timesheet-requester').html(model.requester);
-                        jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
-                        jQuery(newRow).find('.timesheet-status').html(model.callstatus);
-                        jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
-                        jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
-                        jQuery(newRow).find('.timesheet-comments').html(model.comments);
-
-                        jQuery(".timesheet-table-grid").append(jQuery(newRow));
+                        AddUpdateRecords(timeSheetList);
                     }
                 });
             });
@@ -945,13 +964,33 @@
             jQuery.each(timeSheetList, function (i, model) {
                 if (model.uniquekey.indexOf(value) != -1) {
 
-                    var dynamicTemplate = TimeSheetTemplate(false, model.uniquekey);
+                    var isLeaveOrHoliday = false;
+
+                    jQuery.each(empLeaveAndHolidays, function (i, item) {
+                        if (item.LeaveOrHolidayDate == model.taskdate) {
+                            isLeaveOrHoliday = true;
+                        }
+                    });
+
+                    var isrowDisabled = false;
+                    if (isLeaveOrHoliday != undefined && isLeaveOrHoliday == true) {
+                        isrowDisabled = true;
+                    }
+
+                    var dynamicTemplate = TimeSheetTemplate(isrowDisabled, model.uniquekey);
                     var newRow = jQuery(dynamicTemplate);
 
                     var displayDate = model.taskdate.split('-');
                     var newDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
 
-                    var editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' onclick=EditTimeSheetRow(this)></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' onclick=DeleteTimeSheetRow(this)></a>";
+                    var editImg = "";
+                    if (isLeaveOrHoliday != undefined && isLeaveOrHoliday == true) {
+                        editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' href='javascript: void (0)'></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' href='javascript: void (0)'></a>";
+                    }
+                    else {
+                        editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' onclick=EditTimeSheetRow(this)></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' onclick=DeleteTimeSheetRow(this)></a>";
+                    }
+
 
                     jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
                     jQuery(newRow).find('.timesheet-date').html(newDate);
