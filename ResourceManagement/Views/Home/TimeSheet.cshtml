@@ -128,6 +128,7 @@
                     </div>*@
             </div>
             <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+            <div class="emp-joining-date hide">@Model.AMBC_Active_Emp_view.Employee_Joining_Day</div>
         </form>
     </div>
 </div>
@@ -885,7 +886,7 @@
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
 
-                jQuery('#timeSheetdate').val(minDate);
+                //jQuery('#timeSheetdate').val(minDate);
 
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);

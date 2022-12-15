@@ -334,15 +334,23 @@ namespace ResourceManagement.Controllers
                 }
 
                 var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == empModel.AMBC_Active_Emp_view.Location).ToList();
+                var employeeWorkedOnHolidays = db.tblambcholidaylogs.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.employee_id == empModel.AMBC_Active_Emp_view.Employee_ID).ToList();
+
                 if (ambcHolidays != null && ambcHolidays.Count > 0)
                 {
                     foreach (var ambcLeave in ambcHolidays)
                     {
-                        leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                        var isEmployeeWOrkedonHoliday = employeeWorkedOnHolidays.Where(holiday => holiday.holiday_date == ambcLeave.holiday_date).FirstOrDefault();
+
+                        if (isEmployeeWOrkedonHoliday == null)
                         {
-                            LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),
-                            Reason = ambcLeave.holiday_name
-                        });
+                            leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                            {
+                                LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),
+                                Reason = ambcLeave.holiday_name
+                            });
+                        }
+
                     }
                 }
             }
