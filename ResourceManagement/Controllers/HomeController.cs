@@ -15,6 +15,7 @@ namespace ResourceManagement.Controllers
     using System.Text;
     using System.Text.Json;
     using static ResourceManagement.Helpers.DateHelper;
+    using static ResourceManagement.Models.LeaveOrHolidayModel;
     using static ResourceManagement.Models.TimesheetReportModel;
 
     public class HomeController : Controller
@@ -312,55 +313,87 @@ namespace ResourceManagement.Controllers
             return dateTime.ToString("yyyy-MM-dd");
         }
 
-        public string GetLeaveandHolidayInfofromDb(RMA_EmployeeModel empModel)
+        public JsonResult GetLeaveandHolidayInfofromDb(AjaxLeaveOrHolidayModel timeSheetAjaxLeaveOrHolidayModel)
         {
-            var leaveOrHolidayData = new List<RMA_LeaveOrHolidayInfo>();
+            var leaveHolidaySignInData = new RMA_LeaveHolidaySignInModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var startDate = DateTime.Today.AddMonths(-2);
-                var endDate = DateTime.Today;
+                var startDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekStartDate);
+                var endDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekEndDate);
 
-                var conleaves = db.con_leaveupdate.Where(a => a.employee_id.Equals(empModel.AMBC_Active_Emp_view.Employee_ID) && a.leavedate >= startDate && a.leavedate <= endDate).ToList();
-                if (conleaves != null && conleaves.Count > 0)
+                var datesBetweenStartAndEnd = new List<DateTime>();
+
+                for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
                 {
-                    foreach (var conleave in conleaves)
+                    datesBetweenStartAndEnd.Add(dt);
+                }
+
+                var conSignInDetails = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(timeSheetAjaxLeaveOrHolidayModel.EmpId) && a.Login_date >= startDate && a.Login_date <= endDate).ToList();
+                if (conSignInDetails != null && conSignInDetails.Count > 0)
+                {
+                    foreach (var conSignIn in conSignInDetails)
                     {
-                        leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                        leaveHolidaySignInData.SignInInfo.Add(new RMA_SignInInfo()
                         {
-                            LeaveOrHolidayDate = GetDateInRequiredFormat(conleave.leavedate.ToString()),
-                            Reason = conleave.leave_reason
-                        }); ;
+                            SignInDate = GetDateInRequiredFormat(conSignIn.Signin_Time.ToString()),
+                            Reason = "Checked In"
+                        });
                     }
                 }
 
-                var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == empModel.AMBC_Active_Emp_view.Location).ToList();
-                var employeeWorkedOnHolidays = db.tblambcholidaylogs.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.employee_id == empModel.AMBC_Active_Emp_view.Employee_ID).ToList();
+                var ambcHolidays = db.tblambcholidays.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.region == timeSheetAjaxLeaveOrHolidayModel.EmpRegion).ToList();
+                //var employeeWorkedOnHolidays = db.tblambcholidaylogs.Where(b => b.holiday_date >= startDate && b.holiday_date <= endDate && b.employee_id == timeSheetAjaxLeaveOrHolidayModel.EmpId).ToList();
 
                 if (ambcHolidays != null && ambcHolidays.Count > 0)
                 {
+                    //Holidays mapping
                     foreach (var ambcLeave in ambcHolidays)
                     {
-                        var isEmployeeWOrkedonHoliday = employeeWorkedOnHolidays.Where(holiday => holiday.holiday_date == ambcLeave.holiday_date).FirstOrDefault();
+                        var isEmployeeWOrkedonHoliday = conSignInDetails.Where(holiday => holiday.Login_date == ambcLeave.holiday_date).FirstOrDefault();
 
                         if (isEmployeeWOrkedonHoliday == null)
                         {
-                            leaveOrHolidayData.Add(new RMA_LeaveOrHolidayInfo()
+                            leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
                             {
                                 LeaveOrHolidayDate = GetDateInRequiredFormat(ambcLeave.holiday_date.ToString()),
-                                Reason = ambcLeave.holiday_name
+                                Reason = ambcLeave.holiday_name,
+                                DefaultLeaveOrHolidayDate = ambcLeave.holiday_date
                             });
                         }
 
                     }
+
+                }
+
+
+                //If no sign in considering those dates as Holiday or Leave
+                foreach (var selecteddate in datesBetweenStartAndEnd)
+                {
+                    var isEmployeeSignedIn = conSignInDetails.Where(holiday => holiday.Login_date == selecteddate).FirstOrDefault();
+
+                    if (isEmployeeSignedIn == null)
+                    {
+                        var isMissedSignInDateHoliday = leaveHolidaySignInData.LeaveHolidayInfo.Where(holiday => holiday.DefaultLeaveOrHolidayDate == selecteddate).FirstOrDefault();
+
+                        if (isMissedSignInDateHoliday == null)
+                        {
+                            leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                            {
+                                LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
+                                Reason = "No Check-In"
+                            });
+                        }
+                    }
+
                 }
             }
 
-            if (leaveOrHolidayData != null && leaveOrHolidayData.Count > 0)
+            if ((leaveHolidaySignInData.SignInInfo != null && leaveHolidaySignInData.SignInInfo.Count > 0) || (leaveHolidaySignInData.LeaveHolidayInfo != null && leaveHolidaySignInData.LeaveHolidayInfo.Count > 0))
             {
-                return JsonSerializer.Serialize(leaveOrHolidayData);
+                return Json(JsonSerializer.Serialize(leaveHolidaySignInData), JsonRequestBehavior.AllowGet);
             }
 
-            return string.Empty;
+            return Json(null);
         }
 
         public ActionResult Dashboard()
@@ -392,7 +425,7 @@ namespace ResourceManagement.Controllers
 
                 if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
-                    employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
+                    //employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
                     return View(employeeModel);
                 }
                 else

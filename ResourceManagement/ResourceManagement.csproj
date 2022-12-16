@@ -262,6 +262,7 @@
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
+    <Compile Include="Models\LeaveOrHolidayModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblambcholiday.cs">

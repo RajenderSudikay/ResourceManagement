@@ -105,6 +105,9 @@
                     <div class="invalid-feedback">
                         Please Select Week Start Date
                     </div>
+                    <div class="joining-date-validation" style="display:none; color:red">
+                        You cannot select the date before the joining date
+                    </div>
                 </div>
 
                 <div class="form-group col-lg-4">
@@ -123,11 +126,10 @@
                         Click here to add task details
                     </button>&nbsp;&nbsp;
                 </div>
-                @*<div class="col-md-9">
-                        <h2 class="database-response"></h2>
-                    </div>*@
             </div>
-            <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+
+            @*@Model.leaveOrHolidayInfo*@
+            <div class="leave-or-holiday-info hide"></div>
             <div class="emp-joining-date hide">@Model.AMBC_Active_Emp_view.Employee_Joining_Day</div>
         </form>
     </div>
@@ -763,11 +765,13 @@
 
 
         jQuery('.date-timesheet').change(function () {
-            jQuery('.database-response').text("");
-            timeSheetList = new Array();
+
             //On Date change removing all the selected sheets previosuly if any
             $('.user-added-timesheet').remove();
             jQuery('.default-table-row').show();
+
+            jQuery('.database-response').text("");
+            timeSheetList = new Array();
 
             var date = jQuery(this).val();
 
@@ -786,48 +790,88 @@
             var weekNum = moment(startDate).week();
             jQuery('#weekNumber').val(weekNum);
 
-            empInputDates = new Array();
 
-            InputTimeSheetdates(StartWeekdate, empInputDates);
+            var ajaxDbLeaveOrholidayModel = {
+                EmpId: jQuery('.agent-navdrop-empid').text(),
+                EmpRegion: $('.agent-navdrop-emplocation').text(),
+                WeekStartDate: startDate,
+                WeekEndDate: endDate,
+                WeekNumber: weekNum
+            }
 
-            jQuery.each(empLeaveAndHolidays, function (i, item) {
-                var leaveOrHolidayDate = item.LeaveOrHolidayDate;
+            jQuery.ajax({
+                url: "/GetLeaveandHolidayInfofromDb",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ timeSheetAjaxLeaveOrHolidayModel: ajaxDbLeaveOrholidayModel }),
+                success: function (data) {
+                    empLeaveAndHolidays = new Array();
+                    if (data != null) {
+                        jQuery('.leave-or-holiday-info').text(data);
+                        var parsedLeaveOrHolidayJson = jQuery.parseJSON(data);
+                        if (parsedLeaveOrHolidayJson.LeaveHolidayInfo.length > 0) {
+                            jQuery.each(parsedLeaveOrHolidayJson.LeaveHolidayInfo, function (i, leaveItem) {
+                                empLeaveAndHolidays.push(leaveItem);
+                            });
+                        }
 
-                jQuery.each(empInputDates, function (key, value) {
-                    if (value == leaveOrHolidayDate) {
-                        var leaveOrHolidayPushModel = {
-                            weekstartdate: startDate,
-                            weekenddate: endDate,
-                            weekno: weekNum,
-                            employeeid: jQuery('.agent-navdrop-empid').text(),
-                            employeename: jQuery('.agent-full-name').text(),
-                            empdesignation: jQuery('.agent-navdrop-empdesig').text(),
-                            empmanager: jQuery('.agent-navdrop-empmanager').text(),
-                            empcontactnumber: jQuery('.agent-navdrop-phone').text(),
-                            clientname: jQuery('.agent-navdrop-client').text(),
-                            projectname: jQuery('.agent-navdrop-project').text(),
-                            projstatus: jQuery('.agent-navdrop-prostatus').text(),
-                            taskdate: value,
-                            category: "NA",
-                            incidentnumber: "NA",
-                            taskdetails: "NA",
-                            requester: "NA",
-                            callpriority: "NA",
-                            callstatus: "NA",
-                            closeddate: "",
-                            timespent: "0",
-                            comments: item.Reason,
-                            uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
-                        };
+                        if (parsedLeaveOrHolidayJson.SignInInfo.length > 0) {
 
-                        timeSheetList.push(leaveOrHolidayPushModel);
-                        timeSheetWeeklyHours = new Array();
+                            empInputDates = new Array();
+                            InputTimeSheetdates(StartWeekdate, empInputDates);
 
-                        AddUpdateRecords(timeSheetList);
+                            jQuery.each(empLeaveAndHolidays, function (i, item) {
+                                var leaveOrHolidayDate = item.LeaveOrHolidayDate;
+                                var convertedHolidayDate = moment(item.LeaveOrHolidayDate, 'YYYY-MM-DD');
+                                var dayName = convertedHolidayDate.format('dddd');
+
+                                console.log(dayName);
+
+                                if (dayName != "Saturday" && dayName != "Sunday") {
+                                    jQuery.each(empInputDates, function (key, value) {
+                                        if (value == leaveOrHolidayDate) {
+                                            var leaveOrHolidayPushModel = {
+                                                weekstartdate: startDate,
+                                                weekenddate: endDate,
+                                                weekno: weekNum,
+                                                employeeid: jQuery('.agent-navdrop-empid').text(),
+                                                employeename: jQuery('.agent-full-name').text(),
+                                                empdesignation: jQuery('.agent-navdrop-empdesig').text(),
+                                                empmanager: jQuery('.agent-navdrop-empmanager').text(),
+                                                empcontactnumber: jQuery('.agent-navdrop-phone').text(),
+                                                clientname: jQuery('.agent-navdrop-client').text(),
+                                                projectname: jQuery('.agent-navdrop-project').text(),
+                                                projstatus: jQuery('.agent-navdrop-prostatus').text(),
+                                                taskdate: value,
+                                                category: "NA",
+                                                incidentnumber: "NA",
+                                                taskdetails: "NA",
+                                                requester: "NA",
+                                                callpriority: "NA",
+                                                callstatus: "NA",
+                                                closeddate: "",
+                                                timespent: "0",
+                                                comments: item.Reason,
+                                                uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
+                                            };
+
+                                            timeSheetList.push(leaveOrHolidayPushModel);
+                                            timeSheetWeeklyHours = new Array();
+
+                                            AddUpdateRecords(timeSheetList);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                            jQuery('.warning-message-popup').html("<h2>Are you sure you worked on selected dates? If yes please contact your manager. As per our records you didn't Check-In to the Application in selected dates!</h2>");
+                            $('#modal-warning-message-popup').modal('show');
+                        }
                     }
-                });
+                }
             });
-
         });
     });
 
@@ -853,6 +897,7 @@
 
     jQuery(".add-task-details").click(function () {
         $(".timesheet-addreport").text("Add Report");
+        $(".leave-or-holiday-msg").text("");
         jQuery('.database-response').text("");
         jQuery('.needs-validation').removeClass('was-validated');
         var isStartDateEntered = true;
@@ -1107,7 +1152,7 @@
                 jQuery('#modal-final-submit-alert').modal('show');
             }
             else {
-                jQuery('.database-response').addClass('text-danger');
+                /*jQuery('.database-response').addClass('text-danger');*/
                 jQuery('.warning-message-popup-title').html("Please fill the task details for the date(s) mentioned.")
                 jQuery('.warning-message-popup').html(missedDatesData + "<br><h2></h2>");
                 jQuery('#modal-warning-message-popup').modal('show');

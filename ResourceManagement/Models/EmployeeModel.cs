@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using static ResourceManagement.Models.TimesheetReportModel;
 
 namespace ResourceManagement.Models
@@ -37,6 +38,20 @@ namespace ResourceManagement.Models
     public class RMA_LeaveOrHolidayInfo
     {
         public string LeaveOrHolidayDate { get; set; }
+        public string Reason { get; set; }
+        public DateTime? DefaultLeaveOrHolidayDate { get; set; }
+    }
+
+    public class RMA_LeaveHolidaySignInModel
+    {
+        public List<RMA_LeaveOrHolidayInfo> LeaveHolidayInfo { get; set; } = new List<RMA_LeaveOrHolidayInfo>();
+
+        public List<RMA_SignInInfo> SignInInfo { get; set; } = new List<RMA_SignInInfo>();
+    }
+
+    public class RMA_SignInInfo
+    {
+        public string SignInDate { get; set; }
         public string Reason { get; set; }
     }
 
