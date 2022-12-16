@@ -162,6 +162,17 @@
                     <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="timeSheetEmpClient">Client</label>
+                    <select id="timeSheetEmpClient" name="clients" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                        @foreach (var project in Model.projectInfo)
+                        {
+                            <option value="@project.Project_Code">@project.Client </option>
+                        }
+                    </select>
+                </div>
+            </div>
 
             <div class="row mt-xl-4">
                 <div class="col-md-3">
@@ -806,7 +817,6 @@
         });
 
 
-
         jQuery('.date-timesheet').change(function () {
 
             //On Date change removing all the selected sheets previosuly if any
@@ -816,7 +826,7 @@
             jQuery('.database-response').text("");
             timeSheetList = new Array();
 
-            var date = jQuery(this).val();
+            var date = jQuery('#timeSheetStartWeekdate').val();
 
             var startOfWeek = moment(new Date(date)).startOf('week').toDate();
             var endOfWeek = moment(new Date(date)).endOf('week').toDate();
@@ -832,6 +842,18 @@
 
             var weekNum = moment(startDate).week();
             jQuery('#weekNumber').val(weekNum);
+
+            timeSheetWeeklyHours = new Array();
+
+            jQuery.ajax({
+                url: "/timesheetweeklychart",
+                type: "POST",
+                dataType: "html",
+                data: { weekreportmodel: timeSheetWeeklyHours },
+                success: function (data) {
+                    $('#chartContainer').html(data);
+                }
+            });
 
 
             var ajaxDbLeaveOrholidayModel = {
@@ -937,6 +959,27 @@
         });
     })();
 
+    //function InputTimeSheetdates() {
+
+    //    var ajaxReportModel = {
+    //        Employees: $('#timesheetreportconsultants').val(),
+    //        WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+    //        WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+    //        WeekNumber: jQuery('#weekNumber').val()
+    //    }
+
+    //    jQuery.ajax({
+    //        url: "/TimeSheetReportsPartial",
+    //        type: "POST",
+    //        contentType: 'application/json; charset=utf-8',
+    //        data: JSON.stringify({ timeSheetAjaxReportModel: ajaxReportModel }),
+    //        success: function (data) {
+    //            jQuery('.sample-timesheet-report').hide();
+    //            $('#timesheetreports-container').html(data);
+    //        }
+    //    });
+    //}
+
 
     jQuery(".add-task-details").click(function () {
         $(".timesheet-addreport").text("Add Report");
@@ -1000,6 +1043,9 @@
             form.classList.add('was-validated');
         });
 
+        var selectedClient = $('#timeSheetEmpClient :selected').text();
+        var selectedProjectCode = $('#timeSheetEmpClient :selected').val();
+
         if (isModalValidated) {
             var pushModel = {
                 weekstartdate: jQuery('#timeSheetStartWeekdate').val(),
@@ -1010,7 +1056,7 @@
                 empdesignation: jQuery('.agent-navdrop-empdesig').text(),
                 empmanager: jQuery('.agent-navdrop-empmanager').text(),
                 empcontactnumber: jQuery('.agent-navdrop-phone').text(),
-                clientname: jQuery('.agent-navdrop-client').text(),
+                clientname: selectedClient != undefined && selectedClient != "" ? selectedClient : jQuery('.agent-navdrop-client').text(),
                 projectname: jQuery('.agent-navdrop-project').text(),
                 projstatus: jQuery('.agent-navdrop-prostatus').text(),
                 taskdate: jQuery('#timeSheetdate').val(),
@@ -1023,7 +1069,7 @@
                 closeddate: jQuery('#timeSheetClosedDate').val(),
                 timespent: jQuery('#timeSheetTimeSpent').val(),
                 comments: jQuery('#timeSheetComments').val(),
-                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
+                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode
             };
 
             //Find index of specific object using findIndex method.

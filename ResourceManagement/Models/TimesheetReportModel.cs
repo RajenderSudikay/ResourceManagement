@@ -35,7 +35,7 @@ namespace ResourceManagement.Models
             public string FriidayColor { get; set; }
 
             public string SaturdayHours { get; set; }
-            public string SundayHours { get; set; }          
+            public string SundayHours { get; set; }
             public string OverTimeHours { get; set; }
             public string TotalHoursSpent { get; set; }
 
@@ -49,7 +49,11 @@ namespace ResourceManagement.Models
 
             public string WeekNumber { get; set; }
 
+            public string EmpId { get; set; }
+
             public List<string> Employees { get; set; }
+
+            public string ClientName { get; set; }
 
             public string Type { get; set; }
         }
@@ -68,5 +72,7 @@ namespace ResourceManagement.Models
             public string Extension { get; set; }
             public Byte[] FileBytes { get; set; }
         }
+
+
     }
 }

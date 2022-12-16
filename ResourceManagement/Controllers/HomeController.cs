@@ -281,12 +281,12 @@ namespace ResourceManagement.Controllers
                     {
                         var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
                         if (loginObj != null)
-                        {                        
+                        {
                             var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).ToList();
                             if (employeeInfo != null && employeeInfo.Count() > 0)
                             {
                                 employeeModel.AMBC_Active_Emp_view = employeeInfo[0];
-                                employeeModel.projectInfo = employeeInfo;    
+                                employeeModel.projectInfo = employeeInfo;
                             }
 
                             var empSignInOutInfo = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(loginObj.employee_id) && a.Login_date == DateTime.Today).FirstOrDefault();
@@ -573,6 +573,32 @@ namespace ResourceManagement.Controllers
             return PartialView(employeeReports);
         }
 
+
+        public JsonResult ISEmployeeSubmittedTimeSheetInSelectedWeek(TimeSheetAjaxReportModel timeSheetAjaxReportModel)
+        {          
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {            
+                if (timeSheetAjaxReportModel != null)
+                {                    
+
+                    int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
+
+                    var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetAjaxReportModel.EmpId) && a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.EmpId).ToList();
+                    //if (empTimeSheetInfo != null)
+                    //{
+                    //    reportModel.timeSheetInfo = empTimeSheetInfo;
+                    //}
+
+                    //employeeReports.TimeSheetReports.Add(reportModel);
+
+                }
+            }
+
+            return null;
+
+            //return PartialView(employeeReports);
+        }
+
         public JsonResult GetEmployees()
         {
             using (TimeSheetEntities db = new TimeSheetEntities())
@@ -756,7 +782,7 @@ namespace ResourceManagement.Controllers
                         switch (dayName)
                         {
                             case "Monday":
-                                timeSheetReport.MondayHours = dayHoursSpent == 0? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.MondayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
                                 timeSheetReport.MondayColor = dayHoursSpent > 0 ? "rgb(109, 120, 173)" : "rgb(211, 211, 211)";
                                 break;
 
@@ -795,7 +821,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     timeSheetReport.TotalHoursSpent = System.Convert.ToString(totalHoursSpent);
-                   int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;
+                    int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;
                     timeSheetReport.OverTimeHours = overTime > 0 ? System.Convert.ToString(overTime) : "10";
                     return RenderPartialToString(this, "TimeSheetEmailReport", timeSheetReport, ViewData, TempData);
                 }
