@@ -63,7 +63,7 @@
                                         {
                                             clients.Add(empProject.Client);
                                         }
-                                        var empClients = string.Join(",", clients);
+                                        var empClients = string.Join(", ", clients);
                                         <div class="agent-navdrop-client emp-data-nav">@empClients</div>
 
                                     }
@@ -81,9 +81,21 @@
                                         var projects = new List<string>();
                                         foreach (var empProject in Model.projectInfo)
                                         {
-                                            projects.Add(empProject.Project_Name);
+                                            var sameProjectExists = false;
+
+                                            foreach (var project in projects)
+                                            {
+                                                if (project == empProject.Project_Name)
+                                                {
+                                                    sameProjectExists = true;
+                                                }
+                                            }
+
+                                            if (!sameProjectExists)
+                                            { projects.Add(empProject.Project_Name); }
+
                                         }
-                                        var empProjects = string.Join(",", projects);
+                                        var empProjects = string.Join(", ", projects);
                                         <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
 
                                     }

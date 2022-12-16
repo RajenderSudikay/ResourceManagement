@@ -212,9 +212,6 @@
     <Compile Include="con_leaveupdate_20220517.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="desk_att_taskcapture.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -284,15 +281,6 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tbl_LoginInformation_bkp.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ticket_category.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ticket_priority.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSheet.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="timesheet_submission_log.cs">
