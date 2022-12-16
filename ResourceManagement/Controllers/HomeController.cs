@@ -9,11 +9,13 @@ namespace ResourceManagement.Controllers
     using Models;
     using SelectPdf;
     using System;
+    using System.Configuration;
     using System.IO;
     using System.Net;
     using System.Net.Mail;
     using System.Text;
     using System.Text.Json;
+    using System.Web.UI;
     using static ResourceManagement.Helpers.DateHelper;
     using static ResourceManagement.Models.LeaveOrHolidayModel;
     using static ResourceManagement.Models.TimesheetReportModel;
@@ -321,12 +323,7 @@ namespace ResourceManagement.Controllers
                 var startDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekStartDate);
                 var endDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekEndDate);
 
-                var datesBetweenStartAndEnd = new List<DateTime>();
-
-                for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
-                {
-                    datesBetweenStartAndEnd.Add(dt);
-                }
+                List<DateTime> datesBetweenStartAndEnd = GetWeekdays(startDate, endDate);
 
                 var conSignInDetails = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(timeSheetAjaxLeaveOrHolidayModel.EmpId) && a.Login_date >= startDate && a.Login_date <= endDate).ToList();
                 if (conSignInDetails != null && conSignInDetails.Count > 0)
@@ -396,6 +393,18 @@ namespace ResourceManagement.Controllers
             return Json(null);
         }
 
+        private static List<DateTime> GetWeekdays(DateTime startDate, DateTime endDate)
+        {
+            var datesBetweenStartAndEnd = new List<DateTime>();
+
+            for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+            {
+                datesBetweenStartAndEnd.Add(dt);
+            }
+
+            return datesBetweenStartAndEnd;
+        }
+
         public ActionResult Dashboard()
         {
             if (Session["UserModel"] != null)
@@ -425,7 +434,6 @@ namespace ResourceManagement.Controllers
 
                 if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
-                    //employeeModel.leaveOrHolidayInfo = GetLeaveandHolidayInfofromDb(employeeModel);
                     return View(employeeModel);
                 }
                 else
@@ -451,6 +459,7 @@ namespace ResourceManagement.Controllers
             try
             {
                 var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+                TempData.Remove("TimeSheetModeldata");
                 using (var context = new TimeSheetEntities())
                 {
                     if (timesheetmodel != null)
@@ -459,8 +468,8 @@ namespace ResourceManagement.Controllers
                         context.SaveChanges();
                         respone.StatusCode = 200;
                         respone.Message = "TimeSheet added successfully!";
-
-                        TimeSheetReportEmail();
+                        TempData["TimeSheetModeldata"] = timesheetmodel;
+                        TimeSheetReportEmail(employeeModel);
                     }
                     else
                     {
@@ -500,35 +509,6 @@ namespace ResourceManagement.Controllers
                 return db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetViewModel.EmpId) && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)).ToList();
             }
         }
-
-
-        public ActionResult TimeSheetEmailReport(TimeSheetViewModel timeSheetViewModel)
-        {
-            var timeSheetReport = new TimeSheetReport();
-
-            using (TimeSheetEntities db = new TimeSheetEntities())
-            {
-                var loginObj = db.emplogins.Where(a => a.att_username.Equals("C4046") && a.att_password.Equals("abc@123") && a.emp_status).FirstOrDefault();
-                if (loginObj != null)
-                {
-
-                    timeSheetReport.reports = db.ambctaskcaptures.Where(a => a.employeeid.Equals(loginObj.employee_id) && a.weekno == 49).ToList();
-                    timeSheetReport.empData = loginObj;
-
-                    // && a.taskdate >= System.Convert.ToDateTime(timeSheetViewModel.WeekStartDate) && a.taskdate <= System.Convert.ToDateTime(timeSheetViewModel.WeekEndDate)
-
-                }
-
-                timeSheetReport.MondayHours = "10";
-                timeSheetReport.TuesdayHours = "6";
-                timeSheetReport.WednesdayHours = "8";
-                timeSheetReport.ThursdayHours = "12";
-                timeSheetReport.FriidayHours = "4";
-            }
-
-            return View(timeSheetReport);
-        }
-
 
         public ActionResult TimeSheetReports()
         {
@@ -618,7 +598,7 @@ namespace ResourceManagement.Controllers
 
                     if (timeSheetAjaxReportModel.Type == ".xls")
                     {
-                        string urlAddress = "https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
+                        string urlAddress = ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
 
                         string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
 
@@ -633,7 +613,7 @@ namespace ResourceManagement.Controllers
                     }
                     else
                     {
-                        PdfDocument pdfData = Convert("https://localhost:44375/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "");
+                        PdfDocument pdfData = Convert(ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "");
 
                         byte[] pdfArray = pdfData.Save();
 
@@ -717,30 +697,132 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public void TimeSheetReportEmail()
+        public static string RenderPartialToString(Controller controller, string partialViewName, object model, ViewDataDictionary viewData, TempDataDictionary tempData)
         {
-            string urlAddress = "https://localhost:44375/TimeSheetEmailReport";
+            ViewEngineResult result = ViewEngines.Engines.FindPartialView(controller.ControllerContext, partialViewName);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
-
-            using (MailMessage mm = new MailMessage("noreply-report@ambconline.com", "rajendersudikay@ambconline.com"))
+            if (result.View != null)
             {
-                mm.Subject = "Time sheet report for Rajender Sudikay week 49";
+                controller.ViewData.Model = model;
+                StringBuilder sb = new StringBuilder();
+                using (StringWriter sw = new StringWriter(sb))
+                {
+                    using (HtmlTextWriter output = new HtmlTextWriter(sw))
+                    {
+                        ViewContext viewContext = new ViewContext(controller.ControllerContext, result.View, viewData, tempData, output);
+                        result.View.Render(viewContext, output);
+                    }
+                }
+
+                return sb.ToString();
+            }
+            return String.Empty;
+        }
+
+
+        public string TimeSheetEmailReport()
+        {
+            var timeSheetReport = new TimeSheetEmailReport();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                timeSheetReport.reports = TempData["TimeSheetModeldata"] as List<ambctaskcapture>;
+
+                if (timeSheetReport.reports != null && timeSheetReport.reports.Count > 0)
+                {
+                    timeSheetReport.reports = timeSheetReport.reports.OrderBy(date => date.taskdate).ToList();
+
+                    List<DateTime> datesBetweenStartAndEnd = GetWeekdays(timeSheetReport.reports[0].weekstartdate.Value, timeSheetReport.reports[0].weekenddate.Value);
+
+                    var totalHoursSpent = 0;
+
+                    foreach (var date in datesBetweenStartAndEnd)
+                    {
+                        string dayName = date.ToString("dddd");
+
+                        var requiredDate = GetDateInRequiredFormat(date.ToString());
+
+                        var dayHoursSpent = 0;
+
+                        var hoursworkedInparticulatDate = timeSheetReport.reports.Where(report => report.taskdate == System.Convert.ToDateTime(requiredDate)).ToList();
+
+                        foreach (var TimeWorked in hoursworkedInparticulatDate)
+                        {
+                            dayHoursSpent += TimeWorked.timespent.Value;
+                        }
+
+                        totalHoursSpent += dayHoursSpent;
+
+                        switch (dayName)
+                        {
+                            case "Monday":
+                                timeSheetReport.MondayHours = dayHoursSpent == 0? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.MondayColor = dayHoursSpent > 0 ? "rgb(109, 120, 173)" : "rgb(211, 211, 211)";
+                                break;
+
+                            case "Tuesday":
+                                timeSheetReport.TuesdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.TuesdayColor = dayHoursSpent > 0 ? "rgb(81, 205, 160)" : "rgb(211, 211, 211)";
+                                break;
+
+                            case "Wednesday":
+                                timeSheetReport.WednesdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.WednesdayColor = dayHoursSpent > 0 ? "rgb(223, 121, 112)" : "rgb(211, 211, 211)";
+                                break;
+
+                            case "Thursday":
+                                timeSheetReport.ThursdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.ThursdayColor = dayHoursSpent > 0 ? "rgb(76, 156, 160)" : "rgb(211, 211, 211)";
+                                break;
+
+                            case "Friday":
+                                timeSheetReport.FriidayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.FriidayColor = dayHoursSpent > 0 ? "rgb(174, 125, 153)" : "rgb(211, 211, 211)";
+                                break;
+
+                            case "Saturday":
+                                timeSheetReport.SaturdayHours = System.Convert.ToString(dayHoursSpent);
+                                break;
+
+                            case "Sunday":
+                                timeSheetReport.SundayHours = System.Convert.ToString(dayHoursSpent);
+                                break;
+
+                            default:
+                                Console.WriteLine("No match found");
+                                break;
+                        }
+                    }
+
+                    timeSheetReport.TotalHoursSpent = System.Convert.ToString(totalHoursSpent);
+                   int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;
+                    timeSheetReport.OverTimeHours = overTime > 0 ? System.Convert.ToString(overTime) : "10";
+                    return RenderPartialToString(this, "TimeSheetEmailReport", timeSheetReport, ViewData, TempData);
+                }
+            }
+
+            return string.Empty;
+        }
+
+
+        public void TimeSheetReportEmail(RMA_EmployeeModel empModel)
+        {
+            string htmlContent = TimeSheetEmailReport();
+            TempData.Remove("TimeSheetModeldata");
+            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], "rajendersudikay@ambconline.com"))
+            {
+                mm.Subject = empModel.AMBC_Active_Emp_view.Employee_Name + " Timesheet Submission Details";
                 mm.Body = htmlContent;
 
                 mm.IsBodyHtml = true;
                 SmtpClient smtp = new SmtpClient();
-                smtp.Host = "smtp.gmail.com";
+                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
                 smtp.EnableSsl = true;
-                System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                credentials.UserName = "rajender.patel17@gmail.com";
-                credentials.Password = "etwzfbsnslayzbmm";
+                NetworkCredential credentials = new NetworkCredential();
+                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = credentials;
-                smtp.Port = 587;
+                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
                 smtp.Send(mm);
             }
 

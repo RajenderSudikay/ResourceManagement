@@ -1,4 +1,4 @@
-﻿@model ResourceManagement.Models.TimesheetReportModel.TimeSheetReport
+﻿@model ResourceManagement.Models.TimesheetReportModel.TimeSheetEmailReport
 
 @{
     ViewBag.Title = "TimeSheet Email Report Page";
@@ -7,10 +7,12 @@
 <style>
     body {
         background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
     }
 
     table {
-        font-family: "Lato", sans-serif;
         border-collapse: collapse;
         width: 100%;
     }
@@ -49,6 +51,17 @@
         font-family: "Lato", sans-serif;
         color: #2167ae;
     }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
 </style>
 
 @if (Model != null)
@@ -58,7 +71,7 @@
             <tr>
                 <td style="width: 60%">
                     <div class="emailbody">
-                        <h2>Hi <b>@Model.empData.employee_name</b>,</h2>
+                        <h2>Hi <b>@Model.reports[0].employeename</b>,</h2>
                         <br />
                         Your timesheet has been successfully submitted, please find the below details for reference.
                         <br /> <br />
@@ -78,29 +91,26 @@
             <table class="table table-hover table-striped" id="timesheet-table" style="border:1px solid black;">
                 <thead class="table-bordered">
                     <tr style="background-color: #337ab7">
-                        <th scope="col" style="max-width:80px; color:white">Date</th>
-                        <th scope="col" style="max-width:100px; color:white">Category</th>
-                        <th scope="col" style="max-width:200px; color:white">Incident Number</th>
-                        <th scope="col" style="max-width:200px; color:white">Incident Desc</th>
-                        <th scope="col" style="color:white">Requester</th>
-                        <th scope="col" style="color:white">Urgency</th>
-                        <th scope="col" style="color:white">Status</th>
-                        <th scope="col" style="color:white">Date Closed</th>
-                        <th scope="col" style="color:white">Time Spent</th>
-                        <th scope="col" style="max-width:200px; color:white">Comments</th>
+                        <th scope="col" style="width: 100px; color: white;">Date</th>
+                        <th scope="col" style="width: 90px; color: white">Category</th>
+                        <th scope="col" style="width: 200px; color: white">Incident Number</th>
+                        <th scope="col" style="width: 200px; color: white ">Incident Desc</th>
+                        <th scope="col" style="width: 80px; color: white">Requester</th>
+                        <th scope="col" style="width: 80px; color: white ">Urgency</th>
+                        <th scope="col" style="width: 80px; color: white ">Status</th>
+                        <th scope="col" style="width: 80px; color: white ">Date Closed</th>
+                        <th scope="col" style="width: 80px; color: white ">Time Spent</th>
+                        <th scope="col" style="width: 200px; color: white">Comments</th>
                     </tr>
                 </thead>
 
                 <tbody class="timesheet-table-grid">
-
                     @{
                         int i = 0;
                     }
                     @foreach (var report in Model.reports)
                     {
                         var color = "";
-
-                        /* Check even condition before printing */
                         if (i % 2 == 0)
                         {
                             color = "#f2f2f2";
@@ -109,16 +119,16 @@
                         i++;
 
                         <tr class="default-table-row" style="background-color: @color">
-                            <td scope="row" style="max-width:80px;">@report.taskdate.ToString().Replace("00:00:00", "")</td>
-                            <td scope="row" style="max-width:100px;">@report.category.TrimStart().TrimEnd()</td>
-                            <td scope="row" style="max-width:200px;">@report.incidentnumber</td>
-                            <td scope="row" style="max-width:200px;">@report.taskdetails</td>
-                            <td scope="row">@report.requester</td>
-                            <td scope="row">@report.callpriority</td>
-                            <td scope="row">@report.projstatus</td>
-                            <td scope="row">@report.closeddate</td>
-                            <td scope="row">@report.timespent</td>
-                            <td scope="row" style="max-width:200px;">@report.comments</td>
+                            <td scope="row" style="width: 100px;vertical-align: middle;">@report.taskdate.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="width: 90px;vertical-align: middle;">@report.category.TrimStart().TrimEnd()</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.incidentnumber</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.taskdetails</td>
+                            <td scope="row" style="width: 80px;vertical-align: middle;">@report.requester</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.callpriority</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.projstatus</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.closeddate.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.timespent</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.comments</td>
                         </tr>
                     }
 
@@ -128,20 +138,26 @@
             <table>
                 <tr>
                     <td>
-                        <img src="https://quickchart.io/chart?width=300&height=150&c={type:'bar', axisY: {   gridThickness: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday'], datasets:[{label:'Totak hours spent in this week => 35', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours],backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)','rgb(75, 192, 192)', 'rgb(54, 162, 235)']}]}}">
+                        <img src="https://quickchart.io/chart?width=600&height=200&c={type:'bar',legendText:'Holiday/Leave',showInLegend: true,axisY: { lineThickness: 0,gridThickness: 0,tickThickness: 0,tickLength: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday', 'Overtime'], datasets:[{label:'Total hours spent in this week => @Model.TotalHoursSpent', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours, @Model.SaturdayHours, @Model.SundayHours, @Model.OverTimeHours],backgroundColor: ['@Model.MondayColor', '@Model.TuesdayColor', '@Model.WednesdayColor','@Model.ThursdayColor', '@Model.FriidayColor', 'rgb(201, 212, 92)', 'rgb(85, 146, 173)', 'rgb(102, 0, 0)']}]}}">
                     </td>
                 </tr>
+
             </table>
         </div>
+
+        <div style="margin-left: 400px; margin-right: 700px;">
+            <div style="height: 50px; width: 50px; background-color: #f2f2f2; border: 1px solid #6D78AD; border-radius: 25%; text-align: center">Holiday/Leave</div>
+        </div>
+
 
         <br />
         <br />
         <div class="emailbody">
-            <h2> <b>AMBC Technologies. </b></h2>
+            <h2> <b style="font-family: Calibri; ">AMBC Technologies. </b></h2>
         </div>
         <br />
         <br />
-        <div class="email-footer" style="text-align: center; padding-top: 6px,">
+        <div class="email-footer" style="text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; ">
             Autogenarted email. Please do  not reply.
         </div>
     </div>

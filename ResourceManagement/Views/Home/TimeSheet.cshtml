@@ -142,7 +142,7 @@
         <!--Table head-->
         <thead class="table-bordered">
             <tr>
-                <th class="time-header" scope="col">Actions</th>
+                <th class="time-header" scope="col" style="text-align: center">Actions</th>
                 <th class="time-header" scope="col">Date</th>
                 <th class="time-header" scope="col">Category</th>
                 <th class="time-header" scope="col">Incident Number</th>
@@ -658,17 +658,17 @@
         if (rowDisable != undefined && rowDisable == true) {
             isEntryDisbaled = "row-disabled";
         }
-        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete"></td>'
-            + '<td class="timesheet-date"></td>'
-            + '<td class="timesheet-category" ></td >'
-            + '<td class="timesheet-incidentnum" ></td >'
-            + '<td class="timesheet-incidentdes" ></td >'
-            + '<td class="timesheet-requester" ></td >'
-            + '<td class="timesheet-urgency" ></td >'
-            + '<td class="timesheet-status" ></td >'
-            + '<td class="timesheet-closeddate" ></td >'
-            + '<td class="timesheet-timespent" ></td >'
-            + '<td class="timesheet-comments" ></td >'
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete" style="width: 80px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-date" style="width: 80px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-category" style="width: 90px;vertical-align: middle;"></td >'
+            + '<td class="timesheet-incidentnum" style="width: 130px;vertical-align: middle;"></td >'
+            + '<td class="timesheet-incidentdes" style="width: 130px;vertical-align: middle;"></td >'
+            + '<td class="timesheet-requester" style="width: 80px;vertical-align: middle;"></td >'
+            + '<td class="timesheet-urgency" style="vertical-align: middle;"></td >'
+            + '<td class="timesheet-status" style="vertical-align: middle;"></td >'
+            + '<td class="timesheet-closeddate" style="vertical-align: middle;"></td >'
+            + '<td class="timesheet-timespent" style="vertical-align: middle;"></td >'
+            + '<td class="timesheet-comments" style="width: 130px;vertical-align: middle;"></td >'
             + '</tr>'
     }
 

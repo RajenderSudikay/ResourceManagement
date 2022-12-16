@@ -15,18 +15,29 @@ namespace ResourceManagement.Models
             public string WeekNumber { get; set; }
         }
 
-        public class TimeSheetReport
+
+        public class TimeSheetEmailReport
         {
             public List<ambctaskcapture> reports { get; set; }
             public emplogin empData { get; set; }
 
             public string MondayHours { get; set; }
+            public string MondayColor { get; set; }
             public string TuesdayHours { get; set; }
+            public string TuesdayColor { get; set; }
 
             public string WednesdayHours { get; set; }
+            public string WednesdayColor { get; set; }
 
+            public string ThursdayColor { get; set; }
             public string ThursdayHours { get; set; }
             public string FriidayHours { get; set; }
+            public string FriidayColor { get; set; }
+
+            public string SaturdayHours { get; set; }
+            public string SundayHours { get; set; }          
+            public string OverTimeHours { get; set; }
+            public string TotalHoursSpent { get; set; }
 
         }
 
