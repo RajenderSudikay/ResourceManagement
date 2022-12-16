@@ -68,12 +68,52 @@
 
                                         <li>
                                             <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
-                                            <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                            @if (Model.projectInfo.Count() > 1)
+                                            {
+                                                var clients = new List<string>();
+                                                foreach (var empProject in Model.projectInfo)
+                                                {
+                                                    clients.Add(empProject.Client);
+                                                }
+                                                var empClients = string.Join(", ", clients);
+                                                <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                            }
                                         </li>
 
                                         <li>
                                             <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
-                                            <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                            @if (Model.projectInfo.Count() > 1)
+                                            {
+                                                var projects = new List<string>();
+                                                foreach (var empProject in Model.projectInfo)
+                                                {
+                                                    var sameProjectExists = false;
+
+                                                    foreach (var project in projects)
+                                                    {
+                                                        if (project == empProject.Project_Name)
+                                                        {
+                                                            sameProjectExists = true;
+                                                        }
+                                                    }
+
+                                                    if (!sameProjectExists)
+                                                    { projects.Add(empProject.Project_Name); }
+
+                                                }
+                                                var empProjects = string.Join(", ", projects);
+                                                <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                            }
                                         </li>
                                         <li>
                                             <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
