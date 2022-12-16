@@ -7,7 +7,8 @@ namespace ResourceManagement.Models
     public class RMA_EmployeeModel
     {
         public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
-        public emp_project projectInfo { get; set; }
+
+        public List<AMBC_Active_Emp_view> projectInfo { get; set; }
         public string leaveOrHolidayInfo { get; set; }
         public tbld_ambclogininformation signInOutInfo { get; set; }
 

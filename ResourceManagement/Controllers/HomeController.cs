@@ -282,10 +282,12 @@ namespace ResourceManagement.Controllers
                         var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
                         if (loginObj != null)
                         {
-                            var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).FirstOrDefault();
-                            if (employeeInfo != null)
+                            var projects = db.emp_project.Where(a => a.assign_emp_id.Equals(loginModel.att_username)).ToList();
+                            var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).ToList();
+                            if (employeeInfo != null && employeeInfo.Count() > 0)
                             {
-                                employeeModel.AMBC_Active_Emp_view = employeeInfo;
+                                employeeModel.AMBC_Active_Emp_view = employeeInfo[0];
+                                employeeModel.projectInfo = employeeInfo;    
                             }
 
                             var empSignInOutInfo = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(loginObj.employee_id) && a.Login_date == DateTime.Today).FirstOrDefault();
