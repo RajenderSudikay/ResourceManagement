@@ -208,18 +208,23 @@
             }
         </div>
 
+
+        <a class="carousel-control-prev" href="#demo" data-slide="prev" style="display:none">
+            <span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next" style="display:none">
+            <span class="carousel-control-next-icon" style="background-color: gray; height: 40px; margin-right: -164px;"></span>
+        </a>
+
         @if (Model.TimeSheetReports != null && Model.TimeSheetReports.Count > 1)
         {
-            var abc = Model.TimeSheetReports[0].timeSheetInfo;
+            <script>
+                jQuery('.carousel-control-prev').show();
+                jQuery('.carousel-control-next').show();
+            </script>
 
-
-            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                <span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>
-            </a>
-            <a class="carousel-control-next" href="#demo" data-slide="next">
-                <span class="carousel-control-next-icon" style="background-color: gray; height: 40px; margin-right: -164px;"></span>
-            </a>
         }
+
 
     </div>
 }
