@@ -205,7 +205,7 @@
                 <th class="time-header" scope="col">Urgency</th>
                 <th class="time-header" scope="col">Status</th>
                 <th class="time-header" scope="col">Date Closed</th>
-                <th class="time-header" scope="col">Time Spent</th>
+                <th class="time-header" scope="col">Time Spent (OT)</th>
                 <th class="time-header" scope="col">Comments</th>
             </tr>
         </thead>
@@ -360,10 +360,18 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="12" onkeydown="return event.keyCode !== 69" required>
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" onkeydown="return event.keyCode !== 69" required>
+                                <label class="overtimehoursaddintable"></label>
                                 <div class="invalid-feedback timeSpenterror-msg">
-                                    Please enter Time spent hours between 1 to 12
+                                    Please enter Time spent hours between 1 to 16
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="timeSheetOverTime">Over Time</label>
+                                <input type="number" class="form-control" id="timeSheetOverTime" data-time-data-uniqueid="" aria-describedby="overtimehelp" placeholder="Over Time" disabled>
+                                <small id="overtimehelp" class="form-text text-muted">If time spent hours > 8 then remaining hours will be considered as overtime.</small>
                             </div>
                         </div>
                     </div>
@@ -721,7 +729,8 @@
             + '<td class="timesheet-urgency" style="vertical-align: middle;"></td >'
             + '<td class="timesheet-status" style="vertical-align: middle;"></td >'
             + '<td class="timesheet-closeddate" style="vertical-align: middle;"></td >'
-            + '<td class="timesheet-timespent" style="vertical-align: middle;"></td >'
+            + '<td class="timesheet-timespent" style="vertical-align: middle;"><label class="overtimehoursaddintable"></label></td >'
+            + '<td class="timesheet-overtime" style="vertical-align: middle;display:none"></td >'
             + '<td class="timesheet-comments" style="width: 130px;vertical-align: middle;"></td >'
             + '</tr>'
     }
@@ -738,6 +747,18 @@
 
     if (jQuery('.leave-or-holiday-info').text() != undefined && jQuery('.leave-or-holiday-info').text() != "") {
         empLeaveAndHolidays = jQuery.parseJSON(jQuery('.leave-or-holiday-info').text());
+    }
+
+    function weeklyChartReport() {
+        jQuery.ajax({
+            url: "/timesheetweeklychart",
+            type: "POST",
+            dataType: "html",
+            data: { weekreportmodel: timeSheetWeeklyHours },
+            success: function (data) {
+                $('#chartContainer').html(data);
+            }
+        });
     }
 
 
@@ -760,6 +781,11 @@
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
+            if (totalHoursAdded > 8 && totalHoursAdded <= 16) {
+                var overTimeHours = totalHoursAdded - 8;
+                jQuery('#timeSheetOverTime').val(overTimeHours);
+                jQuery('#timeSheetTimeSpent').val(8);
+            }
             var updatingRecordUniqueID = "";
             updatingRecordUniqueID = jQuery('#timeSheetTimeSpent').attr('data-time-data-uniqueid');
             jQuery.each(timeSheetList, function (i, item) {
@@ -769,9 +795,12 @@
 
                     if (item.taskdate == selectedDate) {
                         totalHoursAdded += + parseInt(item.timespent);
+                        if (item.overtime != "") {
+                            totalHoursAdded += + parseInt(item.overtime);
+                        }
 
-                        if (totalHoursAdded > 12) {
-                            jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 12 hours for the selected date: " + selectedDate);
+                        if (totalHoursAdded > 16) {
+                            jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 16 hours for the selected date: " + selectedDate);
                             jQuery('#timeSheetTimeSpent').val('');
                             $(".timeSpenterror-msg").css("display", "block");
                             $("#timeSheetTimeSpent").focus();
@@ -845,17 +874,6 @@
 
             timeSheetWeeklyHours = new Array();
 
-            jQuery.ajax({
-                url: "/timesheetweeklychart",
-                type: "POST",
-                dataType: "html",
-                data: { weekreportmodel: timeSheetWeeklyHours },
-                success: function (data) {
-                    $('#chartContainer').html(data);
-                }
-            });
-
-
             var ajaxDbLeaveOrholidayModel = {
                 EmpId: jQuery('.agent-navdrop-empid').text(),
                 EmpRegion: $('.agent-navdrop-emplocation').text(),
@@ -879,10 +897,14 @@
                                 empLeaveAndHolidays.push(leaveItem);
                             });
                         }
+                        else {
+                            weeklyChartReport();
+                        }
 
                         if (parsedLeaveOrHolidayJson.SignInInfo.length > 0) {
 
                             empInputDates = new Array();
+
                             InputTimeSheetdates(StartWeekdate, empInputDates);
 
                             jQuery.each(empLeaveAndHolidays, function (i, item) {
@@ -916,14 +938,26 @@
                                                 callstatus: "NA",
                                                 closeddate: "",
                                                 timespent: "0",
+                                                overtime:"0",
                                                 comments: item.Reason,
                                                 uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
                                             };
 
-                                            timeSheetList.push(leaveOrHolidayPushModel);
-                                            timeSheetWeeklyHours = new Array();
+                                            var oneDate = moment(leaveOrHolidayPushModel.taskdate, 'YYYY-MM-DD');
+                                            var dayName = oneDate.format('dddd');
 
-                                            AddUpdateRecords(timeSheetList);
+                                            console.log(dayName);
+
+                                            var weeklyDataModel = {
+                                                weekday: dayName,
+                                                hoursspent: leaveOrHolidayPushModel.timespent,
+                                                overtime: leaveOrHolidayPushModel.overtime
+                                            };
+
+                                            timeSheetWeeklyHours.push(weeklyDataModel);
+
+                                            timeSheetList.push(leaveOrHolidayPushModel);
+                                            AddUpdateRecords(timeSheetList, false);
                                         }
                                     });
                                 }
@@ -934,6 +968,8 @@
                             jQuery('.warning-message-popup').html("<h2>Are you sure you worked on selected dates? If yes please contact your manager. As per our records you didn't Check-In to the Application in selected dates!</h2>");
                             $('#modal-warning-message-popup').modal('show');
                         }
+
+                        weeklyChartReport();
                     }
                 }
             });
@@ -959,29 +995,8 @@
         });
     })();
 
-    //function InputTimeSheetdates() {
-
-    //    var ajaxReportModel = {
-    //        Employees: $('#timesheetreportconsultants').val(),
-    //        WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
-    //        WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-    //        WeekNumber: jQuery('#weekNumber').val()
-    //    }
-
-    //    jQuery.ajax({
-    //        url: "/TimeSheetReportsPartial",
-    //        type: "POST",
-    //        contentType: 'application/json; charset=utf-8',
-    //        data: JSON.stringify({ timeSheetAjaxReportModel: ajaxReportModel }),
-    //        success: function (data) {
-    //            jQuery('.sample-timesheet-report').hide();
-    //            $('#timesheetreports-container').html(data);
-    //        }
-    //    });
-    //}
-
-
     jQuery(".add-task-details").click(function () {
+        ClearFormFieldsData();
         $(".timesheet-addreport").text("Add Report");
         $(".leave-or-holiday-msg").text("");
         jQuery('.database-response').text("");
@@ -1027,6 +1042,20 @@
         });
     });
 
+    function ClearFormFieldsData() {
+        jQuery('#timeSheetdate').val('');
+        $("#timeSheetCategory option:first").attr('selected', 'selected');
+        jQuery('#timeSheetIncNumber').val('');
+        jQuery('#timeSheetIncDesc').val('');
+        jQuery('#timeSheetRequester').val('');
+        $("#timeSheetUrgency option:first").attr('selected', 'selected');
+        $("#timeSheetStatus option:first").attr('selected', 'selected');
+        jQuery('#timeSheetClosedDate').val('');
+        jQuery('#timeSheetTimeSpent').val('');
+        jQuery('#timeSheetOverTime').val('');
+        jQuery('#timeSheetComments').val('');
+    }
+
     jQuery(".timesheet-addreport").click(function () {
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -1068,6 +1097,7 @@
                 callstatus: $('#timeSheetStatus :selected').text(),
                 closeddate: jQuery('#timeSheetClosedDate').val(),
                 timespent: jQuery('#timeSheetTimeSpent').val(),
+                overtime: jQuery('#timeSheetOverTime').val(),
                 comments: jQuery('#timeSheetComments').val(),
                 uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode
             };
@@ -1088,12 +1118,13 @@
             timeSheetList.push(pushModel);
             timeSheetWeeklyHours = new Array();
 
-            AddUpdateRecords(timeSheetList);
+            AddUpdateRecords(timeSheetList, true);
+            weeklyChartReport();
 
         }
     });
 
-    function AddUpdateRecords(timeSheetList) {
+    function AddUpdateRecords(timeSheetList, updateWeekyreport) {
         $('.user-added-timesheet').remove();
         jQuery.each(empInputDates, function (key, value) {
             jQuery.each(timeSheetList, function (i, model) {
@@ -1126,6 +1157,14 @@
                         editImg = "<a class='glyphicon glyphicon-edit' data-uniqueid='" + model.uniquekey + "' onclick=EditTimeSheetRow(this)></a>" + "&nbsp;&nbsp;" + "<a class='glyphicon glyphicon-remove' data-uniqueid='" + model.uniquekey + "' onclick=DeleteTimeSheetRow(this)></a>";
                     }
 
+                    var timeSpentAndOverTime = "";
+                    if (model.overtime != "") {
+                        timeSpentAndOverTime = model.timespent + " <b>(" + model.overtime + ")</b>"
+                    }
+                    else {
+                        timeSpentAndOverTime = model.timespent;
+                    }
+
 
                     jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
                     jQuery(newRow).find('.timesheet-date').html(newDate);
@@ -1136,48 +1175,44 @@
                     jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
                     jQuery(newRow).find('.timesheet-status').html(model.callstatus);
                     jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
-                    jQuery(newRow).find('.timesheet-timespent').html(model.timespent);
+                    jQuery(newRow).find('.timesheet-timespent').html(timeSpentAndOverTime);
+                    jQuery(newRow).find('.timesheet-overtime').html(model.overtime);
                     jQuery(newRow).find('.timesheet-comments').html(model.comments);
 
                     jQuery('.default-table-row').hide();
                     jQuery(".timesheet-table-grid").append(jQuery(newRow))
                     jQuery('.modal').modal('hide');
 
-                    jQuery('#timeSheetdate').val('');
-                    $("#timeSheetCategory option:first").attr('selected', 'selected');
-                    jQuery('#timeSheetIncNumber').val('');
-                    jQuery('#timeSheetIncDesc').val('');
-                    jQuery('#timeSheetRequester').val('');
-                    $("#timeSheetUrgency option:first").attr('selected', 'selected');
-                    $("#timeSheetStatus option:first").attr('selected', 'selected');
-                    jQuery('#timeSheetClosedDate').val('');
-                    jQuery('#timeSheetTimeSpent').val('');
-                    jQuery('#timeSheetComments').val('');
+                    ClearFormFieldsData();
 
-                    var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
-                    var dayName = oneDate.format('dddd');
+                    //When doing Add update records updating weekly hoursreport for every request
+                    if (updateWeekyreport == true) {
+                        var oneDate = moment(model.taskdate, 'YYYY-MM-DD');
+                        var dayName = oneDate.format('dddd');
 
-                    console.log(dayName);
+                        console.log(dayName);
 
-                    var weeklyDataModel = {
-                        weekday: dayName,
-                        hoursspent: model.timespent
-                    };
+                        var weeklyDataModel = {
+                            weekday: dayName,
+                            hoursspent: model.timespent,
+                            overtime: model.overtime
+                        };
 
-                    timeSheetWeeklyHours.push(weeklyDataModel);
+                        timeSheetWeeklyHours.push(weeklyDataModel);
+                    }
                 }
             });
         });
 
-        jQuery.ajax({
-            url: "/timesheetweeklychart",
-            type: "POST",
-            dataType: "html",
-            data: { weekreportmodel: timeSheetWeeklyHours },
-            success: function (data) {
-                $('#chartContainer').html(data);
-            }
-        });
+        //jQuery.ajax({
+        //    url: "/timesheetweeklychart",
+        //    type: "POST",
+        //    dataType: "html",
+        //    data: { weekreportmodel: timeSheetWeeklyHours },
+        //    success: function (data) {
+        //        $('#chartContainer').html(data);
+        //    }
+        //});
     }
 
 
@@ -1293,6 +1328,7 @@
                 $('#timeSheetStatus :selected').text(item.callstatus);
                 jQuery('#timeSheetClosedDate').val(item.closeddate);
                 jQuery('#timeSheetTimeSpent').val(item.timespent);
+                jQuery('#timeSheetOverTime').val(item.overtime);
                 jQuery('#timeSheetComments').val(item.comments);
 
                 jQuery('#timeSheetTimeSpent').attr("data-time-data-uniqueid", item.uniquekey);
@@ -1329,15 +1365,7 @@
     }
 
     //On Page load will display empty chart report
-    jQuery.ajax({
-        url: "/timesheetweeklychart",
-        type: "POST",
-        dataType: "html",
-        data: { weekreportmodel: timeSheetWeeklyHours },
-        success: function (data) {
-            $('#chartContainer').html(data);
-        }
-    });
+    weeklyChartReport();
 
     //Final submit post confirmation
     jQuery(".modal-delete-popup-btn").click(function () {
@@ -1353,7 +1381,7 @@
 
         //DELETE SELECTED ROW FROM ARRAY LIST
         timeSheetList.splice(requiredIndexNum, 1);
-        AddUpdateRecords(timeSheetList);
+        AddUpdateRecords(timeSheetList, true);
 
         var requiredIndexClass = "." + selectedUniqueItemKey;
         var selectedRowFromTheTable = $('.timesheet-table-grid').find(requiredIndexClass).index();
@@ -1366,7 +1394,7 @@
             jQuery('.default-table-row').show();
         }
 
-
+        weeklyChartReport();
         jQuery('#modal-delete-alert').modal('hide');
     });
 

@@ -225,7 +225,8 @@ namespace ResourceManagement.Controllers
 
         public ActionResult TimesheetWeeklyChart(List<WeekReportModel> weekreportmodel)
         {
-            List<DataPoint> dataPoints = new List<DataPoint>();
+            List<DataPoint> dataPointsWorkingHours = new List<DataPoint>();
+            List<DataPoint> dataPointsOverTime = new List<DataPoint>();
 
             var weekdays = WeekdaysList();
             double hoursSpent = 0;
@@ -235,28 +236,69 @@ namespace ResourceManagement.Controllers
                 foreach (var weekday in weekdays)
                 {
                     double currentDayHoursSpent = 0;
+                    double currentDayOverTime = 0;
                     var daySpecificEntries = weekreportmodel.Where(x => x.weekday == weekday).Count() > 0 ? weekreportmodel.Where(x => x.weekday == weekday).ToList() : null;
                     if (daySpecificEntries != null)
                     {
                         foreach (var daySpecificEntrie in daySpecificEntries)
                         {
-                            hoursSpent += daySpecificEntrie.hoursspent;
+                            hoursSpent += daySpecificEntrie.hoursspent + daySpecificEntrie.overtime;
                             currentDayHoursSpent += daySpecificEntrie.hoursspent;
+                            currentDayOverTime += daySpecificEntrie.overtime;
                         }
                     }
-                    dataPoints.Add(new DataPoint(weekday, currentDayHoursSpent));
+
+                    var weekdayExistsInweekreportModel = weekreportmodel.Where(x => x.weekday == weekday).FirstOrDefault();
+
+                    //Hours Spent
+                    if (currentDayHoursSpent > 0)
+                    {
+                        dataPointsWorkingHours.Add(new DataPoint(weekday, currentDayHoursSpent, "rgb(81, 205, 160)"));
+                    }
+                    else
+                    {
+                       
+                        if(weekdayExistsInweekreportModel != null)
+                        {                       
+                            dataPointsWorkingHours.Add(new DataPoint(weekday + "(Leave)", 8, "rgb(220, 20, 60)"));
+                        }
+                        else
+                        {
+                            dataPointsWorkingHours.Add(new DataPoint(weekday, 0, ""));
+                        }
+                    }
+
+                    //Over Time
+                    if (currentDayOverTime > 0)
+                    {
+                        dataPointsOverTime.Add(new DataPoint(weekday, currentDayOverTime, "rgb(109, 120, 173)"));
+                    }
+                    else
+                    {
+                        if (weekdayExistsInweekreportModel != null)
+                        {
+                            dataPointsOverTime.Add(new DataPoint(weekday + "(Leave)", 0, ""));
+                        }
+                        else
+                        {
+                            dataPointsOverTime.Add(new DataPoint(weekday, 0, ""));
+                        }
+                    }
+
                 }
             }
             else
             {
                 foreach (var weekday in weekdays)
                 {
-                    dataPoints.Add(new DataPoint(weekday, 0));
+                    dataPointsWorkingHours.Add(new DataPoint(weekday, 0, ""));
+                    dataPointsOverTime.Add(new DataPoint(weekday, 0, ""));
                 }
             }
 
 
-            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+            ViewBag.DataPointsWorkingHours = JsonConvert.SerializeObject(dataPointsWorkingHours);
+            ViewBag.DataPointsOverTime = JsonConvert.SerializeObject(dataPointsOverTime);
             ViewBag.TotalHoursSpent = hoursSpent;
 
 
@@ -575,11 +617,11 @@ namespace ResourceManagement.Controllers
 
 
         public JsonResult ISEmployeeSubmittedTimeSheetInSelectedWeek(TimeSheetAjaxReportModel timeSheetAjaxReportModel)
-        {          
+        {
             using (TimeSheetEntities db = new TimeSheetEntities())
-            {            
+            {
                 if (timeSheetAjaxReportModel != null)
-                {                    
+                {
 
                     int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
 

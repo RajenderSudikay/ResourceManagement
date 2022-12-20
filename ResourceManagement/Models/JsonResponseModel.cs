@@ -36,5 +36,8 @@ namespace ResourceManagement.Models
         [JsonPropertyName("hoursspent")]
         public int hoursspent { get; set; } = 500;
 
+        [JsonPropertyName("overtime")]
+        public int overtime { get; set; } = 0;
+
     }
 }
