@@ -722,16 +722,16 @@
         }
         return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete" style="width: 80px;vertical-align: middle;"></td>'
             + '<td class="timesheet-date" style="width: 80px;vertical-align: middle;"></td>'
-            + '<td class="timesheet-category" style="width: 90px;vertical-align: middle;"></td >'
-            + '<td class="timesheet-incidentnum" style="width: 130px;vertical-align: middle;"></td >'
-            + '<td class="timesheet-incidentdes" style="width: 130px;vertical-align: middle;"></td >'
-            + '<td class="timesheet-requester" style="width: 80px;vertical-align: middle;"></td >'
-            + '<td class="timesheet-urgency" style="vertical-align: middle;"></td >'
-            + '<td class="timesheet-status" style="vertical-align: middle;"></td >'
-            + '<td class="timesheet-closeddate" style="vertical-align: middle;"></td >'
-            + '<td class="timesheet-timespent" style="vertical-align: middle;"><label class="overtimehoursaddintable"></label></td >'
-            + '<td class="timesheet-overtime" style="vertical-align: middle;display:none"></td >'
-            + '<td class="timesheet-comments" style="width: 130px;vertical-align: middle;"></td >'
+            + '<td class="timesheet-category" style="width: 90px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-incidentnum" style="width: 130px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-incidentdes" style="width: 130px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-requester" style="width: 80px;vertical-align: middle;"></td>'
+            + '<td class="timesheet-urgency" style="vertical-align: middle;"></td>'
+            + '<td class="timesheet-status" style="vertical-align: middle;"></td>'
+            + '<td class="timesheet-closeddate" style="vertical-align: middle;"></td>'
+            + '<td class="timesheet-timespent" style="vertical-align: middle;"><label class="overtimehoursaddintable"></label></td>'
+            + '<td class="timesheet-overtime" style="vertical-align: middle;display:none"></td>'
+            + '<td class="timesheet-comments" style="width: 130px;vertical-align: middle;"></td>'
             + '</tr>'
     }
 
@@ -780,6 +780,7 @@
 
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
+            jQuery('#timeSheetOverTime').val('');
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
             if (totalHoursAdded > 8 && totalHoursAdded <= 16) {
                 var overTimeHours = totalHoursAdded - 8;
@@ -1158,7 +1159,7 @@
                     }
 
                     var timeSpentAndOverTime = "";
-                    if (model.overtime != "") {
+                    if (model.overtime != "" && model.overtime != "0") {
                         timeSpentAndOverTime = model.timespent + " <b>(" + model.overtime + ")</b>"
                     }
                     else {

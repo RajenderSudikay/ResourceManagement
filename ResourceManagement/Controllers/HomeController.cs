@@ -250,16 +250,19 @@ namespace ResourceManagement.Controllers
 
                     var weekdayExistsInweekreportModel = weekreportmodel.Where(x => x.weekday == weekday).FirstOrDefault();
 
+                    var isHolidayOrLeaveDay = true;
+
                     //Hours Spent
                     if (currentDayHoursSpent > 0)
                     {
+                        isHolidayOrLeaveDay = false;
                         dataPointsWorkingHours.Add(new DataPoint(weekday, currentDayHoursSpent, "rgb(81, 205, 160)"));
                     }
                     else
                     {
-                       
-                        if(weekdayExistsInweekreportModel != null)
-                        {                       
+
+                        if (weekdayExistsInweekreportModel != null)
+                        {
                             dataPointsWorkingHours.Add(new DataPoint(weekday + "(Leave)", 8, "rgb(220, 20, 60)"));
                         }
                         else
@@ -275,7 +278,7 @@ namespace ResourceManagement.Controllers
                     }
                     else
                     {
-                        if (weekdayExistsInweekreportModel != null)
+                        if (weekdayExistsInweekreportModel != null && isHolidayOrLeaveDay)
                         {
                             dataPointsOverTime.Add(new DataPoint(weekday + "(Leave)", 0, ""));
                         }
