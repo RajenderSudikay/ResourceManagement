@@ -5,15 +5,14 @@
     <script>
         var chart = new CanvasJS.Chart("chartContainer", {
 	        animationEnabled: true,
-	        theme: "light2", // "light1", "dark1", "dark2"
+	        theme: "light2",
             exportEnabled: true,
             willReadFrequently: true,
 	        title: {
 		        text: "Total hours spent in this week => " +  @Html.Raw(ViewBag.TotalHoursSpent),
             },
             axisX: {
-
-                labelTextAlign: "left" // Change it to "left, "right"
+                labelTextAlign: "left"
             },
             axisY: {
                 title: "Hours Spent",
@@ -37,6 +36,8 @@
                     showInLegend: true,
                     name: "Workinghours",
                     legendText: "Working Hours",
+                    indexLabelPlacement: "outside",
+                    indexLabelOrientation: "horizontal",                 
                     legendMarkerColor: "rgb(81, 205, 160)",
                     dataPoints: @Html.Raw(ViewBag.DataPointsWorkingHours),
                 },

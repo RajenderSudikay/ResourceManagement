@@ -243,9 +243,16 @@ namespace ResourceManagement.Controllers
                         foreach (var daySpecificEntrie in daySpecificEntries)
                         {
                             hoursSpent += daySpecificEntrie.hoursspent + daySpecificEntrie.overtime;
-                            currentDayHoursSpent += daySpecificEntrie.hoursspent;
+                            currentDayHoursSpent += daySpecificEntrie.hoursspent;                          
                             currentDayOverTime += daySpecificEntrie.overtime;
                         }
+
+                        //By default time spent hours assigining as 8 hour only
+                        //Remaining Time Spent hours considered as Over Time hours for the day
+                        var totalOverTimeHoursSpent = currentDayHoursSpent > 8 ? currentDayHoursSpent - 8 : 0;
+
+                        currentDayHoursSpent = currentDayHoursSpent >= 8 ? 8 : 0;
+                        currentDayOverTime = currentDayOverTime + totalOverTimeHoursSpent;
                     }
 
                     var weekdayExistsInweekreportModel = weekreportmodel.Where(x => x.weekday == weekday).FirstOrDefault();
@@ -256,35 +263,35 @@ namespace ResourceManagement.Controllers
                     if (currentDayHoursSpent > 0)
                     {
                         isHolidayOrLeaveDay = false;
-                        dataPointsWorkingHours.Add(new DataPoint(weekday, currentDayHoursSpent, "rgb(81, 205, 160)"));
+                        dataPointsWorkingHours.Add(new DataPoint(weekday, currentDayHoursSpent, "rgb(81, 205, 160)", ""));
                     }
                     else
                     {
 
-                        if (weekdayExistsInweekreportModel != null)
+                        if (daySpecificEntries != null)
                         {
-                            dataPointsWorkingHours.Add(new DataPoint(weekday + "(Leave)", 8, "rgb(220, 20, 60)"));
+                            dataPointsWorkingHours.Add(new DataPoint(weekday + "(Leave)", 8, "rgb(220, 20, 60)", "Leave"));
                         }
                         else
                         {
-                            dataPointsWorkingHours.Add(new DataPoint(weekday, 0, ""));
+                            dataPointsWorkingHours.Add(new DataPoint(weekday, 0, "", ""));
                         }
                     }
 
                     //Over Time
                     if (currentDayOverTime > 0)
                     {
-                        dataPointsOverTime.Add(new DataPoint(weekday, currentDayOverTime, "rgb(109, 120, 173)"));
+                        dataPointsOverTime.Add(new DataPoint(weekday, currentDayOverTime, "rgb(109, 120, 173)", ""));
                     }
                     else
                     {
-                        if (weekdayExistsInweekreportModel != null && isHolidayOrLeaveDay)
+                        if (daySpecificEntries != null && isHolidayOrLeaveDay)
                         {
-                            dataPointsOverTime.Add(new DataPoint(weekday + "(Leave)", 0, ""));
+                            dataPointsOverTime.Add(new DataPoint(weekday + "(Leave)", 0, "", ""));
                         }
                         else
                         {
-                            dataPointsOverTime.Add(new DataPoint(weekday, 0, ""));
+                            dataPointsOverTime.Add(new DataPoint(weekday, 0, "", ""));
                         }
                     }
 
@@ -294,8 +301,8 @@ namespace ResourceManagement.Controllers
             {
                 foreach (var weekday in weekdays)
                 {
-                    dataPointsWorkingHours.Add(new DataPoint(weekday, 0, ""));
-                    dataPointsOverTime.Add(new DataPoint(weekday, 0, ""));
+                    dataPointsWorkingHours.Add(new DataPoint(weekday, 0, "", ""));
+                    dataPointsOverTime.Add(new DataPoint(weekday, 0, "", ""));
                 }
             }
 

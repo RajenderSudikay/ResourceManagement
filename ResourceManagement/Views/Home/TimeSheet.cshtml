@@ -134,9 +134,6 @@
     </div>
 </nav>
 
-
-<a href="/TimeSheetEmailReport" class="btn btn-info">Email report</a>
-
 <div class="card timesheet-card">
     <div class="card-body ">
 
@@ -837,8 +834,6 @@
         }
 
         // Sets the value to '' in case of an invalid date
-
-
         jQuery('#timeSheetdate').change(function (evt) {
             $('.leave-or-holiday-msg').hide();
             if (!validate(evt.target.value)) {
@@ -857,6 +852,9 @@
             timeSheetList = new Array();
 
             var date = jQuery('#timeSheetStartWeekdate').val();
+            if (date == undefined || date == "") {
+                return;
+            }
 
             var startOfWeek = moment(new Date(date)).startOf('week').toDate();
             var endOfWeek = moment(new Date(date)).endOf('week').toDate();
