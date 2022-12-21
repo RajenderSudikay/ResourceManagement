@@ -202,7 +202,7 @@
                 <th class="time-header" scope="col">Urgency</th>
                 <th class="time-header" scope="col">Status</th>
                 <th class="time-header" scope="col">Date Closed</th>
-                <th class="time-header" scope="col">Time Spent</th>
+                <th class="time-header" scope="col" style="width:87px">Time Spent</th>
                 <th class="time-header" scope="col">Comments</th>
             </tr>
         </thead>
@@ -639,7 +639,6 @@
     </div>
 </div>
 
-
 <div class="modal" tabindex="-1" role="dialog" id="modal-db-error-alert">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -1022,12 +1021,6 @@
                 maxDate = new Date(maxDate);
                 maxDate = moment(maxDate).format("YYYY-MM-DD");
 
-                var timeSheetWeekInputModel = {
-                    EmpId: jQuery('.agent-navdrop-empid').text(),
-                    StartDate: jQuery('#timeSheetStartWeekdate').val(),
-                    EndDate: jQuery('#timeSheetEndWeekdate').val(),
-                };
-
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
 
@@ -1036,7 +1029,82 @@
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
 
-                jQuery('#exampleModalLong').modal('show');
+                var timeSheetWeekInputModel = {
+                    EmpId: jQuery('.agent-navdrop-empid').text(),
+                    WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+                    WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+                    ClientName: jQuery('#timeSheetEmpClient :selected').text(),
+                    WeekNumber: jQuery('#weekNumber').val()
+                };
+
+
+                jQuery.ajax({
+                    url: "/ISEmployeeSubmittedTimeSheetInSelectedWeek",
+                    type: "POST",
+                    data: JSON.stringify({ timeSheetAjaxReportModel: timeSheetWeekInputModel }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data != undefined && data != "") {
+                            var vieweReportData = jQuery.parseJSON(data);
+
+                            if (vieweReportData.StatusCode == 200) {
+                                timeSheetList = new Array();
+                                jQuery('.user-added-timesheet').remove();
+                                jQuery('.default-table-row').show();
+
+
+
+                                jQuery.each(vieweReportData.Viewreports, function (i, report) {
+                                    var viewreportModel = {
+                                        weekstartdate: moment(report.weekstartdate).format('YYYY-MM-DD'),
+                                        weekenddate: moment(report.weekenddate).format('YYYY-MM-DD'),
+                                        weekno: report.weekno,
+                                        employeeid: report.employeeid,
+                                        employeename: report.employeename,
+                                        empdesignation: report.empdesignation,
+                                        empmanager: report.empmanager,
+                                        empcontactnumber: report.empcontactnumber,
+                                        clientname: report.clientname,
+                                        projectname: report.projectname,
+                                        projstatus: report.projstatus,
+                                        taskdate: moment(report.taskdate).format('YYYY-MM-DD'),
+                                        category: report.category,
+                                        incidentnumber: report.incidentnumber,
+                                        taskdetails: report.taskdetails,
+                                        requester: report.requester,
+                                        callpriority: report.callpriority,
+                                        callstatus: report.callstatus,
+                                        closeddate: report.closeddate != null ? moment(report.closeddate).format('YYYY-MM-DD') : "",
+                                        timespent: report.timespent,
+                                        overtime: report.overtime,
+                                        comments: report.Reason,
+                                        uniquekey: report.uniquekey
+                                    };
+
+                                    timeSheetList.push(viewreportModel);
+                                });
+
+                                timeSheetWeeklyHours = new Array();
+                                AddUpdateRecords(timeSheetList, true);
+
+                                //DISABLING EDIT AND DELETE BUTTON ON VIEW
+                                jQuery(".glyphicon-edit").prop('onclick', null);
+                                jQuery(".glyphicon-remove").prop('onclick', null);
+                                jQuery(".timesheet-submit").attr("disabled", true);
+
+                                weeklyChartReport();
+
+                                jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                                jQuery('.warning-message-popup').html("<h2>You have already submitted the timesheet for the selected week. Close the popup to see the details. If the submitted details are incorrect please contact your reporting manager. </h2>");
+                                jQuery('#modal-warning-message-popup').modal('show');
+                            }
+                            else {
+                                jQuery('#exampleModalLong').modal('show');
+                                jQuery(".timesheet-submit").removeAttr("disabled");
+                            }
+                        }
+                    }
+                });
             }
         });
     });
@@ -1202,16 +1270,6 @@
                 }
             });
         });
-
-        //jQuery.ajax({
-        //    url: "/timesheetweeklychart",
-        //    type: "POST",
-        //    dataType: "html",
-        //    data: { weekreportmodel: timeSheetWeeklyHours },
-        //    success: function (data) {
-        //        $('#chartContainer').html(data);
-        //    }
-        //});
     }
 
 

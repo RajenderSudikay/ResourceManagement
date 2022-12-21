@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using static ResourceManagement.Models.TimesheetReportModel;
 
 namespace ResourceManagement.Models
@@ -60,6 +61,18 @@ namespace ResourceManagement.Models
     {
         public string Employee_Name { get; set; }
         public string Employee_ID { get; set; }
+    }
+
+    public class RMA_TimeSheetReportsFromDB
+    {
+        [JsonPropertyName("viewreports")]
+        public List<ambctaskcapture> Viewreports { get; set; }
+
+        [JsonPropertyName("message")]
+        public string Message { get; set; } = string.Empty;
+
+        [JsonPropertyName("statuscode")]
+        public int StatusCode { get; set; } = 500;
     }
 
 }

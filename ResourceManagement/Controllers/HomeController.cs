@@ -628,27 +628,30 @@ namespace ResourceManagement.Controllers
 
         public JsonResult ISEmployeeSubmittedTimeSheetInSelectedWeek(TimeSheetAjaxReportModel timeSheetAjaxReportModel)
         {
+            var timeSheetViewreportModel = new RMA_TimeSheetReportsFromDB();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
                 if (timeSheetAjaxReportModel != null)
                 {
 
                     int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
+                    var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetAjaxReportModel.EmpId) && a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
 
-                    var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(timeSheetAjaxReportModel.EmpId) && a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.EmpId).ToList();
-                    //if (empTimeSheetInfo != null)
-                    //{
-                    //    reportModel.timeSheetInfo = empTimeSheetInfo;
-                    //}
-
-                    //employeeReports.TimeSheetReports.Add(reportModel);
-
+                    if (empTimeSheetInfo != null && empTimeSheetInfo.Count > 0)
+                    {
+                        timeSheetViewreportModel.Viewreports = empTimeSheetInfo;
+                        timeSheetViewreportModel.StatusCode = 200;
+                        timeSheetViewreportModel.Message = "TimeSheet Report exists for the selected week";
+                    }
+                    else
+                    {
+                        timeSheetViewreportModel.StatusCode = 404;
+                        timeSheetViewreportModel.Message = "TimeSheet Report not exists for the selected week";
+                    }
                 }
             }
 
-            return null;
-
-            //return PartialView(employeeReports);
+            return Json(JsonConvert.SerializeObject(timeSheetViewreportModel));
         }
 
         public JsonResult GetEmployees()
