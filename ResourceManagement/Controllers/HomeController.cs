@@ -828,7 +828,10 @@ namespace ResourceManagement.Controllers
                         foreach (var TimeWorked in hoursworkedInparticulatDate)
                         {
                             dayHoursSpent += TimeWorked.timespent.Value;
-                            dayOverTime += TimeWorked.overtime.Value;
+                            if (TimeWorked.overtime != null)
+                            {
+                                dayOverTime += TimeWorked.overtime.Value;
+                            }
                         }
 
                         totalHoursSpent += dayHoursSpent;
@@ -883,7 +886,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     timeSheetReport.TotalHoursSpent = System.Convert.ToString(totalHoursSpent);
-                    int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;                  
+                    int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;
                     return RenderPartialToString(this, "TimeSheetEmailReport", timeSheetReport, ViewData, TempData);
                 }
             }

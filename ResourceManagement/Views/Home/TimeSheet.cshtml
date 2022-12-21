@@ -202,7 +202,7 @@
                 <th class="time-header" scope="col">Urgency</th>
                 <th class="time-header" scope="col">Status</th>
                 <th class="time-header" scope="col">Date Closed</th>
-                <th class="time-header" scope="col">Time Spent (OT)</th>
+                <th class="time-header" scope="col">Time Spent</th>
                 <th class="time-header" scope="col">Comments</th>
             </tr>
         </thead>
@@ -1266,6 +1266,10 @@
                         if (tasksEnteredInSpecifcDate.length > 0) {
                             var totalTimeSpent = tasksEnteredInSpecifcDate[0].timespent;
                             var totalOverTime = tasksEnteredInSpecifcDate[0].overtime;
+
+                            if (totalOverTime == "") {
+                                totalOverTime = "0";
+                            }
                             wholeWeekTimeSpent += parseInt(totalTimeSpent) + parseInt(totalOverTime);
                             finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "<b>" + totalTimeSpent + "(" + totalOverTime + ")" + "</b></h2><br>" + "";
                         }
