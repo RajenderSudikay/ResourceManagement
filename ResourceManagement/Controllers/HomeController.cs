@@ -243,7 +243,7 @@ namespace ResourceManagement.Controllers
                         foreach (var daySpecificEntrie in daySpecificEntries)
                         {
                             hoursSpent += daySpecificEntrie.hoursspent + daySpecificEntrie.overtime;
-                            currentDayHoursSpent += daySpecificEntrie.hoursspent;                          
+                            currentDayHoursSpent += daySpecificEntrie.hoursspent;
                             currentDayOverTime += daySpecificEntrie.overtime;
                         }
 
@@ -251,7 +251,7 @@ namespace ResourceManagement.Controllers
                         //Remaining Time Spent hours considered as Over Time hours for the day
                         var totalOverTimeHoursSpent = currentDayHoursSpent > 8 ? currentDayHoursSpent - 8 : 0;
 
-                        currentDayHoursSpent = currentDayHoursSpent >= 8 ? 8 : 0;
+                        currentDayHoursSpent = currentDayHoursSpent >= 8 ? 8 : currentDayHoursSpent;
                         currentDayOverTime = currentDayOverTime + totalOverTimeHoursSpent;
                     }
 
@@ -821,49 +821,59 @@ namespace ResourceManagement.Controllers
                         var requiredDate = GetDateInRequiredFormat(date.ToString());
 
                         var dayHoursSpent = 0;
+                        var dayOverTime = 0;
 
                         var hoursworkedInparticulatDate = timeSheetReport.reports.Where(report => report.taskdate == System.Convert.ToDateTime(requiredDate)).ToList();
 
                         foreach (var TimeWorked in hoursworkedInparticulatDate)
                         {
                             dayHoursSpent += TimeWorked.timespent.Value;
+                            dayOverTime += TimeWorked.overtime.Value;
                         }
 
                         totalHoursSpent += dayHoursSpent;
+                        totalHoursSpent += dayOverTime;
 
                         switch (dayName)
                         {
                             case "Monday":
-                                timeSheetReport.MondayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
-                                timeSheetReport.MondayColor = dayHoursSpent > 0 ? "rgb(109, 120, 173)" : "rgb(211, 211, 211)";
+                                timeSheetReport.MondayHoliday = dayHoursSpent == 0 ? "8" : "0";
+                                timeSheetReport.MondayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.MondayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Tuesday":
-                                timeSheetReport.TuesdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
-                                timeSheetReport.TuesdayColor = dayHoursSpent > 0 ? "rgb(81, 205, 160)" : "rgb(211, 211, 211)";
+                                timeSheetReport.TuesdayHoliday = dayHoursSpent == 0 ? "8" : "0";
+                                timeSheetReport.TuesdayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.TuesdayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Wednesday":
-                                timeSheetReport.WednesdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
-                                timeSheetReport.WednesdayColor = dayHoursSpent > 0 ? "rgb(223, 121, 112)" : "rgb(211, 211, 211)";
+                                timeSheetReport.WednesdayHoliday = dayHoursSpent == 0 ? "8" : "0";
+                                timeSheetReport.WednesdayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.WednesdayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Thursday":
-                                timeSheetReport.ThursdayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
-                                timeSheetReport.ThursdayColor = dayHoursSpent > 0 ? "rgb(76, 156, 160)" : "rgb(211, 211, 211)";
+                                timeSheetReport.ThursdayHoliday = dayHoursSpent == 0 ? "8" : "0";
+                                timeSheetReport.ThursdayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.ThursdayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Friday":
-                                timeSheetReport.FriidayHours = dayHoursSpent == 0 ? "8" : System.Convert.ToString(dayHoursSpent);
-                                timeSheetReport.FriidayColor = dayHoursSpent > 0 ? "rgb(174, 125, 153)" : "rgb(211, 211, 211)";
+                                timeSheetReport.FridayHoliday = dayHoursSpent == 0 ? "8" : "0";
+                                timeSheetReport.FridayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.FridayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Saturday":
-                                timeSheetReport.SaturdayHours = System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.SaturdayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.SaturdayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             case "Sunday":
-                                timeSheetReport.SundayHours = System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.SundayHours = dayHoursSpent >= 8 ? "8" : System.Convert.ToString(dayHoursSpent);
+                                timeSheetReport.SundayOverTime = dayHoursSpent >= 8 ? System.Convert.ToString(dayOverTime + (dayHoursSpent - System.Convert.ToInt32(8))) : "0";
                                 break;
 
                             default:
@@ -873,8 +883,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     timeSheetReport.TotalHoursSpent = System.Convert.ToString(totalHoursSpent);
-                    int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;
-                    timeSheetReport.OverTimeHours = overTime > 0 ? System.Convert.ToString(overTime) : "10";
+                    int overTime = System.Convert.ToInt32(timeSheetReport.TotalHoursSpent) - 40;                  
                     return RenderPartialToString(this, "TimeSheetEmailReport", timeSheetReport, ViewData, TempData);
                 }
             }

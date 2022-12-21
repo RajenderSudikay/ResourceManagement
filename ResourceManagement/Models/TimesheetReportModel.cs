@@ -22,21 +22,30 @@ namespace ResourceManagement.Models
             public emplogin empData { get; set; }
 
             public string MondayHours { get; set; }
-            public string MondayColor { get; set; }
+            public string MondayOverTime { get; set; }
+            public string MondayHoliday { get; set; }
+
             public string TuesdayHours { get; set; }
-            public string TuesdayColor { get; set; }
+            public string TuesdayOverTime { get; set; }
+            public string TuesdayHoliday { get; set; }
 
             public string WednesdayHours { get; set; }
-            public string WednesdayColor { get; set; }
+            public string WednesdayOverTime { get; set; }
+            public string WednesdayHoliday { get; set; }
 
-            public string ThursdayColor { get; set; }
+
             public string ThursdayHours { get; set; }
-            public string FriidayHours { get; set; }
-            public string FriidayColor { get; set; }
+            public string ThursdayOverTime { get; set; }
+            public string ThursdayHoliday { get; set; }
+
+            public string FridayHours { get; set; }
+            public string FridayOverTime { get; set; }
+            public string FridayHoliday { get; set; }
 
             public string SaturdayHours { get; set; }
+            public string SaturdayOverTime { get; set; }
             public string SundayHours { get; set; }
-            public string OverTimeHours { get; set; }
+            public string SundayOverTime { get; set; }
             public string TotalHoursSpent { get; set; }
 
         }

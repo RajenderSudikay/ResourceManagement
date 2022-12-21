@@ -135,10 +135,11 @@
                 </tbody>
             </table>
 
+
             <table>
                 <tr>
                     <td>
-                        <img src="https://quickchart.io/chart?width=310&height=220&c={type:'bar',legendText:'Holiday/Leave',showInLegend: true,axisY: { lineThickness: 0,gridThickness: 0,tickThickness: 0,tickLength: 0,stripLines: {value: 0, showOnTop: true,color: 'gray', thickness: 0}},data:{labels:['Monday','Tuesday','Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday', 'Overtime'], datasets:[{label:'Total hours spent in this week => @Model.TotalHoursSpent', data:[@Model.MondayHours,@Model.TuesdayHours,@Model.WednesdayHours,@Model.ThursdayHours,@Model.FriidayHours, @Model.SaturdayHours, @Model.SundayHours, @Model.OverTimeHours],backgroundColor: ['@Model.MondayColor', '@Model.TuesdayColor', '@Model.WednesdayColor','@Model.ThursdayColor', '@Model.FriidayColor', 'rgb(201, 212, 92)', 'rgb(85, 146, 173)', 'rgb(102, 0, 0)']}]}}">
+                        <img src="https://quickchart.io/chart?width=330&height=220&chart={type: 'bar', data:{ labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],datasets: [{label: 'Working Hours', data: [@Model.MondayHours, @Model.TuesdayHours, @Model.WednesdayHours, @Model.ThursdayHours, @Model.FridayHours,@Model.SaturdayHours,@Model.SundayHours],backgroundColor:'rgb(81, 205, 160)' }, { label: 'Over Time', data: [@Model.MondayOverTime, @Model.TuesdayOverTime, @Model.WednesdayOverTime, @Model.ThursdayOverTime, @Model.FridayOverTime,@Model.SaturdayOverTime,@Model.SundayOverTime], backgroundColor:'rgb(109, 120, 173)'}, { label: 'Holiday/Leave', data: [@Model.MondayHoliday, @Model.TuesdayHoliday, @Model.WednesdayHoliday, @Model.ThursdayHoliday, @Model.FridayHoliday,0,0], backgroundColor:'rgb(220, 20, 60)'}], }, options: {legend: { display: true, position: 'top', align: 'centre',}, title: {display: true, text : 'Total hours spent in this week => @Model.TotalHoursSpent', },scales: { yAxes: [{ gridLines: { display: false,},}]},}}" />
                     </td>
                 </tr>
 
