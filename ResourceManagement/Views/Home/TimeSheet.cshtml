@@ -774,6 +774,11 @@
             return mDate;
         };
 
+        //BASED ON TODAY DATE RESTRCTING WEK START DATE NOT TO ALLOW CURRENT WEEK DATES TO SUBMIT THE REPORTS
+        var todayDate = new Date();
+        var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
+        var maxWeekStartDate = moment(startOfWeek).format("YYYY-MM-DD");
+        jQuery('.date-timesheet').attr("max", maxWeekStartDate);
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
             jQuery('#timeSheetOverTime').val('');
