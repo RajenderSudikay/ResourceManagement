@@ -117,7 +117,8 @@ namespace ResourceManagement.Controllers
                         Signin_Time = todayDate,
                         Employee_Hostname = hostName,
                         Employee_IP = myIP,
-                        Employee_LoginLocation = employeeModel.AMBC_Active_Emp_view.Location
+                        Employee_LoginLocation = employeeModel.AMBC_Active_Emp_view.Location,
+                        Concat_loginstring = employeeModel.AMBC_Active_Emp_view.Employee_ID + "," + todayDate.ToString("yyyy-MM-dd") + "," + todayDate.ToString()
                     };
 
                     using (var context = new TimeSheetEntities())
