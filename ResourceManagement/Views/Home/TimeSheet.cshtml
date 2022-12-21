@@ -937,7 +937,7 @@
                                                 callstatus: "NA",
                                                 closeddate: "",
                                                 timespent: "0",
-                                                overtime:"0",
+                                                overtime: "0",
                                                 comments: item.Reason,
                                                 uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
                                             };
@@ -1250,21 +1250,24 @@
                     value = actualDate[2] + "-" + actualDate[1] + "-" + actualDate[0];
 
                     var totalHours = 0;
+                    var overTime = 0;
                     if (tasksEnteredInSpecifcDate.length > 1) {
                         finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "";
 
                         jQuery.each(tasksEnteredInSpecifcDate, function (i, task) {
-                            totalHours += + parseInt(task.timespent);
+                            totalHours += parseInt(task.timespent);
+                            overTime += parseInt(task.overtime);
                         });
-                        finalConfirmationMessage += "<b>" + totalHours + "</b>" + "</h2><br>";
+                        finalConfirmationMessage += "<b>" + totalHours + "(" + overTime + ")" + "</b>" + "</h2><br>";
 
-                        wholeWeekTimeSpent += parseInt(totalHours);
+                        wholeWeekTimeSpent += parseInt(totalHours) + parseInt(overTime);
                     }
                     else {
                         if (tasksEnteredInSpecifcDate.length > 0) {
                             var totalTimeSpent = tasksEnteredInSpecifcDate[0].timespent;
-                            wholeWeekTimeSpent += parseInt(totalTimeSpent);
-                            finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "<b>" + totalTimeSpent + "</b></h2><br>" + "";
+                            var totalOverTime = tasksEnteredInSpecifcDate[0].overtime;
+                            wholeWeekTimeSpent += parseInt(totalTimeSpent) + parseInt(totalOverTime);
+                            finalConfirmationMessage += "<h2>" + dayName + "(" + value + ") " + "= " + "<b>" + totalTimeSpent + "(" + totalOverTime + ")" + "</b></h2><br>" + "";
                         }
                     }
                 });

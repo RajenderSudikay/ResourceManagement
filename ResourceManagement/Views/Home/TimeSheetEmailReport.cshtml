@@ -127,7 +127,7 @@
                             <td scope="row" style="width: 80px; vertical-align: middle ">@report.callpriority</td>
                             <td scope="row" style="width: 80px; vertical-align: middle ">@report.projstatus</td>
                             <td scope="row" style="width: 80px; vertical-align: middle ">@report.closeddate.ToString().Replace("00:00:00", "")</td>
-                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.timespent</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.timespent <b>(@report.overtime)</b></td>
                             <td scope="row" style="width: 200px;vertical-align: middle;">@report.comments</td>
                         </tr>
                     }
@@ -146,9 +146,9 @@
             </table>
         </div>
 
-        <div style="margin-left: 100px; margin-right: 900px;">
+        @*<div style="margin-left: 100px; margin-right: 900px;">
             <div style="height: 50px; width: 50px; background-color: #f2f2f2; border: 1px solid #6D78AD; border-radius: 25%; text-align: center">Holiday/Leave</div>
-        </div>
+        </div>*@
 
 
         <br />
