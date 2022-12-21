@@ -903,9 +903,9 @@ namespace ResourceManagement.Controllers
         {
             string htmlContent = TimeSheetEmailReport();
             TempData.Remove("TimeSheetModeldata");
-            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], "rajendersudikay@ambconline.com"))
+            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empModel.AMBC_Active_Emp_view.AMBC_Mail_Address))
             {
-                mm.Subject = empModel.AMBC_Active_Emp_view.Employee_Name + " Timesheet Submission Details";
+                mm.Subject = empModel.AMBC_Active_Emp_view.Employee_Name + " Timesheet Submission Details " + empModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
                 mm.Body = htmlContent;
 
                 mm.IsBodyHtml = true;

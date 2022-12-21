@@ -1320,7 +1320,10 @@
 
                         jQuery.each(tasksEnteredInSpecifcDate, function (i, task) {
                             totalHours += parseInt(task.timespent);
-                            overTime += parseInt(task.overtime);
+                            if (task.overtime != "") {
+                                overTime += parseInt(task.overtime);
+                            }
+                          
                         });
                         finalConfirmationMessage += "<b>" + totalHours + "(" + overTime + ")" + "</b>" + "</h2><br>";
 
