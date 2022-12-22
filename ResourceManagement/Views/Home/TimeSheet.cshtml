@@ -1198,7 +1198,7 @@
                 callstatus: $('#timeSheetStatus :selected').text(),
                 closeddate: jQuery('#timeSheetClosedDate').val(),
                 timespent: jQuery('#timeSheetTimeSpent').val(),
-                overtime: jQuery('#timeSheetOverTime').val(),
+                overtime: jQuery('#timeSheetOverTime').val() != "" ? jQuery('#timeSheetOverTime').val() : "0",
                 comments: jQuery('#timeSheetComments').val(),
                 uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode
             };
@@ -1266,6 +1266,13 @@
                     //    timeSpentAndOverTime = model.timespent;
                     //}
 
+                    var displayClosedDate = "";
+
+                    if (model.closeddate != null && model.closeddate != "") {
+                        displayClosedDate = model.closeddate.split('-');
+                        displayClosedDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+                    }
+
 
                     jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
                     jQuery(newRow).find('.timesheet-date').html(newDate);
@@ -1275,7 +1282,7 @@
                     jQuery(newRow).find('.timesheet-requester').html(model.requester);
                     jQuery(newRow).find('.timesheet-urgency').html(model.callpriority);
                     jQuery(newRow).find('.timesheet-status').html(model.callstatus);
-                    jQuery(newRow).find('.timesheet-closeddate').html(model.closeddate);
+                    jQuery(newRow).find('.timesheet-closeddate').html(displayClosedDate);
                     jQuery(newRow).find('.timesheet-timespent').html(timeSpentAndOverTime);
                     jQuery(newRow).find('.timesheet-overtime').html(model.overtime);
                     jQuery(newRow).find('.timesheet-comments').html(model.comments);

@@ -104,7 +104,7 @@
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
                                             <tr style="background-color: #BCD2E8">
-                                                <th class="" scope="col" style="max-width:50px">Day</th>
+                                                <th class="" scope="col" style="max-width:70px">Day</th>
                                                 <th class="" scope="col" style="max-width:100px">Category</th>
                                                 <th class="" scope="col" style="max-width:200px">Incident Number</th>
                                                 <th class="" scope="col" style="max-width:200px">Incident Desc</th>
@@ -126,15 +126,15 @@
                                                         @{
                                                             var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Split(' ')[0] : task.taskdate.ToString();
                                                         }
-                                                        <td scope="row" style="max-width:50px">@requiredDate</td>
-                                                        <td scope="row" style="max-width:100px">@task.category</td>
-                                                        <td scope="row" style="max-width:200px">@task.incidentnumber</td>
-                                                        <td scope="row" style="max-width:200px">@task.taskdetails</td>
-                                                        <td scope="row">@task.requester</td>
-                                                        <td scope="row">@task.callpriority</td>
-                                                        <td scope="row">@task.projstatus</td>
+                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@requiredDate</td>
+                                                        <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@task.category</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.incidentnumber</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.taskdetails</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.requester</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.callpriority</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.projstatus</td>
                                                         <td scope="row" style="text-align:center; vertical-align:middle">@task.timespent</td>
-                                                        <td scope="row" style="max-width:200px">@task.comments</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.comments</td>
                                                     </tr>
                                                 }
                                             }

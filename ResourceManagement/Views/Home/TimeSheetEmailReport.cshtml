@@ -119,14 +119,32 @@
                         i++;
 
                         <tr class="default-table-row" style="background-color: @color">
-                            <td scope="row" style="width: 100px;vertical-align: middle;">@report.taskdate.ToString().Replace("00:00:00", "")</td>
+                            @{
+                                var timesheetTaskdate = @report.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim();
+
+                                //var requiredDateFormat = timesheetTaskdate.Contains('/') ? timesheetTaskdate.Split('/') : timesheetTaskdate.Split('-');
+
+                                //timesheetTaskdate = requiredDateFormat[2] + "-" + requiredDateFormat[1] + "-" + requiredDateFormat[0];
+                            }
+                            <td scope="row" style="width: 100px;vertical-align: middle;">@timesheetTaskdate</td>
                             <td scope="row" style="width: 90px;vertical-align: middle;">@report.category.TrimStart().TrimEnd()</td>
                             <td scope="row" style="width: 200px;vertical-align: middle;">@report.incidentnumber</td>
                             <td scope="row" style="width: 200px;vertical-align: middle;">@report.taskdetails</td>
                             <td scope="row" style="width: 80px;vertical-align: middle;">@report.requester</td>
                             <td scope="row" style="width: 80px; vertical-align: middle ">@report.callpriority</td>
-                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.projstatus</td>
-                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.closeddate.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.callstatus</td>
+
+                            @{
+                                var timesheetClosedDate = @report.closeddate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim();
+                            }
+
+                            @if (!string.IsNullOrEmpty(timesheetClosedDate))
+                            {
+                                //var requiredClosedDateFormat = timesheetClosedDate.Contains('/') ? timesheetClosedDate.Split('/') : timesheetClosedDate.Split('-');
+                                //timesheetClosedDate = requiredClosedDateFormat[2] + "-" + requiredClosedDateFormat[1] + "-" + requiredClosedDateFormat[0];
+                            }
+
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@timesheetClosedDate</td>
                             <td scope="row" style="width: 80px; vertical-align: middle ">@report.timespent <b>(@report.overtime)</b></td>
                             <td scope="row" style="width: 200px;vertical-align: middle;">@report.comments</td>
                         </tr>
@@ -148,11 +166,6 @@
 
             </table>
         </div>
-
-        @*<div style="margin-left: 100px; margin-right: 900px;">
-            <div style="height: 50px; width: 50px; background-color: #f2f2f2; border: 1px solid #6D78AD; border-radius: 25%; text-align: center">Holiday/Leave</div>
-        </div>*@
-
 
         <br />
         <br />
