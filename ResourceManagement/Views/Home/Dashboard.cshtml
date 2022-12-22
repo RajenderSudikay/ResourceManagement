@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Dashboard";
+    var imagePath = "";
 }
 
 <div class="sidenav sidenav-position">
@@ -23,11 +24,14 @@
             <div class="dashboard-emp-icon">
                 @if (Model != null)
                 {
+                    imagePath = "/Assets/EmployeeImagesPNG/" + @Model.AMBC_Active_Emp_view.Employee_ID + ".png";
+
                     <div class="agent-navigation dashboard-navigation">
                         <div class="">
                             <div class="dropdownheading">
                                 <div class="profile-img">
-                                    <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Employee profile image">&nbsp;&nbsp;
+
+                                    <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Employee profile image">&nbsp;&nbsp;
                                 </div>
                                 <p style="color: #2167ae">@Model.AMBC_Active_Emp_view.Employee_Name</p>
                             </div>
@@ -35,7 +39,7 @@
                             <div class="agent-description hide dashboard-emp-info" style="">
                                 <div class="agent-details">
                                     <div class="agent-img">
-                                        <img alt="profile-photo" src="~/Assets/Rajender_Passport_Photo.jpg" loading="lazy">
+                                        <img alt="profile-photo" src="@imagePath" loading="lazy">
 
                                     </div>
 
@@ -150,7 +154,7 @@
         <div class="row mt-xl-4">
             <div class="col-sm ">
                 <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Rajender_Passport_Photo.jpg" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
+                    <img src="@imagePath" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         @*<a href="/timesheet" class="btn btn-custom"></a>*@
