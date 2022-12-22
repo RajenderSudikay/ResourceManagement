@@ -103,7 +103,7 @@ body {
 }
 
 .time-headertitle {
-    padding-left: 150px;
+    padding-left: 130px;
     text-decoration-color: darkslateblue;
 }
 
@@ -896,6 +896,6 @@ input[type=number] {
     padding-top: 20px;
 }
 
-.row-disabled{
+.row-disabled {
     background-color: lightgray;
 }
