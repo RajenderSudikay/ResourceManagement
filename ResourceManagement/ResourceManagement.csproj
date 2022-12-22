@@ -381,6 +381,7 @@
     <Content Include="Views\Home\TimeSheetReports.cshtml" />
     <Content Include="Views\Home\TimeSheetReportsPartial.cshtml" />
     <Content Include="Views\Home\TimeSheetDownloadReportsPartial.cshtml" />
+    <Content Include="Views\Home\TimeSheetRemainder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

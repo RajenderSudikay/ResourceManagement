@@ -922,5 +922,78 @@ namespace ResourceManagement.Controllers
             }
 
         }
+
+        public ActionResult TimeSheetRemainder(TimeSheetAjaxReportModel timeSheetAjaxReportModel)
+        {
+            var timeSheetRemainder = new RMA_TimeSheetRemainder();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                if (timeSheetAjaxReportModel != null)
+                {
+
+                    int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
+
+                    var projectSpecificEmployees = db.AMBC_Active_Emp_view.Where(emp => emp.Client == timeSheetAjaxReportModel.ClientName).ToList();
+
+                    var submittedEmpList = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
+
+                    var notSubmittedEmpList = submittedEmpList.Count() > 0 ? projectSpecificEmployees.Where(x => submittedEmpList.Where(y => y.employeeid != x.Employee_ID).FirstOrDefault() != null).ToList() : projectSpecificEmployees.ToList();
+
+                    if (notSubmittedEmpList != null && notSubmittedEmpList.Count() > 0)
+                    {
+                        timeSheetRemainder.EmpListForremainder = notSubmittedEmpList;
+                        timeSheetRemainder.Message = "Employees who not submitted timesheet yet!";
+                        timeSheetRemainder.StatusCode = 200;
+                    }
+                }
+            }
+
+            return PartialView(timeSheetRemainder);
+        }
+
+
+        public JsonResult SendRemainderEmail(RMA_TimeSheetRemainderEmail timesheetEmpRemainder)
+        {
+            try
+            {
+                if (timesheetEmpRemainder != null && timesheetEmpRemainder.emails.Count() > 0)
+                {
+                    foreach (var email in timesheetEmpRemainder.emails)
+                    {
+                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email))
+                        {
+                            mm.Subject = "TimeSheet is missing!";
+                            mm.Body = "Hello Consultant, <br> Please submit your time sheet immediatly. + <br> <br> AMBC Technologies";
+
+                            mm.IsBodyHtml = true;
+                            SmtpClient smtp = new SmtpClient();
+                            smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                            smtp.EnableSsl = true;
+                            NetworkCredential credentials = new NetworkCredential();
+                            credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                            credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                            smtp.UseDefaultCredentials = true;
+                            smtp.Credentials = credentials;
+                            smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                            smtp.Send(mm);
+                        }
+                    }
+
+                    var emailRemainderResponse = new JsonResponseModel();
+
+                    emailRemainderResponse.StatusCode = 200;
+                    emailRemainderResponse.Message = "Remainder Email Sent Successfully!";
+                    return Json(emailRemainderResponse);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Json(null);
+
+        }
     }
 }

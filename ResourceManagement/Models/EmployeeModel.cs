@@ -75,4 +75,22 @@ namespace ResourceManagement.Models
         public int StatusCode { get; set; } = 500;
     }
 
+    public class RMA_TimeSheetRemainder
+    {
+        [JsonPropertyName("viewreports")]
+        public List<AMBC_Active_Emp_view> EmpListForremainder { get; set; }
+
+        [JsonPropertyName("message")]
+        public string Message { get; set; } = string.Empty;
+
+        [JsonPropertyName("statuscode")]
+        public int StatusCode { get; set; } = 500;
+    }
+
+
+    public class RMA_TimeSheetRemainderEmail
+    {
+        public List<string> emails { get; set; }
+    }
+
 }
