@@ -134,57 +134,71 @@
     </div>
 </nav>
 
-<div class="card timesheet-card">
-    <div class="card-body ">
+<p>
+    <button class="btn btn-block btn-lg btn-select-week" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="background-color: #eee; border-radius: 5px; display: none; text-align: right">
+        <b style="color: #2167ae;">Click here to Select/change week start date to enter task details</b>
+    </button>
+</p>
+<div class="collapse" id="collapseExample" style="margin-top: -9px;">
+    <div class="card card-body" style="border-radius: 10px">
+        <div class="card timesheet-card">
+            <div class="card-body ">
+                <form class="needs-validation-timesheet" novalidate>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="timeSheetStartWeekdate">Select Week Start Date</label>
+                            <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
+                            <div class="invalid-feedback">
+                                Please Select Week Start Date
+                            </div>
+                            <div class="joining-date-validation" style="display:none; color:red">
+                                You cannot select the date before the joining date
+                            </div>
+                        </div>
 
-        <form class="needs-validation-timesheet" novalidate>
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetStartWeekdate">Select Week Start Date</label>
-                    <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
-                    <div class="invalid-feedback">
-                        Please Select Week Start Date
+                        <div class="form-group col-lg-4">
+                            <label for="timeSheetEndWeekdate">Week End date</label>
+                            <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="weekNumber">Week Number</label>
+                            <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
+                        </div>
                     </div>
-                    <div class="joining-date-validation" style="display:none; color:red">
-                        You cannot select the date before the joining date
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="timeSheetEmpClient">Client</label>
+                            <select id="timeSheetEmpClient" name="clients" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                                @foreach (var project in Model.projectInfo)
+                                {
+                                    <option value="@project.Project_Code">@project.Client </option>
+                                }
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetEndWeekdate">Week End date</label>
-                    <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="weekNumber">Week Number</label>
-                    <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label for="timeSheetEmpClient">Client</label>
-                    <select id="timeSheetEmpClient" name="clients" class="form-control form-select form-select-lg mb-3 date-timesheet">
-                        @foreach (var project in Model.projectInfo)
-                        {
-                            <option value="@project.Project_Code">@project.Client </option>
-                        }
-                    </select>
-                </div>
-            </div>
 
-            <div class="row mt-xl-4">
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
-                        Click here to add task details
-                    </button>&nbsp;&nbsp;
-                </div>
-            </div>
 
-            @*@Model.leaveOrHolidayInfo*@
-            <div class="leave-or-holiday-info hide"></div>
-            <div class="emp-joining-date hide">@Model.AMBC_Active_Emp_view.Employee_Joining_Day</div>
-        </form>
+                    @*@Model.leaveOrHolidayInfo*@
+                    <div class="leave-or-holiday-info hide"></div>
+                    <div class="emp-joining-date hide">@Model.AMBC_Active_Emp_view.Employee_Joining_Day</div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+
+<div>
+    <div class="row mt-xl-4">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-black openmodel btn-lg text-white add-task-details" data-target="#exampleModalLong">
+                Click here to add day wise task details
+            </button>&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+
+
 
 <div class="table-responsive table">
     <!--Table-->
@@ -708,6 +722,7 @@
 
 <script>
 
+
     var timeSheetList = new Array();
     var timeSheetWeeklyHours = new Array();
     var empInputDates = new Array();
@@ -760,6 +775,8 @@
 
 
     jQuery(document).ready(function () {
+
+        jQuery(".btn-select-week").click();
 
         Date.prototype.startOfWeek = function (pStartOfWeek) {
             var mDifference = this.getDay() - pStartOfWeek;
@@ -1000,6 +1017,7 @@
     })();
 
     jQuery(".add-task-details").click(function () {
+
         ClearFormFieldsData();
         $(".timesheet-addreport").text("Add Report");
         $(".leave-or-holiday-msg").text("");
@@ -1022,6 +1040,12 @@
                 var minDate = jQuery('#timeSheetStartWeekdate').val();
                 minDate = new Date(minDate);
                 minDate = moment(minDate).format("YYYY-MM-DD");
+
+                if (minDate != "") {
+                    jQuery('#collapseExample').removeClass('show');
+                    jQuery('#collapseExample').removeClass('in');
+                    jQuery('.btn-select-week').show();
+                }
 
                 var maxDate = jQuery('#timeSheetEndWeekdate').val();
                 maxDate = new Date(maxDate);
@@ -1082,7 +1106,7 @@
                                         callstatus: report.callstatus,
                                         closeddate: report.closeddate != null ? moment(report.closeddate).format('YYYY-MM-DD') : "",
                                         timespent: report.timespent,
-                                        overtime: report.overtime,
+                                        overtime: report.overtime != null && report.overtime != "" ? report.overtime : "0",
                                         comments: report.Reason,
                                         uniquekey: report.uniquekey
                                     };
@@ -1105,6 +1129,7 @@
                                 jQuery('#modal-warning-message-popup').modal('show');
                             }
                             else {
+
                                 jQuery('#exampleModalLong').modal('show');
                                 jQuery(".timesheet-submit").removeAttr("disabled");
                             }
@@ -1231,12 +1256,12 @@
                     }
 
                     var timeSpentAndOverTime = "";
-                    if (model.overtime != "" && model.overtime != "0") {
-                        timeSpentAndOverTime = model.timespent + " <b>(" + model.overtime + ")</b>"
-                    }
-                    else {
-                        timeSpentAndOverTime = model.timespent;
-                    }
+                    /*  if (model.overtime != "" && model.overtime != "0") {*/
+                    timeSpentAndOverTime = model.timespent + " <b>(" + model.overtime + ")</b>"
+                    //}
+                    //else {
+                    //    timeSpentAndOverTime = model.timespent;
+                    //}
 
 
                     jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
@@ -1323,7 +1348,7 @@
                             if (task.overtime != "") {
                                 overTime += parseInt(task.overtime);
                             }
-                          
+
                         });
                         finalConfirmationMessage += "<b>" + totalHours + "(" + overTime + ")" + "</b>" + "</h2><br>";
 

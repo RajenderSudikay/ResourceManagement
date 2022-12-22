@@ -758,7 +758,7 @@ input[type=number] {
 .timesheet-addreport {
     background-color: #779ecb;
     border-radius: 20px;
-    height: 40px;
+    height: 35px;
 }
 
 .timesheet-addreport-cancel {
@@ -767,7 +767,7 @@ input[type=number] {
     width: 100px;
     margin-left: 0px;
     border-radius: 20px;
-    height: 40px;
+    height: 35px;
 }
 
 .exampleModalLabel {
