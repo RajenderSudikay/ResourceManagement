@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "TimeSheets Report Page";
+    var imagePath = "";
 }
 
 <style>
@@ -47,11 +48,13 @@
     <div class="col-lg-offset-3">
         @if (Model != null)
         {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.AMBC_Active_Emp_view.Employee_ID + ".png";
+
             <div class="agent-navigation">
                 <div class="">
                     <div class="dropdownheading text-white">
                         <div class="profile-img">
-                            <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
                         </div>
                         <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
                     </div>
@@ -59,7 +62,7 @@
                     <div class="agent-description hide" style="">
                         <div class="agent-details">
                             <div class="agent-img">
-                                <img alt="Bantle_Martin Bantle_625x313" src="~/Assets/Rajender_Passport_Photo.jpg" data-imagehash="datazwpimghash" loading="lazy">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
 
                             </div>
 
