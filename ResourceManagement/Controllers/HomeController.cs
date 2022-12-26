@@ -335,7 +335,7 @@ namespace ResourceManagement.Controllers
                         var loginObj = db.emplogins.Where(a => a.att_username.Equals(loginModel.att_username) && a.att_password.Equals(loginModel.att_password) && a.emp_status).FirstOrDefault();
                         if (loginObj != null)
                         {
-                            var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username)).ToList();
+                            var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(loginModel.att_username) && a.Project_Status == "Active").ToList();
                             if (employeeInfo != null && employeeInfo.Count() > 0)
                             {
                                 employeeModel.AMBC_Active_Emp_view = employeeInfo[0];
@@ -566,28 +566,7 @@ namespace ResourceManagement.Controllers
 
         public ActionResult TimeSheetReports()
         {
-            //var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-
-            var employeeModel = new RMA_EmployeeModel();
-            using (TimeSheetEntities db = new TimeSheetEntities())
-            {
-                var loginObj = db.emplogins.Where(a => a.att_username.Equals("C4046") && a.att_password.Equals("abc@123") && a.emp_status).FirstOrDefault();
-                if (loginObj != null)
-                {
-                    var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals("C4046")).FirstOrDefault();
-                    if (employeeInfo != null)
-                    {
-                        employeeModel.AMBC_Active_Emp_view = employeeInfo;
-                    }
-
-                    var empSignInOutInfo = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(loginObj.employee_id) && a.Login_date == DateTime.Today).FirstOrDefault();
-                    if (empSignInOutInfo != null)
-                    {
-                        employeeModel.signInOutInfo = empSignInOutInfo;
-                    }
-                }
-            }
-
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             return View(employeeModel);
         }
 
@@ -659,7 +638,7 @@ namespace ResourceManagement.Controllers
         {
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var employeesDetails = db.AMBC_Active_Emp_view.ToList();
+                var employeesDetails = db.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active").ToList();
                 var employeeJson = JsonConvert.SerializeObject(employeesDetails);
                 return Json(employeeJson);
             }
