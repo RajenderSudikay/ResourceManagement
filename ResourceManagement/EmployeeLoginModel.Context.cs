@@ -52,5 +52,7 @@ namespace ResourceManagement
         public virtual DbSet<AMBC_Active_Emp_view> AMBC_Active_Emp_view { get; set; }
         public virtual DbSet<today_att> today_att { get; set; }
         public virtual DbSet<tbld_ambclogininformation> tbld_ambclogininformation { get; set; }
+        public virtual DbSet<ambclogin_leave_view> ambclogin_leave_view { get; set; }
+        public virtual DbSet<halfday_leave_view> halfday_leave_view { get; set; }
     }
 }

@@ -760,6 +760,8 @@
     //Employee Leave or holiday data from database
     var empLeaveAndHolidays = new Array();
 
+    var empSignInDaysInfo = new Array();
+
     if (jQuery('.leave-or-holiday-info').text() != undefined && jQuery('.leave-or-holiday-info').text() != "") {
         empLeaveAndHolidays = jQuery.parseJSON(jQuery('.leave-or-holiday-info').text());
     }
@@ -802,13 +804,24 @@
         jQuery('.date-timesheet').attr("max", maxWeekStartDate);
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
-            jQuery('#timeSheetOverTime').val('');
+            jQuery(".timeSpenterror-msg").css("display", "none");
+            jQuery('#timeSheetOverTime').val('0');
+            var maxHoursValue = jQuery('#timeSheetTimeSpent').attr("max");
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
-            if (totalHoursAdded > 8 && totalHoursAdded <= 16) {
+
+            if (totalHoursAdded > 8 && totalHoursAdded <= 16 && maxHoursValue != 8) {
                 var overTimeHours = totalHoursAdded - 8;
                 jQuery('#timeSheetOverTime').val(overTimeHours);
                 jQuery('#timeSheetTimeSpent').val(8);
             }
+            else {
+                if (totalHoursAdded > 4 && totalHoursAdded <= 8 && maxHoursValue == 8) {
+                    var overTimeHoursOnHalfdayLeaveDay = totalHoursAdded - 4;
+                    jQuery('#timeSheetOverTime').val(overTimeHoursOnHalfdayLeaveDay);
+                    jQuery('#timeSheetTimeSpent').val(4);
+                }
+            }
+
             var updatingRecordUniqueID = "";
             updatingRecordUniqueID = jQuery('#timeSheetTimeSpent').attr('data-time-data-uniqueid');
             jQuery.each(timeSheetList, function (i, item) {
@@ -822,19 +835,39 @@
                             totalHoursAdded += + parseInt(item.overtime);
                         }
 
-                        if (totalHoursAdded > 16) {
+                        var maxValidayionMessageShown = false;
+
+                        //For 16 hours case
+                        if (totalHoursAdded > 16 && maxHoursValue != 8) {
                             jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 16 hours for the selected date: " + selectedDate);
                             jQuery('#timeSheetTimeSpent').val('');
-                            $(".timeSpenterror-msg").css("display", "block");
-                            $("#timeSheetTimeSpent").focus();
+                            maxValidayionMessageShown = true;
+                            jQuery(".timeSpenterror-msg").css("display", "block");
+                            jQuery(".timeSpenterror-msg").addClass('invalid');
+                            /*jQuery("#timeSheetTimeSpent").focus();*/
                         }
-                        else {
-                            $(".timeSpenterror-msg").css("display", "none");
 
+
+
+                        //For half day leave case
+                        if (totalHoursAdded > 8 && maxHoursValue == 8) {
+                            jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 8 hours for the selected date: " + selectedDate);
+                            jQuery('#timeSheetTimeSpent').val('');
+                            maxValidayionMessageShown = true;
+                            jQuery(".timeSpenterror-msg").css("display", "block");
+                            jQuery(".timeSpenterror-msg").addClass('invalid');
+                            /*  jQuery("#timeSheetTimeSpent").focus();*/
+                        }
+
+                        if (maxValidayionMessageShown == false) {
+                            jQuery(".timeSpenterror-msg").css("display", "none");
+                            jQuery(".timeSpenterror-msg").removeClass('invalid');
                         }
                     };
                 }
             });
+
+
         });
 
         // Everything except weekend days
@@ -846,6 +879,28 @@
                     isLeaveOrHoliday = true;
                 }
             });
+
+            var empSignInfo = jQuery('.leave-or-holiday-info').text();
+
+            if (empSignInfo != "") {
+                var parsedSignInJson = jQuery.parseJSON(empSignInfo);
+
+                var maxdateUpdated = false;
+                if (parsedSignInJson != null && parsedSignInJson.SignInInfo != null && parsedSignInJson.SignInInfo.length > 0) {
+                    jQuery.each(parsedSignInJson.SignInInfo, function (i, signInItem) {
+                        if (signInItem.SignInDate == dateString && signInItem.Reason == "Half Day Leave") {
+                            maxdateUpdated = true;
+                            jQuery('#timeSheetTimeSpent').attr("max", "8");
+                            jQuery('.timeSpenterror-msg').text("You are on Half Day Leave. You cannot selelct time spent hours more than 8 hours for the selected date: ");
+                        }
+                    });
+                }
+
+                if (maxdateUpdated == false) {
+                    jQuery('#timeSheetTimeSpent').attr("max", "16");
+                }
+            }
+
 
             if (isLeaveOrHoliday == true) {
                 var displayDate = dateString.split('-');
@@ -926,6 +981,10 @@
                         }
 
                         if (parsedLeaveOrHolidayJson.SignInInfo.length > 0) {
+
+                            jQuery.each(parsedLeaveOrHolidayJson.SignInInfo, function (i, signInItem) {
+                                empSignInDaysInfo.push(signInItem);
+                            });
 
                             empInputDates = new Array();
 
@@ -1155,6 +1214,8 @@
         jQuery('#timeSheetTimeSpent').val('');
         jQuery('#timeSheetOverTime').val('');
         jQuery('#timeSheetComments').val('');
+        jQuery('.timeSpenterror-msg').text('');
+        jQuery('#timeSheetTimeSpent').attr("max", "16");
     }
 
     jQuery(".timesheet-addreport").click(function () {
@@ -1419,10 +1480,17 @@
     function EditTimeSheetRow(ele) {
         var selectedUniqueItemKey = $(ele).closest('a').attr('data-uniqueid');
         var requiredIndexNum = "";
+        jQuery(".timeSpenterror-msg").css("display", "none");
 
         jQuery.each(timeSheetList, function (i, item) {
             if (item.uniquekey == selectedUniqueItemKey) {
                 requiredIndexNum = i;
+
+                jQuery.each(empSignInDaysInfo, function (i, signInItem) {
+                    if (signInItem.SignInDate == item.taskdate && signInItem.Reason == "Half Day Leave") {
+                        jQuery('#timeSheetTimeSpent').attr("max", "8");
+                    }
+                });
 
                 jQuery('.timesheet-addreport').attr('data-updatedindexid', requiredIndexNum);
                 jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);

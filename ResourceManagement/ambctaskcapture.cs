@@ -42,5 +42,6 @@ namespace ResourceManagement
         public Nullable<System.DateTime> submittedtime { get; set; }
         public string uniquekey { get; set; }
         public Nullable<int> overtime { get; set; }
+        public string recorduniqueid { get; set; }
     }
 }

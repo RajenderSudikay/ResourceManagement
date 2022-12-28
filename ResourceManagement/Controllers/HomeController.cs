@@ -371,6 +371,7 @@ namespace ResourceManagement.Controllers
 
         public JsonResult GetLeaveandHolidayInfofromDb(AjaxLeaveOrHolidayModel timeSheetAjaxLeaveOrHolidayModel)
         {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             var leaveHolidaySignInData = new RMA_LeaveHolidaySignInModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
@@ -380,14 +381,16 @@ namespace ResourceManagement.Controllers
                 List<DateTime> datesBetweenStartAndEnd = GetWeekdays(startDate, endDate);
 
                 var conSignInDetails = db.tbld_ambclogininformation.Where(a => a.Employee_Code.Equals(timeSheetAjaxLeaveOrHolidayModel.EmpId) && a.Login_date >= startDate && a.Login_date <= endDate).ToList();
+                var employeeHalfDayLevaList = db.ambclogin_leave_view.Where(leave => leave.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.Leave_Type == "Half Day Leave");
                 if (conSignInDetails != null && conSignInDetails.Count > 0)
                 {
                     foreach (var conSignIn in conSignInDetails)
                     {
+                        var isEmployeeTakenHalfDayLeave = employeeHalfDayLevaList.Where(leave => leave.Leave_Date == conSignIn.Login_date).FirstOrDefault();
                         leaveHolidaySignInData.SignInInfo.Add(new RMA_SignInInfo()
                         {
                             SignInDate = GetDateInRequiredFormat(conSignIn.Signin_Time.ToString()),
-                            Reason = "Checked In"
+                            Reason = isEmployeeTakenHalfDayLeave != null ? "Half Day Leave" : "Checked In"
                         });
                     }
                 }

@@ -177,6 +177,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ambclogin_leave_view.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ambctaskcapture.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -254,6 +257,9 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="halfday_leave_view.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
