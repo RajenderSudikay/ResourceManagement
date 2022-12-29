@@ -206,7 +206,7 @@
             </div>
         </div>
 
-        @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator")
+        @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
         {
             <div class="row mt-xl-4">
                 <div class="col-sm ">
