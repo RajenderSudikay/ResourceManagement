@@ -105,7 +105,9 @@ namespace ResourceManagement.Controllers
                     string hostName = Dns.GetHostName(); // Retrive the Name of HOST
 
                     // Get the IP
-                    string myIP = Dns.GetHostEntry(hostName).AddressList[0].ToString();
+                    IPHostEntry ip = Dns.GetHostEntry(hostName);                    
+
+                    string myIP = ip.AddressList.Count() > 3 ? ip.AddressList[3].ToString() : ip.AddressList[0].ToString();
 
                     var ambcEmpLoginInfo = new tbld_ambclogininformation()
                     {
@@ -126,7 +128,7 @@ namespace ResourceManagement.Controllers
                         context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
                         context.SaveChanges();
                         respone.jsonResponse.StatusCode = 200;
-                        respone.jsonResponse.Message = "TimeSheet added successfully!";
+                        respone.jsonResponse.Message = "Checked in Successful!";
                         respone.signin = true;
                     }
                 }
