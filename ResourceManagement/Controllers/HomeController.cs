@@ -1032,5 +1032,73 @@ namespace ResourceManagement.Controllers
             return Json(null);
 
         }
+
+        public ActionResult ApplyLeave()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+
+        public DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
+        {
+            List<DateTime> allDates = new List<DateTime>();
+
+            if (endDate == DateTime.MinValue)
+            {
+                allDates.Add(startDate);
+                return allDates.ToArray();
+            }
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                allDates.Add(date);
+            return allDates.ToArray();
+        }
+
+        public JsonResult SubmitLeaves(RMA_LeaveModel leaveModel)
+        {
+            if (leaveModel != null)
+            {
+                using (var context = new TimeSheetEntities())
+                {
+                    var contextModelList = new List<con_leaveupdate>();
+
+                    var startDate = System.Convert.ToDateTime(leaveModel.StartDate);
+                    var endDate = leaveModel.EndDate != null ? System.Convert.ToDateTime(leaveModel.EndDate) : DateTime.MinValue;
+
+                    var leaveApplieddates = GetDatesBetween(startDate, endDate);
+
+                    foreach (var leaveDate in leaveApplieddates)
+                    {
+                        string dayName = leaveDate.ToString("dddd");
+
+                        if (dayName != "Saturday" && dayName != "Sunday")
+                        {
+                            contextModelList.Add(new con_leaveupdate()
+                            {
+                                employee_id = leaveModel.SelectedEmpId,
+                                leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
+                                leavesource = leaveModel.LeaveType,
+                                leave_reason = leaveModel.Reason,
+                                submittedby = leaveModel.SubmittedBy,
+                                leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
+                            });
+                        }
+                    }
+
+                    context.con_leaveupdate.AddRange(contextModelList);
+                    context.SaveChanges();
+                    //respone.StatusCode = 200;
+                    //respone.Message = "TimeSheet added successfully!";
+                    //TempData["TimeSheetModeldata"] = timesheetmodel;
+                    //TimeSheetReportEmail(employeeModel);
+
+
+                }
+            }
+
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
     }
 }

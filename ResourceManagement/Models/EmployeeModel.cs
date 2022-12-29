@@ -8,13 +8,10 @@ namespace ResourceManagement.Models
     public class RMA_EmployeeModel
     {
         public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
-
         public List<AMBC_Active_Emp_view> projectInfo { get; set; }
         public string leaveOrHolidayInfo { get; set; }
         public tbld_ambclogininformation signInOutInfo { get; set; }
-
         public List<TimeSheetReportViewModel> TimeSheetReports { get; set; }
-
         public RMA_SystemDetails SystemInfo { get; set; }
     }
 
@@ -107,6 +104,19 @@ namespace ResourceManagement.Models
     public class RMA_TimeSheetRemainderEmail
     {
         public List<string> emails { get; set; }
+    }
+
+
+    public class RMA_LeaveModel
+    {
+        public string SelectedEmpId { get; set; }
+        public string LogedInEmpId { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string ApplyFor { get; set; }
+        public string Reason { get; set; }
+        public string LeaveType { get; set; }
+        public string SubmittedBy { get; set; }
     }
 
 }
