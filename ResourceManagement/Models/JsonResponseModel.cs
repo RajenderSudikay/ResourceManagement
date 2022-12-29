@@ -26,6 +26,17 @@ namespace ResourceManagement.Models
         [JsonPropertyName("signout")]
         public bool signout { get; set; } = false;
 
+
+        [JsonPropertyName("empname")]
+        public string empname { get; set; } = string.Empty;
+
+        [JsonPropertyName("empemailid")]
+        public string empemailid { get; set; } = string.Empty;
+
+        [JsonPropertyName("type")]
+        public string type { get; set; } = string.Empty;
+
+
     }
 
     public class WeekReportModel

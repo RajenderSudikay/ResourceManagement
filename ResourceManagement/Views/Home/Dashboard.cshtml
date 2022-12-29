@@ -392,6 +392,22 @@
                     jQuery('.signout').show();
                     jQuery('.signout').removeClass('hide');
                     $('.message-success-popup').modal('show');
+
+                    var signInAndOutEmailModel = {
+                        empname: data.empname,
+                        empemailid: data.empemailid,
+                        type: data.type
+                    }
+
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/SignInAndOutEmail",
+                        data: JSON.stringify({ signInAndOutEmailData: signInAndOutEmailModel }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            console.log("Check-In Email Sent Successfully");
+                        }
+                    });
                 }
                 else {
                     jQuery('.signin').show();
@@ -417,6 +433,22 @@
                     jQuery('.signin').hide();
                     jQuery('.signin').removeClass('show');
                     $('.message-confirm-popup').modal('show');
+
+                    var signInAndOutEmailModel = {
+                        empname: data.empname,
+                        empemailid: data.empemailid,
+                        type: data.type
+                    }
+
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/SignInAndOutEmail",
+                        data: JSON.stringify({ signInAndOutEmailData: signInAndOutEmailModel }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            console.log("Check-Out Email Sent Successfully");
+                        }
+                    });
                 }
                 else {
                     jQuery('.signin').hide();

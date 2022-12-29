@@ -72,6 +72,13 @@ namespace ResourceManagement.Models
         public string Employee_ID { get; set; }
     }
 
+    public class RMA_SignInOutEmailModel
+    {
+        public string empname { get; set; }
+        public string empemailid { get; set; }
+        public string type { get; set; }
+    }
+
     public class RMA_TimeSheetReportsFromDB
     {
         [JsonPropertyName("viewreports")]

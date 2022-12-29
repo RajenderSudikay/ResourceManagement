@@ -124,6 +124,10 @@ namespace ResourceManagement.Controllers
                         respone.jsonResponse.StatusCode = 200;
                         respone.jsonResponse.Message = "Checked in Successful!";
                         respone.signin = true;
+                        respone.empemailid = employeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
+                        respone.empname = employeeModel.AMBC_Active_Emp_view.Employee_Name;
+                        respone.type = "SignIn";
+
                     }
                 }
             }
@@ -149,6 +153,43 @@ namespace ResourceManagement.Controllers
             }
 
             return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SignInAndOutEmail(RMA_SignInOutEmailModel signInAndOutEmailData)
+        {
+            var emailBody = "";
+            var emailSubject = "";
+            if (signInAndOutEmailData.type == "SignIn")
+            {
+                emailSubject = signInAndOutEmailData.empname + " Check-In (" + GetDateInRequiredFormatDDMMYYYY(DateTime.Today.ToString()) + ") Successful.";
+                emailBody = "<div style='color:#23366f'>Hey <b>" + signInAndOutEmailData.empname + "</b>, <br><br> Thank you for check-In. <br> Have a good day! <br>  <br><br> <b>~AMBC Technologies</b></div>";
+            }
+
+            if (signInAndOutEmailData.type == "SignOut")
+            {
+                emailSubject = signInAndOutEmailData.empname + " Check-Out (" + GetDateInRequiredFormatDDMMYYYY(DateTime.Today.ToString()) + ") Successful.";
+                emailBody = "<div style='color:#23366f'>Hey <b>" + signInAndOutEmailData.empname + "</b>, <br><br>  Thank you for check-Out. <br> Have a good day. See you tomorrow! <br>  <br><br> <b>~AMBC Technologies</b></div>";
+            }
+            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], signInAndOutEmailData.empemailid))
+            {
+                mm.Subject = emailSubject;
+                mm.Body = emailBody;
+
+                mm.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                smtp.EnableSsl = true;
+                NetworkCredential credentials = new NetworkCredential();
+                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = credentials;
+                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                smtp.Send(mm);
+            }
+
+            return Json(null);
+
         }
 
         private static RMA_SystemDetails SystemInformation()
@@ -181,7 +222,10 @@ namespace ResourceManagement.Controllers
                             result.Signout_Time = System.DateTime.Now;
                             context.SaveChanges();
                             respone.jsonResponse.StatusCode = 200;
-                            respone.jsonResponse.Message = "TimeSheet added successfully!";
+                            respone.jsonResponse.Message = "Check-Out Successful!";
+                            respone.empemailid = employeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
+                            respone.empname = employeeModel.AMBC_Active_Emp_view.Employee_Name;
+                            respone.type = "SignOut";
                         }
                         else
                         {
@@ -376,6 +420,12 @@ namespace ResourceManagement.Controllers
             return dateTime.ToString("yyyy-MM-dd");
         }
 
+        private string GetDateInRequiredFormatDDMMYYYY(string actualdate)
+        {
+            string dateString = actualdate;
+            DateTime dateTime = DateTime.Parse(dateString);
+            return dateTime.ToString("dd-MM-yyyy");
+        }
         public JsonResult GetLeaveandHolidayInfofromDb(AjaxLeaveOrHolidayModel timeSheetAjaxLeaveOrHolidayModel)
         {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
@@ -892,7 +942,7 @@ namespace ResourceManagement.Controllers
             TempData.Remove("TimeSheetModeldata");
             using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empModel.AMBC_Active_Emp_view.AMBC_Mail_Address))
             {
-                mm.Subject = empModel.AMBC_Active_Emp_view.Employee_Name + " Timesheet Submission Details " + empModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
+                mm.Subject = empModel.AMBC_Active_Emp_view.Employee_Name + " Timesheet Submission Details ";
                 mm.Body = htmlContent;
 
                 mm.IsBodyHtml = true;
