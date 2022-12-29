@@ -14,6 +14,15 @@ namespace ResourceManagement.Models
         public tbld_ambclogininformation signInOutInfo { get; set; }
 
         public List<TimeSheetReportViewModel> TimeSheetReports { get; set; }
+
+        public RMA_SystemDetails SystemInfo { get; set; }
+    }
+
+    public class RMA_SystemDetails
+    {
+        public string SystemHostName { get; set; }
+        public string SystemIP { get; set; }
+
     }
 
     public class RMA_TimeSheetAjaxModel

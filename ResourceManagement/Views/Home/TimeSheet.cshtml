@@ -132,6 +132,10 @@
 
                 </div>
             </div>
+
+            <input type="hidden" class="systemhostname" value="@Model.SystemInfo.SystemHostName" />
+            <input type="hidden" class="systemipaddress" value="@Model.SystemInfo.SystemIP" />
+            <input type="hidden" class="empshifttiming" value="@Model.AMBC_Active_Emp_view.Shift" />
         }
 
     </div>
@@ -356,10 +360,10 @@
                                 <label for="timeSheetStatus">Status</label>
 
                                 <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3">
-                                    <option value="open"> Open </option>
-                                    <option value="closed"> Closed </option>
-                                    <option value="inprogress"> In Progress </option>
-                                    <option value="ongoing"> On Going </option>
+                                    <option value="open">Open</option>
+                                    <option value="closed">Closed</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="ongoing">On Going</option>
                                 </select>
                             </div>
                         </div>
@@ -1023,6 +1027,9 @@
                                                 timespent: "0",
                                                 overtime: "0",
                                                 comments: item.Reason,
+                                                submittedsystem: jQuery(".systemipaddress").val(),
+                                                currentyear: moment(value, 'YYYY-MM-DD').year(),
+                                                shiftdetails: jQuery(".empshifttiming").val(),
                                                 uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
                                             };
 
@@ -1170,6 +1177,9 @@
                                         timespent: report.timespent,
                                         overtime: report.overtime != null && report.overtime != "" ? report.overtime : "0",
                                         comments: report.Reason,
+                                        submittedsystem: jQuery(".systemipaddress").val(),
+                                        currentyear: moment(report.taskdate).format('YYYY-MM-DD').year(),
+                                        shiftdetails: jQuery(".empshifttiming").val(),
                                         uniquekey: report.uniquekey
                                     };
 
@@ -1261,6 +1271,9 @@
                 timespent: jQuery('#timeSheetTimeSpent').val(),
                 overtime: jQuery('#timeSheetOverTime').val() != "" ? jQuery('#timeSheetOverTime').val() : "0",
                 comments: jQuery('#timeSheetComments').val(),
+                submittedsystem: jQuery(".systemipaddress").val(),
+                currentyear: moment(jQuery('#timeSheetdate').val(), 'YYYY-MM-DD').year(),
+                shiftdetails: jQuery(".empshifttiming").val(),
                 uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode
             };
 

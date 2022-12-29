@@ -100,14 +100,8 @@ namespace ResourceManagement.Controllers
                 if (Session["UserModel"] != null)
                 {
                     var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-
                     var todayDate = System.DateTime.Now;
-                    string hostName = Dns.GetHostName(); // Retrive the Name of HOST
-
-                    // Get the IP
-                    IPHostEntry ip = Dns.GetHostEntry(hostName);                    
-
-                    string myIP = ip.AddressList.Count() > 3 ? ip.AddressList[3].ToString() : ip.AddressList[0].ToString();
+                    var SystemInfo = SystemInformation();
 
                     var ambcEmpLoginInfo = new tbld_ambclogininformation()
                     {
@@ -117,8 +111,8 @@ namespace ResourceManagement.Controllers
                         Employee_Shift = employeeModel.AMBC_Active_Emp_view.Shift,
                         Login_date = todayDate,
                         Signin_Time = todayDate,
-                        Employee_Hostname = hostName,
-                        Employee_IP = myIP,
+                        Employee_Hostname = SystemInfo.SystemHostName,
+                        Employee_IP = SystemInfo.SystemIP,
                         Employee_LoginLocation = employeeModel.AMBC_Active_Emp_view.Location,
                         Concat_loginstring = employeeModel.AMBC_Active_Emp_view.Employee_ID + "," + todayDate.ToString("yyyy-MM-dd") + "," + todayDate.ToString()
                     };
@@ -157,6 +151,17 @@ namespace ResourceManagement.Controllers
             return Json(respone, JsonRequestBehavior.AllowGet);
         }
 
+        private static RMA_SystemDetails SystemInformation()
+        {
+            var systemInfo = new RMA_SystemDetails();
+            systemInfo.SystemHostName = Dns.GetHostName();
+
+            // Get the IP
+            IPHostEntry ip = Dns.GetHostEntry(systemInfo.SystemHostName);
+            systemInfo.SystemIP = ip.AddressList.Count() > 3 ? ip.AddressList[3].ToString() : ip.AddressList[0].ToString();
+
+            return systemInfo;
+        }
 
         public JsonResult SignOut()
         {
@@ -493,6 +498,7 @@ namespace ResourceManagement.Controllers
 
                 if (employeeModel != null && employeeModel.AMBC_Active_Emp_view != null && !string.IsNullOrWhiteSpace(employeeModel.AMBC_Active_Emp_view.Employee_ID))
                 {
+                    employeeModel.SystemInfo = SystemInformation();
                     return View(employeeModel);
                 }
                 else
@@ -518,6 +524,7 @@ namespace ResourceManagement.Controllers
             try
             {
                 var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+                timesheetmodel.All(x => { x.submittedtime = DateTime.Now; return true; });
                 TempData.Remove("TimeSheetModeldata");
                 using (var context = new TimeSheetEntities())
                 {
@@ -694,12 +701,8 @@ namespace ResourceManagement.Controllers
                             Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
                         });
                     }
-
-
                 }
             }
-
-
 
             byte[] fileBytes = null;
 
