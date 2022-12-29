@@ -31,5 +31,6 @@ namespace ResourceManagement
         public Nullable<System.DateTime> Employee_Joining_Day { get; set; }
         public string Employee_Image_Path { get; set; }
         public int Project_Code { get; set; }
+        public string Access_Role { get; set; }
     }
 }

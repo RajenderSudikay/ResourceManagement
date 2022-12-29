@@ -167,8 +167,8 @@
                             var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
                         }
 
-                        <button type="submit" class="signin btn-info @showCheckIn">Check-In</button>
-                        <button type="submit" class="signout btn-info @showCheckOut">Check-Out</button>
+                        <button type="submit" class="signin btn-info @showCheckIn" style="width:100px; border-radius:10px;"><b>Check-In</b></button>
+                        <button type="submit" class="signout btn-info @showCheckOut" style="width:100px; border-radius:10px"><b>Check-Out</b></button>
                         <label class="@showLabel done-forday">See you tomorrow!</label>
 
 
@@ -185,63 +185,81 @@
 
                     </div>
                     <div class="modal-footer header-nav-modalfooter">
-                        <a href="/timesheet" class="btn btn-info">Timesheet</a>
+                        <a href="/timesheet" class="btn btn-info" style="width: 100px; border-radius: 10px;"><b>Enter Timesheet</b></a>
                     </div>
                 </div>
 
             </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
+            <div class="col-sm ">
+
+                <div class="card dashboard-zoom" style="width: 18rem;">
+                    <img src="~/Assets/LMS.png" class="card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>
                     <div class="modal-footer header-nav-modalfooter">
-                        <a href="/timesheetreports" class="btn btn-info">Timesheet Report</a>
+                        <a href="/timesheetreports" class="btn btn-info" style="width:100px; border-radius:10px"><b>Apply Leave</b></a>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <div class="row mt-xl-4">
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="modal-footer header-nav-modalfooter">
-                        <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info">KRA Report</a>
-                    </div>
-                </div>
+        @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator")
+        {
+            <div class="row mt-xl-4">
+                <div class="col-sm ">
 
-            </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="modal-footer header-nav-modalfooter">
-                        <a href="#" class="btn btn-info">Appraisal</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/hr.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div class="card dashboard-zoom" style="width: 18rem;">
+                        <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/timesheetreports" class="btn btn-info" style="width:100px; border-radius:10px"><b>Timesheet Report</b></a>
+                        </div>
                     </div>
-                    <div class="modal-footer header-nav-modalfooter">
-                        <a href="#" class="btn btn-info">HR Letters</a>
+
+                </div>
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem;">
+                        <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>KRA Report</b></a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem;">
+                        <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="#" class="btn btn-info" style="width:100px; border-radius:10px"><b>Appraisal</b></a>
+                        </div>
                     </div>
                 </div>
+                @*<div class="col-sm ">
+                        <div class="card dashboard-zoom" style="width: 18rem;">
+                            <img src="~/Assets/hr.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
+                            <div class="card-body">
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                            </div>
+                            <div class="modal-footer header-nav-modalfooter">
+                                <a href="#" class="btn btn-info">HR Letters</a>
+                            </div>
+                        </div>
+                    </div>*@
             </div>
-        </div>
+        }
 
         <div class="modal message-confirm-popup" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">

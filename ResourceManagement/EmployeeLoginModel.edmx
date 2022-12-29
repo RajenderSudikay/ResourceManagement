@@ -457,6 +457,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp_view' does not h
             <PropertyRef Name="Designation" />
             <PropertyRef Name="Employee Status" />
             <PropertyRef Name="AMBC Mail Address" />
+            <PropertyRef Name="Access Role" />
             <PropertyRef Name="Project Code" />
           </Key>
           <Property Name="Employee ID" Type="varchar" MaxLength="50" Nullable="false" />
@@ -471,6 +472,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp_view' does not h
           <Property Name="Employee Status" Type="bit" Nullable="false" />
           <Property Name="Location" Type="varchar" MaxLength="150" />
           <Property Name="AMBC Mail Address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Access Role" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AMBC Project Manager" Type="varchar" MaxLength="250" />
           <Property Name="AMBC PM Mail Address" Type="varchar" MaxLength="250" />
           <Property Name="Employee Joining Day" Type="date" />
@@ -642,6 +644,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [AMBC_Active_Emp_view].[Employee Status] AS [Employee Status], 
     [AMBC_Active_Emp_view].[Location] AS [Location], 
     [AMBC_Active_Emp_view].[AMBC Mail Address] AS [AMBC Mail Address], 
+    [AMBC_Active_Emp_view].[Access Role] AS [Access Role], 
     [AMBC_Active_Emp_view].[AMBC Project Manager] AS [AMBC Project Manager], 
     [AMBC_Active_Emp_view].[AMBC PM Mail Address] AS [AMBC PM Mail Address], 
     [AMBC_Active_Emp_view].[Employee Joining Day] AS [Employee Joining Day], 
@@ -1097,6 +1100,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
             <PropertyRef Name="Employee_Status" />
             <PropertyRef Name="AMBC_Mail_Address" />
             <PropertyRef Name="Project_Code" />
+            <PropertyRef Name="Access_Role" />
           </Key>
           <Property Name="Employee_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Employee_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -1115,6 +1119,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_Joining_Day" Type="DateTime" Precision="0" />
           <Property Name="Employee_Image_Path" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Project_Code" Type="Int32" Nullable="false" />
+          <Property Name="Access_Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="today_att">
           <Key>
@@ -1615,6 +1620,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AMBC_Active_Emp_view">
             <EntityTypeMapping TypeName="TimesheetDBModel.AMBC_Active_Emp_view">
               <MappingFragment StoreEntitySet="AMBC_Active_Emp_view">
+                <ScalarProperty Name="Access_Role" ColumnName="Access Role" />
                 <ScalarProperty Name="Project_Code" ColumnName="Project Code" />
                 <ScalarProperty Name="Employee_Image_Path" ColumnName="Employee Image Path" />
                 <ScalarProperty Name="Employee_Joining_Day" ColumnName="Employee Joining Day" />
