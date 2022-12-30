@@ -972,9 +972,21 @@ namespace ResourceManagement.Controllers
 
                     var projectSpecificEmployees = db.AMBC_Active_Emp_view.Where(emp => emp.Client == timeSheetAjaxReportModel.ClientName).ToList();
 
-                    var submittedEmpList = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
+                    var notSubmittedEmpList = new List<AMBC_Active_Emp_view>();
 
-                    var notSubmittedEmpList = submittedEmpList.Count() > 0 ? projectSpecificEmployees.Where(x => submittedEmpList.Where(y => y.employeeid != x.Employee_ID).FirstOrDefault() != null).ToList() : projectSpecificEmployees.ToList();
+                    foreach (var projectSpecificEmployee in projectSpecificEmployees)
+                    {
+                        var isEmployeeSubmittedTimeSheet = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName && a.employeeid == projectSpecificEmployee.Employee_ID).FirstOrDefault();
+
+                        if (isEmployeeSubmittedTimeSheet == null)
+                        {
+                            notSubmittedEmpList.Add(projectSpecificEmployee);
+                        }
+                    }
+
+                    //var submittedEmpList = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
+
+                    //var notSubmittedEmpList = submittedEmpList.Count() > 0 ? projectSpecificEmployees.Where(x => submittedEmpList.Where(y => y.employeeid != x.Employee_ID).FirstOrDefault() != null).ToList() : projectSpecificEmployees.ToList();
 
                     if (notSubmittedEmpList != null && notSubmittedEmpList.Count() > 0)
                     {
