@@ -1070,45 +1070,67 @@ namespace ResourceManagement.Controllers
         public JsonResult SubmitLeaves(RMA_LeaveModel leaveModel)
         {
             var respone = new LeaveEmailModel();
-
-            if (leaveModel != null)
+            try
             {
-                using (var context = new TimeSheetEntities())
+                if (leaveModel != null)
                 {
-                    var contextModelList = new List<con_leaveupdate>();
-
-                    var startDate = System.Convert.ToDateTime(leaveModel.StartDate);
-                    var endDate = leaveModel.EndDate != null ? System.Convert.ToDateTime(leaveModel.EndDate) : DateTime.MinValue;
-
-                    var leaveApplieddates = GetDatesBetween(startDate, endDate);
-
-                    foreach (var leaveDate in leaveApplieddates)
+                    using (var context = new TimeSheetEntities())
                     {
-                        string dayName = leaveDate.ToString("dddd");
+                        var contextModelList = new List<con_leaveupdate>();
 
-                        if (dayName != "Saturday" && dayName != "Sunday")
+                        var startDate = System.Convert.ToDateTime(leaveModel.StartDate);
+                        var endDate = leaveModel.EndDate != null ? System.Convert.ToDateTime(leaveModel.EndDate) : DateTime.MinValue;
+
+                        var leaveApplieddates = GetDatesBetween(startDate, endDate);
+
+                        foreach (var leaveDate in leaveApplieddates)
                         {
-                            contextModelList.Add(new con_leaveupdate()
+                            string dayName = leaveDate.ToString("dddd");
+
+                            if (dayName != "Saturday" && dayName != "Sunday")
                             {
-                                employee_id = leaveModel.SelectedEmpId,
-                                leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
-                                leavesource = leaveModel.LeaveType,
-                                leave_reason = leaveModel.Reason,
-                                submittedby = leaveModel.SubmittedBy,
-                                leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
-                            });
+                                contextModelList.Add(new con_leaveupdate()
+                                {
+                                    employee_id = leaveModel.SelectedEmpId,
+                                    leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
+                                    leavesource = leaveModel.LeaveType,
+                                    leave_reason = leaveModel.Reason,
+                                    submittedby = leaveModel.SubmittedBy,
+                                    leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
+                                });
+                            }
+                        }
+
+                        context.con_leaveupdate.AddRange(contextModelList);
+                        context.SaveChanges();
+                        respone.AjaxleaveModel = new RMA_LeaveModel();
+                        respone.AjaxleaveModel = leaveModel;
+
+                        respone.jsonResponse = new JsonResponseModel();
+                        respone.jsonResponse.StatusCode = 200;
+                        respone.jsonResponse.Message = "Leave Submitted Successfully!";
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                respone.jsonResponse.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            respone.jsonResponse.Message = actuallError;
                         }
                     }
-
-                    context.con_leaveupdate.AddRange(contextModelList);
-                    context.SaveChanges();
-                    respone.AjaxleaveModel = new RMA_LeaveModel();
-                    respone.AjaxleaveModel = leaveModel;
-
-                    respone.jsonResponse = new JsonResponseModel();
-                    respone.jsonResponse.StatusCode = 200;
-                    respone.jsonResponse.Message = "Leave Submitted Successfully!";
-
+                }
+                else
+                {
+                    respone.jsonResponse.Message = ex.Message;
                 }
             }
 
@@ -1143,7 +1165,7 @@ namespace ResourceManagement.Controllers
                                 mm.CC.Add(empDetails.AMBC_PM_Mail_Address);
                             }
 
-                            if (emailLeaveModel.LogedInEmpEmail != "")
+                            if (emailLeaveModel.LogedInEmpEmail != "" && (emailLeaveModel.LogedInEmpEmail != empDetails.AMBC_Mail_Address))
                             {
                                 mm.CC.Add(emailLeaveModel.LogedInEmpEmail);
                             }
@@ -1151,7 +1173,7 @@ namespace ResourceManagement.Controllers
                             mm.IsBodyHtml = true;
                             SmtpClient smtp = new SmtpClient();
                             smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
-                            smtp.EnableSsl = true;                         
+                            smtp.EnableSsl = true;
                             NetworkCredential credentials = new NetworkCredential();
                             credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
                             credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];

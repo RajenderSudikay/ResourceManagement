@@ -144,85 +144,216 @@
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
         <div class="card-body ">
-            <form class="needs-validation" novalidate>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group selectemp-div">
-                            <label for="leaveemployeename">Employee Name</label>
-                            <select id="selectEmployeename" name="leaveemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Employee Name -- </option>
-                            </select>
-                        </div>
+            @*<form class="needs-validation" novalidate>*@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group selectemp-div">
+                        <label for="leaveemployeename">Employee Name</label>
+                        <select id="selectEmployeename" name="leaveemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="leaveapplytype" class="leaveapplytype">Apply For</label>
-                            <select id="leavetypes" name="leaveapplytype" class="form-control form-select form-select-lg mb-3">
-                                <option value="SingleDay">Single Day</option>
-                                <option value="MultipleDay">Multiple Days</option>
-                            </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="leaveapplytype" class="leaveapplytype">Apply For</label>
+                        <select id="leavetypes" name="leaveapplytype" class="form-control form-select form-select-lg mb-3">
+                            <option value="SingleDay">Single Day</option>
+                            <option value="MultipleDay">Multiple Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="leavestartdate" class="leavestartdate">Leave Date</label>
+                        <input type="date" class="form-control" id="leavestartdate" required>
+                        <div class="invalid-feedback-leavedate" style="color:red; display:none">
+                            Please Select Date
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="leavestartdate" class="leavestartdate">Leave Date</label>
-                            <input type="date" class="form-control" id="leavestartdate" required>
-                            <div class="invalid-feedback">
-                                Please Select Date
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 leave-enddate-div" style="display:none">
-                        <div class="form-group">
-                            <label for="leaveenddate">End Date</label>
-                            <input type="date" class="form-control" id="leaveenddate">
-                            <div class="invalid-feedback-enddate" style="display:none; color: red">
-                                Please Select End Date
-                            </div>
+                <div class="col-md-6 leave-enddate-div" style="display:none">
+                    <div class="form-group">
+                        <label for="leaveenddate">End Date</label>
+                        <input type="date" class="form-control" id="leaveenddate">
+                        <div class="invalid-feedback-enddate" style="display:none; color: red">
+                            Please Select End Date
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="leavesubmitted">Submitted By</label>
-                            <input type="text" class="form-control" id="leavesubmitted" placeholder="Submitted By" value="@Model.AMBC_Active_Emp_view.Employee_Name" disabled style="background-color:white">
-                        </div>
-                    </div>
-                    <div class="col-md-6 leave-type-div">
-                        <div class="form-group">
-                            <label for="leaveSelectedType">Leave Type</label>
-                            <select id="selectedleavetype" name="leaveSelectedType" class="form-control form-select form-select-lg mb-3">
-                                <option value="plannedleave">Planned Leave</option>
-                                <option value="sickleave">Sick Leave</option>
-                                <option value="compoff">Comp-Off</option>
-                                <option value="halfdayleave">Half Day Leave</option>
-                                <option value="others">Others</option>
-                            </select>
-
-                        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="leavesubmitted">Submitted By</label>
+                        <input type="text" class="form-control" id="leavesubmitted" placeholder="Submitted By" value="@Model.AMBC_Active_Emp_view.Employee_Name" disabled style="background-color:white">
                     </div>
                 </div>
+                <div class="col-md-6 leave-type-div">
+                    <div class="form-group">
+                        <label for="leaveSelectedType">Leave Type</label>
+                        <select id="selectedleavetype" name="leaveSelectedType" class="form-control form-select form-select-lg mb-3">
+                            <option value="plannedleave">Planned Leave</option>
+                            <option value="sickleave">Sick Leave</option>
+                            <option value="compoff">Comp-Off</option>
+                            <option value="halfdayleave">Half Day Leave</option>
+                            <option value="others">Others</option>
+                        </select>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="leavereason">Reason</label>
-                            <textarea class="form-control" id="leavereason" style="min-width: 100%" placeholder="Reason"></textarea>
-
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="modal-footer mt-xl-4">
-                    <button type="submit" class="btn btn-info btn-lg btn-apply-leave" data-updatedindexid="" data-uniqueid="" style="width:100px; border-radius:10px"><b>Submit</b></button>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="leavereason">Reason</label>
+                        <textarea class="form-control" id="leavereason" style="min-width: 100%" placeholder="Reason"></textarea>
+
+                    </div>
                 </div>
+            </div>
 
-            </form>
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-apply-leave" style="width:100px; border-radius:10px"><b>Submit</b></button>
+            </div>
+
+            @*</form>*@
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-db-error-alert">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-delete-custommessage">
+
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: -20px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
+<g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M35.707,16.293c-0.391-0.391-1.023-0.391-1.414,0L26,24.586l-8.293-8.293c-0.391-0.391-1.023-0.391-1.414,0
+		s-0.391,1.023,0,1.414L24.586,26l-8.293,8.293c-0.391,0.391-0.391,1.023,0,1.414C16.488,35.902,16.744,36,17,36
+		s0.512-0.098,0.707-0.293L26,27.414l8.293,8.293C34.488,35.902,34.744,36,35,36s0.512-0.098,0.707-0.293
+		c0.391-0.391,0.391-1.023,0-1.414L27.414,26l8.293-8.293C36.098,17.316,36.098,16.684,35.707,16.293z" />
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-boday-title">
+                    Hey @Model.AMBC_Active_Emp_view.Employee_Name <br /> <br />
+                    You have already Submitted the Leave for selected date.
+                </h2>
+                <div class="database-response"></div>
+                <br />
+                <div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of EmployeeID_LeaveDate</p></div>
+
+            </div>
+            <div class="model-footerbtn-dberror-custom">
+                <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal"><b>Ok</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal message-success-popup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-success-custommessage">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: 190px; padding-top: 30px; margin-bottom: 30px;" xml:space="preserve" width="50px">
+                <g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M38.252,15.336l-15.369,17.29l-9.259-7.407c-0.43-0.345-1.061-0.274-1.405,0.156c-0.345,0.432-0.275,1.061,0.156,1.406
+		l10,8C22.559,34.928,22.78,35,23,35c0.276,0,0.551-0.114,0.748-0.336l16-18c0.367-0.412,0.33-1.045-0.083-1.411
+		C39.251,14.885,38.62,14.922,38.252,15.336z" />
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                <g>
+                                </g>
+                                </svg>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <h2 class="modal-body-custom-success">
+                    Hey @Model.AMBC_Active_Emp_view.Employee_Name
+                    <br />
+                    <br />
+                    Leaves submitted successfully for the selcted dates. Please check your email for more details.
+                </h2>
+            </div>
+
+            <div class="">
+                <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal">Okay</button>
+            </div>
         </div>
     </div>
 </div>
@@ -231,8 +362,15 @@
 
     jQuery('#leaveenddate').change(function () {
         $('#leaveenddate').css("border", "1px solid green");
+        $('.invalid-feedback-leavedate').hide();
+    });
+
+    jQuery('#leavestartdate').change(function () {
+        $('#leavestartdate').css("border", "1px solid green");
         $('.invalid-feedback-enddate').hide();
     });
+
+
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
@@ -268,11 +406,21 @@
             }
             form.classList.add('was-validated');
         });
+        if (jQuery('#leavestartdate').val() == "") {
+            jQuery('.invalid-feedback-leavedate').show();
+            jQuery('#leavestartdate').css("border", "1px solid red");
+            isStartDateEntered = false;
+        }
+        else {
+            jQuery('.invalid-feedback-leavedate').hide();
+            jQuery('#leavestartdate').css("border", "1px solid green");
+        }
 
         if (jQuery('#leavetypes :selected').val() == "MultipleDay") {
             if ($('#leaveenddate').val() == "") {
                 $('.invalid-feedback-enddate').show();
                 $('#leaveenddate').css("border", "1px solid red");
+                isStartDateEntered = false;
             }
             else {
                 $('.invalid-feedback-enddate').hide();
@@ -311,12 +459,16 @@
                             data: JSON.stringify({ emailLeaveModel: data.AjaxleaveModel }),
                             contentType: 'application/json; charset=utf-8',
                             success: function (emaildata) {
-                                console.log("Leave Submitted Email Sent Successfully");
+                                console.log("Leave Submitted Email Sent Successfully");                                
+                                $('.message-success-popup').modal('show');
                             }
                         });
                     }
                     else {
-
+                        if (data.jsonResponse.StatusCode == 500) {
+                            jQuery('.database-response').text(data.jsonResponse.Message);
+                            $('#modal-db-error-alert').modal('show');
+                        }
                     }
                 }
             });
