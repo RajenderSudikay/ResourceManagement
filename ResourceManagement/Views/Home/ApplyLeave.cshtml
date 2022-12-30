@@ -160,7 +160,6 @@
                             <select id="leavetypes" name="leaveapplytype" class="form-control form-select form-select-lg mb-3">
                                 <option value="SingleDay">Single Day</option>
                                 <option value="MultipleDay">Multiple Days</option>
-                                <option value="SwipeAdjustment">Swipe Adjustment</option>
                             </select>
                         </div>
                     </div>
@@ -171,12 +170,18 @@
                         <div class="form-group">
                             <label for="leavestartdate" class="leavestartdate">Leave Date</label>
                             <input type="date" class="form-control" id="leavestartdate" required>
+                            <div class="invalid-feedback">
+                                Please Select Date
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6 leave-enddate-div" style="display:none">
                         <div class="form-group">
                             <label for="leaveenddate">End Date</label>
                             <input type="date" class="form-control" id="leaveenddate">
+                            <div class="invalid-feedback-enddate" style="display:none; color: red">
+                                Please Select End Date
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,9 +197,8 @@
                         <div class="form-group">
                             <label for="leaveSelectedType">Leave Type</label>
                             <select id="selectedleavetype" name="leaveSelectedType" class="form-control form-select form-select-lg mb-3">
-                                <option disabled selected> -- Select Type -- </option>
-                                <option value="sickleave">Sick Leave</option>
                                 <option value="plannedleave">Planned Leave</option>
+                                <option value="sickleave">Sick Leave</option>
                                 <option value="compoff">Comp-Off</option>
                                 <option value="halfdayleave">Half Day Leave</option>
                                 <option value="others">Others</option>
@@ -225,6 +229,11 @@
 
 <script>
 
+    jQuery('#leaveenddate').change(function () {
+        $('#leaveenddate').css("border", "1px solid green");
+        $('.invalid-feedback-enddate').hide();
+    });
+
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict';
@@ -247,6 +256,9 @@
     jQuery(".btn-apply-leave").click(function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
+
+        var isStartDateEntered = true;
+
         // Loop over them and prevent submission
         Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() === false) {
@@ -256,6 +268,59 @@
             }
             form.classList.add('was-validated');
         });
+
+        if (jQuery('#leavetypes :selected').val() == "MultipleDay") {
+            if ($('#leaveenddate').val() == "") {
+                $('.invalid-feedback-enddate').show();
+                $('#leaveenddate').css("border", "1px solid red");
+            }
+            else {
+                $('.invalid-feedback-enddate').hide();
+                $('#leaveenddate').css("border", "1px solid green");
+            }
+        }
+
+        if (isStartDateEntered) {
+
+            var leaveInputs = {
+                //Value which is selected in page Employee Name dropdown
+                SelectedEmpId: jQuery('#selectEmployeename :selected').val(),
+                SelectedEmpName: jQuery('#selectEmployeename :selected').text(),
+                LogedInEmpId: jQuery('.agent-navdrop-empid').text(),
+                LogedInEmpName: jQuery('.agent-full-name').text(),
+                LogedInEmpEmail: jQuery('.agent-navdrop-empemail').text(),
+                StartDate: moment(jQuery('#leavestartdate').val()).format("YYYY-MM-DD"),
+                EndDate: jQuery('#leaveenddate').val() != null && jQuery('#leaveenddate').val() != "" ? moment(jQuery('#leaveenddate').val()).format("YYYY-MM-DD") : null,
+                ApplyFor: jQuery('#leavetypes :selected').text(),
+                Reason: jQuery('#leavereason').val(),
+                LeaveType: jQuery('#selectedleavetype :selected').text(),
+                SubmittedBy: jQuery('.agent-full-name').text()
+            }
+
+
+            jQuery.ajax({
+                type: "POST",
+                url: "/SubmitLeaves",
+                data: JSON.stringify({ leaveModel: leaveInputs }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.jsonResponse.StatusCode == 200) {
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "/SubmitLeavesEmailGenerate",
+                            data: JSON.stringify({ emailLeaveModel: data.AjaxleaveModel }),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (emaildata) {
+                                console.log("Leave Submitted Email Sent Successfully");
+                            }
+                        });
+                    }
+                    else {
+
+                    }
+                }
+            });
+        }
     });
 
     GetEmployees();
@@ -300,48 +365,11 @@
         }
 
         if (jQuery(this).val() == "SwipeAdjustment") {
-            $(".leavestartdate").text("Adjust Date");           
+            $(".leavestartdate").text("Adjust Date");
             $('.leave-type-div').hide();
             $('.leave-enddate-div').hide();
         }
     });
 
-
-    //Submit leaves
-    jQuery(".btn-apply-leave").click(function () {
-
-        var leaveInputs = {
-            //Value which is selected in page Employee Name dropdown
-            SelectedEmpId: jQuery('#selectEmployeename :selected').val(),
-            LogedInEmpId: jQuery('.agent-navdrop-empid').text(),
-            StartDate: moment(jQuery('#leavestartdate').val()).format("YYYY-MM-DD"),
-            EndDate: jQuery('#leaveenddate').val() != null && jQuery('#leaveenddate').val() != "" ? moment(jQuery('#leaveenddate').val()).format("YYYY-MM-DD") : null,
-            ApplyFor: jQuery('#leavetypes :selected').val(),
-            Reason: jQuery('#leavereason').val(),
-            LeaveType: jQuery('#selectedleavetype :selected').val(),
-            SubmittedBy: jQuery('.agent-full-name').text()
-        }
-
-
-        jQuery.ajax({
-            type: "POST",
-            url: "/SubmitLeaves",
-            data: JSON.stringify({ leaveModel: leaveInputs }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                jQuery('#modal-final-submit-alert').modal('hide');
-                if (data.StatusCode == 200) {
-                    jQuery('.database-response').addClass('text-success');
-                    jQuery('.message-success-popup').modal('show');
-                }
-                else {
-                    /* jQuery('.database-response').addClass('text-danger');*/
-                    jQuery('.database-response').text(data.Message);
-                    jQuery('#modal-db-error-alert').modal('show');
-                }
-                /* jQuery('.database-response').text(data.Message);   */
-            }
-        });
-    });
 
 </script>

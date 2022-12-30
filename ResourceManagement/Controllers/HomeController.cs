@@ -1069,6 +1069,8 @@ namespace ResourceManagement.Controllers
 
         public JsonResult SubmitLeaves(RMA_LeaveModel leaveModel)
         {
+            var respone = new LeaveEmailModel();
+
             if (leaveModel != null)
             {
                 using (var context = new TimeSheetEntities())
@@ -1100,17 +1102,71 @@ namespace ResourceManagement.Controllers
 
                     context.con_leaveupdate.AddRange(contextModelList);
                     context.SaveChanges();
-                    //respone.StatusCode = 200;
-                    //respone.Message = "TimeSheet added successfully!";
-                    //TempData["TimeSheetModeldata"] = timesheetmodel;
-                    //TimeSheetReportEmail(employeeModel);
+                    respone.AjaxleaveModel = new RMA_LeaveModel();
+                    respone.AjaxleaveModel = leaveModel;
 
+                    respone.jsonResponse = new JsonResponseModel();
+                    respone.jsonResponse.StatusCode = 200;
+                    respone.jsonResponse.Message = "Leave Submitted Successfully!";
 
                 }
             }
 
+            return Json(respone, JsonRequestBehavior.AllowGet);
+        }
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+
+        public JsonResult SubmitLeavesEmailGenerate(RMA_LeaveModel emailLeaveModel)
+        {
+            var respone = new LeaveEmailModel();
+            if (emailLeaveModel != null)
+            {
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var empDetails = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == emailLeaveModel.SelectedEmpId).FirstOrDefault();
+                    var leaveSubmissionType = string.Empty;
+
+                    emailLeaveModel.SubmissionType = emailLeaveModel.SelectedEmpId == emailLeaveModel.LogedInEmpId ? "own" : "others";
+
+                    var subject = string.Empty;
+                    var emailBody = RenderPartialToString(this, "LeaveEmail", emailLeaveModel, ViewData, TempData);
+
+                    if (empDetails != null)
+                    {
+                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empDetails.AMBC_Mail_Address))
+                        {
+                            mm.Subject = "Leave Submission Update!";
+                            mm.Body = emailBody;
+
+                            if (empDetails.AMBC_PM_Mail_Address != "")
+                            {
+                                mm.CC.Add(empDetails.AMBC_PM_Mail_Address);
+                            }
+
+                            if (emailLeaveModel.LogedInEmpEmail != "")
+                            {
+                                mm.CC.Add(emailLeaveModel.LogedInEmpEmail);
+                            }
+
+                            mm.IsBodyHtml = true;
+                            SmtpClient smtp = new SmtpClient();
+                            smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                            smtp.EnableSsl = true;                         
+                            NetworkCredential credentials = new NetworkCredential();
+                            credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                            credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                            smtp.UseDefaultCredentials = true;
+                            smtp.Credentials = credentials;
+                            smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                            smtp.Send(mm);
+                        }
+                    }
+
+                }
+
+            }
+
+            return Json(respone, JsonRequestBehavior.AllowGet);
         }
     }
 }

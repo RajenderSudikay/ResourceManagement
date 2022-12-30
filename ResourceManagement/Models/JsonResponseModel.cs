@@ -51,4 +51,10 @@ namespace ResourceManagement.Models
         public int overtime { get; set; } = 0;
 
     }
+
+    public class LeaveEmailModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+        public RMA_LeaveModel AjaxleaveModel { get; set; }
+    }
 }

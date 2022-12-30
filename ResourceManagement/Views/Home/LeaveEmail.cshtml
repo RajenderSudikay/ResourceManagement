@@ -1,0 +1,162 @@
+﻿@model ResourceManagement.Models.RMA_LeaveModel
+
+@{
+    ViewBag.Title = "Leave Email Page";
+}
+
+<style>
+    body {
+        background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
+</style>
+
+@if (Model != null)
+{
+
+    var startDate = Model.StartDate.ToString().Replace("00:00:00", "");
+    var endDate = "";
+    if (Model.EndDate != null)
+    {
+        endDate = Model.EndDate.ToString().Replace("00:00:00", "");
+    }
+    else
+    {
+        endDate = startDate;
+    }
+
+
+    <div class="emailbodycontent">
+        <table>
+            <tr>
+                <td style="width: 60%">
+                    <div class="emailbody">
+                        <h2>Hi <b>@Model.SelectedEmpName</b>,</h2>
+                        <br />
+                    </div>
+                </td>
+                <td style="width: 45%; float: right; margin-right: 13px;">
+                    <div>
+                        <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="170" height="65" sizes="188px" alt="AMBC Inc">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td style="width: 60%">
+                    @if (Model.SubmissionType == "own")
+                    {
+                        <div style="font-family: Calibri; ">
+                            Thank you for applying the leave from @startDate to To @endDate.
+                            <br />
+                            Please find details below.
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="font-family: Calibri; ">
+                            As per the request, @Model.SelectedEmpName Leave has been applied from @startDate to To  @endDate by @Model.SubmittedBy.
+                        </div>
+                    }
+
+                    <br />
+
+                    <b>Employee Name:</b> @Model.SelectedEmpName<br />
+                    <b>Applied for:</b> @Model.ApplyFor<br />
+                    <b>Start Date:</b> @startDate<br />
+                    <b>End Date:</b> @endDate<br />
+                    <b>Submitted By:</b>  @Model.SubmittedBy<br />
+                    <b>Leave Type:</b> @Model.LeaveType<br />
+                    <b>Reason:</b>  @Model.Reason<br />
+                </td>
+
+                <td style="width: 45%; float: right; margin-right: 13px;">
+                </td>
+            </tr>
+        </table>
+
+        <br />
+        <br />
+        <div style="font-family: Calibri; ">
+            <b>Please update your leave info in your client Calendar and Up coming out of office in your Signature.</b>
+        </div>
+        <br />
+        <div style="font-family: Calibri; ">
+            <b>Note: All ‘Earned Leaves’ require 2 weeks’ notice to get approval from the management and clients.</b>
+        </div>
+
+
+        <br />
+        <br />
+
+        <div class="emailbody">
+            <h2> <b style="font-family: Calibri; "> AMBC Technologies. </b></h2>
+        </div>
+        <br />
+        <br />
+        <div class="email-footer" style="text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; ">
+            Autogenarted email.Please do  not reply.
+        </div>
+    </div>
+
+}
+
+
+
+
+
