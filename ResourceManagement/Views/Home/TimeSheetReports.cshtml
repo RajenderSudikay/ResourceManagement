@@ -136,6 +136,10 @@
                     <option value="client"> Client </option>
                     @*<option value="individual"> Individual </option>*@
                 </select>
+
+                <div class="invalid-reports-by" style="color:red; display:none">
+                    Please Select Reports By
+                </div>
             </div>
 
             <div class="form-group col-lg-4 clientdrodwn" style="display:none">
@@ -147,11 +151,18 @@
                     <option value="Modine">Modine</option>
                     <option value="AMBC">AMBC</option>
                 </select>
+
+                <div class="invalid-clients" style="color:red; display:none">
+                    Please Select Client
+                </div>
             </div>
             <div class="form-group col-lg-2 consultantmultilistdrodown" style="display:none">
                 <label for="timesheetreportconsultants">Consultants</label>
                 <select multiple class="form-control" id="timesheetreportconsultants" style="width: 280px;">
                 </select>
+                <div class="invalid-consultants" style="color:red; display:none">
+                    Please Select Consultants
+                </div>
             </div>
         </div>
 
@@ -160,7 +171,7 @@
             <div class="form-group col-lg-4">
                 <label for="timeSheetStartWeekdate">Week Start Date</label>
                 <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
-                <div class="invalid-feedback">
+                <div class="invalid-weekstart-date" style="color:red; display:none">
                     Please Select Week Start Date
                 </div>
             </div>
@@ -402,9 +413,18 @@
         return mDate;
     };
 
+    //BASED ON TODAY DATE RESTRCTING WEK START DATE NOT TO ALLOW CURRENT WEEK DATES TO SUBMIT THE REPORTS
+    var todayDate = new Date();
+    var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
+    var maxWeekStartDate = moment(startOfWeek).format("YYYY-MM-DD");
+    jQuery('.date-timesheet').attr("max", maxWeekStartDate);
+
 
     jQuery(document).ready(function () {
         jQuery('.date-timesheet').change(function () {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid green");
+            jQuery('.invalid-weekstart-date').hide();
+
             var date = jQuery(this).val();
             var startOfWeek = moment(new Date(date)).startOf('week').toDate();
             var endOfWeek = moment(new Date(date)).endOf('week').toDate();
@@ -444,6 +464,9 @@
     }
 
     $("#timesheerreportsby").on("change", function () {
+        jQuery('#timesheerreportsby').css("border", "1px solid green");
+        jQuery('.invalid-reports-by').hide();
+
         if (jQuery(this).val() == "client") {
             $("#timesheerreportclients").prop("selectedIndex", 0);
             jQuery('.clientdrodwn').show();
@@ -465,6 +488,9 @@
 
 
     $("#timesheerreportclients").on("change", function () {
+        jQuery('#timesheerreportclients').css("border", "1px solid green");
+        jQuery('.invalid-clients').hide();
+
         if (jQuery(this).val() != "selectclientname") {
             $('#timesheetreportconsultants').empty();
             GetEmployees(jQuery(this).val());
@@ -475,7 +501,58 @@
         }
     });
 
+    $("#timesheetreportconsultants").on("change", function () {
+        jQuery('#timesheetreportconsultants').css("border", "1px solid green");
+        jQuery('.invalid-consultants').hide();
+    });
+
     jQuery(".reports-view").on("click", function () {
+        var isAllRequiredInputsSelected = true;
+        if (jQuery('#timeSheetStartWeekdate').val() == "") {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid red");
+            jQuery('.invalid-weekstart-date').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid green");
+            jQuery('.invalid-weekstart-date').hide();
+        }
+
+        if (jQuery('#timesheerreportsby :selected').val() == "defaultselectreporttype") {
+            jQuery('#timesheerreportsby').css("border", "1px solid red");
+            jQuery('.invalid-reports-by').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timesheerreportsby').css("border", "1px solid green");
+            jQuery('.invalid-reports-by').hide();
+        }
+
+        if (jQuery('#timesheerreportclients :selected').val() == "selectclientname") {
+            jQuery('#timesheerreportclients').css("border", "1px solid red");
+            jQuery('.invalid-clients').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timesheerreportclients').css("border", "1px solid green");
+            jQuery('.invalid-clients').hide();
+        }
+
+        if (jQuery('#timesheetreportconsultants').val() == "") {
+            jQuery('#timesheetreportconsultants').css("border", "1px solid red");
+            jQuery('.invalid-consultants').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timesheetreportconsultants').css("border", "1px solid green");
+            jQuery('.invalid-consultants').hide();
+        }
+
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
+
         var ajaxReportModel = {
             Employees: $('#timesheetreportconsultants').val(),
             WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
