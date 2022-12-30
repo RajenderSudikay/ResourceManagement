@@ -1178,7 +1178,7 @@
                                         overtime: report.overtime != null && report.overtime != "" ? report.overtime : "0",
                                         comments: report.Reason,
                                         submittedsystem: jQuery(".systemipaddress").val(),
-                                        currentyear: moment(report.taskdate).format('YYYY-MM-DD').year(),
+                                        currentyear: moment(report.taskdate, 'YYYY-MM-DD').year(),
                                         shiftdetails: jQuery(".empshifttiming").val(),
                                         uniquekey: report.uniquekey
                                     };

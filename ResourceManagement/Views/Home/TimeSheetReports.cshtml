@@ -116,6 +116,7 @@
                         </div>
                     </div>
 
+                    <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
 
                 </div>
             </div>
@@ -223,12 +224,7 @@
                 </div>
             }
 
-
-
-
         </div>
-        <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
-
     </div>
 </div>
 
@@ -385,6 +381,12 @@
 <script type="text/javascript">
 
     jQuery(".btn-report-generate").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate();
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
         var ajaxDownloadReportModel = {
             Employees: $('#timesheetreportconsultants').val(),
             WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
@@ -506,7 +508,7 @@
         jQuery('.invalid-consultants').hide();
     });
 
-    jQuery(".reports-view").on("click", function () {
+    function TimeSheetReportsInPutsValidate(eventName) {
         var isAllRequiredInputsSelected = true;
         if (jQuery('#timeSheetStartWeekdate').val() == "") {
             jQuery('#timeSheetStartWeekdate').css("border", "1px solid red");
@@ -538,15 +540,27 @@
             jQuery('.invalid-clients').hide();
         }
 
-        if (jQuery('#timesheetreportconsultants').val() == "") {
-            jQuery('#timesheetreportconsultants').css("border", "1px solid red");
-            jQuery('.invalid-consultants').show();
-            isAllRequiredInputsSelected = false;
+        //If user clicks on Remainder button
+        //No need to selelct the clients
+        //By deafult based on Client all the employees list will be showed in the popup
+        if (eventName == null) {
+            if (jQuery('#timesheetreportconsultants').val() == "") {
+                jQuery('#timesheetreportconsultants').css("border", "1px solid red");
+                jQuery('.invalid-consultants').show();
+                isAllRequiredInputsSelected = false;
+            }
+            else {
+                jQuery('#timesheetreportconsultants').css("border", "1px solid green");
+                jQuery('.invalid-consultants').hide();
+            }
         }
-        else {
-            jQuery('#timesheetreportconsultants').css("border", "1px solid green");
-            jQuery('.invalid-consultants').hide();
-        }
+        return isAllRequiredInputsSelected;
+    }
+
+
+    jQuery(".reports-view").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate();
 
         if (isAllRequiredInputsSelected == false) {
             return false;
@@ -573,6 +587,12 @@
     });
 
     jQuery(".btn-remainder").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate("remainder");
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
         var ajaxReportModel = {
             WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
             WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
