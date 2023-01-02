@@ -379,8 +379,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent</label>
-                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" onkeydown="return event.keyCode !== 69" required>
-                                <label class="overtimehoursaddintable"></label>
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69" required>
+                                <small id="timespenthelp" class="form-text text-muted" style="color:darkblue !important"></small>
                                 <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 16
                                 </div>
@@ -390,7 +390,7 @@
                             <div class="form-group">
                                 <label for="timeSheetOverTime">Over Time</label>
                                 <input type="number" class="form-control" id="timeSheetOverTime" data-time-data-uniqueid="" aria-describedby="overtimehelp" placeholder="Over Time" disabled>
-                                <small id="overtimehelp" class="form-text text-muted">If time spent hours > 8 then remaining hours will be considered as overtime.</small>
+                                <small id="overtimehelp" class="form-text text-muted" style="color: darkblue !important">If time spent hours > 8 then remaining hours will be considered as overtime.</small>
                             </div>
                         </div>
                     </div>
@@ -896,12 +896,17 @@
                             maxdateUpdated = true;
                             jQuery('#timeSheetTimeSpent').attr("max", "8");
                             jQuery('.timeSpenterror-msg').text("You are on Half Day Leave. You cannot selelct time spent hours more than 8 hours for the selected date: ");
+                            jQuery('#timespenthelp').text("You took half day leave on " + dateString + " . Max 8 hours can be entered");
+                            jQuery('#overtimehelp').text("If time spent hours > 4 then remaining hours will be considered as overtime.");
+
                         }
                     });
                 }
 
                 if (maxdateUpdated == false) {
                     jQuery('#timeSheetTimeSpent').attr("max", "16");
+                    jQuery('#timespenthelp').text("Max 16 hours can be entered");
+                    jQuery('#overtimehelp').text("If time spent hours > 8 then remaining hours will be considered as overtime.");
                 }
             }
 
