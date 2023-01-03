@@ -542,39 +542,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholiday" EntityType="Self.tblambcholiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ambctaskcapture].[tslogno] AS [tslogno], 
-    [ambctaskcapture].[weekno] AS [weekno], 
-    [ambctaskcapture].[weekstartdate] AS [weekstartdate], 
-    [ambctaskcapture].[weekenddate] AS [weekenddate], 
-    [ambctaskcapture].[employeeid] AS [employeeid], 
-    [ambctaskcapture].[employeename] AS [employeename], 
-    [ambctaskcapture].[empdesignation] AS [empdesignation], 
-    [ambctaskcapture].[empmanager] AS [empmanager], 
-    [ambctaskcapture].[empcontactnumber] AS [empcontactnumber], 
-    [ambctaskcapture].[clientname] AS [clientname], 
-    [ambctaskcapture].[projectname] AS [projectname], 
-    [ambctaskcapture].[projstatus] AS [projstatus], 
-    [ambctaskcapture].[taskdate] AS [taskdate], 
-    [ambctaskcapture].[category] AS [category], 
-    [ambctaskcapture].[incidentnumber] AS [incidentnumber], 
-    [ambctaskcapture].[taskdetails] AS [taskdetails], 
-    [ambctaskcapture].[requester] AS [requester], 
-    [ambctaskcapture].[callpriority] AS [callpriority], 
-    [ambctaskcapture].[callstatus] AS [callstatus], 
-    [ambctaskcapture].[closeddate] AS [closeddate], 
-    [ambctaskcapture].[timespent] AS [timespent], 
-    [ambctaskcapture].[comments] AS [comments], 
-    [ambctaskcapture].[submittedsystem] AS [submittedsystem], 
-    [ambctaskcapture].[currentyear] AS [currentyear], 
-    [ambctaskcapture].[shiftdetails] AS [shiftdetails], 
-    [ambctaskcapture].[submittedtime] AS [submittedtime], 
-    [ambctaskcapture].[uniquekey] AS [uniquekey], 
-    [ambctaskcapture].[overtime] AS [overtime], 
-    [ambctaskcapture].[recorduniqueid] AS [recorduniqueid]
-    FROM [dbo].[ambctaskcapture] AS [ambctaskcapture]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
