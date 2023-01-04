@@ -465,7 +465,7 @@ namespace ResourceManagement.Controllers
                             leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
                             {
                                 LeaveOrHolidayDate = GetDateInRequiredFormat(conSignIn.Login_date.ToString()),
-                                Reason = "Checked In Later taken leave",
+                                Reason = "Checked In, then applied leave",
                                 DefaultLeaveOrHolidayDate = conSignIn.Login_date
                             });
                         }
@@ -513,15 +513,31 @@ namespace ResourceManagement.Controllers
 
                     if (isEmployeeSignedIn == null)
                     {
+                        //Checking if the selected date is fall under Holiday
                         var isMissedSignInDateHoliday = leaveHolidaySignInData.LeaveHolidayInfo.Where(holiday => holiday.DefaultLeaveOrHolidayDate == selecteddate).FirstOrDefault();
 
                         if (isMissedSignInDateHoliday == null)
                         {
-                            leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                            //Checking whether employee applied leave on selected date in case of no sign in /check in
+                            var isAppliedLeaveOnSelctedDate = db.con_leaveupdate.Where(leave => leave.employee_id == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.leavedate == selecteddate).FirstOrDefault();
+
+                            if(isAppliedLeaveOnSelctedDate == null)
                             {
-                                LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
-                                Reason = "No Check-In"
-                            });
+                                leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                                {
+                                    LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
+                                    Reason = "No Check-In / not applied leave"
+                                });
+                            }
+                            else
+                            {
+                                leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                                {
+                                    LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
+                                    Reason = !string.IsNullOrEmpty(isAppliedLeaveOnSelctedDate.leavecategory) ? isAppliedLeaveOnSelctedDate.leavecategory : isAppliedLeaveOnSelctedDate.leavesource
+                                }); ;
+                            }
+                           
                         }
                     }
 
