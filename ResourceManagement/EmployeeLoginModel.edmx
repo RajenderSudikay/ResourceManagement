@@ -73,10 +73,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryType' does not have a pr
           <Property Name="CategoryTypeID" Type="int" Nullable="false" />
           <Property Name="CategoryType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="con_leaveupdate">
-          
           <Key>
             <PropertyRef Name="leaveuniqkey" />
           </Key>
@@ -87,6 +84,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate' does not have a
           <Property Name="submittedby" Type="varchar" MaxLength="100" />
           <Property Name="leavesource" Type="varchar" MaxLength="50" />
           <Property Name="leaveuniqkey" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="leavecategory" Type="varchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_12072021' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -492,7 +490,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.ambclogin_leave_view' does not h
           <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Sign In Date" Type="date" Nullable="false" />
           <Property Name="Leave Date" Type="date" />
-          <Property Name="Leave Type" Type="varchar" MaxLength="255" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.halfday_leave_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -529,6 +527,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_IP" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
+          <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="emp_info" EntityType="Self.emp_info" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="emp_info_log" EntityType="Self.emp_info_log" Schema="dbo" store:Type="Tables" />
@@ -562,7 +561,6 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [CategoryType].[CategoryType] AS [CategoryType]
     FROM [dbo].[CategoryType] AS [CategoryType]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="con_leaveupdate_12072021" EntityType="Self.con_leaveupdate_12072021" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [con_leaveupdate_12072021].[leaveno] AS [leaveno], 
@@ -747,6 +745,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="submittedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="leavesource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="leaveuniqkey" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="leavecategory" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="desk_att_taskcapture">
           <Key>
@@ -1204,7 +1203,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Sign_In_Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Leave_Date" Type="DateTime" Precision="0" />
-          <Property Name="Leave_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Leave_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="halfday_leave_view">
           <Key>
@@ -1260,6 +1259,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="con_leaveupdate">
             <EntityTypeMapping TypeName="TimesheetDBModel.con_leaveupdate">
               <MappingFragment StoreEntitySet="con_leaveupdate">
+                <ScalarProperty Name="leavecategory" ColumnName="leavecategory" />
                 <ScalarProperty Name="leaveno" ColumnName="leaveno" />
                 <ScalarProperty Name="leavedate" ColumnName="leavedate" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />

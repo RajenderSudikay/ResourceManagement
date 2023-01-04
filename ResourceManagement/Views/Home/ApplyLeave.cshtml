@@ -197,11 +197,28 @@
                     <div class="form-group">
                         <label for="leaveSelectedType">Leave Type</label>
                         <select id="selectedleavetype" name="leaveSelectedType" class="form-control form-select form-select-lg mb-3">
-                            <option value="plannedleave">Planned Leave</option>
-                            <option value="sickleave">Sick Leave</option>
-                            <option value="compoff">Comp-Off</option>
-                            <option value="halfdayleave">Half Day Leave</option>
-                            <option value="others">Others</option>
+                            <option disabled selected>-- Select Leave Type --</option>
+                            <option value="Planned Leave">Planned Leave</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Comp-Off">Comp-Off</option>
+                            <option value="Emergency Leave">Emergency Leave</option>
+                            <option value="Bereavement Leave">Bereavement Leave</option>
+                            <option value="Maternity Leave">Maternity Leave</option>
+                            <option value="Paternity Leave">Paternity Leave</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <div class="invalid-feedback-leavetype" style="display:none; color: red">
+                            Please Select Leave Type
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row leave-category-div" style="display:none">
+                <div class="col-md-6 ">
+                    <div class="form-group">
+                        <label for="leaveSelectedCategory">Leave Category</label>
+                        <select id="selectedleaveCategory" name="leaveSelectedCategory" class="form-control form-select form-select-lg mb-3">
                         </select>
 
                     </div>
@@ -362,12 +379,12 @@
 
     jQuery('#leaveenddate').change(function () {
         $('#leaveenddate').css("border", "1px solid green");
-        $('.invalid-feedback-leavedate').hide();
+        $('.invalid-feedback-enddate').hide();
     });
 
     jQuery('#leavestartdate').change(function () {
         $('#leavestartdate').css("border", "1px solid green");
-        $('.invalid-feedback-enddate').hide();
+        $('.invalid-feedback-leavedate').hide();
     });
 
 
@@ -428,6 +445,16 @@
             }
         }
 
+        if (jQuery('#selectedleavetype :selected').val() == "-- Select Leave Type --") {
+            jQuery('.invalid-feedback-leavetype').show();
+            jQuery('#selectedleavetype').css("border", "1px solid red");
+            isStartDateEntered = false;
+        }
+        else {
+            jQuery('.invalid-feedback-leavetype').hide();
+            jQuery('#selectedleavetype').css("border", "1px solid green");
+        }
+
         if (isStartDateEntered) {
 
             var leaveInputs = {
@@ -442,6 +469,7 @@
                 ApplyFor: jQuery('#leavetypes :selected').text(),
                 Reason: jQuery('#leavereason').val(),
                 LeaveType: jQuery('#selectedleavetype :selected').text(),
+                LeaveCategory: jQuery('#selectedleaveCategory :selected').text(),
                 SubmittedBy: jQuery('.agent-full-name').text()
             }
 
@@ -459,7 +487,7 @@
                             data: JSON.stringify({ emailLeaveModel: data.AjaxleaveModel }),
                             contentType: 'application/json; charset=utf-8',
                             success: function (emaildata) {
-                                console.log("Leave Submitted Email Sent Successfully");                                
+                                console.log("Leave Submitted Email Sent Successfully");
                                 $('.message-success-popup').modal('show');
                             }
                         });
@@ -508,6 +536,7 @@
             $('.leave-enddate-div').hide();
             $(".leavestartdate").text("Leave Date");
             $('.leave-type-div').show();
+            $('#leaveenddate').val('');
         }
 
         if (jQuery(this).val() == "MultipleDay") {
@@ -521,6 +550,33 @@
             $('.leave-type-div').hide();
             $('.leave-enddate-div').hide();
         }
+    });
+
+    $("#selectedleavetype").on("change", function () {
+
+        jQuery('.invalid-feedback-leavetype').hide();
+        jQuery('#selectedleavetype').css("border", "1px solid green");
+
+
+        var selectedLeaveType = jQuery(this).val();
+
+        if (selectedLeaveType != "Maternity Leave" && selectedLeaveType != "Paternity Leave") {
+            $('#selectedleaveCategory').empty();
+            jQuery('.leave-category-div').show();
+
+            var fullDayLeaveName = selectedLeaveType + " Full day";
+            var FirstHalfLeaveName = selectedLeaveType + " First Half";
+            var secondHalfLeaveName = selectedLeaveType + " Second Half";
+
+            $('#selectedleaveCategory').append('<option value="' + fullDayLeaveName + '">' + fullDayLeaveName + '</option>');
+            $('#selectedleaveCategory').append('<option value="' + FirstHalfLeaveName + '">' + FirstHalfLeaveName + '</option>');
+            $('#selectedleaveCategory').append('<option value="' + secondHalfLeaveName + '">' + secondHalfLeaveName + '</option>');
+        }
+        else {
+            jQuery('.leave-category-div').hide();
+        }
+
+
     });
 
 

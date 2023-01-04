@@ -315,6 +315,7 @@
     <Content Include="Assets\Icons\project.png" />
     <Content Include="Assets\Icons\supervisor.png" />
     <Content Include="Assets\Icons\woman.png" />
+    <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />

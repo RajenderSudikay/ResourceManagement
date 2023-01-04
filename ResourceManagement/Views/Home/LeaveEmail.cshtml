@@ -67,11 +67,13 @@
 @if (Model != null)
 {
 
-    var startDate = Model.StartDate.ToString().Replace("00:00:00", "");
+    var startDateSplit = Model.StartDate.ToString().Replace("00:00:00", "").Split('-');
+    var startDate = startDateSplit[2] + "-" + startDateSplit[1] + "-" + startDateSplit[0];
     var endDate = "";
     if (Model.EndDate != null)
     {
-        endDate = Model.EndDate.ToString().Replace("00:00:00", "");
+        var endDateSplit = Model.EndDate.ToString().Replace("00:00:00", "").Split('-');
+        endDate = endDateSplit[2] + "-" + endDateSplit[1] + "-" + endDateSplit[0];
     }
     else
     {
@@ -102,7 +104,7 @@
                     @if (Model.SubmissionType == "own")
                     {
                         <div style="font-family: Calibri; ">
-                            Thank you for applying the leave from @startDate to To @endDate.
+                            Thank you for applying the leave from <b>@startDate</b> to To <b>@endDate.</b>
                             <br />
                             Please find details below.
                         </div>
@@ -110,19 +112,33 @@
                     else
                     {
                         <div style="font-family: Calibri; ">
-                            As per the request, @Model.SelectedEmpName Leave has been applied from @startDate to To  @endDate by @Model.SubmittedBy.
+                            As per the request, @Model.SelectedEmpName Leave has been applied from <b>@startDate</b> to To  <b>@endDate</b> by @Model.SubmittedBy.
                         </div>
                     }
 
                     <br />
 
-                    <b>Employee Name:</b> @Model.SelectedEmpName<br />
-                    <b>Applied for:</b> @Model.ApplyFor<br />
-                    <b>Start Date:</b> @startDate<br />
-                    <b>End Date:</b> @endDate<br />
-                    <b>Submitted By:</b>  @Model.SubmittedBy<br />
-                    <b>Leave Type:</b> @Model.LeaveType<br />
-                    <b>Reason:</b>  @Model.Reason<br />
+                    <b>Employee Name:</b> <span style="color:indigo">
+                        @Model.SelectedEmpName
+                    </span><br />
+                    <b>Applied for:</b> <span style="color:indigo">
+                        @Model.ApplyFor
+                    </span><br />
+                    <b>Start Date:</b> <span style="color:indigo">
+                        @startDate
+                    </span><br />
+                    <b>End Date:</b> <span style="color:indigo">
+                        @endDate
+                    </span><br />
+                    <b>Submitted By:</b>  <span style="color:indigo">
+                        @Model.SubmittedBy
+                    </span><br />
+                    <b>Leave Type:</b> <span style="color:indigo">
+                        @Model.LeaveType
+                    </span><br />
+                    <b>Reason:</b>  <span style="color:indigo">
+                        @Model.Reason
+                    </span><br />
                 </td>
 
                 <td style="width: 45%; float: right; margin-right: 13px;">
@@ -132,11 +148,11 @@
 
         <br />
         <br />
-        <div style="font-family: Calibri; ">
+        <div style="font-family: Calibri; color: green; font-style: italic; ">
             <b>Please update your leave info in your client Calendar and Up coming out of office in your Signature.</b>
         </div>
         <br />
-        <div style="font-family: Calibri; ">
+        <div style="font-family: Calibri; color: green; font-style: italic; ">
             <b>Note: All ‘Earned Leaves’ require 2 weeks’ notice to get approval from the management and clients.</b>
         </div>
 

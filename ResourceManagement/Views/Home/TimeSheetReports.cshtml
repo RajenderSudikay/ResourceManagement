@@ -382,6 +382,7 @@
         }
 
         var ajaxDownloadReportModel = {
+            ClientName: jQuery('#timesheerreportclients :selected').text(),
             Employees: $('#timesheetreportconsultants').val(),
             WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
             WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
@@ -451,7 +452,7 @@
                 }
 
                 jQuery.each(obj, function (i, item) {
-                    $('#timesheetreportconsultants').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                    $('#timesheetreportconsultants').append('<option value="' + item.Employee_ID + "&" + item.Employee_Name + '">' + item.Employee_Name + '</option>');
                 });
 
 

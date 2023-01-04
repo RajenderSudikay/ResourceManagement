@@ -121,6 +121,7 @@ namespace ResourceManagement.Models
         public string ApplyFor { get; set; }
         public string Reason { get; set; }
         public string LeaveType { get; set; }
+        public string LeaveCategory { get; set; }
         public string SubmittedBy { get; set; }
         public string SubmissionType { get; set; }
     }

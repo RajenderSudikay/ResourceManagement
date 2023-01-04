@@ -60,6 +60,8 @@
             @foreach (var employeeReport in Model.TimeSheetReports)
             {
                 Int32? totalhoursSpentInTheWeek = 0;
+                Int32? totalBillableHours = 0;
+                Int32? totalNonBillableHours = 0;
 
                 var isactiveclass = i == 0 ? "active" : "";
                 i++;
@@ -150,7 +152,12 @@
                                                             var totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
 
                                                             totalhoursSpentInTheWeek += totalSpentHours;
+
+                                                            totalBillableHours += System.Convert.ToInt32(task.timespent);
+
+                                                            totalNonBillableHours += overtTimeHours;
                                                         }
+
                                                         <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate</td>
                                                         <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@task.category</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.incidentnumber</td>
@@ -234,7 +241,7 @@
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@billableHours</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalBillableHours</b></td>
                                         </tr>
                                     </table>
 
@@ -243,7 +250,7 @@
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@nonBillableHours</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalNonBillableHours</b></td>
                                         </tr>
                                     </table>
 
@@ -252,7 +259,7 @@
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalhoursSpentInTheWeek.ToString()</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalhoursSpentInTheWeek</b></td>
                                         </tr>
                                     </table>
                                 </div>

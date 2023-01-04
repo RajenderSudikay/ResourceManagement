@@ -459,7 +459,7 @@ namespace ResourceManagement.Controllers
                         var isEmployeeTakenHalfDayLeave = employeeHalfDayLevaList.Where(leave => leave.Leave_Date == conSignIn.Login_date).FirstOrDefault();
 
                         //If Employee Signed in but later taken leave then adding Signin date as Holiday or Leave
-                        var isEmployeeTaeknUnplannedLeavePostSignIn = db.con_leaveupdate.Where(a => a.employee_id.Equals(timeSheetAjaxLeaveOrHolidayModel.EmpId) && a.leavedate == conSignIn.Login_date).FirstOrDefault();
+                        var isEmployeeTaeknUnplannedLeavePostSignIn = db.ambclogin_leave_view.Where(leave => leave.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.Leave_Date == conSignIn.Login_date && leave.Leave_Type != null && leave.Leave_Type != "Half Day Leave").FirstOrDefault();
                         if (isEmployeeTaeknUnplannedLeavePostSignIn != null)
                         {
                             leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
@@ -752,14 +752,28 @@ namespace ResourceManagement.Controllers
 
             List<SourceFile> sourceFiles = new List<SourceFile>();
 
+            var requiredStartDateForExcelReport = string.Empty;
+            var requiredEndDateForExcelreport = string.Empty;
+            var requiredZIPFileName = string.Empty;
+
             if (timeSheetAjaxReportModel != null && timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
             {
+                var inputStartDate = timeSheetAjaxReportModel.WeekStartDate.Split('-');
+                requiredStartDateForExcelReport = inputStartDate[2] + "-" + inputStartDate[1];
+
+                var inputEnddate = timeSheetAjaxReportModel.WeekEndDate.Split('-');
+                requiredEndDateForExcelreport = inputEnddate[2] + "-" + inputEnddate[1] + "-" + inputEnddate[0];
+
+                requiredZIPFileName = timeSheetAjaxReportModel.ClientName + "-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport;
+
                 foreach (var employee in timeSheetAjaxReportModel.Employees)
                 {
+                    var employeeId = employee.Split('&')[0];
+                    var emplyeeName = employee.Split('&')[1];
 
                     if (timeSheetAjaxReportModel.Type == ".xls")
                     {
-                        string urlAddress = ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
+                        string urlAddress = ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employeeId + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
 
                         string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
 
@@ -769,12 +783,12 @@ namespace ResourceManagement.Controllers
                         {
                             FileBytes = byteArray,
                             Extension = timeSheetAjaxReportModel.Type,
-                            Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
+                            Name = emplyeeName + "-TimeSheet-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport
                         });
                     }
                     else
                     {
-                        PdfDocument pdfData = Convert(ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employee + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "");
+                        PdfDocument pdfData = Convert(ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employeeId + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "");
 
                         byte[] pdfArray = pdfData.Save();
 
@@ -785,7 +799,7 @@ namespace ResourceManagement.Controllers
                         {
                             FileBytes = pdfArray,
                             Extension = timeSheetAjaxReportModel.Type,
-                            Name = employee + "-TimeSheet-" + timeSheetAjaxReportModel.WeekStartDate + "to" + timeSheetAjaxReportModel.WeekEndDate + "," + "2022"
+                            Name = emplyeeName + "-TimeSheet-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport
                         });
                     }
                 }
@@ -818,7 +832,7 @@ namespace ResourceManagement.Controllers
             }
 
             // download the constructed zip
-            Response.AddHeader("Content-Disposition", "attachment; filename=download.zip");
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + requiredZIPFileName + ".zip");
             return File(fileBytes, "application/zip");
         }
 
@@ -1131,6 +1145,7 @@ namespace ResourceManagement.Controllers
                                     employee_id = leaveModel.SelectedEmpId,
                                     leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
                                     leavesource = leaveModel.LeaveType,
+                                    leavecategory = leaveModel.LeaveCategory,
                                     leave_reason = leaveModel.Reason,
                                     submittedby = leaveModel.SubmittedBy,
                                     leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
