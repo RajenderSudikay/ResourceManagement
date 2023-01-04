@@ -688,6 +688,14 @@ namespace ResourceManagement.Controllers
                             reportModel.timeSheetInfo = empTimeSheetInfo;
                         }
 
+
+                        var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employee) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
+
+                        if (empHolidayInfo != null)
+                        {
+                            reportModel.timeSheetLeaveOrHolidayInfo = empHolidayInfo;
+                        }
+
                         employeeReports.TimeSheetReports.Add(reportModel);
                     }
                 }

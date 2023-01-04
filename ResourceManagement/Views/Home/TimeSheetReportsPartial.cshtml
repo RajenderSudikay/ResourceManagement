@@ -56,8 +56,11 @@
             @{
                 int i = 0;
             }
+
             @foreach (var employeeReport in Model.TimeSheetReports)
             {
+                Int32? totalhoursSpentInTheWeek = 0;
+
                 var isactiveclass = i == 0 ? "active" : "";
                 i++;
                 <div class="carousel-item @isactiveclass">
@@ -83,13 +86,27 @@
                                                         </td>
                                                     </tr>
                                                     <tr style="text-align:left">
+
+                                                        @{
+                                                            var requiredWeekSatartDate = "NA";
+                                                            var requiredWeekEndDate = "NA";
+                                                        }
+                                                        @if (@employeeReport.timeSheetInfo != null && @employeeReport.timeSheetInfo.Count > 0)
+                                                        {
+                                                            var reportStartdate = @employeeReport.timeSheetInfo[0].weekstartdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                            requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
+
+                                                            var reportEndtdate = @employeeReport.timeSheetInfo[0].weekenddate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                            requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
+                                                        }
+
                                                         <td class="headertd"><b>Week Start Date</b></td>
-                                                        <td class="headertd">11/28/2022</td>
+                                                        <td class="headertd">@requiredWeekSatartDate</td>
                                                         <td class="headertd">
                                                             <b>Week End Date</b>
                                                         </td>
                                                         <td class="headertd">
-                                                            12/5/2022
+                                                            @requiredWeekEndDate
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -104,15 +121,15 @@
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
                                             <tr style="background-color: #BCD2E8">
-                                                <th class="" scope="col" style="max-width:70px">Day</th>
-                                                <th class="" scope="col" style="max-width:100px">Category</th>
-                                                <th class="" scope="col" style="max-width:200px">Incident Number</th>
-                                                <th class="" scope="col" style="max-width:200px">Incident Desc</th>
-                                                <th class="" scope="col">Requester</th>
-                                                <th class="" scope="col">Priority</th>
-                                                <th class="" scope="col">Status</th>
-                                                <th class="" scope="col">Time Spent</th>
-                                                <th class="" scope="col">Comments</th>
+                                                <th class="" scope="col" style="max-width:70px; text-align: center">Day</th>
+                                                <th class="" scope="col" style="max-width: 100px; text-align: center">Category</th>
+                                                <th class="" scope="col" style="max-width: 200px; text-align: center">Incident Number</th>
+                                                <th class="" scope="col" style="max-width: 200px; text-align: center">Incident Desc</th>
+                                                <th class="" scope="col" style="text-align: center">Requester</th>
+                                                <th class="" scope="col" style="text-align: center">Priority</th>
+                                                <th class="" scope="col" style="text-align: center">Status</th>
+                                                <th class="" scope="col" style="text-align: center">Time Spent</th>
+                                                <th class="" scope="col" style="text-align: center">Comments</th>
                                             </tr>
                                         </thead>
 
@@ -120,20 +137,28 @@
 
                                             @if (employeeReport.timeSheetInfo.Count > 0)
                                             {
+
                                                 foreach (var task in employeeReport.timeSheetInfo)
                                                 {
                                                     <tr style="background-color: #fff" class="time">
                                                         @{
-                                                            var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Split(' ')[0] : task.taskdate.ToString();
+                                                            var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+
+                                                            var taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
+
+                                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                            var totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                            totalhoursSpentInTheWeek += totalSpentHours;
                                                         }
-                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@requiredDate</td>
+                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate</td>
                                                         <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@task.category</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.incidentnumber</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.taskdetails</td>
                                                         <td scope="row" style="vertical-align: middle; text-align: center">@task.requester</td>
                                                         <td scope="row" style="vertical-align: middle; text-align: center">@task.callpriority</td>
                                                         <td scope="row" style="vertical-align: middle; text-align: center">@task.projstatus</td>
-                                                        <td scope="row" style="text-align:center; vertical-align:middle">@task.timespent</td>
+                                                        <td scope="row" style="text-align:center; vertical-align:middle">@totalSpentHours</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.comments</td>
                                                     </tr>
                                                 }
@@ -142,11 +167,10 @@
                                             {
                                                 <tr>
                                                     <td colspan="9">
-                                                        <h2>NO RECORDS FOUND</h2>
+                                                        <h2><b>NO RECORDS FOUND</b></h2>
                                                     </td>
                                                 </tr>
                                             }
-
 
 
                                         </tbody>
@@ -163,23 +187,54 @@
                                         </thead>
 
                                         <tbody class="timesheet-table-grid">
-                                            <tr style="background-color: #ccffcc">
-                                                <td scope="row">1111</td>
-                                                <td scope="row">3333</td>
-                                            </tr>
-                                            <tr style="background-color: #ccffcc">
-                                                <td scope="row">1111</td>
-                                                <td scope="row">3333</td>
-                                            </tr>
+
+                                            @if (employeeReport.timeSheetLeaveOrHolidayInfo != null && employeeReport.timeSheetLeaveOrHolidayInfo.Count > 0)
+                                            {
+                                                foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo)
+                                                {
+
+                                                    var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                    var leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
+
+
+                                                    <tr style="background-color: #ccffcc">
+                                                        <td scope="row">@leaveDisplayDate</td>
+                                                        <td scope="row">@leaveReport.comments</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr style="background-color: #ccffcc">
+                                                    <td scope="row">NA</td>
+                                                    <td scope="row">NA</td>
+                                                </tr>
+                                            }
+
                                         </tbody>
                                     </table>
 
+                                    @{
+                                        int? billableHours = 0;
+                                        int? nonBillableHours = 0;
+                                    }
+
                                     <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        @if (totalhoursSpentInTheWeek >= 40)
+                                        {
+                                            billableHours = 40;
+                                            nonBillableHours = totalhoursSpentInTheWeek - 40;
+                                        }
+                                        else
+                                        {
+                                            billableHours = totalhoursSpentInTheWeek;
+                                        }
 
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>40</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@billableHours</b></td>
                                         </tr>
                                     </table>
 
@@ -188,7 +243,7 @@
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@nonBillableHours</b></td>
                                         </tr>
                                     </table>
 
@@ -197,7 +252,7 @@
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
                                             <td style="border:none; background-color:white"></td>
-                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalhoursSpentInTheWeek.ToString()</b></td>
                                         </tr>
                                     </table>
                                 </div>
