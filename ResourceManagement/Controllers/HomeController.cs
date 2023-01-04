@@ -459,7 +459,7 @@ namespace ResourceManagement.Controllers
                         var isEmployeeTakenHalfDayLeave = employeeHalfDayLevaList.Where(leave => leave.Leave_Date == conSignIn.Login_date).FirstOrDefault();
 
                         //If Employee Signed in but later taken leave then adding Signin date as Holiday or Leave
-                        var isEmployeeTaeknUnplannedLeavePostSignIn = db.ambclogin_leave_view.Where(leave => leave.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.Leave_Date == conSignIn.Login_date && leave.Leave_Type != null && leave.Leave_Type != "Half Day Leave").FirstOrDefault();
+                        var isEmployeeTaeknUnplannedLeavePostSignIn = db.ambclogin_leave_view.Where(leave => leave.Employee_Code == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.Leave_Date == conSignIn.Login_date && leave.Leave_Type != null && leave.Leave_Type != "working" && leave.Leave_Type != "Half Day Leave").FirstOrDefault();
                         if (isEmployeeTaeknUnplannedLeavePostSignIn != null)
                         {
                             leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
