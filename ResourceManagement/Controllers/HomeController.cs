@@ -119,14 +119,27 @@ namespace ResourceManagement.Controllers
 
                     using (var context = new TimeSheetEntities())
                     {
-                        context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
-                        context.SaveChanges();
-                        respone.jsonResponse.StatusCode = 200;
-                        respone.jsonResponse.Message = "Checked in Successful!";
-                        respone.signin = true;
-                        respone.empemailid = employeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
-                        respone.empname = employeeModel.AMBC_Active_Emp_view.Employee_Name;
-                        respone.type = "SignIn";
+                        var isEmpAppliedLeavePresentDay = context.con_leaveupdate.Where(a => a.employee_id.Equals(ambcEmpLoginInfo.Employee_Code) && a.leavedate == System.DateTime.Today).FirstOrDefault();
+
+                        if (isEmpAppliedLeavePresentDay == null)
+                        {
+                            context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
+                            context.SaveChanges();
+                            respone.jsonResponse.StatusCode = 200;
+                            respone.jsonResponse.Message = "Checked in Successful!";
+                            respone.signin = true;
+                            respone.empemailid = employeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
+                            respone.empname = employeeModel.AMBC_Active_Emp_view.Employee_Name;
+                            respone.type = "SignIn";
+                        }
+                        else
+                        {
+                            respone.jsonResponse.StatusCode = 500;
+                            respone.jsonResponse.Message = "You are on Leave/Holiday!";
+                            respone.empemailid = employeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address;
+                            respone.empname = employeeModel.AMBC_Active_Emp_view.Employee_Name;
+                            respone.type = "No-SignIn-Required";
+                        }
 
                     }
                 }
@@ -444,11 +457,27 @@ namespace ResourceManagement.Controllers
                     foreach (var conSignIn in conSignInDetails)
                     {
                         var isEmployeeTakenHalfDayLeave = employeeHalfDayLevaList.Where(leave => leave.Leave_Date == conSignIn.Login_date).FirstOrDefault();
-                        leaveHolidaySignInData.SignInInfo.Add(new RMA_SignInInfo()
+
+                        //If Employee Signed in but later taken leave then adding Signin date as Holiday or Leave
+                        var isEmployeeTaeknUnplannedLeavePostSignIn = db.con_leaveupdate.Where(a => a.employee_id.Equals(timeSheetAjaxLeaveOrHolidayModel.EmpId) && a.leavedate == conSignIn.Login_date).FirstOrDefault();
+                        if (isEmployeeTaeknUnplannedLeavePostSignIn != null)
                         {
-                            SignInDate = GetDateInRequiredFormat(conSignIn.Signin_Time.ToString()),
-                            Reason = isEmployeeTakenHalfDayLeave != null ? "Half Day Leave" : "Checked In"
-                        });
+                            leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                            {
+                                LeaveOrHolidayDate = GetDateInRequiredFormat(conSignIn.Login_date.ToString()),
+                                Reason = "Checked In Later taken leave",
+                                DefaultLeaveOrHolidayDate = conSignIn.Login_date
+                            });
+                        }
+                        else
+                        {
+                            leaveHolidaySignInData.SignInInfo.Add(new RMA_SignInInfo()
+                            {
+                                SignInDate = GetDateInRequiredFormat(conSignIn.Signin_Time.ToString()),
+                                Reason = isEmployeeTakenHalfDayLeave != null ? "Half Day Leave" : "Checked In"
+                            });
+                        }
+
                     }
                 }
 
