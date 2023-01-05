@@ -331,6 +331,11 @@
         $('.invalid-feedback-adjustdate').hide();
     });
 
+    //BASED ON TODAY DATE RESTRCTING WEK START DATE NOT TO ALLOW CURRENT WEEK DATES TO SUBMIT THE REPORTS
+    var todayDate = new Date();
+    var maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
+    jQuery('#adjuststartdate').attr("max", maxWeekStartDate);
+
 
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
