@@ -652,24 +652,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [tblambcholiday_06May2022].[region] AS [region]
     FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbld_ambclogininformation].[login_id] AS [login_id], 
-    [tbld_ambclogininformation].[Employee_Code] AS [Employee_Code], 
-    [tbld_ambclogininformation].[Employee_Name] AS [Employee_Name], 
-    [tbld_ambclogininformation].[Employee_Designation] AS [Employee_Designation], 
-    [tbld_ambclogininformation].[Employee_Shift] AS [Employee_Shift], 
-    [tbld_ambclogininformation].[Login_date] AS [Login_date], 
-    [tbld_ambclogininformation].[Signin_Time] AS [Signin_Time], 
-    [tbld_ambclogininformation].[Signout_Time] AS [Signout_Time], 
-    [tbld_ambclogininformation].[Working_Hours] AS [Working_Hours], 
-    [tbld_ambclogininformation].[Employee_Hostname] AS [Employee_Hostname], 
-    [tbld_ambclogininformation].[Employee_IP] AS [Employee_IP], 
-    [tbld_ambclogininformation].[Concat_loginstring] AS [Concat_loginstring], 
-    [tbld_ambclogininformation].[IsSignOutBySystem] AS [IsSignOutBySystem], 
-    [tbld_ambclogininformation].[Employee_LoginLocation] AS [Employee_LoginLocation]
-    FROM [dbo].[tbld_ambclogininformation] AS [tbld_ambclogininformation]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AMBC_Active_Emp].[employee_id] AS [employee_id], 

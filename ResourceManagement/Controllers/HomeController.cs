@@ -1317,7 +1317,76 @@ namespace ResourceManagement.Controllers
                     }
 
                 }
+            }
 
+            return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CheckinAdjust()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+
+        public JsonResult SubmitAdjustments(RMA_LeaveModel adjustModel)
+        {
+            var respone = new LeaveEmailModel();
+            try
+            {
+                if (adjustModel != null)
+                {
+                    var SystemInfo = SystemInformation();
+                    using (var context = new TimeSheetEntities())
+                    {
+                        var employeeModel = context.AMBC_Active_Emp_view.Where(x => x.Employee_ID == adjustModel.SelectedEmpId && x.Project_Status == "Active").FirstOrDefault();
+
+                        var signIndate = System.Convert.ToDateTime(adjustModel.StartDate);
+                        var SignInTime = signIndate.AddHours(9);
+                        var SignOutTime = signIndate.AddHours(18);
+
+                        var ambcEmpLoginInfo = new tbld_ambclogininformation()
+                        {
+                            Employee_Code = employeeModel.Employee_ID,
+                            Employee_Name = employeeModel.Employee_Name,
+                            Employee_Designation = employeeModel.Designation,
+                            Employee_Shift = employeeModel.Shift,
+                            Login_date = signIndate,
+                            Signin_Time = SignInTime,
+                            Signout_Time = SignOutTime,
+                            Employee_Hostname = SystemInfo.SystemHostName,
+                            Employee_IP = SystemInfo.SystemIP,
+                            Employee_LoginLocation = employeeModel.Location,
+                            Concat_loginstring = employeeModel.Employee_ID + "," + signIndate.ToString("yyyy-MM-dd") + "," + signIndate.ToString()
+                        };
+
+                        context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
+                        context.SaveChanges();
+                        respone.jsonResponse.StatusCode = 200;
+                        respone.jsonResponse.Message = "Checked in Successful!";                     
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                respone.jsonResponse.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            respone.jsonResponse.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    respone.jsonResponse.Message = ex.Message;
+                }
             }
 
             return Json(respone, JsonRequestBehavior.AllowGet);
