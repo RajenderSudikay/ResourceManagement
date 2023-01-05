@@ -298,9 +298,50 @@
                             <div class="form-group">
                                 <label for="timeSheetCategory">Category</label>
                                 <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3">
-                                    <option value="ServiceCall">ServiceCall</option>
-                                    <option value="Incident">Incident</option>
-                                    <option value="ChangeRequest">ChangeRequest</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Customer Request">Customer Request</option>
+                                    <option value="Support & Monitoring">Support & Monitoring</option>
+                                    <option value="Support Tickets">Support Tickets</option>
+                                    <option value="Internal Operations">Internal Operations</option>
+                                    <option value="Requirements Gathering">Requirements Gathering</option>
+                                    <option value="Analysis">Analysis</option>
+                                    <option value="Testing">Testing</option>
+                                    <option value="Documentation">Documentation</option>
+                                    <option value="User Training">User Training</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="KT">KT</option>
+                                    <option value="Cold calling and Personalized emails">Cold calling and Personalized emails</option>
+                                    <option value="Call with Candidates">Call with Candidates</option>
+                                    <option value="IT Staffing - Prospects follow-ups">IT Staffing - Prospects follow-ups</option>
+                                    <option value="Sales meeting">Sales meeting</option>
+                                    <option value="Appointments">Appointments</option>
+                                    <option value="Deal Closed">Deal Closed</option>
+                                    <option value="Sourcing/Screening (Requirements)">Sourcing/Screening (Requirements)</option>
+                                    <option value="Profile Submission">Profile Submission</option>
+                                    <option value="Interview Schedules">Interview Schedules</option>
+                                    <option value="Reports">Reports</option>
+                                    <option value="Client Follow-up">Client Follow-up</option>
+                                    <option value="Research, Lead Generation">Research, Lead Generation</option>
+                                    <option value="Campaign">Campaign</option>
+                                    <option value="SEO, SMO">SEO, SMO</option>
+                                    <option value="Content Writing">Content Writing</option>
+                                    <option value="Designing">Designing</option>
+                                    <option value="Launch, Illustration">Launch, Illustration</option>
+                                    <option value="Script/Storyboard">Script/Storyboard</option>
+                                    <option value="Animation, Video Editing">Animation, Video Editing</option>
+                                    <option value="Sound Effects/Voice Over">Sound Effects/Voice Over</option>
+                                    <option value="Petty cash">Petty cash</option>
+                                    <option value="Vendor payment">Vendor payment</option>
+                                    <option value="Domestic Client">Domestic Client</option>
+                                    <option value="Statutory Returns">Statutory Returns</option>
+                                    <option value="Administration">Administration</option>
+                                    <option value="Admin Activity">Admin Activity</option>
+                                    <option value="Review">Review</option>
+                                    <option value="DGM">DGM</option>
+                                    <option value="IT Support">IT Support</option>
+                                    <option value="HR">HR</option>
+                                    <option value="Accounts">Accounts</option>
+                                    <option value="Others">Others</option>
                                 </select>
                             </div>
                         </div>
@@ -403,6 +444,25 @@
 
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row billable-on-weekend-workday" style="display:none">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="timeSheetComments"><b style=" color: midnightblue; font-style: italic; font-size: initial;">Do you have an approval for weekend work from Client.</b></label>
+                                <br />
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                    <label class="form-check-label" for="inlineRadio1" style="font-size: larger">Yes</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                    <label class="form-check-label" for="inlineRadio2" style="font-size: larger">No</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="modal-footer mt-xl-4">
@@ -925,6 +985,19 @@
                 jQuery('.leave-or-holiday-msg').show();
                 return false;
             }
+
+            var oneDate = moment(dateString, 'YYYY-MM-DD');
+            var dayName = oneDate.format('dddd');
+
+            if (dayName == "Sunday" || dayName == "Saturday") {
+                jQuery('.billable-on-weekend-workday').show();
+                jQuery('#timeSheetComments').prop('required', true);
+            }
+            else {
+                jQuery('.billable-on-weekend-workday').hide();
+                $('#timeSheetComments').prop('required', false);
+            }
+
             return true;
         }
 
@@ -1066,7 +1139,7 @@
                         }
                         else {
                             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                            jQuery('.warning-message-popup').html("<h2>Are you sure you worked on selected dates? If yes please contact your manager. As per our records you didn't Check-In to the Application in selected dates!</h2>");
+                            jQuery('.warning-message-popup').html("<h2>Are you sure you worked on selected dates? If yes please contact your manager. As per our records you didn't Check-In to the Application or you might be on leave in selected dates!</h2>");
                             $('#modal-warning-message-popup').modal('show');
                         }
 
@@ -1208,7 +1281,7 @@
                                 weeklyChartReport();
 
                                 jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                                jQuery('.warning-message-popup').html("<h2>You have already submitted the timesheet for the selected week. Close the popup to see the details. </h2>");
+                                jQuery('.warning-message-popup').html("<h2>You have already submitted the timesheet for the selected week. Close the popup to view the details. </h2>");
                                 jQuery('#modal-warning-message-popup').modal('show');
                             }
                             else {
@@ -1224,17 +1297,17 @@
                                     success: function (data) {
 
                                         if (data != null && data.jsonResponse.StatusCode == "404") {
-                                          
+
                                             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
 
-                                            var bodyMessage = "<h2>Looks like you have not applied leave for below dates. Please apply the leave to submit the timesheet.</h2><br>";
+                                            var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please click <a href='/applyleave' target='_blank' style='color: green'>here</a> to apply leave. <br> <b style='color:red'>OR</b> <br> Contact Admin for Check-In adjustments </h2><br>";
 
-                                         
+
                                             jQuery.each(data.MissingLeaveDates, function (leaveDate, Name) {
-                                                bodyMessage += "<b style='color:red'>" + leaveDate + " (" + Name +")</b><br><br>"
+                                                bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
                                             });
 
-                                            bodyMessage += "<br><br><h2>Apply leave <a href='/applyleave' target='_blank' style='color: green'>here</a></h2>"
+                                          /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
                                             jQuery('.warning-message-popup').html(bodyMessage);
                                             jQuery('#modal-warning-message-popup').modal('show');
                                         }
@@ -1242,10 +1315,10 @@
                                             jQuery('#exampleModalLong').modal('show');
                                             jQuery(".timesheet-submit").removeAttr("disabled");
                                         }
-                                     
+
                                     }
                                 });
-                               
+
                             }
                         }
                     }
@@ -1288,6 +1361,20 @@
 
         var selectedClient = $('#timeSheetEmpClient :selected').text();
         var selectedProjectCode = $('#timeSheetEmpClient :selected').val();
+
+        var isClientConfirmChecked = $("input[name=inlineRadioOptions]").is(":checked");
+
+        if (isClientConfirmChecked == false) {
+            jQuery('.inlineRadioOptions').prop('required', true);
+            isModalValidated = false;
+        }
+        else {
+            jQuery('.inlineRadioOptions').prop('required', false);
+            isModalValidated = true;
+        }
+
+
+        var abc = 0;
 
         if (isModalValidated) {
             var pushModel = {

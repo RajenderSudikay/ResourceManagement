@@ -111,8 +111,20 @@
                     }
                     else
                     {
+                        var type = "";
+
+                        if (Model.LeaveType == "Cancel Leave")
+                        {
+                            type = "Cancelled";
+                        }
+                        else
+                        {
+                            type = "applied";
+
+                        }
+
                         <div style="font-family: Calibri; ">
-                            As per the request, @Model.SelectedEmpName Leave has been applied from <b>@startDate</b> to To  <b>@endDate</b> by @Model.SubmittedBy.
+                            As per the request, @Model.SelectedEmpName Leave has been @type from <b>@startDate</b> to To  <b>@endDate</b> by @Model.SubmittedBy.
                         </div>
                     }
 

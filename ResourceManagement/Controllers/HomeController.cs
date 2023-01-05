@@ -1167,31 +1167,48 @@ namespace ResourceManagement.Controllers
 
                         foreach (var leaveDate in leaveApplieddates)
                         {
-                            string dayName = leaveDate.ToString("dddd");
-
-                            if (dayName != "Saturday" && dayName != "Sunday")
+                            if (leaveModel.LeaveType == "Cancel Leave")
                             {
-                                contextModelList.Add(new con_leaveupdate()
+                                var itemToRemove = context.con_leaveupdate.SingleOrDefault(x => x.leavedate == leaveDate && x.employee_id == leaveModel.SelectedEmpId); //returns a single item.
+
+                                if (itemToRemove != null)
                                 {
-                                    employee_id = leaveModel.SelectedEmpId,
-                                    leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
-                                    leavesource = leaveModel.LeaveType,
-                                    leavecategory = leaveModel.LeaveCategory,
-                                    leave_reason = leaveModel.Reason,
-                                    submittedby = leaveModel.SubmittedBy,
-                                    leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
-                                });
+                                    context.con_leaveupdate.Remove(itemToRemove);
+                                    context.SaveChanges();
+                                    respone.jsonResponse.Message = "Leave Deleted Successfully!";
+                                }
+                            }
+                            else
+                            {
+                                string dayName = leaveDate.ToString("dddd");
+
+                                if (dayName != "Saturday" && dayName != "Sunday")
+                                {
+                                    contextModelList.Add(new con_leaveupdate()
+                                    {
+                                        employee_id = leaveModel.SelectedEmpId,
+                                        leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
+                                        leavesource = leaveModel.LeaveType,
+                                        leavecategory = leaveModel.LeaveCategory,
+                                        leave_reason = leaveModel.Reason,
+                                        submittedby = leaveModel.SubmittedBy,
+                                        leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
+                                    });
+                                }
+
+                                context.con_leaveupdate.AddRange(contextModelList);
+                                context.SaveChanges();
+                                respone.jsonResponse.Message = "Leave Submitted Successfully!";
                             }
                         }
 
-                        context.con_leaveupdate.AddRange(contextModelList);
-                        context.SaveChanges();
+
                         respone.AjaxleaveModel = new RMA_LeaveModel();
                         respone.AjaxleaveModel = leaveModel;
 
                         respone.jsonResponse = new JsonResponseModel();
                         respone.jsonResponse.StatusCode = 200;
-                        respone.jsonResponse.Message = "Leave Submitted Successfully!";
+
                     }
                 }
             }
@@ -1240,7 +1257,7 @@ namespace ResourceManagement.Controllers
                     {
                         using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empDetails.AMBC_Mail_Address))
                         {
-                            mm.Subject = "Leave Submission Update!";
+                            mm.Subject = emailLeaveModel.LeaveType == "Cancel Leave" ? "Leave Cancelled Update!" : "Leave Submission Update!";
                             mm.Body = emailBody;
 
                             if (empDetails.AMBC_PM_Mail_Address != "")
@@ -1363,7 +1380,7 @@ namespace ResourceManagement.Controllers
                         context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
                         context.SaveChanges();
                         respone.jsonResponse.StatusCode = 200;
-                        respone.jsonResponse.Message = "Checked in Successful!";                     
+                        respone.jsonResponse.Message = "Checked in Successful!";
                     }
                 }
             }

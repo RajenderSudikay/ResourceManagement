@@ -206,6 +206,11 @@
                             <option value="Maternity Leave">Maternity Leave</option>
                             <option value="Paternity Leave">Paternity Leave</option>
                             <option value="Others">Others</option>
+
+                            @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+                            {
+                                <option value="Cancel Leave">Cancel Leave</option>
+                            }
                         </select>
                         <div class="invalid-feedback-leavetype" style="display:none; color: red">
                             Please Select Leave Type
@@ -364,7 +369,7 @@
                     Hey @Model.AMBC_Active_Emp_view.Employee_Name
                     <br />
                     <br />
-                    Leaves submitted successfully for the selcted dates. Please check your email for more details.
+                    Leave submitted/Cancelled successfully for the selcted dates. Please check your email for more details.
                 </h2>
             </div>
 
