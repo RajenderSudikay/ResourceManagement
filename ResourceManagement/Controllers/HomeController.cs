@@ -521,7 +521,7 @@ namespace ResourceManagement.Controllers
                             //Checking whether employee applied leave on selected date in case of no sign in /check in
                             var isAppliedLeaveOnSelctedDate = db.con_leaveupdate.Where(leave => leave.employee_id == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.leavedate == selecteddate).FirstOrDefault();
 
-                            if(isAppliedLeaveOnSelctedDate == null)
+                            if (isAppliedLeaveOnSelctedDate == null)
                             {
                                 leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
                                 {
@@ -535,9 +535,9 @@ namespace ResourceManagement.Controllers
                                 {
                                     LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
                                     Reason = !string.IsNullOrEmpty(isAppliedLeaveOnSelctedDate.leavecategory) ? isAppliedLeaveOnSelctedDate.leavecategory : isAppliedLeaveOnSelctedDate.leavesource
-                                }); ;
+                                });
                             }
-                           
+
                         }
                     }
 
@@ -688,9 +688,12 @@ namespace ResourceManagement.Controllers
                 {
                     foreach (var employee in timeSheetAjaxReportModel.Employees)
                     {
+                        var employeeId = employee.Split('&')[0];
+                        var emplyeeName = employee.Split('&')[1];
+
                         var reportModel = new TimeSheetReportViewModel();
 
-                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employee)).FirstOrDefault();
+                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId)).FirstOrDefault();
                         if (employeeInfo != null)
                         {
                             reportModel.EmployeeInfo = employeeInfo;
@@ -698,21 +701,25 @@ namespace ResourceManagement.Controllers
 
                         int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
 
-                        var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employee) && a.weekno == weekNumber).ToList();
+                        var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber).ToList();
                         if (empTimeSheetInfo != null)
                         {
                             reportModel.timeSheetInfo = empTimeSheetInfo;
                         }
 
 
-                        var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employee) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
+                        var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
 
                         if (empHolidayInfo != null)
                         {
                             reportModel.timeSheetLeaveOrHolidayInfo = empHolidayInfo;
                         }
 
+                        //Passing Inputs to view
+                        reportModel.timeSheetAjaxInputReportModel = timeSheetAjaxReportModel;
+
                         employeeReports.TimeSheetReports.Add(reportModel);
+
                     }
                 }
             }
@@ -789,9 +796,9 @@ namespace ResourceManagement.Controllers
 
                     if (timeSheetAjaxReportModel.Type == ".xls")
                     {
-                        string urlAddress = ConfigurationManager.AppSettings["SiteURL"] + "/TimeSheetDownloadReportsPartial?employeeId=" + employeeId + "&weeknum=" + timeSheetAjaxReportModel.WeekNumber + "";
+                        string htmlContent = TimeSheetDownloadReportsPartial(employeeId, timeSheetAjaxReportModel.WeekNumber, timeSheetAjaxReportModel);
 
-                        string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
+                        //string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
 
                         byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
 
@@ -853,7 +860,7 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public ActionResult TimeSheetDownloadReportsPartial(string employeeId, string weekNum)
+        public string TimeSheetDownloadReportsPartial(string employeeId, string weekNum, TimeSheetAjaxReportModel timeSheetAjaxReportModel)
         {
             var employeeReports = new RMA_EmployeeModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
@@ -876,11 +883,19 @@ namespace ResourceManagement.Controllers
                     reportModel.timeSheetInfo = empTimeSheetInfo;
                 }
 
-                employeeReports.TimeSheetReports.Add(reportModel);
+                var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
 
-            }
+                if (empHolidayInfo != null)
+                {
+                    reportModel.timeSheetLeaveOrHolidayInfo = empHolidayInfo;
+                }
 
-            return PartialView(employeeReports);
+                //Passing Inputs to view
+                reportModel.timeSheetAjaxInputReportModel = timeSheetAjaxReportModel;
+                employeeReports.TimeSheetReports.Add(reportModel); 
+            }        
+
+            return RenderPartialToString(this, "TimeSheetDownloadReportsPartial", employeeReports, ViewData, TempData);
         }
 
 

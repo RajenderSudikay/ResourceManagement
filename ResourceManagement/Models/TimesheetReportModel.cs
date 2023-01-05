@@ -72,6 +72,7 @@ namespace ResourceManagement.Models
             public AMBC_Active_Emp_view EmployeeInfo { get; set; }
             public List<ambctaskcapture> timeSheetInfo { get; set; }
             public List<ambctaskcapture> timeSheetLeaveOrHolidayInfo { get; set; }
+            public TimeSheetAjaxReportModel timeSheetAjaxInputReportModel { get; set; }
         }
 
         public class SourceFile

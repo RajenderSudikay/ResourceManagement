@@ -85,17 +85,18 @@
                                             </tr>
                                             <tr style="text-align:left">
                                                 @{
+
                                                     var requiredWeekSatartDate = "NA";
                                                     var requiredWeekEndDate = "NA";
-                                                }
-                                                @if (@employeeReport.timeSheetInfo != null && @employeeReport.timeSheetInfo.Count > 0)
-                                                {
-                                                    var reportStartdate = @employeeReport.timeSheetInfo[0].weekstartdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+
+                                                    var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
                                                     requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
 
-                                                    var reportEndtdate = @employeeReport.timeSheetInfo[0].weekenddate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                    var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
                                                     requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
                                                 }
+
+
                                                 <td class="headertd"><b>Week Start Date</b></td>
                                                 <td class="headertd">@requiredWeekSatartDate</td>
                                                 <td class="headertd">
@@ -159,14 +160,14 @@
 
                                                 totalNonBillableHours += overtTimeHours;
                                             }
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@requiredDate</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">>@totalSpentHours</td>
+                                            <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@totalSpentHours</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
                                         </tr>
                                     }
