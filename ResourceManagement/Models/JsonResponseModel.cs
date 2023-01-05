@@ -57,4 +57,10 @@ namespace ResourceManagement.Models
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
         public RMA_LeaveModel AjaxleaveModel { get; set; }
     }
+
+    public class ApplyLeaveForMissedSidnInModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+        public Dictionary<string, string> MissingLeaveDates { get; set; } = new Dictionary<string, string>();
+    }
 }

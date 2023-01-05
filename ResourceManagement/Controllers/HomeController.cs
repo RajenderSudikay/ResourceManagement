@@ -892,8 +892,8 @@ namespace ResourceManagement.Controllers
 
                 //Passing Inputs to view
                 reportModel.timeSheetAjaxInputReportModel = timeSheetAjaxReportModel;
-                employeeReports.TimeSheetReports.Add(reportModel); 
-            }        
+                employeeReports.TimeSheetReports.Add(reportModel);
+            }
 
             return RenderPartialToString(this, "TimeSheetDownloadReportsPartial", employeeReports, ViewData, TempData);
         }
@@ -1265,6 +1265,55 @@ namespace ResourceManagement.Controllers
                             smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
                             smtp.Send(mm);
                         }
+                    }
+
+                }
+
+            }
+
+            return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult CheckeLeaveAppliiedStatus(List<RMA_LeaveOrHolidayInfo> leaveOrholidayModel)
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+            var respone = new ApplyLeaveForMissedSidnInModel();
+            if (leaveOrholidayModel != null)
+            {
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    foreach (var holidayInfo in leaveOrholidayModel)
+                    {
+                        if (!string.IsNullOrWhiteSpace(holidayInfo.LeaveOrHolidayDate))
+                        {
+
+                            var modeldate = System.Convert.ToDateTime(holidayInfo.LeaveOrHolidayDate);
+
+                            var dayName = modeldate.ToString("dddd");
+
+                            if (dayName == "Saturday" || dayName == "Sunday")
+                                continue;
+
+                            var dateFallunderHoliday = db.tblambcholidays.Where(b => b.holiday_date == modeldate && b.region == employeeModel.AMBC_Active_Emp_view.Location).FirstOrDefault();
+
+                            if (dateFallunderHoliday != null)
+                                continue;
+
+                            var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == employeeModel.AMBC_Active_Emp_view.Employee_ID && leave.leavedate == modeldate).FirstOrDefault();
+
+                            if (isEmpAppliedLeaveonDateModel != null)
+                                continue;
+
+                            var actualDate = holidayInfo.LeaveOrHolidayDate.Split('-');
+
+                            var displayDate = actualDate[2] + "-" + actualDate[1] + "-" + actualDate[0];
+                            respone.MissingLeaveDates.Add(displayDate, dayName);
+                            respone.jsonResponse.StatusCode = 404;
+                            respone.jsonResponse.Message = "Employee Not applied leaves on missed Chck-In dates!";
+                        }
+
                     }
 
                 }

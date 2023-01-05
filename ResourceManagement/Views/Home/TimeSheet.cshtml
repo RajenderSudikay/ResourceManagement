@@ -1213,8 +1213,39 @@
                             }
                             else {
 
-                                jQuery('#exampleModalLong').modal('show');
-                                jQuery(".timesheet-submit").removeAttr("disabled");
+
+                                var isLaveAppliedForAlltheLeaveDates = true;
+
+                                jQuery.ajax({
+                                    url: "/CheckeLeaveAppliiedStatus",
+                                    type: "POST",
+                                    contentType: 'application/json; charset=utf-8',
+                                    data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays }),
+                                    success: function (data) {
+
+                                        if (data != null && data.jsonResponse.StatusCode == "404") {
+                                          
+                                            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
+
+                                            var bodyMessage = "<h2>Looks like you have not applied leave for below dates. Please apply the leave to submit the timesheet.</h2><br>";
+
+                                         
+                                            jQuery.each(data.MissingLeaveDates, function (leaveDate, Name) {
+                                                bodyMessage += "<b style='color:red'>" + leaveDate + " (" + Name +")</b><br><br>"
+                                            });
+
+                                            bodyMessage += "<br><br><h2>Apply leave <a href='/applyleave' target='_blank' style='color: green'>here</a></h2>"
+                                            jQuery('.warning-message-popup').html(bodyMessage);
+                                            jQuery('#modal-warning-message-popup').modal('show');
+                                        }
+                                        else {
+                                            jQuery('#exampleModalLong').modal('show');
+                                            jQuery(".timesheet-submit").removeAttr("disabled");
+                                        }
+                                     
+                                    }
+                                });
+                               
                             }
                         }
                     }
