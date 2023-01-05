@@ -63,6 +63,16 @@
                 Int32? totalBillableHours = 0;
                 Int32? totalNonBillableHours = 0;
 
+
+                var mondayHours = 0;
+                var tuesdayHours = 0;
+                var wednesdayHours = 0;
+                var thursdayHours = 0;
+                var fridayHours = 0;
+                var saturdayHours = 0;
+                var sundayHours = 0;
+
+
                 var isactiveclass = i == 0 ? "active" : "";
                 i++;
                 <div class="carousel-item @isactiveclass">
@@ -100,8 +110,6 @@
                                                             requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
 
                                                         }
-                                                      
-                                                          
 
                                                         <td class="headertd"><b>Week Start Date</b></td>
                                                         <td class="headertd">@requiredWeekSatartDate</td>
@@ -143,20 +151,54 @@
 
                                                 foreach (var task in employeeReport.timeSheetInfo)
                                                 {
+                                                    var date = System.Convert.ToDateTime(task.taskdate.ToString());
+                                                    string dayName = date.ToString("dddd");
+
+
+                                                    switch (dayName)
+                                                    {
+                                                        case "Monday":
+                                                            mondayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Tuesday":
+                                                            tuesdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Wednesday":
+                                                            wednesdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Thursday":
+                                                            thursdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Friday":
+                                                            fridayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Saturday":
+                                                            saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Sunday":
+                                                            sundayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        default:
+                                                            break;
+                                                    }
+
+
                                                     <tr style="background-color: #fff" class="time">
                                                         @{
                                                             var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
-
                                                             var taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
 
                                                             var overtTimeHours = task.overtime != null ? task.overtime : 0;
                                                             var totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
 
-                                                            totalhoursSpentInTheWeek += totalSpentHours;
-
-                                                            totalBillableHours += System.Convert.ToInt32(task.timespent);
-
-                                                            totalNonBillableHours += overtTimeHours;
+                                                            totalhoursSpentInTheWeek += totalSpentHours;                                                           
                                                         }
 
                                                         <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate</td>
@@ -222,21 +264,34 @@
                                         </tbody>
                                     </table>
 
-                                    @{
-                                        int? billableHours = 0;
-                                        int? nonBillableHours = 0;
+                                    @{                                      
+
+                                        int mondayBillableHours = mondayHours > 8 ? 8 : mondayHours;
+                                        int tuesdayBillableHours = tuesdayHours > 8 ? 8 : tuesdayHours;
+                                        int wednesdayBillableHours = wednesdayHours > 8 ? 8 : wednesdayHours;
+                                        int thursdayBillableHours = thursdayHours > 8 ? 8 : thursdayHours;
+                                        int fridayBillableHours = fridayHours > 8 ? 8 : fridayHours;
+                                        int saturdayBillableHours = saturdayHours > 8 ? 8 : saturdayHours;
+                                        int sundayBillableHours = sundayHours > 8 ? 8 : sundayHours;
+
+
+                                        var totalBillableHoursforallworkeddays = mondayBillableHours + tuesdayBillableHours + wednesdayBillableHours + thursdayBillableHours + fridayBillableHours + saturdayBillableHours + sundayBillableHours;
+
+
                                     }
 
                                     <table class="table-billableinfo" style="margin-top: 15px;">
 
+
+
                                         @if (totalhoursSpentInTheWeek >= 40)
                                         {
-                                            billableHours = 40;
-                                            nonBillableHours = totalhoursSpentInTheWeek - 40;
+                                            totalBillableHours = totalBillableHoursforallworkeddays > 40 ? 40 : totalBillableHoursforallworkeddays;
+                                            totalNonBillableHours = totalhoursSpentInTheWeek - totalBillableHours;
                                         }
                                         else
                                         {
-                                            billableHours = totalhoursSpentInTheWeek;
+                                            totalBillableHours = totalBillableHoursforallworkeddays;
                                         }
 
                                         <tr style="background-color: #ccffcc; ">

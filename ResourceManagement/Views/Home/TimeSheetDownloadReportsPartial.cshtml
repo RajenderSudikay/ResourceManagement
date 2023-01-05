@@ -62,6 +62,14 @@
             Int32? totalBillableHours = 0;
             Int32? totalNonBillableHours = 0;
 
+            var mondayHours = 0;
+            var tuesdayHours = 0;
+            var wednesdayHours = 0;
+            var thursdayHours = 0;
+            var fridayHours = 0;
+            var saturdayHours = 0;
+            var sundayHours = 0;
+
             <div class="card timesheet-card partialview-reports" style="font-family:Calibri">
                 <div class="card-body ">
                     <div class="emailbodycontent">
@@ -144,6 +152,45 @@
 
                                     @foreach (var task in employeeReport.timeSheetInfo)
                                     {
+
+                                        var date = System.Convert.ToDateTime(task.taskdate.ToString());
+                                        string dayName = date.ToString("dddd");
+
+
+                                        switch (dayName)
+                                        {
+                                            case "Monday":
+                                                mondayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Tuesday":
+                                                tuesdayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Wednesday":
+                                                wednesdayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Thursday":
+                                                thursdayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Friday":
+                                                fridayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Saturday":
+                                                saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            case "Sunday":
+                                                sundayHours += System.Convert.ToInt32(task.timespent);
+                                                break;
+
+                                            default:
+                                                break;
+                                        }
+
                                         <tr style="background-color: #fff">
 
                                             @{
@@ -156,9 +203,6 @@
 
                                                 totalhoursSpentInTheWeek += totalSpentHours;
 
-                                                totalBillableHours += System.Convert.ToInt32(task.timespent);
-
-                                                totalNonBillableHours += overtTimeHours;
                                             }
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
                                             <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
@@ -226,29 +270,39 @@
                             </table>
 
                             @{
-                                int? billableHours = 0;
-                                int? nonBillableHours = 0;
+
+                                int mondayBillableHours = mondayHours > 8 ? 8 : mondayHours;
+                                int tuesdayBillableHours = tuesdayHours > 8 ? 8 : tuesdayHours;
+                                int wednesdayBillableHours = wednesdayHours > 8 ? 8 : wednesdayHours;
+                                int thursdayBillableHours = thursdayHours > 8 ? 8 : thursdayHours;
+                                int fridayBillableHours = fridayHours > 8 ? 8 : fridayHours;
+                                int saturdayBillableHours = saturdayHours > 8 ? 8 : saturdayHours;
+                                int sundayBillableHours = sundayHours > 8 ? 8 : sundayHours;
+
+
+                                var totalBillableHoursforallworkeddays = mondayBillableHours + tuesdayBillableHours + wednesdayBillableHours + thursdayBillableHours + fridayBillableHours + saturdayBillableHours + sundayBillableHours;
+
+
                             }
 
+                        <table style="border: none">
 
-                            <table style="border: none">
+                            @if (totalhoursSpentInTheWeek >= 40)
+                            {
+                                totalBillableHours = totalBillableHoursforallworkeddays > 40 ? 40 : totalBillableHoursforallworkeddays;
+                                totalNonBillableHours = totalhoursSpentInTheWeek - totalBillableHours;
+                            }
+                            else
+                            {
+                                totalBillableHours = totalBillableHoursforallworkeddays;
+                            }
 
-                                @if (totalhoursSpentInTheWeek >= 40)
-                                {
-                                    billableHours = 40;
-                                    nonBillableHours = totalhoursSpentInTheWeek - 40;
-                                }
-                                else
-                                {
-                                    billableHours = totalhoursSpentInTheWeek;
-                                }
+                            <tr style="background-color: #ccffcc; ">
+                                <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
 
-                                <tr style="background-color: #ccffcc; ">
-                                    <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
-
-                                    <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
-                                </tr>
-                            </table>
+                                <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
+                            </tr>
+                        </table>
 
                             <table style="border: none; background-color: #fff ">
 
