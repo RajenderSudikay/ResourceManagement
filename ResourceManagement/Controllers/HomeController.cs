@@ -114,7 +114,7 @@ namespace ResourceManagement.Controllers
                         Employee_Hostname = SystemInfo.SystemHostName,
                         Employee_IP = SystemInfo.SystemIP,
                         Employee_LoginLocation = employeeModel.AMBC_Active_Emp_view.Location,
-                        Concat_loginstring = employeeModel.AMBC_Active_Emp_view.Employee_ID + "," + todayDate.ToString("yyyy-MM-dd") + "," + todayDate.ToString()
+                        Concat_loginstring = employeeModel.AMBC_Active_Emp_view.Employee_ID + "," + todayDate.ToString("yyyy-MM-dd")
                     };
 
                     using (var context = new TimeSheetEntities())
@@ -1374,7 +1374,7 @@ namespace ResourceManagement.Controllers
                             Employee_Hostname = SystemInfo.SystemHostName,
                             Employee_IP = SystemInfo.SystemIP,
                             Employee_LoginLocation = employeeModel.Location,
-                            Concat_loginstring = employeeModel.Employee_ID + "," + signIndate.ToString("yyyy-MM-dd") + "," + signIndate.ToString()
+                            Concat_loginstring = employeeModel.Employee_ID + "," + signIndate.ToString("yyyy-MM-dd")
                         };
 
                         context.tbld_ambclogininformation.Add(ambcEmpLoginInfo);
