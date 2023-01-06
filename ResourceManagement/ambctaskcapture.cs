@@ -43,5 +43,6 @@ namespace ResourceManagement
         public string uniquekey { get; set; }
         public Nullable<int> overtime { get; set; }
         public string recorduniqueid { get; set; }
+        public Nullable<bool> weekendworkstatus { get; set; }
     }
 }

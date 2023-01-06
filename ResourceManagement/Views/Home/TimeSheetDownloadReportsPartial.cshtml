@@ -62,6 +62,9 @@
             Int32? totalBillableHours = 0;
             Int32? totalNonBillableHours = 0;
 
+            bool isSaturdayBillableHours = false;
+            bool isSundayBillableHours = false;
+
             var mondayHours = 0;
             var tuesdayHours = 0;
             var wednesdayHours = 0;
@@ -180,11 +183,19 @@
                                                 break;
 
                                             case "Saturday":
-                                                saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                isSaturdayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                if (isSaturdayBillableHours)
+                                                {
+                                                    saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                }
                                                 break;
 
                                             case "Sunday":
-                                                sundayHours += System.Convert.ToInt32(task.timespent);
+                                                isSundayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                if (isSundayBillableHours)
+                                                {
+                                                    sundayHours += System.Convert.ToInt32(task.timespent);
+                                                }
                                                 break;
 
                                             default:
@@ -281,28 +292,24 @@
 
 
                                 var totalBillableHoursforallworkeddays = mondayBillableHours + tuesdayBillableHours + wednesdayBillableHours + thursdayBillableHours + fridayBillableHours + saturdayBillableHours + sundayBillableHours;
-
-
-                            }
-
-                        <table style="border: none">
-
-                            @if (totalhoursSpentInTheWeek >= 40)
-                            {
-                                totalBillableHours = totalBillableHoursforallworkeddays > 40 ? 40 : totalBillableHoursforallworkeddays;
+                                totalBillableHours = @totalBillableHoursforallworkeddays;
                                 totalNonBillableHours = totalhoursSpentInTheWeek - totalBillableHours;
-                            }
-                            else
-                            {
-                                totalBillableHours = totalBillableHoursforallworkeddays;
+
                             }
 
-                            <tr style="background-color: #ccffcc; ">
-                                <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                            <table style="border: none">
 
-                                <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
-                            </tr>
-                        </table>
+                                @if (totalNonBillableHours <= 0)
+                                {
+                                    totalNonBillableHours = 0;
+                                }
+
+                                <tr style="background-color: #ccffcc; ">
+                                    <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+
+                                    <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
+                                </tr>
+                            </table>
 
                             <table style="border: none; background-color: #fff ">
 

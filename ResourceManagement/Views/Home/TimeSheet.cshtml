@@ -452,12 +452,12 @@
                                 <label for="timeSheetComments"><b style=" color: midnightblue; font-style: italic; font-size: initial;">Do you have an approval for weekend work from Client.</b></label>
                                 <br />
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="true" />
                                     <label class="form-check-label" for="inlineRadio1" style="font-size: larger">Yes</label>
                                 </div>
 
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                    <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="false" />
                                     <label class="form-check-label" for="inlineRadio2" style="font-size: larger">No</label>
                                 </div>
                             </div>
@@ -1114,7 +1114,8 @@
                                                 submittedsystem: jQuery(".systemipaddress").val(),
                                                 currentyear: moment(value, 'YYYY-MM-DD').year(),
                                                 shiftdetails: jQuery(".empshifttiming").val(),
-                                                uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val()
+                                                uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val(),
+                                                weekendworkstatus: jQuery('input[name="inlineRadioOptions"]:checked').val() == "true" ? true : false
                                             };
 
                                             var oneDate = moment(leaveOrHolidayPushModel.taskdate, 'YYYY-MM-DD');
@@ -1264,7 +1265,8 @@
                                         submittedsystem: jQuery(".systemipaddress").val(),
                                         currentyear: moment(report.taskdate, 'YYYY-MM-DD').year(),
                                         shiftdetails: jQuery(".empshifttiming").val(),
-                                        uniquekey: report.uniquekey
+                                        uniquekey: report.uniquekey,
+                                        weekendworkstatus: report.weekendworkstatus
                                     };
 
                                     timeSheetList.push(viewreportModel);
@@ -1307,7 +1309,7 @@
                                                 bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
                                             });
 
-                                          /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
+                                            /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
                                             jQuery('.warning-message-popup').html(bodyMessage);
                                             jQuery('#modal-warning-message-popup').modal('show');
                                         }
@@ -1341,6 +1343,7 @@
         jQuery('#timeSheetComments').val('');
         jQuery('.timeSpenterror-msg').text('');
         jQuery('#timeSheetTimeSpent').attr("max", "16");
+        $('.inlineRadioOptions').prop('checked', false);
     }
 
     jQuery(".timesheet-addreport").click(function () {
@@ -1362,17 +1365,27 @@
         var selectedClient = $('#timeSheetEmpClient :selected').text();
         var selectedProjectCode = $('#timeSheetEmpClient :selected').val();
 
-        var isClientConfirmChecked = $("input[name=inlineRadioOptions]").is(":checked");
+        var taskSelectedDate = jQuery('#timeSheetdate').val();
 
-        if (isClientConfirmChecked == false) {
-            jQuery('.inlineRadioOptions').prop('required', true);
-            isModalValidated = false;
-        }
-        else {
-            jQuery('.inlineRadioOptions').prop('required', false);
-            isModalValidated = true;
-        }
+        if (taskSelectedDate != "") {
+            var momentTaskDate = moment(taskSelectedDate, 'YYYY-MM-DD');
+            var taskDayName = momentTaskDate.format('dddd');
 
+            if (taskDayName == "Saturday" || taskDayName == "Sunday") {
+                var isClientConfirmChecked = $("input[name=inlineRadioOptions]").is(":checked");
+
+                if (isClientConfirmChecked == false) {
+                    jQuery('.inlineRadioOptions').prop('required', true);
+                    isModalValidated = false;
+                }
+                else {
+                    jQuery('.inlineRadioOptions').prop('required', false);
+                    isModalValidated = true;
+                }
+
+
+            }
+        }
 
         var abc = 0;
 
@@ -1403,7 +1416,8 @@
                 submittedsystem: jQuery(".systemipaddress").val(),
                 currentyear: moment(jQuery('#timeSheetdate').val(), 'YYYY-MM-DD').year(),
                 shiftdetails: jQuery(".empshifttiming").val(),
-                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode
+                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode,
+                weekendworkstatus: jQuery('input[name="inlineRadioOptions"]:checked').val() == 'true' ? true : false
             };
 
             //Find index of specific object using findIndex method.
@@ -1529,11 +1543,33 @@
                 const isAllTasksEntered = timeSheetList.filter(v => v.taskdate === value);
                 var dt = moment(value, "YYYY-MM-DD")
                 var dayName = dt.format('dddd');
+
+                //For Monday to Friday normal work days handling
                 if (isAllTasksEntered.length <= 0 && dayName != "Saturday" && dayName != "Sunday") {
                     allDataEntered = false;
                     var actualDate = value.split('-');
                     value = actualDate[2] + "-" + actualDate[1] + "-" + actualDate[0];
                     missedDatesData += "<h2>" + dayName + ": " + value + "</h2><br>";
+                }
+
+                //If any employee checked-in on weekends i.e Saturday and Sunday
+
+                if (dayName == "Saturday" || dayName == "Sunday") {
+
+                    if (empSignInDaysInfo != null && empSignInDaysInfo.length > 0) {
+                        const isEmployeeWorkedonWeekend = empSignInDaysInfo.filter(v => v.SignInDate === value);
+
+                        if (isEmployeeWorkedonWeekend != null && isEmployeeWorkedonWeekend.length > 0) {
+                           var isWeekendTasksEntered = timeSheetList.filter(v => v.taskdate === value);
+
+                            if (isWeekendTasksEntered.length <= 0) {
+                                allDataEntered = false;
+                                var actualDate = value.split('-');
+                                value = actualDate[2] + "-" + actualDate[1] + "-" + actualDate[0];
+                                missedDatesData += "<h2>" + dayName + ": " + value + "</h2><br>";
+                            }
+                        }
+                    }      
                 }
             });
 
@@ -1648,6 +1684,13 @@
                 jQuery('#timeSheetTimeSpent').val(item.timespent);
                 jQuery('#timeSheetOverTime').val(item.overtime);
                 jQuery('#timeSheetComments').val(item.comments);
+
+                var selectedClentApproval = "false";
+                if (item.weekendworkstatus) {
+                    selectedClentApproval = "true";
+                }
+
+                jQuery("input[name=inlineRadioOptions][value=" + selectedClentApproval + "]").prop("checked", true);
 
                 jQuery('#timeSheetTimeSpent').attr("data-time-data-uniqueid", item.uniquekey);
 
