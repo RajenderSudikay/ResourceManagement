@@ -318,6 +318,7 @@
     <Content Include="Assets\Icons\woman.png" />
     <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
+    <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />
     <Content Include="Assets\PopupIcons\info.svg" />

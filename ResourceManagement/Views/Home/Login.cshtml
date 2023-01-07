@@ -52,3 +52,38 @@
 
     </div>
 </div>
+
+
+<div class="modal message-success-popup" tabindex="-1" role="dialog" style="padding-top: 130px">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 30px">
+            <div class="modal-header modal-header-success-custommessage" style="border-top-left-radius: 30px; border-top-right-radius: 30px">
+                <img src="~/Assets/loudspeaker.png" style="width: 150px" />
+
+            </div>
+            <div class="modal-body text-center">
+                <h2 class="modal-body-custom-success" style="padding-top:10px !important">
+                    Hello there,
+                    <br />
+                    <br />
+                    We have been working thoroughly to enhance our service over the past few months, finally we developed new HRMS application. Requesting you please use the application for Daily Sign-In, Sign-Out, Leave and weekly Timesheet for client.
+                </h2>
+            </div>
+
+            <div class="">
+                <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.message-success-popup').modal('show');
+    });
+
+
+
+</script>

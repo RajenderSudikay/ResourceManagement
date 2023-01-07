@@ -96,14 +96,28 @@
                                             </tr>
                                             <tr style="text-align:left">
                                                 @{
-
                                                     var requiredWeekSatartDate = "NA";
                                                     var requiredWeekEndDate = "NA";
+
+                                                }
+
+                                                @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("-"))
+                                                {
 
                                                     var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
                                                     requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
 
                                                     var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                    requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
+                                                }
+
+                                                @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("/"))
+                                                {
+
+                                                    var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
+                                                    requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
+
+                                                    var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
                                                     requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
                                                 }
 
@@ -202,29 +216,45 @@
                                                 break;
                                         }
 
-                                        <tr style="background-color: #fff">
+                                    <tr style="background-color: #fff">
 
-                                            @{
-                                                var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                        @{
 
-                                                var taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
+                                            var taskDisplayDate = "";
+                                            Int32? totalSpentHours = 0;
+                                        }
 
-                                                var overtTimeHours = task.overtime != null ? task.overtime : 0;
-                                                var totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+                                        @if (task.taskdate.ToString().Contains("-"))
+                                        {
+                                            var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                            taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
 
-                                                totalhoursSpentInTheWeek += totalSpentHours;
+                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
 
-                                            }
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@totalSpentHours</td>
-                                            <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
-                                        </tr>
+                                            totalhoursSpentInTheWeek += totalSpentHours;
+                                        }
+
+                                        @if (task.taskdate.ToString().Contains("/"))
+                                        {
+                                            var requiredDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-");
+                                            taskDisplayDate = requiredDate;
+
+                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                            totalhoursSpentInTheWeek += totalSpentHours;
+                                        }
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@totalSpentHours</td>
+                                        <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
+                                    </tr>
                                     }
 
 
@@ -252,28 +282,36 @@
 
                                 <tbody class="timesheet-table-grid">
 
-
                                     @if (employeeReport.timeSheetLeaveOrHolidayInfo != null && employeeReport.timeSheetLeaveOrHolidayInfo.Count > 0)
                                     {
                                         foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo)
                                         {
+                                            var leaveDisplayDate = "";
 
-                                            var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
-                                            var leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
+                                            if (leaveReport.taskdate.ToString().Contains("-"))
+                                            {
+                                                var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
+                                            }
+                                            if (leaveReport.taskdate.ToString().Contains("/"))
+                                            {
+                                                var requiredLeaveDate = leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-");
+                                                leaveDisplayDate = requiredLeaveDate;
+                                            }
+
 
 
                                             <tr style="background-color: #ccffcc">
-                                                <td scope="row" style="text-align:left">@leaveDisplayDate</td>
-                                                <td scope="row" style="text-align:left">@leaveReport.comments</td>
+                                                <td scope="row">@leaveDisplayDate</td>
+                                                <td scope="row">@leaveReport.comments</td>
                                             </tr>
                                         }
                                     }
-
                                     else
                                     {
                                         <tr style="background-color: #ccffcc">
-                                            <td scope="row" style="text-align:left">NA</td>
-                                            <td scope="row" style="text-align:left">NA</td>
+                                            <td scope="row">NA</td>
+                                            <td scope="row">NA</td>
                                         </tr>
                                     }
 

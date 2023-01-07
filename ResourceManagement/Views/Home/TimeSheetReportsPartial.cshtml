@@ -106,13 +106,29 @@
                                                             var requiredWeekSatartDate = "NA";
                                                             var requiredWeekEndDate = "NA";
 
+                                                        }
+
+                                                        @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("-"))
+                                                        {
+
                                                             var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
                                                             requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
 
                                                             var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
                                                             requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
-
                                                         }
+
+                                                        @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("/"))
+                                                        {
+
+                                                            var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
+                                                            requiredWeekSatartDate = reportStartdate[2].Trim() + "-" + reportStartdate[1] + "-" + reportStartdate[0];
+
+                                                            var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
+                                                            requiredWeekEndDate = reportEndtdate[2].Trim() + "-" + reportEndtdate[1] + "-" + reportEndtdate[0];
+                                                        }
+
+
 
                                                         <td class="headertd"><b>Week Start Date</b></td>
                                                         <td class="headertd">@requiredWeekSatartDate</td>
@@ -203,11 +219,29 @@
 
                                                     <tr style="background-color: #fff" class="time">
                                                         @{
+
+                                                            var taskDisplayDate = "";
+                                                            Int32? totalSpentHours = 0;
+                                                        }
+
+                                                        @if (task.taskdate.ToString().Contains("-"))
+                                                        {
                                                             var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
-                                                            var taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
+                                                            taskDisplayDate = requiredDate[2].Trim() + "-" + requiredDate[1] + "-" + requiredDate[0];
 
                                                             var overtTimeHours = task.overtime != null ? task.overtime : 0;
-                                                            var totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+                                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                            totalhoursSpentInTheWeek += totalSpentHours;
+                                                        }
+
+                                                        @if (task.taskdate.ToString().Contains("/"))
+                                                        {
+                                                            var requiredDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-").Split('-');
+                                                            taskDisplayDate = requiredDate[1] + "-" + requiredDate[0] + "-" + requiredDate[2];
+
+                                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
 
                                                             totalhoursSpentInTheWeek += totalSpentHours;
                                                         }
@@ -253,9 +287,19 @@
                                             {
                                                 foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo)
                                                 {
+                                                    var leaveDisplayDate = "";
 
-                                                    var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
-                                                    var leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
+                                                    if (leaveReport.taskdate.ToString().Contains("-"))
+                                                    {
+                                                        var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                        leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
+                                                    }
+                                                    if (leaveReport.taskdate.ToString().Contains("/"))
+                                                    {
+                                                        var requiredLeaveDate = leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-").Split('-');
+                                                        leaveDisplayDate = requiredLeaveDate[1] + "-" + requiredLeaveDate[0] + "-" + requiredLeaveDate[2]; ;
+                                                    }
+
 
 
                                                     <tr style="background-color: #ccffcc">

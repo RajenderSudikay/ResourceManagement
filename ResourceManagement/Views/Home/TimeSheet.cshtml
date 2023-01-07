@@ -449,7 +449,7 @@
                     <div class="row billable-on-weekend-workday" style="display:none">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetComments"><b style=" color: midnightblue; font-style: italic; font-size: initial;">Do you have an approval for weekend work from Client.</b></label>
+                                <label for="timeSheetComments"><b style=" color: midnightblue; font-style: italic; font-size: initial;">Thanks for the weekend support, Can we include entered weekend hours into your timesheet?</b></label>
                                 <br />
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input inlineRadioOptions" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="true" />
@@ -1139,9 +1139,41 @@
                             });
                         }
                         else {
-                            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                            jQuery('.warning-message-popup').html("<h2>Are you sure you worked on selected dates? If yes please contact your manager. As per our records you didn't Check-In to the Application or you might be on leave in selected dates!</h2>");
-                            $('#modal-warning-message-popup').modal('show');
+
+                            var isLaveAppliedForAlltheLeaveDates = true;
+
+                            jQuery.ajax({
+                                url: "/CheckeLeaveAppliiedStatus",
+                                type: "POST",
+                                contentType: 'application/json; charset=utf-8',
+                                data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays }),
+                                success: function (data) {
+
+                                    if (data != null && data.jsonResponse.StatusCode == "404") {
+
+                                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());                                      
+
+                                        var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please contact Admin for Check-In adjustments </h2><br><br>";
+
+
+                                        jQuery.each(data.MissingLeaveDates, function (leaveDate, Name) {
+                                            bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
+                                        });
+
+                                        bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
+
+                                        /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
+                                        jQuery('.warning-message-popup').html(bodyMessage);
+                                        jQuery('#modal-warning-message-popup').modal('show');
+                                    }
+                                    else {
+                                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                                        jQuery('.warning-message-popup').html("<h2>Have you worked on selected week? If yes please contact your manager. We found in our records you didn't Checked-In to the Application or you might be on leave!</h2>");
+                                        $('#modal-warning-message-popup').modal('show');
+                                    }
+
+                                }
+                            });
                         }
 
                         weeklyChartReport();
@@ -1302,12 +1334,14 @@
 
                                             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
 
-                                            var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please click <a href='/applyleave' target='_blank' style='color: green'>here</a> to apply leave. <br> <b style='color:red'>OR</b> <br> Contact Admin for Check-In adjustments </h2><br>";
-
+                                            var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please contact Admin for Check-In adjustments </h2><br><br>";
+                                          
 
                                             jQuery.each(data.MissingLeaveDates, function (leaveDate, Name) {
                                                 bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
                                             });
+
+                                            bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
 
                                             /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
                                             jQuery('.warning-message-popup').html(bodyMessage);
@@ -1560,7 +1594,7 @@
                         const isEmployeeWorkedonWeekend = empSignInDaysInfo.filter(v => v.SignInDate === value);
 
                         if (isEmployeeWorkedonWeekend != null && isEmployeeWorkedonWeekend.length > 0) {
-                           var isWeekendTasksEntered = timeSheetList.filter(v => v.taskdate === value);
+                            var isWeekendTasksEntered = timeSheetList.filter(v => v.taskdate === value);
 
                             if (isWeekendTasksEntered.length <= 0) {
                                 allDataEntered = false;
@@ -1569,7 +1603,7 @@
                                 missedDatesData += "<h2>" + dayName + ": " + value + "</h2><br>";
                             }
                         }
-                    }      
+                    }
                 }
             });
 
