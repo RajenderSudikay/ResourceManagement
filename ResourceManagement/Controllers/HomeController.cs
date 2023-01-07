@@ -7,6 +7,7 @@ using System.Web.Mvc;
 namespace ResourceManagement.Controllers
 {
     using Models;
+    using OfficeOpenXml;
     using SelectPdf;
     using System;
     using System.Configuration;
@@ -15,6 +16,7 @@ namespace ResourceManagement.Controllers
     using System.Net.Mail;
     using System.Text;
     using System.Text.Json;
+    using System.Web;
     using System.Web.UI;
     using static ResourceManagement.Helpers.DateHelper;
     using static ResourceManagement.Models.LeaveOrHolidayModel;
@@ -1409,6 +1411,141 @@ namespace ResourceManagement.Controllers
             }
 
             return Json(respone, JsonRequestBehavior.AllowGet);
+        }
+
+        //FOR FUTURE REFERENCE ONLY
+
+        public ActionResult zohocheckinsupdate()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+        //FOR FUTURE REFERENCE ONLY
+        public ActionResult Upload(FormCollection formCollection)
+        {
+            if (Request != null)
+            {
+                HttpPostedFileBase file = Request.Files["UploadedFile"];
+                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                {
+                    string fileName = file.FileName;
+                    string fileContentType = file.ContentType;
+                    byte[] fileBytes = new byte[file.ContentLength];
+                    var data = file.InputStream.Read(fileBytes, 0, System.Convert.ToInt32(file.ContentLength));
+
+                    using (var package = new ExcelPackage(file.InputStream))
+                    {
+                        var currentSheet = package.Workbook.Worksheets;
+                        var workSheet = currentSheet.First();
+                        var noOfCol = workSheet.Dimension.End.Column;
+                        var noOfRow = workSheet.Dimension.End.Row;
+
+                        var abc = new List<string>();
+
+                        var datValue = (workSheet.Cells[1, 4].Value.ToString());
+
+
+                        for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                        {
+                            abc.Add(workSheet.Cells[rowIterator, 2].Value.ToString());
+                        }
+
+                        var d = 0;
+
+                    }
+                }
+            }
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult zohosigninupdate()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult zohosigninupdate(ZohoSignInModel membervalues)
+        {
+            var model = new ZohoSignInModel();
+            try
+            {
+                if (membervalues != null && membervalues.ImageFile != null)
+                {
+                    string FileName = Path.GetFileNameWithoutExtension(membervalues.ImageFile.FileName);
+
+                    HttpPostedFileBase file = membervalues.ImageFile;
+                    if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                    {
+                        string fileName = file.FileName;
+                        string fileContentType = file.ContentType;
+                        byte[] fileBytes = new byte[file.ContentLength];
+                        var data = file.InputStream.Read(fileBytes, 0, System.Convert.ToInt32(file.ContentLength));
+
+                        using (var package = new ExcelPackage(file.InputStream))
+                        {
+                            var currentSheet = package.Workbook.Worksheets;
+                            var workSheet = currentSheet.First();
+                            var noOfCol = workSheet.Dimension.End.Column;
+                            var noOfRow = workSheet.Dimension.End.Row;
+
+                            var adjustmentEmployeeIds = new List<string>();
+
+                            for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                            {
+                                adjustmentEmployeeIds.Add(workSheet.Cells[rowIterator, 2].Value.ToString());
+                            }
+
+                            var SystemInfo = SystemInformation();
+                            using (var context = new TimeSheetEntities())
+                            {
+                                var adjustmentEmpList = new List<tbld_ambclogininformation>();
+                                foreach (var adjustmentEmployeeId in adjustmentEmployeeIds)
+                                {
+                                    var employeeModel = context.AMBC_Active_Emp_view.Where(x => x.Employee_ID == adjustmentEmployeeId && x.Project_Status == "Active").FirstOrDefault();
+
+                                    if (employeeModel == null)
+                                        continue;
+
+                                    var signIndate = System.Convert.ToDateTime(membervalues.AdjustmentDate);
+                                    var SignInTime = signIndate.AddHours(9);
+                                    var SignOutTime = signIndate.AddHours(18);
+
+                                    var ambcEmpLoginInfo = new tbld_ambclogininformation()
+                                    {
+                                        Employee_Code = employeeModel.Employee_ID,
+                                        Employee_Name = employeeModel.Employee_Name,
+                                        Employee_Designation = employeeModel.Designation,
+                                        Employee_Shift = employeeModel.Shift,
+                                        Login_date = signIndate,
+                                        Signin_Time = SignInTime,
+                                        Signout_Time = SignOutTime,
+                                        Employee_Hostname = SystemInfo.SystemHostName,
+                                        Employee_IP = SystemInfo.SystemIP,
+                                        Employee_LoginLocation = employeeModel.Location,
+                                        Concat_loginstring = employeeModel.Employee_ID + "_" + signIndate.ToString("yyyy-MM-dd")
+                                    };
+
+                                    adjustmentEmpList.Add(ambcEmpLoginInfo);
+                                }
+
+                                context.tbld_ambclogininformation.AddRange(adjustmentEmpList);
+                                context.SaveChanges();
+                                model.SuccessMessage = "Successfully added check-in for all the consultants who are exists in the sheet";
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                model.FailureMessage = "Error occured when adding check-in. Please contact admin.";
+            }
+
+            return View(model);
         }
     }
 }
