@@ -169,10 +169,11 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="leavestartdate" class="leavestartdate">Leave Date</label>
-                        <input type="date" class="form-control" id="leavestartdate" required>
+                        <input type="date" class="form-control" id="leavestartdate" required aria-describedby="leavedatehelptext">
                         <div class="invalid-feedback-leavedate" style="color:red; display:none">
                             Please Select Date
                         </div>
+                        <small id="leavedatehelptext" class="form-text text-muted" style="color: darkblue !important">Please do not select Holiday's and Weekend dates</small>
                     </div>
                 </div>
                 <div class="col-md-6 leave-enddate-div" style="display:none">
@@ -428,6 +429,7 @@
             }
             form.classList.add('was-validated');
         });
+
         if (jQuery('#leavestartdate').val() == "") {
             jQuery('.invalid-feedback-leavedate').show();
             jQuery('#leavestartdate').css("border", "1px solid red");
@@ -437,6 +439,26 @@
             jQuery('.invalid-feedback-leavedate').hide();
             jQuery('#leavestartdate').css("border", "1px solid green");
         }
+
+
+        if (jQuery('#leavestartdate').val() != "") {
+
+            var oneDate = moment(jQuery('#leavestartdate').val(), 'YYYY-MM-DD');
+            var dayName = oneDate.format('dddd');
+
+            if (dayName == "Sunday" || dayName == "Saturday") {
+                jQuery('#leavestartdate').val('');
+                jQuery('.invalid-feedback-leavedate').show();
+                jQuery('#leavestartdate').css("border", "1px solid red");
+                isStartDateEntered = false;
+            }
+        }
+        else {
+            jQuery('.invalid-feedback-leavedate').hide();
+            jQuery('#leavestartdate').css("border", "1px solid green");
+        }
+
+
 
         if (jQuery('#leavetypes :selected').val() == "MultipleDay") {
             if ($('#leaveenddate').val() == "") {
