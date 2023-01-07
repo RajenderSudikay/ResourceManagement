@@ -1501,5 +1501,36 @@ namespace ResourceManagement.Controllers
 
             return View(model);
         }
+
+        public FileResult zohosigninreport(ZohoSignInModel modelData)
+        {
+            var reportModel = new ZohoSignInExcelReportModel();
+            using (var context = new TimeSheetEntities())
+            {
+                var results = context.tbld_ambclogininformation.Where(b => b.Login_date == modelData.AdjustmentDate).ToList();
+                if (results != null)
+                {
+                    int sno = 1;
+                    reportModel.Reports = new List<ZohoSignInReportModel>();
+                    foreach (var result in results)
+                    {
+                        reportModel.Reports.Add(new ZohoSignInReportModel()
+                        {
+                            SNo = sno.ToString(),
+                            EmployeeCode = result.Employee_Code,
+                            EmplyeeName = result.Employee_Name,
+                            ReportDate = result.Login_date.ToString("dd-MM-yyyy")
+                        });
+
+                        sno++;
+                    }
+                }
+            }
+
+            var fileName = "CheckIn Report " + modelData.AdjustmentDate.ToString("dd-MM-yyyy");
+
+            var reportHtml = RenderPartialToString(this, "zohosigninreport", reportModel, ViewData, TempData);
+            return File(Encoding.ASCII.GetBytes(reportHtml), "application/vnd.ms-excel", fileName + ".xls");
+        }
     }
 }

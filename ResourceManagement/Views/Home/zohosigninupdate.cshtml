@@ -48,74 +48,94 @@
                     {
                         @Html.AntiForgeryToken()
 
-                    <div class="form-horizontal">
-                        <h4>Add Check-In for consultants</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-horizontal">
+                            <h4>Add Check-In for consultants</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @if (Model != null && Model.SuccessMessage != "")
-                        {
-                            <br />
-                            <h2 class="text-success">@Model.SuccessMessage</h2>
-                            <br />
-                        }
+                            @if (Model != null && Model.SuccessMessage != "")
+                            {
+                                <br />
+                                <h2 class="text-success">@Model.SuccessMessage</h2>
+                                <br />
+                            }
 
-                        @if (Model != null && Model.FailureMessage != "")
-                        {
-                            <br />
-                            <h2 class="text-danger">@Model.FailureMessage</h2>
-                            <br />
-                            <br />
-                        }
+                            @if (Model != null && Model.FailureMessage != "")
+                            {
+                                <br />
+                                <h2 class="text-danger">@Model.FailureMessage</h2>
+                                <br />
+                                <br />
+                            }
 
-                        @Html.ValidationMessageFor(model => model.FailureMessage, "", new { @class = "text-danger" })
-                        @Html.ValidationMessageFor(model => model.SuccessMessage, "", new { @class = "text-success" })
-                        @*<div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.FailureMessage, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.SuccessMessage, "", new { @class = "text-success" })
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdjustmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+
+                                    @Html.TextBoxFor(model => model.AdjustmentDate, new { type = "date", @class = "datepicker form-control" })
+
+                                    @Html.ValidationMessageFor(model => model.AdjustmentDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="file" name="ImageFile" required />
+                                </div>
+                            </div>
+
+                            <br />
+                            <br />
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Add SignIn to HRMS App" class="btn btn-info btn-lg" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+        <br />
+        <br />
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.AdjustmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @*@Html.EditorFor(model => model.AdjustmentDate, new { htmlAttributes = new { @class = "form-control" } })*@
+        <div class="card card-body" style="border-radius: 10px">
+            <div class="card timesheet-card">
+                <div class="card-body ">
+                    @using (Html.BeginForm("zohosigninreport", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                                @*@Html.EditorFor(m => m.AdjustmentDate, new { htmlAttributes = new { @class = "datepicker form-control" } })*@
+                        <div class="form-horizontal">
+                            <h4>Download Check-in Report</h4>
+                            <hr />
 
 
-                                @Html.TextBoxFor(model => model.AdjustmentDate, new { type = "date", @class = "datepicker form-control" })
+                            <div class="form-group">
+                                <label title="Report Date"></label>
+                                <div class="col-md-10">
 
-                                @Html.ValidationMessageFor(model => model.AdjustmentDate, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(model => model.AdjustmentDate, new { type = "date", @class = "datepicker form-control" })
+
+                                    @Html.ValidationMessageFor(model => model.AdjustmentDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <br />
+                            <br />
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Add SignIn to HRMS App" class="btn btn-info btn-lg" />
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="file" name="ImageFile" required />
-                            </div>
-                        </div>
-
-                        <br />
-                        <br />
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Add SignIn to HRMS App" class="btn btn-info btn-lg" />
-                            </div>
-                        </div>
-                    </div>
                     }
                 </div>
             </div>
@@ -125,16 +145,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
-
-    <script>
-
-        $(document).ready(function () {
-
-            $('.datepicker').datepicker();
-
-        });
-
-    </script>
 
 </body>
 </html>

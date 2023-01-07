@@ -30,4 +30,23 @@ namespace ResourceManagement.Models
 
         public string FailureMessage { get; set; }
     }
+
+    public class ZohoSignInReportModel
+    {      
+        public string SNo { get; set; }
+      
+        public string EmployeeCode { get; set; }
+    
+        public string EmplyeeName { get; set; }
+
+        public string ReportDate { get; set; }
+
+    }
+
+    public class ZohoSignInExcelReportModel
+    {
+        public List<ZohoSignInReportModel> Reports { get; set; }    
+
+    }
+
 }
