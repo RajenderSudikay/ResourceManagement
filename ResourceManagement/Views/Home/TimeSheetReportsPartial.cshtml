@@ -343,6 +343,17 @@
                                             totalNonBillableHours = 0;
                                         }
 
+                                        @if (totalhoursSpentInTheWeek > 40)
+                                        {
+                                            totalBillableHours = 40;
+                                            totalNonBillableHours = totalhoursSpentInTheWeek - 40;
+                                        }
+                                        else
+                                        {
+                                            totalBillableHours = totalhoursSpentInTheWeek;
+                                            totalNonBillableHours = 0;
+                                        }
+
 
                                         <tr style="background-color: #ccffcc; ">
                                             <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>

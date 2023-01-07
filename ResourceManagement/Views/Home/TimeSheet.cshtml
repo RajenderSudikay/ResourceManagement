@@ -351,10 +351,11 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number</label>
-                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required></textarea>
+                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required  aria-describedby="incidentnumberhelp"></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Number(s)
                                 </div>
+                                <small id="incidentnumberhelp" class="form-text text-muted" style="color: darkblue !important">If you do not have any incident number add TASK/Work Item Details</small>
                             </div>
                         </div>
                     </div>

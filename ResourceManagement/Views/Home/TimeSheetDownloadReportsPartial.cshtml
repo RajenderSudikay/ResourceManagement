@@ -335,19 +335,31 @@
 
                             }
 
-                            <table style="border: none">
+                        <table style="border: none">
 
-                                @if (totalNonBillableHours <= 0)
-                                {
-                                    totalNonBillableHours = 0;
-                                }
+                            @if (totalNonBillableHours <= 0)
+                            {
+                                totalNonBillableHours = 0;
+                            }
 
-                                <tr style="background-color: #ccffcc; ">
-                                    <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                            @if (totalhoursSpentInTheWeek > 40)
+                            {
+                                totalBillableHours = 40;
+                                totalNonBillableHours = totalhoursSpentInTheWeek - 40;
+                            }
+                            else
+                            {
+                                totalBillableHours = totalhoursSpentInTheWeek;
+                                totalNonBillableHours = 0;
+                            }
 
-                                    <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
-                                </tr>
-                            </table>
+
+                            <tr style="background-color: #ccffcc; ">
+                                <td style="width: 368px;  background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+
+                                <td style="background-color: white; width: 30px; text-align: left"><b>@totalBillableHours</b></td>
+                            </tr>
+                        </table>
 
                             <table style="border: none; background-color: #fff ">
 
