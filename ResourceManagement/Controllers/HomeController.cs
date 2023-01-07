@@ -1413,52 +1413,6 @@ namespace ResourceManagement.Controllers
             return Json(respone, JsonRequestBehavior.AllowGet);
         }
 
-        //FOR FUTURE REFERENCE ONLY
-
-        public ActionResult zohocheckinsupdate()
-        {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-            return View(employeeModel);
-        }
-
-        //FOR FUTURE REFERENCE ONLY
-        public ActionResult Upload(FormCollection formCollection)
-        {
-            if (Request != null)
-            {
-                HttpPostedFileBase file = Request.Files["UploadedFile"];
-                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
-                {
-                    string fileName = file.FileName;
-                    string fileContentType = file.ContentType;
-                    byte[] fileBytes = new byte[file.ContentLength];
-                    var data = file.InputStream.Read(fileBytes, 0, System.Convert.ToInt32(file.ContentLength));
-
-                    using (var package = new ExcelPackage(file.InputStream))
-                    {
-                        var currentSheet = package.Workbook.Worksheets;
-                        var workSheet = currentSheet.First();
-                        var noOfCol = workSheet.Dimension.End.Column;
-                        var noOfRow = workSheet.Dimension.End.Row;
-
-                        var abc = new List<string>();
-
-                        var datValue = (workSheet.Cells[1, 4].Value.ToString());
-
-
-                        for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
-                        {
-                            abc.Add(workSheet.Cells[rowIterator, 2].Value.ToString());
-                        }
-
-                        var d = 0;
-
-                    }
-                }
-            }
-            return View("Index");
-        }
-
         [HttpGet]
         public ActionResult zohosigninupdate()
         {
