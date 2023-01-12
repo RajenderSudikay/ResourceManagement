@@ -808,7 +808,7 @@
 
         jQuery.ajax({
             url: "/ClientBasedEmpDetails",
-            type: "POST",       
+            type: "POST",
             data: { ClientBasedEmpModel: ClientBasedEmpDetails },
             success: function (data) {
                 if (data.jsonResponse.StatusCode == 200) {
@@ -1083,6 +1083,8 @@
                 WeekNumber: weekNum
             }
 
+            var selectedProjectCode = $('#timeSheetEmpClient :selected').val();
+
             jQuery.ajax({
                 url: "/GetLeaveandHolidayInfofromDb",
                 type: "POST",
@@ -1148,7 +1150,7 @@
                                                 submittedsystem: jQuery(".systemipaddress").val(),
                                                 currentyear: moment(value, 'YYYY-MM-DD').year(),
                                                 shiftdetails: jQuery(".empshifttiming").val(),
-                                                uniquekey: value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val(),
+                                                uniquekey: jQuery('.agent-navdrop-empid').text() + "_" + value + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode,
                                                 weekendworkstatus: jQuery('input[name="inlineRadioOptions"]:checked').val() == "true" ? true : false
                                             };
 
@@ -1274,7 +1276,7 @@
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
 
-                jQuery('#timeSheetdate').val(minDate);
+                //jQuery('#timeSheetdate').val(minDate);
 
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
@@ -1489,7 +1491,7 @@
                 submittedsystem: jQuery(".systemipaddress").val(),
                 currentyear: moment(jQuery('#timeSheetdate').val(), 'YYYY-MM-DD').year(),
                 shiftdetails: jQuery(".empshifttiming").val(),
-                uniquekey: jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode,
+                uniquekey: jQuery('.agent-navdrop-empid').text() + "_" + jQuery('#timeSheetdate').val() + "_" + jQuery('#timeSheetIncNumber').val() + "_" + jQuery('#timeSheetTimeSpent').val() + "_" + selectedProjectCode,
                 weekendworkstatus: jQuery('input[name="inlineRadioOptions"]:checked').val() == 'true' ? true : false
             };
 
