@@ -1091,11 +1091,11 @@ namespace ResourceManagement.Controllers
         {
             try
             {
-                if (timesheetEmpRemainder != null && timesheetEmpRemainder.emails.Count() > 0)
+                if (timesheetEmpRemainder != null && timesheetEmpRemainder.selctedempmodel.Count() > 0)
                 {
-                    foreach (var email in timesheetEmpRemainder.emails)
+                    foreach (var email in timesheetEmpRemainder.selctedempmodel)
                     {
-                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email))
+                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
                         {
                             mm.Subject = "TimeSheet is missing!";
                             mm.Body = "Hello Consultant, <br> Please submit your time sheet immediatly. + <br> <br> AMBC Technologies";
@@ -1531,6 +1531,33 @@ namespace ResourceManagement.Controllers
 
             var reportHtml = RenderPartialToString(this, "zohosigninreport", reportModel, ViewData, TempData);
             return File(Encoding.ASCII.GetBytes(reportHtml), "application/vnd.ms-excel", fileName + ".xls");
+        }
+
+
+        public JsonResult ClientBasedEmpDetails(RMA_ClientBasedEmpModel ClientBasedEmpModel)
+        {
+            var ClientBasedemployeeModel = new RMA_ClientBasedEmpJson();
+            try
+            {
+             
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var empProjectCode = System.Convert.ToInt32(ClientBasedEmpModel.ProjectID);
+                    var clientBasedEmpInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID == ClientBasedEmpModel.EmpId && a.Client == ClientBasedEmpModel.ClientName && a.Project_Code == empProjectCode).FirstOrDefault();
+                   if(clientBasedEmpInfo != null)
+                    {
+                        ClientBasedemployeeModel.ClientBasedAMBCEmp = clientBasedEmpInfo;
+                        ClientBasedemployeeModel.jsonResponse.StatusCode = 200;
+                        ClientBasedemployeeModel.jsonResponse.Message = "Clinet based employee details found";
+                    }
+                }
+
+                return Json(ClientBasedemployeeModel);
+            }
+            catch (Exception ex)
+            {
+                return Json(ClientBasedemployeeModel);
+            }
         }
     }
 }

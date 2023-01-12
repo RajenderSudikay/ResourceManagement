@@ -103,11 +103,22 @@ namespace ResourceManagement.Models
 
     public class RMA_TimeSheetRemainderEmail
     {
-        public List<string> emails { get; set; }
+        public List<RMA_RemainderEmailSelectedEmpModel> selctedempmodel { get; set; }
+        public string weekstartdate { get; set; }
+        public string weekenddate { get; set; }
+        public string LogedInEmpId { get; set; }
+        public string LogedInEmpName { get; set; }
+        public string LogedInEmpEmail { get; set; }
     }
 
-
-
+    public class RMA_RemainderEmailSelectedEmpModel
+    {
+        public string selectedemployeeemail { get; set; }
+        public string selectedemployeeemailid { get; set; }
+        public string selectedemployeeempname { get; set; }
+        public string selectedemploymanager { get; set; }
+        public string selectedemploymanageremail { get; set; }
+    }
 
     public class RMA_LeaveModel
     {
@@ -125,5 +136,17 @@ namespace ResourceManagement.Models
         public string SubmittedBy { get; set; }
         public string SubmissionType { get; set; }
     }
+
+    public class RMA_ClientBasedEmpModel
+    {
+        public string EmpId { get; set; }
+        public string ProjectID { get; set; }
+        public string ClientName { get; set; }     
+    }
+
+
+
+
+
 
 }

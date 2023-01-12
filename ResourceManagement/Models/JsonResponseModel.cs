@@ -63,4 +63,11 @@ namespace ResourceManagement.Models
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
         public Dictionary<string, string> MissingLeaveDates { get; set; } = new Dictionary<string, string>();
     }
+
+    public class RMA_ClientBasedEmpJson
+    {
+        public AMBC_Active_Emp_view ClientBasedAMBCEmp { get; set; } = new AMBC_Active_Emp_view();
+
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+    }
 }

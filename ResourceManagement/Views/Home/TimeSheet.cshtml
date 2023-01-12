@@ -99,7 +99,7 @@
 
                                         }
                                         var empProjects = string.Join(", ", projects);
-                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+                                        <div class="agent-navdrop-project emp-data-nav">@empProjects</div>
 
                                     }
                                     else
@@ -175,10 +175,10 @@
                     <div class="row">
                         <div class="form-group col-lg-4">
                             <label for="timeSheetEmpClient">Client</label>
-                            <select id="timeSheetEmpClient" name="clients" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                            <select id="timeSheetEmpClient" name="timeSheetEmpClient" class="form-control form-select form-select-lg mb-3 date-timesheet">
                                 @foreach (var project in Model.projectInfo)
                                 {
-                                    <option value="@project.Project_Code">@project.Client </option>
+                                    <option value="@project.Project_Code">@project.Client</option>
                                 }
                             </select>
                         </div>
@@ -793,6 +793,35 @@
 </div>
 
 <script>
+
+
+    // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
+    jQuery('#timeSheetEmpClient').change(function (evt) {
+
+        var ClientBasedEmpDetails = {
+            EmpId: jQuery('.agent-navdrop-empid').text(),
+            ProjectID: jQuery('#timeSheetEmpClient').val(),
+            ClientName: jQuery('#timeSheetEmpClient :selected').text(),
+        };
+
+        var abc = 0;
+
+        jQuery.ajax({
+            url: "/ClientBasedEmpDetails",
+            type: "POST",       
+            data: { ClientBasedEmpModel: ClientBasedEmpDetails },
+            success: function (data) {
+                if (data.jsonResponse.StatusCode == 200) {
+                    jQuery('.agent-navdrop-project').text(data.ClientBasedAMBCEmp.projectname);
+                    jQuery('.agent-navdrop-empmanager').text(data.ClientBasedAMBCEmp.Client_Report_Manager);
+                    jQuery('.agent-navdrop-client').text(data.ClientBasedAMBCEmp.Client);
+                }
+            }
+        });
+
+    });
+
+
 
     function GenerateGUID() {
         let u = Date.now().toString(16) + Math.random().toString(16) + '0'.repeat(16);
@@ -1717,7 +1746,7 @@
                 jQuery('.timesheet-addreport').attr('data-updatedindexid', requiredIndexNum);
                 jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);
 
-                jQuery('#timeSheetdate').val(item.taskdate);               
+                jQuery('#timeSheetdate').val(item.taskdate);
                 $("#timeSheetCategory").val(item.category).attr("selected", "selected");
 
                 jQuery('#timeSheetIncNumber').val(item.incidentnumber);
