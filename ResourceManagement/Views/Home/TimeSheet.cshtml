@@ -297,7 +297,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="timeSheetCategory">Category</label>
-                                <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3">
+                                <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3" required>
+                                    <option value="" disabled selected>Select Category</option>
                                     <option value="Development">Development</option>
                                     <option value="Customer Request">Customer Request</option>
                                     <option value="Support & Monitoring">Support & Monitoring</option>
@@ -341,6 +342,7 @@
                                     <option value="IT Support">IT Support</option>
                                     <option value="HR">HR</option>
                                     <option value="Accounts">Accounts</option>
+                                    <option value="Digital analytics">Digital analytics</option>
                                     <option value="Others">Others</option>
                                 </select>
                             </div>
@@ -351,7 +353,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number</label>
-                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required  aria-describedby="incidentnumberhelp"></textarea>
+                                <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required aria-describedby="incidentnumberhelp"></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Number(s)
                                 </div>
@@ -388,11 +390,12 @@
                             <div class="form-group">
                                 <label for="timeSheetUrgency">Priority</label>
 
-                                <select id="timeSheetUrgency" name="urgency" class="form-control form-select form-select-lg mb-3">
-                                    <option value="critical">Critical</option>
-                                    <option value="high">High</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="low">Low</option>
+                                <select id="timeSheetUrgency" name="urgency" class="form-control form-select form-select-lg mb-3" required>
+                                    <option value="" disabled selected>Select Critical</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
                                 </select>
                             </div>
                         </div>
@@ -401,11 +404,12 @@
                             <div class="form-group">
                                 <label for="timeSheetStatus">Status</label>
 
-                                <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3">
-                                    <option value="open">Open</option>
-                                    <option value="closed">Closed</option>
-                                    <option value="inprogress">In Progress</option>
-                                    <option value="ongoing">On Going</option>
+                                <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3" required>
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="On Going">On Going</option>
                                 </select>
                             </div>
                         </div>
@@ -1152,7 +1156,7 @@
 
                                     if (data != null && data.jsonResponse.StatusCode == "404") {
 
-                                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());                                      
+                                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
 
                                         var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please contact Admin for Check-In adjustments </h2><br><br>";
 
@@ -1241,7 +1245,7 @@
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
 
-                //jQuery('#timeSheetdate').val(minDate);
+                jQuery('#timeSheetdate').val(minDate);
 
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
@@ -1336,7 +1340,7 @@
                                             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
 
                                             var bodyMessage = "<h2>Looks like you might not Checked-in / leave on below dates. Please contact Admin for Check-In adjustments </h2><br><br>";
-                                          
+
 
                                             jQuery.each(data.MissingLeaveDates, function (leaveDate, Name) {
                                                 bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
@@ -1351,6 +1355,7 @@
                                         else {
                                             jQuery('#exampleModalLong').modal('show');
                                             jQuery(".timesheet-submit").removeAttr("disabled");
+                                            setTimeout(datehighlate, 500);
                                         }
 
                                     }
@@ -1364,14 +1369,18 @@
         });
     });
 
+    function datehighlate() {
+        jQuery("#timeSheetdate").focus();
+    }
+
     function ClearFormFieldsData() {
         jQuery('#timeSheetdate').val('');
-        $("#timeSheetCategory option:first").attr('selected', 'selected');
+        jQuery("#timeSheetCategory").prop("selectedIndex", 0);
         jQuery('#timeSheetIncNumber').val('');
         jQuery('#timeSheetIncDesc').val('');
         jQuery('#timeSheetRequester').val('');
-        $("#timeSheetUrgency option:first").attr('selected', 'selected');
-        $("#timeSheetStatus option:first").attr('selected', 'selected');
+        jQuery("#timeSheetUrgency").prop("selectedIndex", 0);
+        jQuery("#timeSheetStatus").prop("selectedIndex", 0);
         jQuery('#timeSheetClosedDate').val('');
         jQuery('#timeSheetTimeSpent').val('');
         jQuery('#timeSheetOverTime').val('');
@@ -1708,13 +1717,14 @@
                 jQuery('.timesheet-addreport').attr('data-updatedindexid', requiredIndexNum);
                 jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);
 
-                jQuery('#timeSheetdate').val(item.taskdate);
-                $('#timeSheetCategory :selected').text(item.category);
+                jQuery('#timeSheetdate').val(item.taskdate);               
+                $("#timeSheetCategory").val(item.category).attr("selected", "selected");
+
                 jQuery('#timeSheetIncNumber').val(item.incidentnumber);
                 jQuery('#timeSheetIncDesc').val(item.taskdetails);
                 jQuery('#timeSheetRequester').val(item.requester);
-                $('#timeSheetUrgency :selected').text(item.callpriority);
-                $('#timeSheetStatus :selected').text(item.callstatus);
+                $("#timeSheetUrgency").val(item.callpriority).attr("selected", "selected");
+                $("#timeSheetStatus").val(item.callstatus).attr("selected", "selected");
                 jQuery('#timeSheetClosedDate').val(item.closeddate);
                 jQuery('#timeSheetTimeSpent').val(item.timespent);
                 jQuery('#timeSheetOverTime').val(item.overtime);
