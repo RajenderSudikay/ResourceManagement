@@ -282,7 +282,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="timeSheetdate">Date</label>
+                                <label for="timeSheetdate">Date<b style="color:red">*</b></label>
                                 <input type="date" class="form-control" id="timeSheetdate" required>
                                 <div class="leave-or-holiday-msg" style="display:none; color: red">
                                     You are on Leave or Holiday on this date.
@@ -296,7 +296,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="timeSheetCategory">Category</label>
+                                <label for="timeSheetCategory">Category<b style="color:red">*</b></label>
                                 <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Category</option>
                                     <option value="Development">Development</option>
@@ -352,7 +352,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number</label>
+                                <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number<b style="color:red">*</b></label>
                                 <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required aria-describedby="incidentnumberhelp"></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Number(s)
@@ -365,7 +365,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncDesc" id="inputGroupPrepend">Incident Description</label>
+                                <label for="timeSheetIncDesc" id="inputGroupPrepend">Incident Description<b style="color:red">*</b></label>
                                 <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description" required></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Description
@@ -388,7 +388,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetUrgency">Priority</label>
+                                <label for="timeSheetUrgency">Priority<b style="color:red">*</b></label>
 
                                 <select id="timeSheetUrgency" name="urgency" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Critical</option>
@@ -402,7 +402,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetStatus">Status</label>
+                                <label for="timeSheetStatus">Status<b style="color:red">*</b></label>
 
                                 <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Status</option>
@@ -424,7 +424,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetTimeSpent">Time Spent</label>
+                                <label for="timeSheetTimeSpent">Time Spent<b style="color:red">*</b></label>
                                 <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69" required>
                                 <small id="timespenthelp" class="form-text text-muted" style="color:darkblue !important"></small>
                                 <div class="invalid-feedback timeSpenterror-msg">
@@ -1567,7 +1567,7 @@
 
                     if (model.closeddate != null && model.closeddate != "") {
                         displayClosedDate = model.closeddate.split('-');
-                        displayClosedDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+                        displayClosedDate = displayClosedDate[2] + "-" + displayClosedDate[1] + "-" + displayClosedDate[0];
                     }
 
 
@@ -1714,6 +1714,7 @@
 
     //Final submit post confirmation
     jQuery(".timesheet-submit-final").click(function () {
+        jQuery(".btn-alert-yes").attr("disabled", true);
         jQuery.ajax({
             type: "POST",
             url: "/AddTimeSheet",
@@ -1724,9 +1725,11 @@
                 if (data.StatusCode == 200) {
                     jQuery('.database-response').addClass('text-success');
                     jQuery('.message-success-popup').modal('show');
+                    jQuery(".btn-alert-yes").removeAttr("disabled");
                 }
                 else {
                     /* jQuery('.database-response').addClass('text-danger');*/
+                    jQuery(".btn-alert-yes").removeAttr("disabled");
                     jQuery('.database-response').text(data.Message);
                     jQuery('#modal-db-error-alert').modal('show');
                 }
@@ -1790,7 +1793,7 @@
             if (item.uniquekey == selectedUniqueItemKey) {
                 requiredIndexNum = i;
                 deleteMessageText += "<b>" + "Task Date: </b>" + item.taskdate + "<br>"
-                    + "<b>" + "Category: </b>" + item.callpriority + "<br>"
+                    + "<b>" + "Category: </b>" + item.category + "<br>"
                     + "<b>" + "Incident Number: </b>" + item.incidentnumber + "<br>"
                     + "<b>" + "Incident Desc: </b>" + item.taskdetails + "<br>"
                     + "<b>" + "Requester: </b>" + item.requester + "<br>"
