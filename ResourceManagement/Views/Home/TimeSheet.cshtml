@@ -1276,7 +1276,12 @@
                 jQuery('#timeSheetdate').attr("min", minDate);
                 jQuery('#timeSheetdate').attr("max", maxDate);
 
-                //jQuery('#timeSheetdate').val(minDate);
+                //Highlte weekstart date in date picker
+                var minDateToHighlate = moment(new Date(minDate)).toDate();
+                minDateToHighlate = new Date(minDateToHighlate.addDays(-1));
+                minDateToHighlate = moment(minDateToHighlate).format("YYYY-MM-DD");
+
+                jQuery('#timeSheetdate').val(minDateToHighlate);
 
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
