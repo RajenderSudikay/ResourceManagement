@@ -12,9 +12,11 @@ namespace ResourceManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class ticket_priority
+    public partial class ambclogin_leave_view
     {
-        public int sno { get; set; }
-        public string tpriority { get; set; }
+        public string Employee_Code { get; set; }
+        public System.DateTime Sign_In_Date { get; set; }
+        public Nullable<System.DateTime> Leave_Date { get; set; }
+        public string Leave_Type { get; set; }
     }
 }

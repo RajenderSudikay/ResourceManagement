@@ -16,6 +16,29 @@ namespace ResourceManagement.Models
 
     }
 
+    public class SignInOurResponseModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+
+        [JsonPropertyName("signin")]
+        public bool signin { get; set; } = false;
+
+        [JsonPropertyName("signout")]
+        public bool signout { get; set; } = false;
+
+
+        [JsonPropertyName("empname")]
+        public string empname { get; set; } = string.Empty;
+
+        [JsonPropertyName("empemailid")]
+        public string empemailid { get; set; } = string.Empty;
+
+        [JsonPropertyName("type")]
+        public string type { get; set; } = string.Empty;
+
+
+    }
+
     public class WeekReportModel
     {
         [JsonPropertyName("weekday")]
@@ -24,5 +47,27 @@ namespace ResourceManagement.Models
         [JsonPropertyName("hoursspent")]
         public int hoursspent { get; set; } = 500;
 
+        [JsonPropertyName("overtime")]
+        public int overtime { get; set; } = 0;
+
+    }
+
+    public class LeaveEmailModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+        public RMA_LeaveModel AjaxleaveModel { get; set; }
+    }
+
+    public class ApplyLeaveForMissedSidnInModel
+    {
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+        public Dictionary<string, string> MissingLeaveDates { get; set; } = new Dictionary<string, string>();
+    }
+
+    public class RMA_ClientBasedEmpJson
+    {
+        public AMBC_Active_Emp_view ClientBasedAMBCEmp { get; set; } = new AMBC_Active_Emp_view();
+
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
     }
 }

@@ -1,0 +1,187 @@
+﻿@model ResourceManagement.Models.TimesheetReportModel.TimeSheetEmailReport
+
+@{
+    ViewBag.Title = "TimeSheet Email Report Page";
+}
+
+<style>
+    body {
+        background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
+</style>
+
+@if (Model != null)
+{
+    <div class="emailbodycontent">
+        <table>
+            <tr>
+                <td style="width: 60%">
+                    <div class="emailbody">
+                        <h2>Hi <b>@Model.reports[0].employeename</b>,</h2>
+                        <br />
+                        Your timesheet has been successfully submitted, please find the below details for reference.
+                        <br /> <br />
+                    </div>
+                </td>
+                <td style="width: 45%; float: right; margin-right: 13px;">
+                    <div>
+                        <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <div class="table-responsive table">
+            <table class="table table-hover table-striped" id="timesheet-table" style="border:1px solid black;">
+                <thead class="table-bordered">
+                    <tr style="background-color: #337ab7">
+                        <th scope="col" style="width: 100px; color: white;">Date</th>
+                        <th scope="col" style="width: 90px; color: white">Category</th>
+                        <th scope="col" style="width: 200px; color: white">Incident Number</th>
+                        <th scope="col" style="width: 200px; color: white ">Incident Desc</th>
+                        <th scope="col" style="width: 80px; color: white">Requester</th>
+                        <th scope="col" style="width: 80px; color: white ">Urgency</th>
+                        <th scope="col" style="width: 80px; color: white ">Status</th>
+                        <th scope="col" style="width: 80px; color: white ">Date Closed</th>
+                        <th scope="col" style="width: 80px; color: white ">Time Spent</th>
+                        <th scope="col" style="width: 200px; color: white">Comments</th>
+                    </tr>
+                </thead>
+
+                <tbody class="timesheet-table-grid">
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var report in Model.reports)
+                    {
+                        var color = "";
+                        if (i % 2 == 0)
+                        {
+                            color = "#f2f2f2";
+                        }
+
+                        i++;
+
+                        <tr class="default-table-row" style="background-color: @color">
+                            @{
+                                var timesheetTaskdate = @report.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim();
+
+                                //var requiredDateFormat = timesheetTaskdate.Contains('/') ? timesheetTaskdate.Split('/') : timesheetTaskdate.Split('-');
+
+                                //timesheetTaskdate = requiredDateFormat[2] + "-" + requiredDateFormat[1] + "-" + requiredDateFormat[0];
+                            }
+                            <td scope="row" style="width: 100px;vertical-align: middle;">@timesheetTaskdate</td>
+                            <td scope="row" style="width: 90px;vertical-align: middle;">@report.category.TrimStart().TrimEnd()</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.incidentnumber</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.taskdetails</td>
+                            <td scope="row" style="width: 80px;vertical-align: middle;">@report.requester</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.callpriority</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.callstatus</td>
+
+                            @{
+                                var timesheetClosedDate = @report.closeddate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim();
+                            }
+
+                            @if (!string.IsNullOrEmpty(timesheetClosedDate))
+                            {
+                                //var requiredClosedDateFormat = timesheetClosedDate.Contains('/') ? timesheetClosedDate.Split('/') : timesheetClosedDate.Split('-');
+                                //timesheetClosedDate = requiredClosedDateFormat[2] + "-" + requiredClosedDateFormat[1] + "-" + requiredClosedDateFormat[0];
+                            }
+
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@timesheetClosedDate</td>
+                            <td scope="row" style="width: 80px; vertical-align: middle ">@report.timespent <b>(@report.overtime)</b></td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.comments</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>
+                        <img src="https://quickchart.io/chart?width=330&height=220&chart={type: 'bar', data:{ labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],datasets: [{label: 'Working Hours', data: [@Model.MondayHours, @Model.TuesdayHours, @Model.WednesdayHours, @Model.ThursdayHours, @Model.FridayHours,@Model.SaturdayHours,@Model.SundayHours],backgroundColor:'rgb(81, 205, 160)' }, { label: 'Over Time', data: [@Model.MondayOverTime, @Model.TuesdayOverTime, @Model.WednesdayOverTime, @Model.ThursdayOverTime, @Model.FridayOverTime,@Model.SaturdayOverTime,@Model.SundayOverTime], backgroundColor:'rgb(109, 120, 173)'}, { label: 'Holiday/Leave', data: [@Model.MondayHoliday, @Model.TuesdayHoliday, @Model.WednesdayHoliday, @Model.ThursdayHoliday, @Model.FridayHoliday,0,0], backgroundColor:'rgb(220, 20, 60)'}], }, options: {legend: { display: true, position: 'bottom', align: 'centre',}, title: {display: true, text : 'Total hours spent in this week => @Model.TotalHoursSpent', },scales: { yAxes: [{ gridLines: { display: false,},}],xAxes: [{ gridLines: {},}]},}}" />
+
+                        @*<img src="https://quickchart.io/chart?width=330&height=220&chart={type: 'bar', data:{ labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],datasets: [{label: 'Working Hours', data: [@Model.MondayHours, @Model.TuesdayHours, @Model.WednesdayHours, @Model.ThursdayHours, @Model.FridayHours,@Model.SaturdayHours,@Model.SundayHours],backgroundColor:'rgb(81, 205, 160)' }, { label: 'Over Time', data: [@Model.MondayOverTime, @Model.TuesdayOverTime, @Model.WednesdayOverTime, @Model.ThursdayOverTime, @Model.FridayOverTime,@Model.SaturdayOverTime,@Model.SundayOverTime], backgroundColor:'rgb(109, 120, 173)'}, { label: 'Holiday/Leave', data: [@Model.MondayHoliday, @Model.TuesdayHoliday, @Model.WednesdayHoliday, @Model.ThursdayHoliday, @Model.FridayHoliday,0,0], backgroundColor:'rgb(220, 20, 60)'}], }, options: {legend: { display: true, position: 'bottom', align: 'centre',}, title: {display: true, text : 'Total hours spent in this week => @Model.TotalHoursSpent', },scales: { yAxes: [{ gridLines: { display: false,}, ticks: {fontFamily: 'Calibri', fontStyle: 'italic', fontColor: '#23366f', },}],xAxes: [{ gridLines: { display: false,}, ticks: {fontFamily: 'Calibri', fontStyle: 'italic', fontColor: '#23366f', },}]},}}" />*@
+
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <br />
+        <br />
+        <div class="emailbody">
+            <h2> <b style="font-family: Calibri; ">AMBC Technologies. </b></h2>
+        </div>
+        <br />
+        <br />
+        <div class="email-footer" style="text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; ">
+            Autogenarted email. Please do  not reply.
+        </div>
+    </div>
+
+}
+
+
+
+
+

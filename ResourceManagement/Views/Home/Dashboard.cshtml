@@ -2,12 +2,13 @@
 
 @{
     ViewBag.Title = "Dashboard";
+    var imagePath = "";
 }
 
 <div class="sidenav sidenav-position">
     <div class="px-5 ms-xl-4" style="float:left">
         <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
-        <span class="h1 fw-bold mb-0">   <img src="~/Assets/AMBC_Logo.png" /></span>
+        <span class="h1 fw-bold mb-0"> <a href="/dashboard"><img src="~/Assets/AMBC_Logo.png" /></a>  </span>
     </div>
 
     <div class="login-main-text">
@@ -23,11 +24,14 @@
             <div class="dashboard-emp-icon">
                 @if (Model != null)
                 {
+                    imagePath = "/Assets/EmployeeImagesPNG/" + @Model.AMBC_Active_Emp_view.Employee_ID + ".png";
+
                     <div class="agent-navigation dashboard-navigation">
                         <div class="">
                             <div class="dropdownheading">
                                 <div class="profile-img">
-                                    <img src="~/Assets/Rajender_Passport_Photo.jpg" class="img-fluid rounded-circle" width="40" alt="Employee profile image">&nbsp;&nbsp;
+
+                                    <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Employee profile image">&nbsp;&nbsp;
                                 </div>
                                 <p style="color: #2167ae">@Model.AMBC_Active_Emp_view.Employee_Name</p>
                             </div>
@@ -35,7 +39,7 @@
                             <div class="agent-description hide dashboard-emp-info" style="">
                                 <div class="agent-details">
                                     <div class="agent-img">
-                                        <img alt="profile-photo" src="~/Assets/Rajender_Passport_Photo.jpg" loading="lazy">
+                                        <img alt="profile-photo" src="@imagePath" loading="lazy">
 
                                     </div>
 
@@ -56,7 +60,7 @@
 
                                         </li>
                                         <li>
-                                            <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Report Manager:</b>
+                                            <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
                                             <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
 
                                         </li>
@@ -68,12 +72,52 @@
 
                                         <li>
                                             <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
-                                            <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                            @if (Model.projectInfo.Count() > 1)
+                                            {
+                                                var clients = new List<string>();
+                                                foreach (var empProject in Model.projectInfo)
+                                                {
+                                                    clients.Add(empProject.Client);
+                                                }
+                                                var empClients = string.Join(", ", clients);
+                                                <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                            }
                                         </li>
 
                                         <li>
                                             <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
-                                            <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                            @if (Model.projectInfo.Count() > 1)
+                                            {
+                                                var projects = new List<string>();
+                                                foreach (var empProject in Model.projectInfo)
+                                                {
+                                                    var sameProjectExists = false;
+
+                                                    foreach (var project in projects)
+                                                    {
+                                                        if (project == empProject.Project_Name)
+                                                        {
+                                                            sameProjectExists = true;
+                                                        }
+                                                    }
+
+                                                    if (!sameProjectExists)
+                                                    { projects.Add(empProject.Project_Name); }
+
+                                                }
+                                                var empProjects = string.Join(", ", projects);
+                                                <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                            }
                                         </li>
                                         <li>
                                             <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
@@ -82,7 +126,7 @@
 
                                         <li>
                                             <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
-                                            @*<div class="agent-navdrop-empemail">@Model.AMBC_Active_Emp_view.employee_mailid</div>*@
+                                            <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
                                         </li>
                                         <li>
                                             <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
@@ -106,83 +150,447 @@
 
         </div>
         <br />
-        <div class="row mt-xl-4">
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Rajender_Passport_Photo.jpg" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        @*<a href="/timesheet" class="btn btn-custom"></a>*@
-                        <button type="submit" class="signin-signout btn-info">Check-In</button>
-                    </div>
-                </div>
 
-            </div>
+        <div class="row mt-xl-4">
+
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+                <div class="col-sm ">
+
+                    <div class="card dashboard-zoom" style="width: 18rem; height:285px">
+                        <img src="@imagePath" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text" style="width: 158px">
+                                DO YOUR PART, Please Check-In. Admin team will mark your attendence. Thanks you for understanding.
+                            </p>
+
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            @{
+                                var showCheckIn = Model.signInOutInfo == null ? "show" : "hide";
+                                var showCheckOut = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time == null ? "show" : "hide";
+                                var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
+                            }
+
+                            <button type="submit" class="signin btn-info @showCheckIn" style="width:100px; border-radius:10px;"><b>Check-In</b></button>
+                            <button type="submit" class="signout btn-info  @showCheckOut" style="width:100px; border-radius:10px"><b>Check-Out</b></button>
+                            <label class="@showLabel done-forday">See you tomorrow!</label>
+                        </div>
+                    </div>
+
+
+                </div>
+            }
             <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
+                <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
                     <img src="~/Assets/TimeSheet.png" class="card-img-top" alt="..." height="120">
                     <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/timesheet" class="btn btn-info">Timesheet</a>
+                        <p class="card-text">We understand life gets busy and we tend to forget some important things like submitting timesheets on time that gets all of us paid on time. Thank you for the understanding.</p>
+
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
+                        <a href="/timesheet" class="btn btn-info" style="width: 100px; border-radius: 10px;"><b>Enter Timesheet</b></a>
                     </div>
                 </div>
-
             </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info">KRA Report</a>
+
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "leaveuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Leave.jpeg" class="card-img-top" alt="..." height="120" style="border-top-left-radius: 25px !important; border-top-right-radius: 25px !important">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/applyleave" class="btn btn-info" style="width:100px; border-radius:10px"><b>Apply Leave</b></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+
+        <div class="row mt-xl-4">
+
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+                <div class="col-sm ">
+
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Report.png" class="card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">11Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/timesheetreports" class="btn btn-info" style="width:100px; border-radius:10px"><b>Timesheet Report</b></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "leaveuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Check-In.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            @*<a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In Adjust</b></a>*@
+                            <a href="/zohosigninupdate" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In Adjust</b></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="#" class="btn btn-info" style="width:100px; border-radius:10px"><b>Appraisal</b></a>
+                        </div>
                     </div>
                 </div>
+            }
+        </div>
 
+
+        <div class="row mt-xl-4">
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+            {
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="http://52.140.63.122/tsReportServer/Pages/ReportViewer.aspx?%2fambctsreports%2fambcstdtimesheetrpt-Dev&rs:Command=Render" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>KRA Report</b></a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Check-In.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In day wise</b></a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Check-In.png" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>HR</b></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+
+        <div class="modal message-confirm-popup" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-information-custommessage">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="margin-left: 190px; padding-top: 30px; margin-bottom: 30px;" width="50px">
+<g id="Info-mark">
+                        <path d="M38.5351982,47.6064987H34.455101V28.4473c0-0.5527-0.4473-1-1-1h-4.5204945c-0.5523071,0-1,0.4473-1,1s0.4476929,1,1,1
+		h3.5204945v18.1591988h-5.1216011c-0.5522003,0-1,0.4472008-1,1c0,0.5527,0.4477997,1,1,1h11.2016983c0.5527,0,1-0.4473,1-1
+		C39.5351982,48.0536995,39.0878983,47.6064987,38.5351982,47.6064987z" />
+                        <circle cx="32" cy="18" r="3" />
+                        <path d="M32,0c-17.6730995,0-32,14.3268995-32,32s14.3268995,32,32,32s32-14.3269005,32-32S49.6730995,0,32,0z M32,62
+		c-16.542099,0-30-13.457901-30-30c0-16.5419998,13.4578991-30,30-30s30,13.4580002,30,30C62,48.542099,48.542099,62,32,62z" />
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h2 class="modal-body-custom-information">
+                            Hey @Model.AMBC_Active_Emp_view.Employee_Name
+                            <br />
+                            <br />
+                            Thank you for check-Out.
+                            <br />
+                            Have a good day. See you tomorrow!
+                        </h2>
+                    </div>
+
+                    <div class="">
+                        <button type="button" class="btn btn-lg modal-information-popup-btn" data-dismiss="modal"><b style="color: #2167ae">Okay</b></button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row mt-xl-4">
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Payroll.png" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-info">Payroll</a>
+        <div class="modal message-success-popup" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-success-custommessage">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: 190px; padding-top: 30px; margin-bottom: 30px;" xml:space="preserve" width="50px">
+                        <g>
+                        <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                        <path d="M38.252,15.336l-15.369,17.29l-9.259-7.407c-0.43-0.345-1.061-0.274-1.405,0.156c-0.345,0.432-0.275,1.061,0.156,1.406
+		l10,8C22.559,34.928,22.78,35,23,35c0.276,0,0.551-0.114,0.748-0.336l16-18c0.367-0.412,0.33-1.045-0.083-1.411
+		C39.251,14.885,38.62,14.922,38.252,15.336z" />
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                        <g>
+                                </g>
+                                </svg>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
+                    <div class="modal-body text-center">
+                        <h2 class="modal-body-custom-success">
+                            Hey @Model.AMBC_Active_Emp_view.Employee_Name
+                            <br />
+                            <br />
+                            Thank you for check-In.
+                            Have a good day!
+                        </h2>
+                    </div>
 
-            </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/Appraisal.png" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-info">Appraisal</a>
+                    <div class="">
+                        <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal">Okay</button>
                     </div>
                 </div>
             </div>
-            <div class="col-sm ">
-                <div class="card dashboard-zoom" style="width: 18rem;">
-                    <img src="~/Assets/hr.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-info">HR Letters</a>
-                    </div>
-                </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-warning-message-popup">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" fill="#fff" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 52 52" style="enable-background: new 0 0 52 52; margin-left: 80px; padding-top: 20px; margin-bottom: 20px; width: 50px" xml:space="preserve">
+<g>
+                <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26
+		S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z" />
+                <path d="M26,10c-0.552,0-1,0.447-1,1v22c0,0.553,0.448,1,1,1s1-0.447,1-1V11C27,10.447,26.552,10,26,10z" />
+                <path d="M26,37c-0.552,0-1,0.447-1,1v2c0,0.553,0.448,1,1,1s1-0.447,1-1v-2C27,37.447,26.552,37,26,37z" />
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+                <div style="height: 60px; background-color: #92d0e8"></div>
+            </div>
+            <div class="modal-body text-center">
+                <h2 class="modal-body-custom-success">
+                    Hey @Model.AMBC_Active_Emp_view.Employee_Name
+                    <br />
+                    <br />
+                    You have applied Leave or Holiday today so you cannot check-In today.
+                    Have a good holiday!
+                </h2>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-secondary modal-warning-popup-btn" data-dismiss="modal"><b style="font-size:medium">Close</b></button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    jQuery(".signin-signout").click(function () {
+    jQuery(".signin").click(function () {
         jQuery.ajax({
             type: "POST",
-            url: "/signinsignout",
+            url: "/signin",
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                if (data.StatusCode == 200) {
+                if (data.jsonResponse.StatusCode == 200) {
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                    jQuery('.signout').show();
+                    jQuery('.signout').removeClass('hide');
+                    $('.message-success-popup').modal('show');
+
+                    var signInAndOutEmailModel = {
+                        empname: data.empname,
+                        empemailid: data.empemailid,
+                        type: data.type
+                    }
+
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/SignInAndOutEmail",
+                        data: JSON.stringify({ signInAndOutEmailData: signInAndOutEmailModel }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            console.log("Check-In Email Sent Successfully");
+                        }
+                    });
                 }
                 else {
+                    if (data.jsonResponse.StatusCode == 500) {
+                        $('#modal-warning-message-popup').modal('show');
+                    }
+                    else {
+                        jQuery('.signin').show();
+                        jQuery('.signin').removeClass('hide');
+                        jQuery('.signout').hide();
+                        jQuery('.signout').removeClass('show');
+                    }
+                }
+            }
+        });
+    });
+
+    jQuery(".signout").click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/signout",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.jsonResponse.StatusCode == 200) {
+                    jQuery('.done-forday').show();
+                    jQuery('.done-forday').removeClass('hide');
+                    jQuery('.signout').hide();
+                    jQuery('.signout').removeClass('show');
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                    $('.message-confirm-popup').modal('show');
+
+                    var signInAndOutEmailModel = {
+                        empname: data.empname,
+                        empemailid: data.empemailid,
+                        type: data.type
+                    }
+
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/SignInAndOutEmail",
+                        data: JSON.stringify({ signInAndOutEmailData: signInAndOutEmailModel }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            console.log("Check-Out Email Sent Successfully");
+                        }
+                    });
+                }
+                else {
+                    jQuery('.signin').hide();
+                    jQuery('.signin').removeClass('show');
+                    jQuery('.signout').show();
+                    jQuery('.signout').removeClass('hide');
                 }
             }
         });

@@ -25,5 +25,6 @@ namespace ResourceManagement
         public string usrnmconcat { get; set; }
         public string region { get; set; }
         public bool emp_status { get; set; }
+        public string empimgpath { get; set; }
     }
 }

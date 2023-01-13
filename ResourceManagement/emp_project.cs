@@ -21,5 +21,6 @@ namespace ResourceManagement
         public string assign_emp_name { get; set; }
         public string project_staus { get; set; }
         public string project_shift { get; set; }
+        public string clientreportmanager { get; set; }
     }
 }

@@ -1,0 +1,428 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "TimeSheets View Report partial Page";
+}
+
+<style>
+    .headerrow {
+        border: 0px !important;
+        padding: 2px !important;
+        background-color: LightGray;
+    }
+
+    .headertd {
+        font-size: small;
+        border-right: 1px solid lightgray !important;
+    }
+
+    .center {
+        margin-top: 3px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 6px;
+        background-color: LightGray;
+    }
+
+    #timesheet-table th, td {
+        border: 1px solid gray;
+    }
+
+    .table-leaveinfo th, td {
+        border: 1px solid gray;
+    }
+</style>
+
+@if (Model != null)
+{
+    <div id="demo" class="carousel slide" data-ride="carousel">
+
+        <!-- Indicators -->
+        @{
+            int Indicatori = 0;
+        }
+        <ol class="carousel-indicators">
+            @foreach (var employeeReport in Model.TimeSheetReports)
+            {
+                var isactiveclass = Indicatori == 0 ? "active" : "";
+                Indicatori++;
+
+                <li data-target="#demo" data-slide-to="@Indicatori" class="@isactiveclass"></li>
+            }
+        </ol>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            @{
+                int i = 0;
+            }
+
+            @foreach (var employeeReport in Model.TimeSheetReports)
+            {
+                Int32? totalhoursSpentInTheWeek = 0;
+                Int32? totalBillableHours = 0;
+                Int32? totalNonBillableHours = 0;
+
+                bool isSaturdayBillableHours = false;
+                bool isSundayBillableHours = false;
+
+
+                var mondayHours = 0;
+                var tuesdayHours = 0;
+                var wednesdayHours = 0;
+                var thursdayHours = 0;
+                var fridayHours = 0;
+                var saturdayHours = 0;
+                var sundayHours = 0;
+
+
+                var isactiveclass = i == 0 ? "active" : "";
+                i++;
+                <div class="carousel-item @isactiveclass">
+                    <div class="card timesheet-card partialview-reports">
+                        <div class="card-body ">
+                            <div class="emailbodycontent">
+                                <div class="table-responsive table">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 100%; padding-left: 0px; text-align: center; border: 1px solid black; padding-top: 0px; padding-right: 0px; padding-bottom:0px">
+                                                <table style="width:100%">
+                                                    <tr><td colspan="4" class="headerrow"><h2><b>@employeeReport.EmployeeInfo.Designation Weekly Project Status Report</b></h2></td></tr>
+                                                    <tr style="text-align:left">
+                                                        <td class="headertd">
+                                                            <b>Resource Name</b>
+                                                        </td>
+                                                        <td class="headertd">
+                                                            @employeeReport.EmployeeInfo.Employee_Name
+                                                        </td>
+                                                        <td class="headertd"><b>Project Manager</b></td>
+                                                        <td class="headertd">
+                                                            @employeeReport.EmployeeInfo.Client_Report_Manager
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="text-align:left">
+
+                                                        @{
+                                                            var requiredWeekSatartDate = "NA";
+                                                            var requiredWeekEndDate = "NA";
+
+                                                        }
+
+                                                        @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("-"))
+                                                        {
+
+                                                            var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                            requiredWeekSatartDate = reportStartdate[1].Trim() + "-" + reportStartdate[2].Trim() + "-" + reportStartdate[0].Trim();
+
+                                                            var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                                                            requiredWeekEndDate = reportEndtdate[1].Trim() + "-" + reportEndtdate[2].Trim() + "-" + reportEndtdate[0].Trim();
+                                                        }
+
+                                                        @if (@employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Contains("/"))
+                                                        {
+
+                                                            var reportStartdate = @employeeReport.timeSheetAjaxInputReportModel.WeekStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
+                                                            requiredWeekSatartDate = reportStartdate[1].Trim() + "-" + reportStartdate[2].Trim() + "-" + reportStartdate[0].Trim();
+
+                                                            var reportEndtdate = @employeeReport.timeSheetAjaxInputReportModel.WeekEndDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
+                                                            requiredWeekEndDate = reportEndtdate[1].Trim() + "-" + reportEndtdate[2].Trim() + "-" + reportEndtdate[0].Trim();
+                                                        }
+
+
+
+                                                        <td class="headertd"><b>Week Start Date</b></td>
+                                                        <td class="headertd">@requiredWeekSatartDate</td>
+                                                        <td class="headertd">
+                                                            <b>Week End Date</b>
+                                                        </td>
+                                                        <td class="headertd">
+                                                            @requiredWeekEndDate
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td style="width: 40%">
+                                                <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="270" height="80" sizes="188px" alt="AMBC Inc">
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="center"><b>EFFORT DETAILS (current week)</b></div>
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #BCD2E8">
+                                                <th class="" scope="col" style="max-width:70px; text-align: center">Day</th>
+                                                <th class="" scope="col" style="max-width: 100px; text-align: center">Category</th>
+                                                <th class="" scope="col" style="max-width: 200px; text-align: center">Incident Number</th>
+                                                <th class="" scope="col" style="max-width: 200px; text-align: center">Incident Desc</th>
+                                                <th class="" scope="col" style="text-align: center">Requester</th>
+                                                <th class="" scope="col" style="text-align: center">Priority</th>
+                                                <th class="" scope="col" style="text-align: center">Status</th>
+                                                <th class="" scope="col" style="text-align: center">Time Spent</th>
+                                                <th class="" scope="col" style="text-align: center">Comments</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @if (employeeReport.timeSheetInfo.Count > 0)
+                                            {
+
+                                                foreach (var task in employeeReport.timeSheetInfo)
+                                                {
+                                                    var isHolidayOrLeaveTask = task.timespent == 0 && task.overtime == 0 ? true : false;
+                                                    if (isHolidayOrLeaveTask)
+                                                    {
+                                                        continue;
+                                                    }
+
+                                                    var date = System.Convert.ToDateTime(task.taskdate.ToString());
+                                                    string dayName = date.ToString("dddd");
+
+
+                                                    switch (dayName)
+                                                    {
+                                                        case "Monday":
+                                                            mondayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Tuesday":
+                                                            tuesdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Wednesday":
+                                                            wednesdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Thursday":
+                                                            thursdayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Friday":
+                                                            fridayHours += System.Convert.ToInt32(task.timespent);
+                                                            break;
+
+                                                        case "Saturday":
+                                                            isSaturdayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                            if (isSaturdayBillableHours)
+                                                            {
+                                                                saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                            }
+                                                            break;
+
+                                                        case "Sunday":
+                                                            isSundayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                            if (isSundayBillableHours)
+                                                            {
+                                                                sundayHours += System.Convert.ToInt32(task.timespent);
+                                                            }
+                                                            break;
+
+                                                        default:
+                                                            break;
+                                                    }
+
+
+                                                    <tr style="background-color: #fff" class="time">
+                                                        @{
+
+                                                            var taskDisplayDate = "";
+                                                            Int32? totalSpentHours = 0;
+                                                        }
+
+                                                        @if (task.taskdate.ToString().Contains("-"))
+                                                        {
+                                                            var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                            taskDisplayDate = requiredDate[1].Trim() + "-" + requiredDate[2] + "-" + requiredDate[0];
+
+                                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                            totalhoursSpentInTheWeek += totalSpentHours;
+                                                        }
+
+                                                        @if (task.taskdate.ToString().Contains("/"))
+                                                        {
+                                                            var requiredDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-");
+                                                            taskDisplayDate = requiredDate;
+
+                                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                            totalhoursSpentInTheWeek += totalSpentHours;
+                                                        }
+
+                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate</td>
+                                                        <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@task.category</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.incidentnumber</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.taskdetails</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.requester</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.callpriority</td>
+                                                        <td scope="row" style="vertical-align: middle; text-align: center">@task.projstatus</td>
+                                                        <td scope="row" style="text-align:center; vertical-align:middle">@totalSpentHours</td>
+                                                        <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.comments</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2><b>NO RECORDS FOUND</b></h2>
+                                                    </td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="center"><b>Leave Information</b></div>
+
+                                    <table class="table-leaveinfo" style="margin-top: 4px; width:34%">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #BCD2E8">
+                                                <th class="" scope="col">Leave Date</th>
+                                                <th class="" scope="col">Leave Type</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @if (employeeReport.timeSheetLeaveOrHolidayInfo != null && employeeReport.timeSheetLeaveOrHolidayInfo.Count > 0)
+                                            {
+                                                foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo)
+                                                {
+                                                    var leaveDisplayDate = "";
+
+                                                    if (leaveReport.LeaveDate.ToString().Contains("-"))
+                                                    {
+                                                        var requiredLeaveDate = leaveReport.LeaveDate.ToString().Contains("00:00:00") ? leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                        leaveDisplayDate = requiredLeaveDate[1].Trim() + "-" + requiredLeaveDate[0].Trim() + "-" + requiredLeaveDate[2].Trim();
+                                                    }
+                                                    if (leaveReport.LeaveDate.ToString().Contains("/"))
+                                                    {
+                                                        var requiredLeaveDate = leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-").Split('-');
+                                                        leaveDisplayDate = requiredLeaveDate[0].Trim() + "-" + requiredLeaveDate[1].Trim() + "-" + requiredLeaveDate[2].Trim();
+                                                    }
+
+
+
+                                                    <tr style="background-color: #ccffcc">
+                                                        <td scope="row">@leaveDisplayDate</td>
+                                                        <td scope="row">@leaveReport.LeaveType</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr style="background-color: #ccffcc">
+                                                    <td scope="row">NA</td>
+                                                    <td scope="row">NA</td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+                                    @{
+
+                                        int mondayBillableHours = mondayHours > 8 ? 8 : mondayHours;
+                                        int tuesdayBillableHours = tuesdayHours > 8 ? 8 : tuesdayHours;
+                                        int wednesdayBillableHours = wednesdayHours > 8 ? 8 : wednesdayHours;
+                                        int thursdayBillableHours = thursdayHours > 8 ? 8 : thursdayHours;
+                                        int fridayBillableHours = fridayHours > 8 ? 8 : fridayHours;
+                                        int saturdayBillableHours = saturdayHours > 8 ? 8 : saturdayHours;
+                                        int sundayBillableHours = sundayHours > 8 ? 8 : sundayHours;
+
+                                        var totalBillableHoursforallworkeddays = mondayBillableHours + tuesdayBillableHours + wednesdayBillableHours + thursdayBillableHours + fridayBillableHours + saturdayBillableHours + sundayBillableHours;
+                                        totalBillableHours = @totalBillableHoursforallworkeddays;
+                                        totalNonBillableHours = totalhoursSpentInTheWeek - totalBillableHours;
+
+                                    }
+
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        @if (totalNonBillableHours <= 0)
+                                        {
+                                            totalNonBillableHours = 0;
+                                        }
+
+                                        @if (totalhoursSpentInTheWeek > 40)
+                                        {
+                                            totalBillableHours = 40;
+                                            totalNonBillableHours = totalhoursSpentInTheWeek - 40;
+                                        }
+                                        else
+                                        {
+                                            totalBillableHours = totalhoursSpentInTheWeek;
+                                            totalNonBillableHours = 0;
+                                        }
+
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalBillableHours</b></td>
+                                        </tr>
+                                    </table>
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalNonBillableHours</b></td>
+                                        </tr>
+                                    </table>
+
+                                    <table class="table-billableinfo" style="margin-top: 15px;">
+
+                                        <tr style="background-color: #ccffcc; ">
+                                            <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
+                                            <td style="border:none; background-color:white"></td>
+                                            <td style="border:1px solid black; background-color:white; width: 30px"><b>@totalhoursSpentInTheWeek</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+        <a class="carousel-control-prev" href="#demo" data-slide="prev" style="display:none">
+            @*<span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>*@
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" style="color: #2167ae; height: 40px; margin-left: -165px; width: 50px ">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16" style="color: #2167ae; height: 40px; margin-right: -164px; width:50px">
+                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+            </svg>
+        </a>
+
+        @if (Model.TimeSheetReports != null && Model.TimeSheetReports.Count > 1)
+        {
+            <script>
+                jQuery('.carousel-control-prev').show();
+                jQuery('.carousel-control-next').show();
+            </script>
+
+        }
+
+
+    </div>
+}
+
+<br />
+<br />
+<br />
+

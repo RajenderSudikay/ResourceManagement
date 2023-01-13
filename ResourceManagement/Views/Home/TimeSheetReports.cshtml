@@ -1,0 +1,620 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "TimeSheets Report Page";
+    var imagePath = "";
+}
+
+<style>
+    .headerrow {
+        border: 0px !important;
+        padding: 2px !important;
+        background-color: LightGray;
+    }
+
+    .headertd {
+        font-size: small;
+        border-right: 1px solid lightgray !important;
+    }
+
+    .center {
+        margin-top: 3px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 6px;
+        background-color: LightGray;
+    }
+
+    #timesheet-table th, td {
+        border: 1px solid gray;
+    }
+
+    .table-leaveinfo th, td {
+        border: 1px solid gray;
+    }
+</style>
+
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="">
+        <h2 class="text-uppercase text-white">TimeSheet Reports</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.AMBC_Active_Emp_view.Employee_ID + ".png";
+
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+                    <div class="leave-or-holiday-info hide">@Model.leaveOrHolidayInfo</div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</nav>
+
+<div class="card timesheet-card">
+    <div class="card-body ">
+
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label for="timeSheetStatus">Reports By</label>
+
+                <select id="timesheerreportsby" name="reportsby" class="form-control form-select form-select-lg mb-3">
+                    <option value="defaultselectreporttype"> Select Report Type </option>
+                    <option value="client"> Client </option>
+                    @*<option value="individual"> Individual </option>*@
+                </select>
+
+                <div class="invalid-reports-by" style="color:red; display:none">
+                    Please Select Reports By
+                </div>
+            </div>
+
+            <div class="form-group col-lg-4 clientdrodwn" style="display:none">
+                <label for="timesheetreportsclients">Clients</label>
+                <select id="timesheerreportclients" name="clients" class="form-control form-select form-select-lg mb-3">
+                    <option value="selectclientname"> Select Client Name </option>
+                    <option value="Littelfuse">Littelfuse</option>
+                    <option value="Federal Signal">Federal Signal</option>
+                    <option value="Modine">Modine</option>
+                    <option value="AMBC">AMBC</option>
+                </select>
+
+                <div class="invalid-clients" style="color:red; display:none">
+                    Please Select Client
+                </div>
+            </div>
+            <div class="form-group col-lg-2 consultantmultilistdrodown" style="display:none">
+                <label for="timesheetreportconsultants">Consultants</label>
+                <select multiple class="form-control" id="timesheetreportconsultants" style="width: 280px;">
+                </select>
+                <div class="invalid-consultants" style="color:red; display:none">
+                    Please Select Consultants
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label for="timeSheetStartWeekdate">Week Start Date</label>
+                <input type="date" class="form-control date-timesheet" id="timeSheetStartWeekdate" required max="2022-12-11">
+                <div class="invalid-weekstart-date" style="color:red; display:none">
+                    Please Select Week Start Date
+                </div>
+            </div>
+
+            <div class="form-group col-lg-4">
+                <label for="timeSheetEndWeekdate">Week End date</label>
+                <input type="date" class="form-control date-timesheet" id="timeSheetEndWeekdate" disabled style="background-color: white;">
+            </div>
+            <div class="form-group col-lg-2">
+                <label for="weekNumber">Week Number</label>
+                <input type="text" class="form-control" id="weekNumber" value="NA" disabled style="background-color: white;">
+            </div>
+        </div>
+
+        <div class="row mt-xl-4">
+            <div class="form-group col-lg-1">
+                <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px">
+                    View Report
+                </button>
+            </div>
+
+            @using (Html.BeginForm("Export", "Home", FormMethod.Post))
+            {
+
+                <input type="hidden" name="GridHtml" />
+
+                <div class="form-group col-lg-4" style="margin-left:10px">
+                    <div class="btn-group">
+                        <input type="submit" class="btn btn-success btn-lg text-white btn-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius:15px" />
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4" style="margin-left:-10px; display:none">
+                    <div class="btn-group">
+                        <input type="submit" id="btnPdfSubmit" class="btn btn-danger btn-lg text-white btn-report-generate" value="PDF Report" style="border-radius:15px" />
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-3" style="margin-left: 15px">
+                    <button type="button" class="btn btn-warning btn-lg btn-remainder" style="border-radius:15px" data-toggle="modal">
+                        Remainder
+                    </button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="card timesheet-card sample-timesheet-report">
+    <div class="card-body ">
+        <div class="emailbodycontent">
+            <div class="table-responsive table">
+                <table>
+                    <tr>
+                        <td style="width: 100%; padding-left: 0px; text-align: center; border: 1px solid black; padding-top: 0px; padding-right: 0px; padding-bottom:0px">
+                            <table style="width:100%">
+                                <tr><td colspan="4" class="headerrow"><h2><b>Sitecore Developer Weekly Project Status Report</b></h2></td></tr>
+                                <tr style="text-align:left">
+                                    <td class="headertd">
+                                        <b>Resource Name</b>
+                                    </td>
+                                    <td class="headertd">
+                                        Test User
+                                    </td>
+                                    <td class="headertd"><b>Project Manager</b></td>
+                                    <td class="headertd">
+                                        Seema Ashok
+                                    </td>
+                                </tr>
+                                <tr style="text-align:left">
+                                    <td class="headertd"><b>Week Start Date</b></td>
+                                    <td class="headertd">28-11-2022</td>
+                                    <td class="headertd">
+                                        <b>Week End Date</b>
+                                    </td>
+                                    <td class="headertd">
+                                        04-12-2022
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 40%">
+                            <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="300" height="80" sizes="188px" alt="AMBC Inc">
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center"><b>EFFORT DETAILS (current week)</b></div>
+                <table class="table" id="timesheet-table" style="margin-top: 2px">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            <th class="" scope="col" style="max-width:60px">Day</th>
+                            <th class="" scope="col" style="max-width:100px">Category</th>
+                            <th class="" scope="col">Incident Number</th>
+                            <th class="" scope="col">Incident Desc</th>
+                            <th class="" scope="col">Requester</th>
+                            <th class="" scope="col">Priority</th>
+                            <th class="" scope="col">Status</th>
+                            <th class="" scope="col">Time Spent</th>
+                            <th class="" scope="col">Comments</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+                        <tr style="background-color: #fff">
+                            <td scope="row" style="max-width:60px">01/01/2023</td>
+                            <td scope="row" style="max-width:100px">Support ticket</td>
+                            <td scope="row" style="max-width:200px">INC123, INC3456</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </td>
+                            <td scope="row">Aron</td>
+                            <td scope="row">Medium</td>
+                            <td scope="row">Active</td>
+                            <td scope="row">10</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</td>
+                        </tr>
+                        <tr style="background-color: #fff">
+                            <td scope="row" style="max-width:60px">02/01/2023</td>
+                            <td scope="row" style="max-width:100px">Support ticket</td>
+                            <td scope="row" style="max-width:200px">INC123, INC3456</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </td>
+                            <td scope="row">Aron</td>
+                            <td scope="row">Medium</td>
+                            <td scope="row">Active</td>
+                            <td scope="row">10</td>
+                            <td scope="row" style="max-width:200px">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                <div class="center"><b>Leave Information</b></div>
+
+                <table class="table-leaveinfo" style="margin-top: 4px; width:34%">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            <th class="" scope="col">Leave Date</th>
+                            <th class="" scope="col">Leave Type</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+                        <tr style="background-color: #ccffcc">
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                        </tr>
+                        <tr style="background-color: #ccffcc">
+                            <td scope="row">1111</td>
+                            <td scope="row">3333</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Billable Hours (till date)</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>40</b></td>
+                    </tr>
+                </table>
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Nonbillable Hours (till date)</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                    </tr>
+                </table>
+
+                <table class="table-billableinfo" style="margin-top: 15px;">
+
+                    <tr style="background-color: #ccffcc; ">
+                        <td style="width: 368px; border: 1px solid black; background-color: white; font-size: initial; padding: 3px;"><b>Total Entire Project Efforts</b></td>
+                        <td style="border:none; background-color:white"></td>
+                        <td style="border:1px solid black; background-color:white; width: 30px"><b>3</b></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="timesheetreports-container"></div>
+
+
+<div id="timesheetemail-remainder"></div>
+
+<br />
+<br />
+
+<script type="text/javascript">
+
+    jQuery(".btn-report-generate").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate();
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
+        var ajaxDownloadReportModel = {
+            ClientName: jQuery('#timesheerreportclients :selected').text(),
+            Employees: $('#timesheetreportconsultants').val(),
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val(),
+            Type: $(this).attr("id") == "btnExcelSubmit" ? ".xls" : ".pdf"
+        }
+        var GridHtml = JSON.stringify(ajaxDownloadReportModel).toString();
+
+        $("input[name='GridHtml']").val(GridHtml);
+
+    });
+
+
+    Date.prototype.startOfWeek = function (pStartOfWeek) {
+        var mDifference = this.getDay() - pStartOfWeek;
+        if (mDifference < 0) {
+            mDifference += 7;
+        }
+        return new Date(this.addDays(mDifference * -1));
+    }
+
+    Date.prototype.addDays = function (pDays) {
+        var mDate = new Date(this.valueOf());
+        mDate.setDate(mDate.getDate() + pDays);
+        return mDate;
+    };
+
+    //BASED ON TODAY DATE RESTRCTING WEK START DATE NOT TO ALLOW CURRENT WEEK DATES TO SUBMIT THE REPORTS
+    var todayDate = new Date();
+    var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
+    var maxWeekStartDate = moment(startOfWeek).format("YYYY-MM-DD");
+    jQuery('.date-timesheet').attr("max", maxWeekStartDate);
+
+
+    jQuery(document).ready(function () {
+        jQuery('.date-timesheet').change(function () {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid green");
+            jQuery('.invalid-weekstart-date').hide();
+
+            var date = jQuery(this).val();
+            var startOfWeek = moment(new Date(date)).startOf('week').toDate();
+            var endOfWeek = moment(new Date(date)).endOf('week').toDate();
+
+            var StartWeekdate = new Date(startOfWeek.addDays(1));
+            var endWeekDate = new Date(endOfWeek.addDays(1));
+
+            var startDate = moment(StartWeekdate).format("YYYY-MM-DD");
+            jQuery('#timeSheetStartWeekdate').val(startDate);
+
+            var endDate = moment(endWeekDate).format("YYYY-MM-DD");
+            jQuery('#timeSheetEndWeekdate').val(endDate);
+
+            var weekNum = moment(startDate).week();
+            jQuery('#weekNumber').val(weekNum);
+
+        });
+    });
+
+    function GetEmployees(type) {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                if (type != undefined && type != "") {
+                    obj = obj.filter(v => v.Client === type);
+                }
+
+                jQuery.each(obj, function (i, item) {
+                    $('#timesheetreportconsultants').append('<option value="' + item.Employee_ID + "&" + item.Employee_Name + '">' + item.Employee_Name + '</option>');
+                });
+
+
+            }
+        });
+    }
+
+    $("#timesheerreportsby").on("change", function () {
+        jQuery('#timesheerreportsby').css("border", "1px solid green");
+        jQuery('.invalid-reports-by').hide();
+
+        if (jQuery(this).val() == "client") {
+            $("#timesheerreportclients").prop("selectedIndex", 0);
+            jQuery('.clientdrodwn').show();
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+        if (jQuery(this).val() == "individual") {
+            jQuery('.clientdrodwn').hide();
+            $('#timesheetreportconsultants').empty();
+            GetEmployees();
+            jQuery('.consultantmultilistdrodown').show();
+        }
+
+        if (jQuery(this).val() == "defaultselectreporttype") {
+            $("#timesheerreportclients").prop("selectedIndex", 0);
+            $("#timesheetreportconsultants").prop("selectedIndex", 0);
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+    });
+
+
+    $("#timesheerreportclients").on("change", function () {
+        jQuery('#timesheerreportclients').css("border", "1px solid green");
+        jQuery('.invalid-clients').hide();
+
+        if (jQuery(this).val() != "selectclientname") {
+            $('#timesheetreportconsultants').empty();
+            GetEmployees(jQuery(this).val());
+            jQuery('.consultantmultilistdrodown').show();
+        }
+        else {
+            jQuery('.consultantmultilistdrodown').hide();
+        }
+    });
+
+    $("#timesheetreportconsultants").on("change", function () {
+        jQuery('#timesheetreportconsultants').css("border", "1px solid green");
+        jQuery('.invalid-consultants').hide();
+    });
+
+    function TimeSheetReportsInPutsValidate(eventName) {
+        var isAllRequiredInputsSelected = true;
+        if (jQuery('#timeSheetStartWeekdate').val() == "") {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid red");
+            jQuery('.invalid-weekstart-date').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timeSheetStartWeekdate').css("border", "1px solid green");
+            jQuery('.invalid-weekstart-date').hide();
+        }
+
+        if (jQuery('#timesheerreportsby :selected').val() == "defaultselectreporttype") {
+            jQuery('#timesheerreportsby').css("border", "1px solid red");
+            jQuery('.invalid-reports-by').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timesheerreportsby').css("border", "1px solid green");
+            jQuery('.invalid-reports-by').hide();
+        }
+
+        if (jQuery('#timesheerreportclients :selected').val() == "selectclientname") {
+            jQuery('#timesheerreportclients').css("border", "1px solid red");
+            jQuery('.invalid-clients').show();
+            isAllRequiredInputsSelected = false;
+        }
+        else {
+            jQuery('#timesheerreportclients').css("border", "1px solid green");
+            jQuery('.invalid-clients').hide();
+        }
+
+        //If user clicks on Remainder button
+        //No need to selelct the clients
+        //By deafult based on Client all the employees list will be showed in the popup
+        if (eventName == null) {
+            if (jQuery('#timesheetreportconsultants').val() == "") {
+                jQuery('#timesheetreportconsultants').css("border", "1px solid red");
+                jQuery('.invalid-consultants').show();
+                isAllRequiredInputsSelected = false;
+            }
+            else {
+                jQuery('#timesheetreportconsultants').css("border", "1px solid green");
+                jQuery('.invalid-consultants').hide();
+            }
+        }
+        return isAllRequiredInputsSelected;
+    }
+
+
+    jQuery(".reports-view").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate();
+
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
+
+        var ajaxReportModel = {
+            Employees: $('#timesheetreportconsultants').val(),
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val(),
+            ClientName: jQuery('#timesheerreportclients :selected').text()
+        }
+
+        jQuery.ajax({
+            url: "/TimeSheetReportsPartial",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ timeSheetAjaxReportModel: ajaxReportModel }),
+            success: function (data) {
+                jQuery('.sample-timesheet-report').hide();
+                $('#timesheetreports-container').html(data);
+            }
+        });
+    });
+
+    jQuery(".btn-remainder").on("click", function () {
+
+        var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate("remainder");
+        if (isAllRequiredInputsSelected == false) {
+            return false;
+        }
+
+        var ajaxReportModel = {
+            WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
+            WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
+            WeekNumber: jQuery('#weekNumber').val(),
+            ClientName: jQuery('#timesheerreportclients :selected').text(),
+        }
+
+        jQuery.ajax({
+            url: "/TimeSheetRemainder",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ timeSheetAjaxReportModel: ajaxReportModel }),
+            success: function (data) {
+                if (data != undefined && data != "") {
+                    //var missedEmpTimeSheetJson = JSON.parse(data);
+
+                    //if (missedEmpTimeSheetJson.StatusCode == "200") {
+
+                    $('#timesheetemail-remainder').html(data);
+                    jQuery('#timesheetremainder').modal('show');
+                    /*}*/
+                }
+            }
+        });
+    });
+
+
+</script>
+

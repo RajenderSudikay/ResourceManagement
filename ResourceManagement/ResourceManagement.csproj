@@ -55,16 +55,40 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=4.5.3.3, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="Select.HtmlToPdf, Version=18.4.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.18.4.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.0.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -157,6 +181,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ambclogin_leave_view.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ambctaskcapture.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -190,9 +217,6 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="con_leaveupdate_20220517.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="desk_att_taskcapture.cs">
@@ -238,10 +262,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="halfday_leave_view.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
+    <Compile Include="Models\LeaveOrHolidayModel.cs" />
+    <Compile Include="Models\TimesheetReportModel.cs" />
+    <Compile Include="Models\ZohoSignInModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblambcholiday.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -252,6 +282,9 @@
     <Compile Include="tblambcholiday_06May2022.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tbld_ambclogininformation.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tbl_ambclogininformation.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -259,15 +292,6 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tbl_LoginInformation_bkp.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ticket_category.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ticket_priority.cs">
-      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSheet.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="timesheet_submission_log.cs">
@@ -280,6 +304,11 @@
   <ItemGroup>
     <Content Include="Assets\AMBC_Logo.png" />
     <Content Include="Assets\Appraisal.png" />
+    <Content Include="Assets\Arrows\back-arrow.png" />
+    <Content Include="Assets\Arrows\pdf.png" />
+    <Content Include="Assets\Arrows\right-arrow.png" />
+    <Content Include="Assets\Arrows\xls.png" />
+    <Content Include="Assets\Check-In.png" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\email.png" />
     <Content Include="Assets\Icons\graphic-designer.png" />
@@ -292,7 +321,15 @@
     <Content Include="Assets\Icons\project.png" />
     <Content Include="Assets\Icons\supervisor.png" />
     <Content Include="Assets\Icons\woman.png" />
+    <Content Include="Assets\Leave.jpeg" />
+    <Content Include="Assets\LMS.png" />
+    <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\Payroll.png" />
+    <Content Include="Assets\PopupIcons\error.svg" />
+    <Content Include="Assets\PopupIcons\info.svg" />
+    <Content Include="Assets\PopupIcons\question.svg" />
+    <Content Include="Assets\PopupIcons\success.svg" />
+    <Content Include="Assets\PopupIcons\warning.svg" />
     <Content Include="Assets\Profile Photo.jpg" />
     <Content Include="Assets\Rajender_Passport_Photo.jpg" />
     <Content Include="Assets\Report.png" />
@@ -355,6 +392,17 @@
     <Content Include="Views\Home\TimeSheet.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\TimesheetWeeklyChart.cshtml" />
+    <Content Include="Views\Home\TimeSheetEmailReport.cshtml" />
+    <Content Include="Views\Home\TimeSheetReports.cshtml" />
+    <Content Include="Views\Home\TimeSheetReportsPartial.cshtml" />
+    <Content Include="Views\Home\TimeSheetDownloadReportsPartial.cshtml" />
+    <Content Include="Views\Home\TimeSheetRemainder.cshtml" />
+    <Content Include="Views\Home\ApplyLeave.cshtml" />
+    <Content Include="Views\Home\LeaveEmail.cshtml" />
+    <Content Include="Views\Home\CheckinAdjust.cshtml" />
+    <Content Include="Views\Home\zohosigninupdate.cshtml" />
+    <Content Include="Views\Home\zohosigninreport.cshtml" />
+    <Content Include="Views\Home\RemainderEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

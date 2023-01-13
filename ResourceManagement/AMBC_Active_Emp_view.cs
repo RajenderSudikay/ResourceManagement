@@ -27,5 +27,10 @@ namespace ResourceManagement
         public string Project_Status { get; set; }
         public bool Employee_Status { get; set; }
         public string Location { get; set; }
+        public string AMBC_Mail_Address { get; set; }
+        public Nullable<System.DateTime> Employee_Joining_Day { get; set; }
+        public string Employee_Image_Path { get; set; }
+        public int Project_Code { get; set; }
+        public string Access_Role { get; set; }
     }
 }

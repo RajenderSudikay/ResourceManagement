@@ -1,0 +1,106 @@
+﻿@model ResourceManagement.Models.ZohoSignInExcelReportModel
+
+@{
+    ViewBag.Title = "ZOHO SignIn report";
+}
+
+<style>
+    body {
+        background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
+</style>
+
+@if (Model != null)
+{
+    <div class="emailbodycontent">
+
+        <div class="table-responsive table">
+            <table class="table table-hover table-striped" id="timesheet-table" style="border:1px solid black;">
+                <thead class="table-bordered">
+                    <tr style="background-color: #337ab7">
+                        <th scope="col" style="width: 100px; color: white;">S NO</th>
+                        <th scope="col" style="width: 90px; color: white">EMP ID</th>
+                        <th scope="col" style="width: 200px; color: white">EMPLOYEE NAME</th>
+                        <th scope="col" style="width: 200px; color: white ">REPORT DATE</th>
+                    </tr>
+                </thead>
+
+                <tbody class="timesheet-table-grid">
+
+                    @foreach (var report in Model.Reports)
+                    {
+                        <tr class="default-table-row">
+                            <td scope="row" style="width: 100px;vertical-align: middle;">@report.SNo</td>
+                            <td scope="row" style="width: 90px;vertical-align: middle;">@report.EmployeeCode</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.EmplyeeName</td>
+                            <td scope="row" style="width: 200px;vertical-align: middle;">@report.ReportDate</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+}
+
+
+
+
+

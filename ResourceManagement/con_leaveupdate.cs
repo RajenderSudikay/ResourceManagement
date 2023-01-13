@@ -21,5 +21,6 @@ namespace ResourceManagement
         public string submittedby { get; set; }
         public string leavesource { get; set; }
         public string leaveuniqkey { get; set; }
+        public string leavecategory { get; set; }
     }
 }

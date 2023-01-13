@@ -1,0 +1,122 @@
+﻿@model ResourceManagement.Models.RMA_TimeSheetRemainder
+
+
+@if (Model != null)
+{
+    var topPosition = "0px";
+    topPosition = (Model.EmpListForremainder != null && Model.EmpListForremainder.Count() > 50) ? "350px" : Model.EmpListForremainder.Count() > 15 ? "200px" : "80px";
+    <div class="modal fade" id="timesheetremainder" tabindex="-1" aria-labelledby="timesheetremainerlabel" aria-hidden="true" style="padding-top:@topPosition">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header float-right">
+                    <b class="">Missed Timesheet Employee List</b>
+                    <div class="text-right">
+                        <i data-dismiss="modal" aria-label="Close" class="fa fa-close"></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered table-timesheet-remainder">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:95px">Select Employee</th>
+                                    <th scope="col">Employee ID</th>
+                                    <th scope="col">Employee Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var remainderEmp in Model.EmpListForremainder)
+                                {
+                                    <tr>
+                                        <td style="padding-left:20px">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" value="@remainderEmp.AMBC_Mail_Address.Trim()">
+                                            </div>
+                                            <div class="remainder-report-manager" style="display:none">@remainderEmp.AMBC_Project_Manager.Trim() </div>
+                                            <div class="remainder-report-manager-emial" style="display:none">@remainderEmp.AMBC_PM_Mail_Address.Trim() </div>
+                                        </td>
+                                        <td class="remainder-emp-id">@remainderEmp.Employee_ID</td>
+                                        <td class="remainer-emp-name">@remainderEmp.Employee_Name.Trim()</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="color: #2167ae">
+                        <input type="checkbox" class="send-single-email-all-emp" value="Send Remainder for all the selected consultants in single email"><label style="padding-left: 10px;margin-top: 20px; padding-top: 15px;">Send Remainder for all the selected consultants in single/group email</label>
+                        <br />
+                        <br />
+                        <label><b>NOTE: By deault seperate emails will be sent to all the selected consultants</b></label>
+                    </div>
+
+                </div>
+                <div class="email-remainder-response" style="display: none; text-align: center; vertical-align: middle; color: green;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" style="border-radius:15px; width:120px">Close</button>
+                    <button type="button" class="btn btn-warning btn-lg btn-reminder-email" style="border-radius:15px">Send Remainder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    var empRemainderList = new Array();
+
+
+    //Final submit post confirmation
+    jQuery(".btn-reminder-email").click(function () {
+        empRemainderList = new Array();
+
+        jQuery('.form-check-input:checked').each(function () {
+            console.log(this.value);
+            var currentRow = $(this).closest("tr");
+
+            var selectedEmployeeModel = {
+                selectedemployeeemail: this.value,
+                selectedemployeeemailid: currentRow.find('.remainder-emp-id').text(),
+                selectedemployeeempname: currentRow.find('.remainer-emp-name').text(),
+                selectedemploymanager: currentRow.find('.remainder-report-manager').text(),
+                selectedemploymanageremail: currentRow.find('.remainder-report-manager-emial').text()
+            };
+
+            empRemainderList.push(selectedEmployeeModel);
+        });
+
+        var timeSheetEmpRemainderModel = {
+            selctedempmodel: empRemainderList,
+            weekstartdate: $('#timeSheetStartWeekdate').val(),
+            weekenddate: $('#timeSheetEndWeekdate').val(),
+            LogedInEmpId: jQuery('.agent-navdrop-empid').text(),
+            LogedInEmpName: jQuery('.agent-full-name').text(),
+            LogedInEmpEmail: jQuery('.agent-navdrop-empemail').text(),
+            SendSingleEmailToAllEmp: jQuery('.send-single-email-all-emp').is(':checked')
+        };
+
+        jQuery('.email-remainder-response').html('');
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/SendRemainderEmail",
+            data: JSON.stringify({ timesheetEmpRemainder: timeSheetEmpRemainderModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    jQuery('.email-remainder-response').html('<br><h2>Remainder Email Sent Successfully for all the selected Employees.</h2><br><br><br>');
+                    jQuery('.email-remainder-response').show();
+                    jQuery('#timesheetremainder').modal('show');
+                }
+            }
+        });
+    });
+</script>
+
+
+
