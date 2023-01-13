@@ -45,16 +45,15 @@
                         </table>
                     </div>
 
-                    <div>
-                        @*<input type="checkbox" class="form-check-input" value="Send Remainder for all the selected consultants individually"><label style="padding-left: 20px; padding-top: 2px;">Send Remainder for all the selected consultants in seperate email</label>
-                        <br />*@
-                        <input type="checkbox" class="form-check-input" value="Send Remainder for all the selected consultants in single email"><label style="padding-left: 20px; padding-top: 2px;">Send Remainder for all the selected consultants in single email</label>
+                    <div style="color: #2167ae">
+                        <input type="checkbox" class="send-single-email-all-emp" value="Send Remainder for all the selected consultants in single email"><label style="padding-left: 10px;margin-top: 20px; padding-top: 15px;">Send Remainder for all the selected consultants in single/group email</label>
                         <br />
-                        <label>NOTE: By deault seperate emails will be sent to all the selected consultants</label>
+                        <br />
+                        <label><b>NOTE: By deault seperate emails will be sent to all the selected consultants</b></label>
                     </div>
 
                 </div>
-                <div class="email-remainder-response" style="display: none; text-align: center; vertical-align: middle; color: #2167ae;">
+                <div class="email-remainder-response" style="display: none; text-align: center; vertical-align: middle; color: green;">
 
                 </div>
                 <div class="modal-footer">
@@ -98,7 +97,10 @@
             LogedInEmpId: jQuery('.agent-navdrop-empid').text(),
             LogedInEmpName: jQuery('.agent-full-name').text(),
             LogedInEmpEmail: jQuery('.agent-navdrop-empemail').text(),
+            SendSingleEmailToAllEmp: jQuery('.send-single-email-all-emp').is(':checked')
         };
+
+        jQuery('.email-remainder-response').html('');
 
         jQuery.ajax({
             type: "POST",
@@ -107,7 +109,7 @@
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 if (data.StatusCode == 200) {
-                    jQuery('.email-remainder-response').html('<h2>Remainder Email Sent Successfully for all the selected Employees!..</h2>');
+                    jQuery('.email-remainder-response').html('<br><h2>Remainder Email Sent Successfully for all the selected Employees.</h2><br><br><br>');
                     jQuery('.email-remainder-response').show();
                     jQuery('#timesheetremainder').modal('show');
                 }

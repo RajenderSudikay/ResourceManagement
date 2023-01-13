@@ -1164,12 +1164,85 @@ namespace ResourceManagement.Controllers
             {
                 if (timesheetEmpRemainder != null && timesheetEmpRemainder.selctedempmodel.Count() > 0)
                 {
-                    foreach (var email in timesheetEmpRemainder.selctedempmodel)
+                    var weekStartDate = timesheetEmpRemainder.weekstartdate.Split('-');
+                    var formattedStartDate = weekStartDate[2] + "-" + weekStartDate[1] + "-" + weekStartDate[0];
+
+                    var weekEndDate = timesheetEmpRemainder.weekenddate.Split('-');
+                    var formattedEndDate = weekEndDate[2] + "-" + weekEndDate[1] + "-" + weekEndDate[0];
+
+
+                    if (timesheetEmpRemainder.SendSingleEmailToAllEmp == false)
                     {
-                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
+                        foreach (var email in timesheetEmpRemainder.selctedempmodel)
                         {
-                            mm.Subject = "TimeSheet is missing!";
-                            mm.Body = "Hello Consultant, <br> Please submit your time sheet immediatly. + <br> <br> AMBC Technologies";
+                            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
+                            {
+                                mm.Subject = "REMINDER: TimeSheet for the week - " + formattedStartDate + " to " + formattedEndDate;
+                                email.selectedweekstartdate = formattedStartDate;
+                                email.selectedweekenddate = formattedEndDate;
+
+
+                                var emailBody = RenderPartialToString(this, "RemainderEmail", email, ViewData, TempData);
+
+                                mm.Body = emailBody;
+
+                                if (email.selectedemploymanageremail != string.Empty)
+                                {
+                                    mm.CC.Add(email.selectedemploymanageremail);
+                                }
+
+                                if (timesheetEmpRemainder.LogedInEmpEmail != string.Empty)
+                                {
+                                    mm.CC.Add(timesheetEmpRemainder.LogedInEmpEmail);
+                                }
+
+                                mm.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                                smtp.EnableSsl = true;
+                                NetworkCredential credentials = new NetworkCredential();
+                                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                                smtp.UseDefaultCredentials = true;
+                                smtp.Credentials = credentials;
+                                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                                smtp.Send(mm);
+                            }
+                        }
+                    }
+
+
+                    else
+                    {
+                        var model = new RMA_RemainderEmailSelectedEmpModel();
+                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], timesheetEmpRemainder.selctedempmodel[0].selectedemployeeemail))
+                        {
+                            mm.Subject = "REMINDER: TimeSheet for the week - " + formattedStartDate + " to " + formattedEndDate;
+                            int firstSelectedEmp = 0;
+
+                            foreach (var selectedEmp in timesheetEmpRemainder.selctedempmodel)
+                            {
+                                if (firstSelectedEmp > 0)
+                                {
+                                    mm.To.Add(selectedEmp.selectedemployeeemail);
+                                }
+                                firstSelectedEmp++;
+
+                                mm.CC.Add(selectedEmp.selectedemploymanageremail);
+                            }
+
+                            model.selectedweekstartdate = formattedStartDate;
+                            model.selectedweekenddate = formattedEndDate;
+                            model.SendSingleEmailToAllEmp = timesheetEmpRemainder.SendSingleEmailToAllEmp;
+
+                            var emailBody = RenderPartialToString(this, "RemainderEmail", model, ViewData, TempData);
+
+                            mm.Body = emailBody;
+
+                            if (timesheetEmpRemainder.LogedInEmpEmail != string.Empty)
+                            {
+                                mm.CC.Add(timesheetEmpRemainder.LogedInEmpEmail);
+                            }
 
                             mm.IsBodyHtml = true;
                             SmtpClient smtp = new SmtpClient();
@@ -1185,14 +1258,16 @@ namespace ResourceManagement.Controllers
                         }
                     }
 
-                    var emailRemainderResponse = new JsonResponseModel();
-
-                    emailRemainderResponse.StatusCode = 200;
-                    emailRemainderResponse.Message = "Remainder Email Sent Successfully!";
-                    return Json(emailRemainderResponse);
-
                 }
+
+                var emailRemainderResponse = new JsonResponseModel();
+
+                emailRemainderResponse.StatusCode = 200;
+                emailRemainderResponse.Message = "Remainder Email Sent Successfully!";
+                return Json(emailRemainderResponse);
+
             }
+
             catch (Exception ex)
             {
 

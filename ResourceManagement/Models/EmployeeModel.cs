@@ -109,6 +109,7 @@ namespace ResourceManagement.Models
         public string LogedInEmpId { get; set; }
         public string LogedInEmpName { get; set; }
         public string LogedInEmpEmail { get; set; }
+        public bool SendSingleEmailToAllEmp { get; set; }
     }
 
     public class RMA_RemainderEmailSelectedEmpModel
@@ -118,6 +119,9 @@ namespace ResourceManagement.Models
         public string selectedemployeeempname { get; set; }
         public string selectedemploymanager { get; set; }
         public string selectedemploymanageremail { get; set; }
+        public string selectedweekstartdate { get; set; }
+        public string selectedweekenddate { get; set; }
+        public bool SendSingleEmailToAllEmp { get; set; }
     }
 
     public class RMA_LeaveModel
@@ -141,7 +145,7 @@ namespace ResourceManagement.Models
     {
         public string EmpId { get; set; }
         public string ProjectID { get; set; }
-        public string ClientName { get; set; }     
+        public string ClientName { get; set; }
     }
 
 
