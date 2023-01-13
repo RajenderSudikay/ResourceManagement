@@ -287,7 +287,7 @@
                                 <div class="leave-or-holiday-msg" style="display:none; color: red">
                                     You are on Leave or Holiday on this date.
                                 </div>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback timeSheetdate-invalid-feedback">
                                     Please enter task date
                                 </div>
 
@@ -1050,10 +1050,13 @@
 
         // Sets the value to '' in case of an invalid date
         jQuery('#timeSheetdate').change(function (evt) {
+            jQuery('.timeSheetdate-invalid-feedback').hide();
+            jQuery('#timeSheetdate').css("border", "1px solid green");
+
             $('.leave-or-holiday-msg').hide();
             if (!validate(evt.target.value)) {
                 evt.target.value = '';
-            }
+            }          
         });
 
 
@@ -1440,6 +1443,31 @@
     }
 
     jQuery(".timesheet-addreport").click(function () {
+
+        //BELOW CODE ADDED JUST TO HANLDE DATE
+        //BASED ON WEEK START DATE FIRST DAY OF THE WEEK IS SELECTED AS TASK DATE IN CALENDER
+        //THIS SOLUTION HAD SOME ISSUE
+        //TO OVERCOME THIS ADDED BELOW CHECK WHEN USER CLICK ON ADD REPORT BUTTON WITHOUT FILLING ANY FIELDS IN THE FORM NOT ABLE TO ADD THE TASK TO TABLE
+        var defaultdate = jQuery('#timeSheetdate').val();
+        var taskMindate = jQuery('#timeSheetdate').attr("min");
+
+        if (defaultdate != "") {
+            defaultminDate = new Date(defaultdate);
+            taskDefaultMindatev = new Date(taskMindate);
+
+            if (defaultminDate < taskDefaultMindatev) {
+                jQuery('#timeSheetdate').focus();
+                jQuery('#timeSheetdate').css("border", "1px solid red");
+                jQuery('.timeSheetdate-invalid-feedback').show();
+                return false;
+            }
+            else {
+                jQuery('#timeSheetdate').css("border", "1px solid green");
+                jQuery('.timeSheetdate-invalid-feedback').hide();
+            }
+        }
+
+
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
