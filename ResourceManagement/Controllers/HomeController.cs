@@ -711,12 +711,43 @@ namespace ResourceManagement.Controllers
                             reportModel.timeSheetInfo = empTimeSheetInfo;
                         }
 
+                        reportModel.timeSheetLeaveOrHolidayInfo = new List<ReportLeaveOrHolidayInfo>();
 
                         var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
 
                         if (empHolidayInfo != null)
                         {
-                            reportModel.timeSheetLeaveOrHolidayInfo = empHolidayInfo;
+                            foreach (var empHolidayInf in empHolidayInfo)
+                            {
+                                var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                {
+                                    LeaveDate = empHolidayInf.taskdate.ToString(),
+                                    LeaveType = empHolidayInf.comments
+
+                                };
+
+                                reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                            }
+
+                        }
+
+                        var weekstartDate = System.Convert.ToDateTime(timeSheetAjaxReportModel.WeekStartDate);
+                        var weekEndDate = System.Convert.ToDateTime(timeSheetAjaxReportModel.WeekEndDate);
+
+                        var empHalfDayHolidayInfo = db.ambclogin_leave_view.Where(a => a.Employee_Code.Equals(employeeId) && a.Leave_Date >= weekstartDate && a.Leave_Date <= weekEndDate && a.Leave_Type == "Half Day Leave").ToList();
+
+                        if (empHalfDayHolidayInfo != null)
+                        {
+                            foreach (var empHalfDayHolidayInf in empHalfDayHolidayInfo)
+                            {
+                                var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                {
+                                    LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
+                                    LeaveType = empHalfDayHolidayInf.Leave_Type
+
+                                };
+                                reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                            }
                         }
 
                         //Passing Inputs to view
@@ -887,11 +918,43 @@ namespace ResourceManagement.Controllers
                     reportModel.timeSheetInfo = empTimeSheetInfo;
                 }
 
+                reportModel.timeSheetLeaveOrHolidayInfo = new List<ReportLeaveOrHolidayInfo>();
+
                 var empHolidayInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.timespent == 0 && a.overtime == 0).ToList();
 
                 if (empHolidayInfo != null)
                 {
-                    reportModel.timeSheetLeaveOrHolidayInfo = empHolidayInfo;
+                    foreach (var empHolidayInf in empHolidayInfo)
+                    {
+                        var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                        {
+                            LeaveDate = empHolidayInf.taskdate.ToString(),
+                            LeaveType = empHolidayInf.comments
+
+                        };
+
+                        reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                    }
+
+                }
+
+                var weekstartDate = System.Convert.ToDateTime(timeSheetAjaxReportModel.WeekStartDate);
+                var weekEndDate = System.Convert.ToDateTime(timeSheetAjaxReportModel.WeekEndDate);
+
+                var empHalfDayHolidayInfo = db.ambclogin_leave_view.Where(a => a.Employee_Code.Equals(employeeId) && a.Leave_Date >= weekstartDate && a.Leave_Date <= weekEndDate && a.Leave_Type == "Half Day Leave").ToList();
+
+                if (empHalfDayHolidayInfo != null)
+                {
+                    foreach (var empHalfDayHolidayInf in empHalfDayHolidayInfo)
+                    {
+                        var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                        {
+                            LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
+                            LeaveType = empHalfDayHolidayInf.Leave_Type
+
+                        };
+                        reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                    }
                 }
 
                 //Passing Inputs to view
@@ -1539,12 +1602,12 @@ namespace ResourceManagement.Controllers
             var ClientBasedemployeeModel = new RMA_ClientBasedEmpJson();
             try
             {
-             
+
                 using (TimeSheetEntities db = new TimeSheetEntities())
                 {
                     var empProjectCode = System.Convert.ToInt32(ClientBasedEmpModel.ProjectID);
                     var clientBasedEmpInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID == ClientBasedEmpModel.EmpId && a.Client == ClientBasedEmpModel.ClientName && a.Project_Code == empProjectCode).FirstOrDefault();
-                   if(clientBasedEmpInfo != null)
+                    if (clientBasedEmpInfo != null)
                     {
                         ClientBasedemployeeModel.ClientBasedAMBCEmp = clientBasedEmpInfo;
                         ClientBasedemployeeModel.jsonResponse.StatusCode = 200;

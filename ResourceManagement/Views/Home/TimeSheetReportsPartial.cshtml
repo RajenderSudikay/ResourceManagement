@@ -170,6 +170,12 @@
 
                                                 foreach (var task in employeeReport.timeSheetInfo)
                                                 {
+                                                    var isHolidayOrLeaveTask = task.timespent == 0 && task.overtime == 0 ? true : false;
+                                                    if (isHolidayOrLeaveTask)
+                                                    {
+                                                        continue;
+                                                    }
+
                                                     var date = System.Convert.ToDateTime(task.taskdate.ToString());
                                                     string dayName = date.ToString("dddd");
 
@@ -289,14 +295,14 @@
                                                 {
                                                     var leaveDisplayDate = "";
 
-                                                    if (leaveReport.taskdate.ToString().Contains("-"))
+                                                    if (leaveReport.LeaveDate.ToString().Contains("-"))
                                                     {
-                                                        var requiredLeaveDate = leaveReport.taskdate.ToString().Contains("00:00:00") ? leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                        var requiredLeaveDate = leaveReport.LeaveDate.ToString().Contains("00:00:00") ? leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
                                                         leaveDisplayDate = requiredLeaveDate[2].Trim() + "-" + requiredLeaveDate[1] + "-" + requiredLeaveDate[0];
                                                     }
-                                                    if (leaveReport.taskdate.ToString().Contains("/"))
+                                                    if (leaveReport.LeaveDate.ToString().Contains("/"))
                                                     {
-                                                        var requiredLeaveDate = leaveReport.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-").Split('-');
+                                                        var requiredLeaveDate = leaveReport.LeaveDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-").Split('-');
                                                         leaveDisplayDate = requiredLeaveDate[1] + "-" + requiredLeaveDate[0] + "-" + requiredLeaveDate[2]; ;
                                                     }
 
@@ -304,7 +310,7 @@
 
                                                     <tr style="background-color: #ccffcc">
                                                         <td scope="row">@leaveDisplayDate</td>
-                                                        <td scope="row">@leaveReport.comments</td>
+                                                        <td scope="row">@leaveReport.LeaveType</td>
                                                     </tr>
                                                 }
                                             }

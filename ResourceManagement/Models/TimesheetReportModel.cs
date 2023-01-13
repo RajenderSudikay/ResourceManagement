@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static ResourceManagement.Models.LeaveOrHolidayModel;
 
 namespace ResourceManagement.Models
 {
@@ -71,7 +72,7 @@ namespace ResourceManagement.Models
         {
             public AMBC_Active_Emp_view EmployeeInfo { get; set; }
             public List<ambctaskcapture> timeSheetInfo { get; set; }
-            public List<ambctaskcapture> timeSheetLeaveOrHolidayInfo { get; set; }
+            public List<ReportLeaveOrHolidayInfo> timeSheetLeaveOrHolidayInfo { get; set; }
             public TimeSheetAjaxReportModel timeSheetAjaxInputReportModel { get; set; }
         }
 
