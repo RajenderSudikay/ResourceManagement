@@ -166,104 +166,105 @@
                                 </thead>
 
                                 <tbody class="timesheet-table-grid">
-
-                                    @foreach (var task in employeeReport.timeSheetInfo)
+                                    @if (employeeReport.timeSheetInfo.Count > 0)
                                     {
-                                        var isHolidayOrLeaveTask = task.timespent == 0 && task.overtime == 0 ? true : false;
-                                        if (isHolidayOrLeaveTask)
+                                        @foreach (var task in employeeReport.timeSheetInfo.OrderBy(x => x.taskdate))
                                         {
-                                            continue;
-                                        }
+                                            var isHolidayOrLeaveTask = task.timespent == 0 && task.overtime == 0 ? true : false;
+                                            if (isHolidayOrLeaveTask)
+                                            {
+                                                continue;
+                                            }
 
-                                        var date = System.Convert.ToDateTime(task.taskdate.ToString());
-                                        string dayName = date.ToString("dddd");
+                                            var date = System.Convert.ToDateTime(task.taskdate.ToString());
+                                            string dayName = date.ToString("dddd");
 
 
-                                        switch (dayName)
-                                        {
-                                            case "Monday":
-                                                mondayHours += System.Convert.ToInt32(task.timespent);
-                                                break;
+                                            switch (dayName)
+                                            {
+                                                case "Monday":
+                                                    mondayHours += System.Convert.ToInt32(task.timespent);
+                                                    break;
 
-                                            case "Tuesday":
-                                                tuesdayHours += System.Convert.ToInt32(task.timespent);
-                                                break;
+                                                case "Tuesday":
+                                                    tuesdayHours += System.Convert.ToInt32(task.timespent);
+                                                    break;
 
-                                            case "Wednesday":
-                                                wednesdayHours += System.Convert.ToInt32(task.timespent);
-                                                break;
+                                                case "Wednesday":
+                                                    wednesdayHours += System.Convert.ToInt32(task.timespent);
+                                                    break;
 
-                                            case "Thursday":
-                                                thursdayHours += System.Convert.ToInt32(task.timespent);
-                                                break;
+                                                case "Thursday":
+                                                    thursdayHours += System.Convert.ToInt32(task.timespent);
+                                                    break;
 
-                                            case "Friday":
-                                                fridayHours += System.Convert.ToInt32(task.timespent);
-                                                break;
+                                                case "Friday":
+                                                    fridayHours += System.Convert.ToInt32(task.timespent);
+                                                    break;
 
-                                            case "Saturday":
-                                                isSaturdayBillableHours = task.weekendworkstatus == true ? true : false;
-                                                if (isSaturdayBillableHours)
-                                                {
-                                                    saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                case "Saturday":
+                                                    isSaturdayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                    if (isSaturdayBillableHours)
+                                                    {
+                                                        saturdayHours += System.Convert.ToInt32(task.timespent);
+                                                    }
+                                                    break;
+
+                                                case "Sunday":
+                                                    isSundayBillableHours = task.weekendworkstatus == true ? true : false;
+                                                    if (isSundayBillableHours)
+                                                    {
+                                                        sundayHours += System.Convert.ToInt32(task.timespent);
+                                                    }
+                                                    break;
+
+                                                default:
+                                                    break;
+                                            }
+
+                                            <tr style="background-color: #fff">
+
+                                                @{
+
+                                                    var taskDisplayDate = "";
+                                                    Int32? totalSpentHours = 0;
                                                 }
-                                                break;
 
-                                            case "Sunday":
-                                                isSundayBillableHours = task.weekendworkstatus == true ? true : false;
-                                                if (isSundayBillableHours)
+                                                @if (task.taskdate.ToString().Contains("-"))
                                                 {
-                                                    sundayHours += System.Convert.ToInt32(task.timespent);
+                                                    var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
+                                                    taskDisplayDate = requiredDate[1].Trim() + "-" + requiredDate[2] + "-" + requiredDate[0];
+
+                                                    var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                    totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                    totalhoursSpentInTheWeek += totalSpentHours;
                                                 }
-                                                break;
 
-                                            default:
-                                                break;
+                                                @if (task.taskdate.ToString().Contains("/"))
+                                                {
+                                                    var requiredDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-");
+                                                    taskDisplayDate = requiredDate;
+
+                                                    var overtTimeHours = task.overtime != null ? task.overtime : 0;
+                                                    totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
+
+                                                    totalhoursSpentInTheWeek += totalSpentHours;
+                                                }
+
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@totalSpentHours</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
+                                            </tr>
                                         }
 
-                                    <tr style="background-color: #fff">
-
-                                        @{
-
-                                            var taskDisplayDate = "";
-                                            Int32? totalSpentHours = 0;
-                                        }
-
-                                        @if (task.taskdate.ToString().Contains("-"))
-                                        {
-                                            var requiredDate = task.taskdate.ToString().Contains("00:00:00") ? task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-') : task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Split('-');
-                                            taskDisplayDate = requiredDate[1].Trim() + "-" + requiredDate[2] + "-" + requiredDate[0];
-
-                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
-                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
-
-                                            totalhoursSpentInTheWeek += totalSpentHours;
-                                        }
-
-                                        @if (task.taskdate.ToString().Contains("/"))
-                                        {
-                                            var requiredDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace("/", "-");
-                                            taskDisplayDate = requiredDate;
-
-                                            var overtTimeHours = task.overtime != null ? task.overtime : 0;
-                                            totalSpentHours = System.Convert.ToInt32(task.timespent) + overtTimeHours;
-
-                                            totalhoursSpentInTheWeek += totalSpentHours;
-                                        }
-
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.requester</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.callpriority</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.projstatus</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: center; vertical-align: middle; ">@totalSpentHours</td>
-                                        <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.comments</td>
-                                    </tr>
                                     }
-
-
                                 </tbody>
                             </table>
 
