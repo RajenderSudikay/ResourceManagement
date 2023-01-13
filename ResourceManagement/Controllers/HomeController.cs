@@ -697,7 +697,7 @@ namespace ResourceManagement.Controllers
 
                         var reportModel = new TimeSheetReportViewModel();
 
-                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId)).FirstOrDefault();
+                        var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId) && a.Client == timeSheetAjaxReportModel.ClientName).FirstOrDefault();
                         if (employeeInfo != null)
                         {
                             reportModel.EmployeeInfo = employeeInfo;
@@ -705,7 +705,7 @@ namespace ResourceManagement.Controllers
 
                         int weekNumber = System.Convert.ToInt32(timeSheetAjaxReportModel.WeekNumber);
 
-                        var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber).ToList();
+                        var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
                         if (empTimeSheetInfo != null)
                         {
                             reportModel.timeSheetInfo = empTimeSheetInfo;
@@ -816,11 +816,19 @@ namespace ResourceManagement.Controllers
 
             if (timeSheetAjaxReportModel != null && timeSheetAjaxReportModel.Employees != null && timeSheetAjaxReportModel.Employees.Count > 0)
             {
+                var reportEndDate = timeSheetAjaxReportModel.WeekEndDate;
+                DateTime dt = System.Convert.ToDateTime(reportEndDate);
+                var reportMonthName = dt.ToString("MMMM");
+
+                reportMonthName = reportMonthName.Substring(0, 3);
+
                 var inputStartDate = timeSheetAjaxReportModel.WeekStartDate.Split('-');
-                requiredStartDateForExcelReport = inputStartDate[2] + "-" + inputStartDate[1];
+                requiredStartDateForExcelReport = inputStartDate[2];
 
                 var inputEnddate = timeSheetAjaxReportModel.WeekEndDate.Split('-');
-                requiredEndDateForExcelreport = inputEnddate[2] + "-" + inputEnddate[1] + "-" + inputEnddate[0];
+                requiredEndDateForExcelreport = inputEnddate[2];
+
+                var reportYear = inputEnddate[0];
 
                 requiredZIPFileName = timeSheetAjaxReportModel.ClientName + "-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport;
 
@@ -841,7 +849,7 @@ namespace ResourceManagement.Controllers
                         {
                             FileBytes = byteArray,
                             Extension = timeSheetAjaxReportModel.Type,
-                            Name = emplyeeName + "-TimeSheet-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport
+                            Name = emplyeeName + "-TimeSheet- " + requiredStartDateForExcelReport + " to " + requiredEndDateForExcelreport + ", " + reportMonthName + " " + reportYear
                         });
                     }
                     else
@@ -857,7 +865,7 @@ namespace ResourceManagement.Controllers
                         {
                             FileBytes = pdfArray,
                             Extension = timeSheetAjaxReportModel.Type,
-                            Name = emplyeeName + "-TimeSheet-" + requiredStartDateForExcelReport + "to" + requiredEndDateForExcelreport
+                            Name = emplyeeName + "-TimeSheet- " + requiredStartDateForExcelReport + " to " + requiredEndDateForExcelreport + ", " + reportMonthName + " " + reportYear
                         });
                     }
                 }
@@ -904,7 +912,7 @@ namespace ResourceManagement.Controllers
 
                 var reportModel = new TimeSheetReportViewModel();
 
-                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId)).FirstOrDefault();
+                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(employeeId) && a.Client == timeSheetAjaxReportModel.ClientName).FirstOrDefault();
                 if (employeeInfo != null)
                 {
                     reportModel.EmployeeInfo = employeeInfo;
@@ -912,7 +920,7 @@ namespace ResourceManagement.Controllers
 
                 int weekNumber = System.Convert.ToInt32(weekNum);
 
-                var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber).ToList();
+                var empTimeSheetInfo = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && a.clientname == timeSheetAjaxReportModel.ClientName).ToList();
                 if (empTimeSheetInfo != null)
                 {
                     reportModel.timeSheetInfo = empTimeSheetInfo;

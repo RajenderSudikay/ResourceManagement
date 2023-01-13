@@ -566,7 +566,8 @@
             Employees: $('#timesheetreportconsultants').val(),
             WeekStartDate: jQuery('#timeSheetStartWeekdate').val(),
             WeekEndDate: jQuery('#timeSheetEndWeekdate').val(),
-            WeekNumber: jQuery('#weekNumber').val()
+            WeekNumber: jQuery('#weekNumber').val(),
+            ClientName: jQuery('#timesheerreportclients :selected').text()
         }
 
         jQuery.ajax({
@@ -606,7 +607,7 @@
 
                     //if (missedEmpTimeSheetJson.StatusCode == "200") {
 
-                    $('#timesheetreports-container').html(data);
+                    $('#timesheetemail-remainder').html(data);
                     jQuery('#timesheetremainder').modal('show');
                     /*}*/
                 }
