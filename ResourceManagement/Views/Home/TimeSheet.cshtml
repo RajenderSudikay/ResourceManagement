@@ -791,11 +791,11 @@
             <div class="modal-body">
                 <h2 class="modal-boday-title">
                     Hey @Model.AMBC_Active_Emp_view.Employee_Name <br />
-                    Please correct the below duplicate recored details
+                    Something went wrong while processing your request. Please contact administrator for more details.
                 </h2>
-                <div class="database-response"></div>
+                <div class="database-response" style="padding-top: 30px !important"></div>
                 <br />
-                <div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of TaskDate_IncidentNumber_TimeSpentHours</p></div>
+                @*<div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of TaskDate_IncidentNumber_TimeSpentHours</p></div>*@
 
             </div>
             <div class="model-footerbtn-dberror-custom">
@@ -810,7 +810,7 @@
 
     // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
     jQuery('#timeSheetEmpClient').change(function (evt) {
-
+        jQuery(".timesheet-submit").removeAttr("disabled");
         var ClientBasedEmpDetails = {
             EmpId: jQuery('.agent-navdrop-empid').text(),
             ProjectID: jQuery('#timeSheetEmpClient').val(),
@@ -1056,11 +1056,13 @@
             $('.leave-or-holiday-msg').hide();
             if (!validate(evt.target.value)) {
                 evt.target.value = '';
-            }          
+            }
         });
 
 
         jQuery('.date-timesheet').change(function () {
+
+            jQuery(".timesheet-submit").removeAttr("disabled");
 
             //On Date change removing all the selected sheets previosuly if any
             $('.user-added-timesheet').remove();
@@ -1767,12 +1769,22 @@
                     jQuery('.database-response').addClass('text-success');
                     jQuery('.message-success-popup').modal('show');
                     jQuery(".btn-alert-yes").removeAttr("disabled");
+                    jQuery(".timesheet-submit").attr("disabled", true);
                 }
                 else {
-                    /* jQuery('.database-response').addClass('text-danger');*/
-                    jQuery(".btn-alert-yes").removeAttr("disabled");
-                    jQuery('.database-response').text(data.Message);
-                    jQuery('#modal-db-error-alert').modal('show');
+                    if (data.Message.toLocaleLowerCase().indexOf("the duplicate key value is") != -1) {
+                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
+                        var bodyMessage = "<h2>You have already submitted the timesheet for the selected week, you might be trying to resubmit the timesheet. Below is the duplicate tasks details </h2><br><br>";
+                        bodyMessage += "<p>" + data.Message + "</p>";
+                        jQuery('.warning-message-popup').html(bodyMessage);
+                        jQuery('#modal-warning-message-popup').modal('show');
+                    }
+                    else {
+                        jQuery('.database-response').text(data.Message);
+                        jQuery('#modal-db-error-alert').modal('show');
+                        jQuery(".btn-alert-yes").removeAttr("disabled");
+                        jQuery(".timesheet-submit").removeAttr("disabled");
+                    }
                 }
                 /* jQuery('.database-response').text(data.Message);   */
             }
