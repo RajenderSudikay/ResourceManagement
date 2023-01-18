@@ -18,9 +18,11 @@
                 {
                     foreach (var leave in Model.leaveDetails.OrderBy(x => x.leavedate))
                     {
+                        var leaveOriginalDate = @leave.leavedate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim().Replace("/", "-").Split('-');
+                        var leaveDisplayDate = leaveOriginalDate[1] + "-" + leaveOriginalDate[0] + "-" + leaveOriginalDate[2];
                         <tr>
                             <td style="text-align:center">@leave.employee_id</td>
-                            <td style="text-align:center">@leave.leavedate.ToString().Replace("00:00:00", "").Trim()</td>
+                            <td style="text-align:center">@leaveDisplayDate</td>
                             <td style="text-align:center">@leave.submittedby</td>
                         </tr>
                     }
