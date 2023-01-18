@@ -10,8 +10,8 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="">
-        <h2 class="text-uppercase text-white">Apply Leave</h2>
+    <div class="time-headertitle" style="padding-left: 69px !important">
+        <h2 class="text-uppercase text-white">Leave Management System</h2>
 
     </div>
 
@@ -143,6 +143,8 @@
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
+        <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">Apply Leave</h2>
+        <hr />
         <div class="card-body ">
             @*<form class="needs-validation" novalidate>*@
             <div class="row">
@@ -249,6 +251,66 @@
         </div>
     </div>
 </div>
+
+<br />
+<br />
+@if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+{
+    <div class="card card-body" style="border-radius: 10px">
+        <div class="card timesheet-card">
+            <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
+            <hr />
+            <div class="card-body ">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group selectemp-div">
+                            <label for="leavereportemployeename">Employee Name<b style="color:red">*</b></label>
+                            <select id="selectReportEmployeename" name="leavereportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                                <option value="Select Employee" selected disabled>Select Employee</option>
+                                <option value="All Employees">All Employees</option>
+                            </select>
+                            <div class="invalid-feedback-report-employee" style="display:none; color: red">
+                                Please Select Employee
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="leavereportstartdate" class="leavestartdate">Start Date<b style="color:red">*</b></label>
+                            <input type="date" class="form-control" id="leavereportstartdate" required>
+                            <div class="invalid-feedback-report-leavedate" style="color:red; display:none">
+                                Please Start Date
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 leave-enddate-div">
+                        <div class="form-group">
+                            <label for="leavereportenddate">End Date<b style="color:red">*</b></label>
+                            <input type="date" class="form-control" id="leavereportenddate" required>
+                            <div class="invalid-feedback-report-enddate" style="display:none; color: red">
+                                Please Select End Date
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer mt-xl-4">
+                    <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width:200px; border-radius:10px"><b>Get Leave Details</b></button>
+                </div>
+
+                <br />
+                <hr />
+
+                <div class="leave-info-container"></div>
+
+            </div>
+        </div>
+    </div>
+}
 
 <div class="modal" tabindex="-1" role="dialog" id="modal-db-error-alert">
     <div class="modal-dialog" role="document">
@@ -373,7 +435,7 @@
                 </h2>
                 <div class="database-response"></div>
                 <br />
-               
+
             </div>
             <div class="model-footerbtn-dberror-custom">
                 <button type="button" class="btn btn-secondary timesheet-addreport-cancel btn-lg" data-dismiss="modal"><b>Ok</b></button>
@@ -448,6 +510,73 @@
 </div>
 
 <script>
+
+
+    jQuery('#leavereportstartdate').change(function () {
+        $('#leavereportstartdate').css("border", "1px solid green");
+        $('.invalid-feedback-report-leavedate').hide();
+    });
+
+    jQuery('#leavereportenddate').change(function () {
+        $('#leavereportenddate').css("border", "1px solid green");
+        $('.invalid-feedback-report-enddate').hide();
+    });
+
+    jQuery("#selectReportEmployeename").on("change", function () {
+        jQuery('.invalid-feedback-report-employee').hide();
+        jQuery('#selectReportEmployeename').css("border", "1px solid green");
+    });
+
+    jQuery(".btn-leave-report").click(function () {
+        if (jQuery('#leavereportstartdate').val() == "") {
+            jQuery('.invalid-feedback-report-leavedate').show();
+            jQuery('#leavereportstartdate').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-leavedate').hide();
+            jQuery('#leavereportstartdate').css("border", "1px solid green");
+        }
+
+        if (jQuery('#leavereportenddate').val() == "") {
+            jQuery('.invalid-feedback-report-enddate').show();
+            jQuery('#leavereportenddate').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-enddate').hide();
+            jQuery('#leavereportenddate').css("border", "1px solid green");
+        }
+
+        if (jQuery('#selectReportEmployeename :selected').val() == "Select Employee") {
+            jQuery('.invalid-feedback-report-employee').show();
+            jQuery('#selectReportEmployeename').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-employee').hide();
+            jQuery('#selectReportEmployeename').css("border", "1px solid green");
+        }
+
+        if (jQuery('#leavereportstartdate').val() == "" || jQuery('#leavereportenddate').val() == "" || jQuery('#selectReportEmployeename :selected').val() == "Select Employee") {
+            return false;
+        }
+
+        var leaveReportsInputs = {
+            //Value which is selected in page Employee Name dropdown
+            SelectedEmpId: jQuery('#selectReportEmployeename :selected').val(),
+            StartDate: moment(jQuery('#leavereportstartdate').val()).format("YYYY-MM-DD"),
+            EndDate: jQuery('#leavereportenddate').val() != null && jQuery('#leavereportenddate').val() != "" ? moment(jQuery('#leavereportenddate').val()).format("YYYY-MM-DD") : null
+        }
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetLeaveInfo",
+            data: JSON.stringify({ leaveReportModel: leaveReportsInputs }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('.leave-info-container').html(data);
+            }
+        });
+
+    });
 
     jQuery('#leaveenddate').change(function () {
         $('#leaveenddate').css("border", "1px solid green");
@@ -611,6 +740,10 @@
                 var obj = jQuery.parseJSON(data);
                 jQuery.each(obj, function (i, item) {
                     $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
                 });
 
                 var useRole = jQuery('.emproleleaveapply').val();

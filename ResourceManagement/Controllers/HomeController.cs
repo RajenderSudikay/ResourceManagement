@@ -1716,5 +1716,49 @@ namespace ResourceManagement.Controllers
                 return Json(ClientBasedemployeeModel);
             }
         }
+
+        public JsonResult GetLeaveInfo(RMA_LeaveModel leaveReportModel)
+        {
+            try
+            {
+                var leaveModel = new LeaveInfoModel();
+                var leaveHtmlData = string.Empty;
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var startDate = DateTime.Parse(leaveReportModel.StartDate);
+                    var endDate = DateTime.Parse(leaveReportModel.EndDate);
+
+                    if (leaveReportModel.SelectedEmpId == "All Employees")
+                    {
+                        leaveModel.leaveDetails = db.con_leaveupdate.Where(a => a.leavedate >= startDate && a.leavedate <= endDate).ToList();
+                    }
+                    else
+                    {
+                        leaveModel.leaveDetails = db.con_leaveupdate.Where(a => a.leavedate >= startDate && a.leavedate <= endDate && a.employee_id == leaveReportModel.SelectedEmpId).ToList();
+                    }
+
+                    if (leaveModel.leaveDetails != null && leaveModel.leaveDetails.Count > 0)
+                    {
+                        leaveModel.leaveDetails.OrderBy(x => x.leavedate);
+                        leaveModel.jsonResponse.StatusCode = 200;
+                        leaveModel.jsonResponse.Message = "Leave Details Found for the selected inputs";
+                    }
+                    else
+                    {
+                        leaveModel.jsonResponse.StatusCode = 404;
+                        leaveModel.jsonResponse.Message = "Leave Details not Found for the selected inputs";
+                    }
+                 
+
+                    leaveHtmlData = RenderPartialToString(this, "LeaveInfoPartial", leaveModel, ViewData, TempData);
+                }
+
+                return Json(leaveHtmlData);
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
+        }
     }
 }

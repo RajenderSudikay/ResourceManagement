@@ -403,6 +403,7 @@
     <Content Include="Views\Home\zohosigninupdate.cshtml" />
     <Content Include="Views\Home\zohosigninreport.cshtml" />
     <Content Include="Views\Home\RemainderEmail.cshtml" />
+    <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
