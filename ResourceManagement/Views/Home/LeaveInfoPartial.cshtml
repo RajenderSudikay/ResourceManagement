@@ -1,0 +1,49 @@
+﻿@model ResourceManagement.Models.LeaveOrHolidayModel.LeaveInfoModel
+
+
+@if (Model != null)
+{
+    <div>
+        <table class="table table-bordered table-timesheet-remainder" style="width: 60% !important">
+            <thead style="background-color: #0095a8">
+                <tr>
+                    <th scope="col" style="text-align:center;"><b>Employee ID</b></th>
+                    <th scope="col" style="text-align: center;"><b>Leave Date</b></th>
+                    <th scope="col" style="text-align: center;"><b>Submitted By</b></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.jsonResponse.StatusCode == 200)
+                {
+                    foreach (var leave in Model.leaveDetails.OrderBy(x => x.leavedate))
+                    {
+                        var leaveOriginalDate = @leave.leavedate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim().Replace("/", "-").Split('-');
+                        var leaveDisplayDate = leaveOriginalDate[1] + "-" + leaveOriginalDate[0] + "-" + leaveOriginalDate[2];
+                        <tr>
+                            <td style="text-align:center">@leave.employee_id</td>
+                            <td style="text-align:center">@leaveDisplayDate</td>
+                            <td style="text-align:center">@leave.submittedby</td>
+                        </tr>
+                    }
+                }
+
+                @if (Model.jsonResponse.StatusCode == 404)
+                {
+
+                    <tr>
+                        <td colspan="3" style="text-align:center"><b>NO RECORDS FOUND</b></td>
+                    </tr>
+
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+

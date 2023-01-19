@@ -168,7 +168,7 @@
                                 <tbody class="timesheet-table-grid">
                                     @if (employeeReport.timeSheetInfo.Count > 0)
                                     {
-                                        @foreach (var task in employeeReport.timeSheetInfo.OrderBy(x => x.taskdate))
+                                        foreach (var task in employeeReport.timeSheetInfo)
                                         {
                                             var isHolidayOrLeaveTask = task.timespent == 0 && task.overtime == 0 ? true : false;
                                             if (isHolidayOrLeaveTask)

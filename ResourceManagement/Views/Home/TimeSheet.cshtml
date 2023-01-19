@@ -282,12 +282,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="timeSheetdate">Date</label>
+                                <label for="timeSheetdate">Date<b style="color:red">*</b></label>
                                 <input type="date" class="form-control" id="timeSheetdate" required>
                                 <div class="leave-or-holiday-msg" style="display:none; color: red">
                                     You are on Leave or Holiday on this date.
                                 </div>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback timeSheetdate-invalid-feedback">
                                     Please enter task date
                                 </div>
 
@@ -296,7 +296,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="timeSheetCategory">Category</label>
+                                <label for="timeSheetCategory">Category<b style="color:red">*</b></label>
                                 <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Category</option>
                                     <option value="Development">Development</option>
@@ -345,6 +345,10 @@
                                     <option value="Digital analytics">Digital analytics</option>
                                     <option value="Others">Others</option>
                                 </select>
+
+                                <div class="invalid-feedback">
+                                    Please select Category
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -352,7 +356,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number</label>
+                                <label for="timeSheetIncNumber" id="inputGroupPrepend">Incident Number<b style="color:red">*</b></label>
                                 <textarea class="form-control" id="timeSheetIncNumber" style="min-width: 100%" placeholder="Incident Number" required aria-describedby="incidentnumberhelp"></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Number(s)
@@ -365,7 +369,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="timeSheetIncDesc" id="inputGroupPrepend">Incident Description</label>
+                                <label for="timeSheetIncDesc" id="inputGroupPrepend">Incident Description<b style="color:red">*</b></label>
                                 <textarea class="form-control" id="timeSheetIncDesc" style="min-width: 100%" placeholder="Incident Description" required></textarea>
                                 <div class="invalid-feedback">
                                     Please enter Incident Description
@@ -388,7 +392,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetUrgency">Priority</label>
+                                <label for="timeSheetUrgency">Priority<b style="color:red">*</b></label>
 
                                 <select id="timeSheetUrgency" name="urgency" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Critical</option>
@@ -397,12 +401,16 @@
                                     <option value="Medium">Medium</option>
                                     <option value="Low">Low</option>
                                 </select>
+
+                                <div class="invalid-feedback">
+                                    Please select Priority
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetStatus">Status</label>
+                                <label for="timeSheetStatus">Status<b style="color:red">*</b></label>
 
                                 <select id="timeSheetStatus" name="status" class="form-control form-select form-select-lg mb-3" required>
                                     <option value="" disabled selected>Select Status</option>
@@ -411,6 +419,11 @@
                                     <option value="In Progress">In Progress</option>
                                     <option value="On Going">On Going</option>
                                 </select>
+
+
+                                <div class="invalid-feedback">
+                                    Please select Status
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -424,7 +437,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="timeSheetTimeSpent">Time Spent</label>
+                                <label for="timeSheetTimeSpent">Time Spent<b style="color:red">*</b></label>
                                 <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69" required>
                                 <small id="timespenthelp" class="form-text text-muted" style="color:darkblue !important"></small>
                                 <div class="invalid-feedback timeSpenterror-msg">
@@ -778,11 +791,11 @@
             <div class="modal-body">
                 <h2 class="modal-boday-title">
                     Hey @Model.AMBC_Active_Emp_view.Employee_Name <br />
-                    Please correct the below duplicate recored details
+                    Something went wrong while processing your request. Please contact administrator for more details.
                 </h2>
-                <div class="database-response"></div>
+                <div class="database-response" style="padding-top: 30px !important"></div>
                 <br />
-                <div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of TaskDate_IncidentNumber_TimeSpentHours</p></div>
+                @*<div style="text-align: center; color: #2167ae"> <b>NOTE*:</b> <p>Duplcate key is combination of TaskDate_IncidentNumber_TimeSpentHours</p></div>*@
 
             </div>
             <div class="model-footerbtn-dberror-custom">
@@ -797,7 +810,7 @@
 
     // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
     jQuery('#timeSheetEmpClient').change(function (evt) {
-
+        jQuery(".timesheet-submit").removeAttr("disabled");
         var ClientBasedEmpDetails = {
             EmpId: jQuery('.agent-navdrop-empid').text(),
             ProjectID: jQuery('#timeSheetEmpClient').val(),
@@ -1037,6 +1050,9 @@
 
         // Sets the value to '' in case of an invalid date
         jQuery('#timeSheetdate').change(function (evt) {
+            jQuery('.timeSheetdate-invalid-feedback').hide();
+            jQuery('#timeSheetdate').css("border", "1px solid green");
+
             $('.leave-or-holiday-msg').hide();
             if (!validate(evt.target.value)) {
                 evt.target.value = '';
@@ -1045,6 +1061,8 @@
 
 
         jQuery('.date-timesheet').change(function () {
+
+            jQuery(".timesheet-submit").removeAttr("disabled");
 
             //On Date change removing all the selected sheets previosuly if any
             $('.user-added-timesheet').remove();
@@ -1196,7 +1214,7 @@
                                             bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
                                         });
 
-                                        bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
+                                        //bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
 
                                         /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
                                         jQuery('.warning-message-popup').html(bodyMessage);
@@ -1382,7 +1400,7 @@
                                                 bodyMessage += "<b style='color:red; font-size: initial'>" + leaveDate + " (" + Name + ")</b><br><br>"
                                             });
 
-                                            bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
+                                            //bodyMessage += "Click <a href='/applyleave' target='_blank' style='color: green'><b>here</b></a> to apply leave in case you missed.";
 
                                             /*  bodyMessage += "<br><br><h2>Apply leave </h2>"*/
                                             jQuery('.warning-message-popup').html(bodyMessage);
@@ -1427,6 +1445,31 @@
     }
 
     jQuery(".timesheet-addreport").click(function () {
+
+        //BELOW CODE ADDED JUST TO HANLDE DATE
+        //BASED ON WEEK START DATE FIRST DAY OF THE WEEK IS SELECTED AS TASK DATE IN CALENDER
+        //THIS SOLUTION HAD SOME ISSUE
+        //TO OVERCOME THIS ADDED BELOW CHECK WHEN USER CLICK ON ADD REPORT BUTTON WITHOUT FILLING ANY FIELDS IN THE FORM NOT ABLE TO ADD THE TASK TO TABLE
+        var defaultdate = jQuery('#timeSheetdate').val();
+        var taskMindate = jQuery('#timeSheetdate').attr("min");
+
+        if (defaultdate != "") {
+            defaultminDate = new Date(defaultdate);
+            taskDefaultMindatev = new Date(taskMindate);
+
+            if (defaultminDate < taskDefaultMindatev) {
+                jQuery('#timeSheetdate').focus();
+                jQuery('#timeSheetdate').css("border", "1px solid red");
+                jQuery('.timeSheetdate-invalid-feedback').show();
+                return false;
+            }
+            else {
+                jQuery('#timeSheetdate').css("border", "1px solid green");
+                jQuery('.timeSheetdate-invalid-feedback').hide();
+            }
+        }
+
+
         var isModalValidated = true;
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
@@ -1567,7 +1610,7 @@
 
                     if (model.closeddate != null && model.closeddate != "") {
                         displayClosedDate = model.closeddate.split('-');
-                        displayClosedDate = displayDate[2] + "-" + displayDate[1] + "-" + displayDate[0];
+                        displayClosedDate = displayClosedDate[2] + "-" + displayClosedDate[1] + "-" + displayClosedDate[0];
                     }
 
 
@@ -1714,6 +1757,7 @@
 
     //Final submit post confirmation
     jQuery(".timesheet-submit-final").click(function () {
+        jQuery(".btn-alert-yes").attr("disabled", true);
         jQuery.ajax({
             type: "POST",
             url: "/AddTimeSheet",
@@ -1724,11 +1768,23 @@
                 if (data.StatusCode == 200) {
                     jQuery('.database-response').addClass('text-success');
                     jQuery('.message-success-popup').modal('show');
+                    jQuery(".btn-alert-yes").removeAttr("disabled");
+                    jQuery(".timesheet-submit").attr("disabled", true);
                 }
                 else {
-                    /* jQuery('.database-response').addClass('text-danger');*/
-                    jQuery('.database-response').text(data.Message);
-                    jQuery('#modal-db-error-alert').modal('show');
+                    if (data.Message.toLocaleLowerCase().indexOf("the duplicate key value is") != -1) {
+                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
+                        var bodyMessage = "<h2>You have already submitted the timesheet for the selected week, you might be trying to resubmit the timesheet. Below is the duplicate tasks details </h2><br><br>";
+                        bodyMessage += "<p>" + data.Message + "</p>";
+                        jQuery('.warning-message-popup').html(bodyMessage);
+                        jQuery('#modal-warning-message-popup').modal('show');
+                    }
+                    else {
+                        jQuery('.database-response').text(data.Message);
+                        jQuery('#modal-db-error-alert').modal('show');
+                        jQuery(".btn-alert-yes").removeAttr("disabled");
+                        jQuery(".timesheet-submit").removeAttr("disabled");
+                    }
                 }
                 /* jQuery('.database-response').text(data.Message);   */
             }
@@ -1790,7 +1846,7 @@
             if (item.uniquekey == selectedUniqueItemKey) {
                 requiredIndexNum = i;
                 deleteMessageText += "<b>" + "Task Date: </b>" + item.taskdate + "<br>"
-                    + "<b>" + "Category: </b>" + item.callpriority + "<br>"
+                    + "<b>" + "Category: </b>" + item.category + "<br>"
                     + "<b>" + "Incident Number: </b>" + item.incidentnumber + "<br>"
                     + "<b>" + "Incident Desc: </b>" + item.taskdetails + "<br>"
                     + "<b>" + "Requester: </b>" + item.requester + "<br>"

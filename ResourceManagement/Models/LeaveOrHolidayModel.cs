@@ -21,7 +21,13 @@ namespace ResourceManagement.Models
         {
             public string LeaveDate { get; set; }
 
-            public string LeaveType { get; set; }          
+            public string LeaveType { get; set; }
+        }
+
+        public class LeaveInfoModel
+        {
+            public List<con_leaveupdate> leaveDetails { get; set; } = new List<con_leaveupdate>();
+            public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
         }
     }
 }
