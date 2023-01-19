@@ -1315,9 +1315,9 @@ namespace ResourceManagement.Controllers
 
                         var leaveApplieddates = GetDatesBetween(startDate, endDate);
 
-                        foreach (var leaveDate in leaveApplieddates)
+                        if (leaveModel.LeaveType == "Cancel Leave")
                         {
-                            if (leaveModel.LeaveType == "Cancel Leave")
+                            foreach (var leaveDate in leaveApplieddates)
                             {
                                 var itemToRemove = context.con_leaveupdate.SingleOrDefault(x => x.leavedate == leaveDate && x.employee_id == leaveModel.SelectedEmpId); //returns a single item.
 
@@ -1328,7 +1328,10 @@ namespace ResourceManagement.Controllers
                                     respone.jsonResponse.Message = "Leave Deleted Successfully!";
                                 }
                             }
-                            else
+                        }
+                        else
+                        {
+                            foreach (var leaveDate in leaveApplieddates)
                             {
                                 string dayName = leaveDate.ToString("dddd");
 
@@ -1345,24 +1348,22 @@ namespace ResourceManagement.Controllers
                                         leaveuniqkey = leaveModel.SelectedEmpId + "_" + leaveDate.ToString("yyyy-MM-dd")
                                     });
                                 }
-
-                                context.con_leaveupdate.AddRange(contextModelList);
-                                context.SaveChanges();
-                                respone.jsonResponse.Message = "Leave Submitted Successfully!";
                             }
+
+                            context.con_leaveupdate.AddRange(contextModelList);
+                            context.SaveChanges();
+                            respone.jsonResponse.Message = "Leave Submitted Successfully!";
                         }
-
-
-                        respone.AjaxleaveModel = new RMA_LeaveModel();
-                        respone.AjaxleaveModel = leaveModel;
-
-                        respone.jsonResponse = new JsonResponseModel();
-                        respone.jsonResponse.StatusCode = 200;
-
                     }
+
+                    respone.AjaxleaveModel = new RMA_LeaveModel();
+                    respone.AjaxleaveModel = leaveModel;
+
+                    respone.jsonResponse = new JsonResponseModel();
+                    respone.jsonResponse.StatusCode = 200;
+
                 }
             }
-
             catch (Exception ex)
             {
                 respone.jsonResponse.StatusCode = 500;
@@ -1391,51 +1392,61 @@ namespace ResourceManagement.Controllers
         public JsonResult SubmitLeavesEmailGenerate(RMA_LeaveModel emailLeaveModel)
         {
             var respone = new LeaveEmailModel();
-            if (emailLeaveModel != null)
+            try
             {
-                using (TimeSheetEntities db = new TimeSheetEntities())
+                if (emailLeaveModel != null)
                 {
-                    var empDetails = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == emailLeaveModel.SelectedEmpId).FirstOrDefault();
-                    var leaveSubmissionType = string.Empty;
-
-                    emailLeaveModel.SubmissionType = emailLeaveModel.SelectedEmpId == emailLeaveModel.LogedInEmpId ? "own" : "others";
-
-                    var subject = string.Empty;
-                    var emailBody = RenderPartialToString(this, "LeaveEmail", emailLeaveModel, ViewData, TempData);
-
-                    if (empDetails != null)
+                    using (TimeSheetEntities db = new TimeSheetEntities())
                     {
-                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empDetails.AMBC_Mail_Address))
+                        var empDetails = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == emailLeaveModel.SelectedEmpId).FirstOrDefault();
+                        var leaveSubmissionType = string.Empty;
+
+                        emailLeaveModel.SubmissionType = emailLeaveModel.SelectedEmpId == emailLeaveModel.LogedInEmpId ? "own" : "others";
+
+                        var subject = string.Empty;
+                        var emailBody = RenderPartialToString(this, "LeaveEmail", emailLeaveModel, ViewData, TempData);
+
+                        if (empDetails != null)
                         {
-                            mm.Subject = emailLeaveModel.LeaveType == "Cancel Leave" ? "Leave Cancelled Update!" : "Leave Submission Update!";
-                            mm.Body = emailBody;
-
-                            if (empDetails.AMBC_PM_Mail_Address != "")
+                            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], empDetails.AMBC_Mail_Address))
                             {
-                                mm.CC.Add(empDetails.AMBC_PM_Mail_Address);
-                            }
+                                mm.Subject = emailLeaveModel.LeaveType == "Cancel Leave" ? "Leave Cancelled Update!" : "Leave Submission Update!";
+                                mm.Body = emailBody;
 
-                            if (emailLeaveModel.LogedInEmpEmail != "" && (emailLeaveModel.LogedInEmpEmail != empDetails.AMBC_Mail_Address))
-                            {
-                                mm.CC.Add(emailLeaveModel.LogedInEmpEmail);
-                            }
+                                if (empDetails.AMBC_PM_Mail_Address != "")
+                                {
+                                    mm.CC.Add(empDetails.AMBC_PM_Mail_Address);
+                                }
 
-                            mm.IsBodyHtml = true;
-                            SmtpClient smtp = new SmtpClient();
-                            smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
-                            smtp.EnableSsl = true;
-                            NetworkCredential credentials = new NetworkCredential();
-                            credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
-                            credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
-                            smtp.UseDefaultCredentials = true;
-                            smtp.Credentials = credentials;
-                            smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
-                            smtp.Send(mm);
+                                if (emailLeaveModel.LogedInEmpEmail != "" && (emailLeaveModel.LogedInEmpEmail != empDetails.AMBC_Mail_Address))
+                                {
+                                    mm.CC.Add(emailLeaveModel.LogedInEmpEmail);
+                                }
+
+                                mm.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                                smtp.EnableSsl = true;
+                                NetworkCredential credentials = new NetworkCredential();
+                                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                                smtp.UseDefaultCredentials = true;
+                                smtp.Credentials = credentials;
+                                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                                smtp.Send(mm);
+                                respone.jsonResponse.StatusCode = 200;
+                                respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
+                            }
                         }
+
                     }
 
                 }
-
+            }
+            catch (Exception ex)
+            {
+                respone.jsonResponse.StatusCode = 500;
+                respone.jsonResponse.Message = ex.Message;
             }
 
             return Json(respone, JsonRequestBehavior.AllowGet);
@@ -1703,6 +1714,50 @@ namespace ResourceManagement.Controllers
             catch (Exception ex)
             {
                 return Json(ClientBasedemployeeModel);
+            }
+        }
+
+        public JsonResult GetLeaveInfo(RMA_LeaveModel leaveReportModel)
+        {
+            try
+            {
+                var leaveModel = new LeaveInfoModel();
+                var leaveHtmlData = string.Empty;
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var startDate = DateTime.Parse(leaveReportModel.StartDate);
+                    var endDate = DateTime.Parse(leaveReportModel.EndDate);
+
+                    if (leaveReportModel.SelectedEmpId == "All Employees")
+                    {
+                        leaveModel.leaveDetails = db.con_leaveupdate.Where(a => a.leavedate >= startDate && a.leavedate <= endDate).ToList();
+                    }
+                    else
+                    {
+                        leaveModel.leaveDetails = db.con_leaveupdate.Where(a => a.leavedate >= startDate && a.leavedate <= endDate && a.employee_id == leaveReportModel.SelectedEmpId).ToList();
+                    }
+
+                    if (leaveModel.leaveDetails != null && leaveModel.leaveDetails.Count > 0)
+                    {
+                        leaveModel.leaveDetails.OrderBy(x => x.leavedate);
+                        leaveModel.jsonResponse.StatusCode = 200;
+                        leaveModel.jsonResponse.Message = "Leave Details Found for the selected inputs";
+                    }
+                    else
+                    {
+                        leaveModel.jsonResponse.StatusCode = 404;
+                        leaveModel.jsonResponse.Message = "Leave Details not Found for the selected inputs";
+                    }
+                 
+
+                    leaveHtmlData = RenderPartialToString(this, "LeaveInfoPartial", leaveModel, ViewData, TempData);
+                }
+
+                return Json(leaveHtmlData);
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
             }
         }
     }
