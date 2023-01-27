@@ -1845,6 +1845,14 @@ namespace ResourceManagement.Controllers
                     var noOfCol = workSheet.Dimension.End.Column;
                     var noOfRow = workSheet.Dimension.End.Row;
 
+                    var columnNames = new List<string>();
+
+                    for (int columnIterator = 1; columnIterator <= noOfCol; columnIterator++)
+                    {
+                        columnNames.Add(workSheet.Cells[1, columnIterator].Value.ToString());
+                    }
+
+
                     var reportRows = new List<string>();
 
                     for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)

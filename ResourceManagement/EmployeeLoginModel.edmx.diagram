@@ -36,6 +36,9 @@
         <EntityTypeShape EntityType="TimesheetDBModel.tbld_ambclogininformation" Width="1.5" PointX="15.375" PointY="16.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.ambclogin_leave_view" Width="1.5" PointX="5.375" PointY="15.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.halfday_leave_view" Width="1.5" PointX="15.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template1" Width="1.5" PointX="7.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template2" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template3" Width="1.5" PointX="17.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

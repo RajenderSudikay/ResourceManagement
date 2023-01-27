@@ -264,7 +264,7 @@
             fileData.append('EmployeeID', EmployeeID);
 
             var reportMonth = jQuery('#StatusReportInfo_Month :selected').val();
-            fileData.append('EmployeeName', reportMonth);
+            fileData.append('Month', reportMonth);
 
             jQuery.ajax({
                 type: "POST",

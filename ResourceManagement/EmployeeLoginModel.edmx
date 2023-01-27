@@ -10,6 +10,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.ambctaskcapture' does not have a
         <EntityType Name="ambctaskcapture">
           <Key>
             
+            
             <PropertyRef Name="uniquekey" />
           </Key>
           <Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -285,6 +286,84 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="ErrorTime" Type="datetime" />
           <Property Name="ErrorMsg" Type="varchar(max)" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="monthlyreports_Template1">
+          <Key>
+            <PropertyRef Name="Ticket_Number" />
+            <PropertyRef Name="Ticket_Created_Date" />
+            <PropertyRef Name="Ticket_Raisedby" />
+            <PropertyRef Name="Ticket_Priority" />
+            <PropertyRef Name="Ticket_Status" />
+            <PropertyRef Name="Consultant_Name" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Ticket_Number" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Ticket_Summary" Type="varchar" MaxLength="500" />
+          <Property Name="Ticket_Created_Date" Type="date" Nullable="false" />
+          <Property Name="Ticket_Category" Type="varchar" MaxLength="250" />
+          <Property Name="Ticket_Raisedby" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Ticket_Priority" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ticket_Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ticket_Closed_Date" Type="date" />
+          <Property Name="Organisation" Type="varchar" MaxLength="250" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="Consultant_Name" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Uploaded_Month" Type="varchar" MaxLength="50" />
+          <Property Name="Uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="monthlyreports_Template2">
+          <Key>
+            <PropertyRef Name="Project_Created_Date" />
+            <PropertyRef Name="Project_Raisedby" />
+            <PropertyRef Name="Project_Priority" />
+            <PropertyRef Name="Project_Status" />
+            <PropertyRef Name="ConsultantName" />
+            <PropertyRef Name="uniquekey" />
+          </Key>
+          <Property Name="Project_Name" Type="varchar" MaxLength="500" />
+          <Property Name="Project_Summary" Type="varchar" MaxLength="100" />
+          <Property Name="Project_Created_Date" Type="date" Nullable="false" />
+          <Property Name="Project_Closing_Date_Target" Type="date" />
+          <Property Name="Project_Category" Type="varchar" MaxLength="250" />
+          <Property Name="Project_Raisedby" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Project_Priority" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Project_Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Project_Closed_Date_Actual" Type="date" />
+          <Property Name="Organisation" Type="varchar" MaxLength="250" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="ConsultantName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Uploaded_Month" Type="varchar" MaxLength="50" />
+          <Property Name="uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="monthlyreports_Template3">
+          <Key>
+            <PropertyRef Name="Control_Owner" />
+            <PropertyRef Name="Consultantname" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Test_ID" Type="varchar" MaxLength="500" />
+          <Property Name="Control_Group_Name" Type="varchar" MaxLength="100" />
+          <Property Name="Test_Completed" Type="varchar" MaxLength="100" />
+          <Property Name="Test_Due_Date" Type="date" />
+          <Property Name="Test_Completion_Date" Type="date" />
+          <Property Name="Test_Conclusion" Type="varchar" MaxLength="250" />
+          <Property Name="Control_Owner" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Control_Performer" Type="varchar" MaxLength="50" />
+          <Property Name="Test_application" Type="varchar" MaxLength="500" />
+          <Property Name="Organisation" Type="varchar" MaxLength="250" />
+          <Property Name="Layer" Type="varchar" MaxLength="250" />
+          <Property Name="Frequency" Type="varchar" MaxLength="50" />
+          <Property Name="Current_step" Type="varchar" MaxLength="250" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="Consultantname" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Uploadedmonth" Type="varchar" MaxLength="50" />
+          <Property Name="Uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_ambclogininformation">
           <Key>
             <PropertyRef Name="Concat_loginstring" />
@@ -534,7 +613,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />          
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
@@ -587,6 +666,9 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
     FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_LoginInformation_bkp].[login_id] AS [login_id], 
@@ -1168,6 +1250,9 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tbld_ambclogininformation" EntityType="TimesheetDBModel.tbld_ambclogininformation" />
           <EntitySet Name="ambclogin_leave_view" EntityType="TimesheetDBModel.ambclogin_leave_view" />
           <EntitySet Name="halfday_leave_view" EntityType="TimesheetDBModel.halfday_leave_view" />
+          <EntitySet Name="monthlyreports_Template1" EntityType="TimesheetDBModel.monthlyreports_Template1" />
+          <EntitySet Name="monthlyreports_Template2" EntityType="TimesheetDBModel.monthlyreports_Template2" />
+          <EntitySet Name="monthlyreports_Template3" EntityType="TimesheetDBModel.monthlyreports_Template3" />
         </EntityContainer>
         <EntityType Name="tbld_ambclogininformation">
           <Key>
@@ -1207,6 +1292,78 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Sign_In_Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Leave_Date" Type="DateTime" Precision="0" />
           <Property Name="Leave_Type" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="monthlyreports_Template1">
+          <Key>
+            <PropertyRef Name="Ticket_Number" />
+            <PropertyRef Name="Ticket_Created_Date" />
+            <PropertyRef Name="Ticket_Raisedby" />
+            <PropertyRef Name="Ticket_Priority" />
+            <PropertyRef Name="Ticket_Status" />
+            <PropertyRef Name="Consultant_Name" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Ticket_Number" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Summary" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Created_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Ticket_Category" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Raisedby" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Priority" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Closed_Date" Type="DateTime" Precision="0" />
+          <Property Name="Organisation" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Consultant_Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Uploaded_Month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Uniquekey" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="monthlyreports_Template2">
+          <Key>
+            <PropertyRef Name="Project_Created_Date" />
+            <PropertyRef Name="Project_Raisedby" />
+            <PropertyRef Name="Project_Priority" />
+            <PropertyRef Name="Project_Status" />
+            <PropertyRef Name="ConsultantName" />
+            <PropertyRef Name="uniquekey" />
+          </Key>
+          <Property Name="Project_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Summary" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Created_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Project_Closing_Date_Target" Type="DateTime" Precision="0" />
+          <Property Name="Project_Category" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Raisedby" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Priority" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Closed_Date_Actual" Type="DateTime" Precision="0" />
+          <Property Name="Organisation" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ConsultantName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Uploaded_Month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="uniquekey" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="monthlyreports_Template3">
+          <Key>
+            <PropertyRef Name="Control_Owner" />
+            <PropertyRef Name="Consultantname" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Test_ID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Control_Group_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Test_Completed" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Test_Due_Date" Type="DateTime" Precision="0" />
+          <Property Name="Test_Completion_Date" Type="DateTime" Precision="0" />
+          <Property Name="Test_Conclusion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Control_Owner" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Control_Performer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Test_application" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Organisation" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Layer" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Frequency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_step" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Consultantname" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Uploadedmonth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Uniquekey" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1693,6 +1850,68 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="Leave_Date" ColumnName="Leave Date" />
                 <ScalarProperty Name="Sign_In_Date" ColumnName="Sign In Date" />
                 <ScalarProperty Name="Employee_Code" ColumnName="Employee Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="monthlyreports_Template1">
+            <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template1">
+              <MappingFragment StoreEntitySet="monthlyreports_Template1">
+                <ScalarProperty Name="Uniquekey" ColumnName="Uniquekey" />
+                <ScalarProperty Name="Uploaded_Month" ColumnName="Uploaded_Month" />
+                <ScalarProperty Name="Consultant_Name" ColumnName="Consultant_Name" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Organisation" ColumnName="Organisation" />
+                <ScalarProperty Name="Ticket_Closed_Date" ColumnName="Ticket_Closed_Date" />
+                <ScalarProperty Name="Ticket_Status" ColumnName="Ticket_Status" />
+                <ScalarProperty Name="Ticket_Priority" ColumnName="Ticket_Priority" />
+                <ScalarProperty Name="Ticket_Raisedby" ColumnName="Ticket_Raisedby" />
+                <ScalarProperty Name="Ticket_Category" ColumnName="Ticket_Category" />
+                <ScalarProperty Name="Ticket_Created_Date" ColumnName="Ticket_Created_Date" />
+                <ScalarProperty Name="Ticket_Summary" ColumnName="Ticket_Summary" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="monthlyreports_Template2">
+            <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template2">
+              <MappingFragment StoreEntitySet="monthlyreports_Template2">
+                <ScalarProperty Name="uniquekey" ColumnName="uniquekey" />
+                <ScalarProperty Name="Uploaded_Month" ColumnName="Uploaded_Month" />
+                <ScalarProperty Name="ConsultantName" ColumnName="ConsultantName" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Organisation" ColumnName="Organisation" />
+                <ScalarProperty Name="Project_Closed_Date_Actual" ColumnName="Project_Closed_Date_Actual" />
+                <ScalarProperty Name="Project_Status" ColumnName="Project_Status" />
+                <ScalarProperty Name="Project_Priority" ColumnName="Project_Priority" />
+                <ScalarProperty Name="Project_Raisedby" ColumnName="Project_Raisedby" />
+                <ScalarProperty Name="Project_Category" ColumnName="Project_Category" />
+                <ScalarProperty Name="Project_Closing_Date_Target" ColumnName="Project_Closing_Date_Target" />
+                <ScalarProperty Name="Project_Created_Date" ColumnName="Project_Created_Date" />
+                <ScalarProperty Name="Project_Summary" ColumnName="Project_Summary" />
+                <ScalarProperty Name="Project_Name" ColumnName="Project_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="monthlyreports_Template3">
+            <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template3">
+              <MappingFragment StoreEntitySet="monthlyreports_Template3">
+                <ScalarProperty Name="Uniquekey" ColumnName="Uniquekey" />
+                <ScalarProperty Name="Uploadedmonth" ColumnName="Uploadedmonth" />
+                <ScalarProperty Name="Consultantname" ColumnName="Consultantname" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Current_step" ColumnName="Current_step" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Layer" ColumnName="Layer" />
+                <ScalarProperty Name="Organisation" ColumnName="Organisation" />
+                <ScalarProperty Name="Test_application" ColumnName="Test_application" />
+                <ScalarProperty Name="Control_Performer" ColumnName="Control_Performer" />
+                <ScalarProperty Name="Control_Owner" ColumnName="Control_Owner" />
+                <ScalarProperty Name="Test_Conclusion" ColumnName="Test_Conclusion" />
+                <ScalarProperty Name="Test_Completion_Date" ColumnName="Test_Completion_Date" />
+                <ScalarProperty Name="Test_Due_Date" ColumnName="Test_Due_Date" />
+                <ScalarProperty Name="Test_Completed" ColumnName="Test_Completed" />
+                <ScalarProperty Name="Control_Group_Name" ColumnName="Control_Group_Name" />
+                <ScalarProperty Name="Test_ID" ColumnName="Test_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -273,6 +273,15 @@
     <Compile Include="Models\StatusReportModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Models\ZohoSignInModel.cs" />
+    <Compile Include="monthlyreports_Template1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblambcholiday.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>

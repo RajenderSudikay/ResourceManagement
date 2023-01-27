@@ -54,5 +54,8 @@ namespace ResourceManagement
         public virtual DbSet<tbld_ambclogininformation> tbld_ambclogininformation { get; set; }
         public virtual DbSet<ambclogin_leave_view> ambclogin_leave_view { get; set; }
         public virtual DbSet<halfday_leave_view> halfday_leave_view { get; set; }
+        public virtual DbSet<monthlyreports_Template1> monthlyreports_Template1 { get; set; }
+        public virtual DbSet<monthlyreports_Template2> monthlyreports_Template2 { get; set; }
+        public virtual DbSet<monthlyreports_Template3> monthlyreports_Template3 { get; set; }
     }
 }
