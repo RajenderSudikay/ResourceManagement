@@ -1748,7 +1748,7 @@ namespace ResourceManagement.Controllers
                         leaveModel.jsonResponse.StatusCode = 404;
                         leaveModel.jsonResponse.Message = "Leave Details not Found for the selected inputs";
                     }
-                 
+
 
                     leaveHtmlData = RenderPartialToString(this, "LeaveInfoPartial", leaveModel, ViewData, TempData);
                 }
@@ -1760,5 +1760,111 @@ namespace ResourceManagement.Controllers
                 return Json(null);
             }
         }
+
+        //Status REPORt Code
+        public ActionResult StatusReport()
+        {
+            var model = new RMA_StatusReportModel();
+
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_EmployeeModel = employeeModel;
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeesDetails = db.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active").ToList();
+
+                if (employeesDetails != null && employeesDetails.Count > 0)
+                {
+                    foreach (var employeesDetail in employeesDetails)
+                    {
+                        model.StatusReportInfo.EmployeeList.Add(new SelectListItem()
+                        {
+                            Text = employeesDetail.Employee_Name,
+                            Value = employeesDetail.Employee_ID
+                        });
+                    }
+
+                }
+
+                DateTime CurrentMonth = DateTime.Now;
+                DateTime LastMonth1 = DateTime.Now.AddMonths(-1);
+                DateTime LastMonth2 = DateTime.Now.AddMonths(-2);
+                DateTime LastMonth3 = DateTime.Now.AddMonths(-3);
+
+                model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                {
+                    Text = CurrentMonth.ToString("MMM") + "-" + CurrentMonth.Year,
+                    Value = CurrentMonth.ToString("MMM") + "-" + CurrentMonth.Year
+                });
+
+                model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                {
+                    Text = LastMonth1.ToString("MMM") + "-" + LastMonth1.Year,
+                    Value = LastMonth1.ToString("MMM") + "-" + LastMonth1.Year
+                });
+
+                model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                {
+                    Text = LastMonth2.ToString("MMM") + "-" + LastMonth2.Year,
+                    Value = LastMonth2.ToString("MMM") + "-" + LastMonth2.Year
+                });
+
+                model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                {
+                    Text = LastMonth3.ToString("MMM") + "-" + LastMonth3.Year,
+                    Value = LastMonth3.ToString("MMM") + "-" + LastMonth3.Year
+                });
+
+            }
+
+            return View(model);
+        }
+
+
+        public JsonResult StatusReportsUpload(StatusReportModel fileData)
+        {
+            var model = new RMA_StatusReportModel();
+
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_EmployeeModel = employeeModel;
+
+
+            HttpPostedFileBase file = fileData.ExcelFile;
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                string fileName = file.FileName;
+                string fileContentType = file.ContentType;
+                byte[] fileBytes = new byte[file.ContentLength];
+                var data = file.InputStream.Read(fileBytes, 0, System.Convert.ToInt32(file.ContentLength));
+
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    var reportRows = new List<string>();
+
+                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                    {
+                        reportRows.Add(workSheet.Cells[rowIterator, 2].Value.ToString());
+                    }
+
+                    var SystemInfo = SystemInformation();
+                    using (var context = new TimeSheetEntities())
+                    {
+
+
+                        //model.SuccessMessage = "Successfully added check-in for all the consultants who are exists in the sheet";
+                    }
+
+                }
+            }
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

@@ -270,6 +270,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Models\LeaveOrHolidayModel.cs" />
+    <Compile Include="Models\StatusReportModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Models\ZohoSignInModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -404,6 +405,7 @@
     <Content Include="Views\Home\zohosigninreport.cshtml" />
     <Content Include="Views\Home\RemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
+    <Content Include="Views\Home\StatusReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
