@@ -1,0 +1,52 @@
+[
+  {
+    "Name": "Template1",
+    "fields": {
+      "Field1": "Ticket_Number",
+      "Field2": "Ticket_Summary",
+      "Field3": "Ticket_Created_Date",
+      "Field4": "Ticket_Category",
+      "Field5": "Ticket_Raisedby",
+      "Field6": "Ticket_Priority",
+      "Field7": "Ticket_Status",
+      "Field8": "Ticket_Closed_Date",
+      "Field9": "Organisation",
+      "Field10": "Comments"
+    }
+  },
+  {
+    "Name": "Template2",
+    "fields": {
+      "Field1": "Project_Name",
+      "Field2": "Project_Summary",
+      "Field3": "Project_Created_Date",
+      "Field4": "Project_Closing_Date_Target",
+      "Field5": "Project_Category",
+      "Field6": "Project_Raisedby",
+      "Field7": "Project_Priority",
+      "Field8": "Project_Status",
+      "Field9": "Project_Closed_Date_Actual",
+      "Field10": "Organisation",
+      "Field11": "Comments"
+    }
+  },
+  {
+    "Name": "Template3",
+    "fields": {
+      "Field1": "Test_ID",
+      "Field2": "Control_Group_Name",
+      "Field3": "Test_Completed",
+      "Field4": "Test_Due_Date",
+      "Field5": "Test_Completion_Date",
+      "Field6": "Test_Conclusion",
+      "Field7": "Control_Owner",
+      "Field8": "Control_Performer",
+      "Field9": "Test_application",
+      "Field10": "Organisation",
+      "Field11": "Layer",
+      "Field12": "Frequency",
+      "Field13": "Current_step",
+      "Field14": "Comments"
+    }
+  }
+]

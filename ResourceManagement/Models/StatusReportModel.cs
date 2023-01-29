@@ -30,8 +30,18 @@ namespace ResourceManagement.Models
 
         public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();
 
+        public string FieldsIndexJson { get; set; }
+
         public string SuccessMessage { get; set; }
 
         public string FailureMessage { get; set; }
+    }
+
+    public class FieldsIndex
+    {
+
+        public string FieldName { get; set; }
+        public string Index { get; set; }
+
     }
 }

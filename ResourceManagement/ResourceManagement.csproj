@@ -415,6 +415,7 @@
     <Content Include="Views\Home\RemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
     <Content Include="Views\Home\StatusReport.cshtml" />
+    <Content Include="StatusReports.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

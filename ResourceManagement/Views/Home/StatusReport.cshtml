@@ -142,7 +142,7 @@
 
 
 <div class="card card-body" style="border-radius: 10px">
-    <div class="card timesheet-card">
+    <div class="card status-report-card">
         <div class="card-body ">
 
             <div class="">
@@ -189,6 +189,32 @@
                             Please upload a file
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="reporttype" class="control-label col-md-2">Uploaded Report Type: <b style="color:red">*</b></label>
+                        <select id="statusreporttype" name="reporttype" class="form-control col-md-3" required>
+                            <option value="Please Select Report Type">Please Select Report Type</option>
+                            <option value="Template1">Incident Report</option>
+                            <option value="Template2">Project Report</option>
+                            <option value="Template3">Test Report</option>
+                        </select>
+
+                        <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:180px">
+                            Please select Report Type
+                        </div>
+                    </div>
+
+                    <div class="dynamic-field-binding">
+                        @*<div class="form-group row">
+                                <label for="reporttype" class="control-label col-md-2">Uploaded Report Type: <b style="color:red">*</b></label>
+                                <select id="statusreporttype" name="reporttype" class="form-control col-md-3" required>
+                                    <option value="Please Select Report Type">Please Select Report Type</option>
+                                    <option value="Template1">Incident Report</option>
+                                    <option value="Template2">Project Report</option>
+                                    <option value="Template3">Test Report</option>
+                                </select>
+                            </div>*@
+                    </div>
                     <br />
 
                     <div class="form-group row">
@@ -223,13 +249,88 @@
         $("#StatusReportInfo_EmployeeName").prop("disabled", false);
     }
 
-    //Final submit post confirmation
-    jQuery(".btn-upload-report").click(function () {
+    function ExcelFieldMappingTemplate(fieldName) {
+
+        return '<div class="form-group row">'
+            + '<label for=' + fieldName + ' class="control-label col-md-2">' + fieldName + ' <b style="color:red">*</b></label>'
+            + '<select id=' + fieldName + ' name=' + fieldName + ' class="form-control col-md-3 excel-columns" required>'
+            + '<option value="Please Select Excel Column Name">Please Select Excel Column Name</option>'
+            + '</select>'
+            + '</div>'
+    }
+
+    // Create FormData object
+    var fileData = new FormData();
+
+    $("#reportupload").change(function () {
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
+
+        fileData = new FormData();
+
+        // Looping over all files and add it to FormData object
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("ExcelFile", files[i]);
+        }
+    });
+
+
+    jQuery('#statusreporttype').change(function (evt) {
+        jQuery(".dynamic-field-binding").empty();
+        var selectedTemplate = jQuery('#statusreporttype :selected').val();
+
+        var dbTemplateFields = [];
+        jQuery.getJSON("StatusReports.json", function (data) {
+            var selectedTemplateJson = data.filter(v => v.Name === selectedTemplate)[0].fields;
+            jQuery.each(selectedTemplateJson, function (key, val) {
+                var dynamicTemplate = ExcelFieldMappingTemplate(val);
+                var newRow = jQuery(dynamicTemplate);
+                jQuery(".dynamic-field-binding").append(jQuery(newRow));
+            });
+        });
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/ReadExcelColumnNames",
+            contentType: false,
+            processData: false,
+            data: fileData,
+            success: function (data) {
+                var coumnNumber = 0;
+                jQuery.each(data, function (i, item) {
+                    jQuery('.excel-columns').append('<option value="' + item + '">' + i + '</option>');
+                    coumnNumber++;
+                });
+                var naIndexNumber = coumnNumber + 1;
+                jQuery('.excel-columns').append('<option value=' + naIndexNumber + '>NA</option>');
+
+            }
+        });
+
+    });
+
+    jQuery(document).on("change", ".excel-columns", function () {
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");
+        if (jQuery('#' + fieldId + ' :selected').text() == "Please Select Excel Column Name") {
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+            fileValidated = false;
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+    });
+
+
+    //Final submit post confirmation
+    jQuery(".btn-upload-report").click(function () {
+
+        var fileUpload = $("#reportupload").get(0);
+        var files = fileUpload.files;
+
         var fileValidated = true;
 
-        if (files.length == 0) {
+        if (fileUpload == null || fileUpload.files == null || fileUpload.files.length == 0) {
             jQuery('#reportupload').css("border", "1px solid red");
             jQuery('.reportupload-invalid-feedback').show();
             fileValidated = false;
@@ -249,14 +350,38 @@
             jQuery('.month-invalid-feedback').hide();
         }
 
-        if (fileValidated) {
-            // Create FormData object
-            var fileData = new FormData();
+        if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
+            jQuery('#statusreporttype').css("border", "1px solid red");
+            jQuery('.reporttype-invalid-feedback').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#statusreporttype').css("border", "1px solid green");
+            jQuery('.reporttype-invalid-feedback').hide();
+        }
 
-            // Looping over all files and add it to FormData object
-            for (var i = 0; i < files.length; i++) {
-                fileData.append("ExcelFile", files[i]);
+        var fieldMapping = jQuery('.excel-columns');
+        var excelColumnMappingFieldIndexs = new Array();
+
+        jQuery.each(fieldMapping, function () {
+            var currentField = jQuery(this);
+            var fieldId = currentField.attr("id");
+            if (jQuery('#' + fieldId + ' :selected').text() == "Please Select Excel Column Name") {
+                jQuery('#' + fieldId + '').css("border", "1px solid red");
+                fileValidated = false;
             }
+            else {
+                var fieldIndexMappingModel = {
+                    FieldName: $(this).siblings('label').text(),
+                    Index: jQuery('#' + fieldId + ' :selected').val(),
+                }
+                excelColumnMappingFieldIndexs.push(fieldIndexMappingModel);
+                jQuery('#' + fieldId + '').css("border", "1px solid green");
+            }
+        });
+
+        if (fileValidated) {
+
             var empName = jQuery('#StatusReportInfo_EmployeeName :selected').text();
             var EmployeeID = jQuery('#StatusReportInfo_EmployeeName :selected').val();
 
@@ -266,71 +391,29 @@
             var reportMonth = jQuery('#StatusReportInfo_Month :selected').val();
             fileData.append('Month', reportMonth);
 
+            var fieldIndexJson = JSON.stringify(excelColumnMappingFieldIndexs)
+
+            fileData.append('FieldsIndexJson', fieldIndexJson);
+
             jQuery.ajax({
                 type: "POST",
                 url: "/StatusReportsUpload",
-                contentType: false, 
+                datatype: 'json',
+                contentType: false,
                 processData: false,
+                async: false,
                 data: fileData,
                 success: function (data) {
-                    if (data.StatusCode == 200) {
-
-                    }
+                    alert();
+                    jQuery('.status-report-card').empty();
+                    fileData = new FormData();
+                    window.location.href = "/statusreport";
                 }
             });
         }
         else {
             return false;
         }
-    });
-
-
-    //var now = new Date();
-    //var currentYear = (new Date).getFullYear();
-    //var currentMonth = GetMonthName((new Date).getMonth());
-
-
-    //var newdate1 = new Date(now.setMonth(now.getMonth() - 1));
-    //var lastMonth1 = GetMonthName((newdate1.getMonth()));
-    //var lastMonth1Year = newdate1.getFullYear();
-
-    //var newdate2 = new Date(newdate1.setMonth(newdate1.getMonth() - 1));
-    //var lastMonth2 = GetMonthName((newdate2.getMonth()));
-    //var lastMonth2Year = newdate2.getFullYear();
-
-    //var newdate3 = new Date(newdate2.setMonth(newdate2.getMonth() - 1));
-    //var lastMonth3 = GetMonthName((newdate3.getMonth()));
-    //var lastMonth3Year = newdate3.getFullYear();
-
-    ////var newdate4 = new Date(newdate3.setMonth(newdate3.getMonth() - 1));
-    ////var lastMonth4 = GetMonthName((newdate4.getMonth()));
-    ////var lastMonth4Year = newdate4.getFullYear();
-
-    //var month1 = currentMonth + "-" + currentYear;
-    //var month2 = lastMonth1 + "-" + lastMonth1Year;
-    //var month3 = lastMonth2 + "-" + lastMonth2Year;
-    //var month4 = lastMonth3 + "-" + lastMonth3Year;
-
-    //$('#months').append('<option value="' + month1 + '">' + month1 + '</option>');
-    //$('#months').append('<option value="' + month2 + '">' + month2 + '</option>');
-    //$('#months').append('<option value="' + month3 + '">' + month3 + '</option>');
-    //$('#months').append('<option value="' + month4 + '">' + month4 + '</option>');
-
-    //console.log(currentMonth);
-    //console.log(currentYear);
-    //console.log(lastMonth1);
-    //console.log(lastMonth1Year);
-    //console.log(lastMonth2);
-    //console.log(lastMonth2Year);
-    //console.log(lastMonth3);
-    //console.log(lastMonth3Year);
-    ////console.log(lastMonth4);
-    ////console.log(lastMonth4Year);
-
-    //function GetMonthName(monthNumber) {
-    //    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    //    return months[monthNumber];
-    //}
-
+    });    
 
 </script>

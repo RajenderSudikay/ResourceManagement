@@ -1874,5 +1874,30 @@ namespace ResourceManagement.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult ReadExcelColumnNames(StatusReportModel fileData)
+        {
+            HttpPostedFileBase file = fileData.ExcelFile;
+            var columnNames = new Dictionary<string, int>();
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    for (int columnIterator = 1; columnIterator <= noOfCol; columnIterator++)
+                    {
+                        if (workSheet.Cells[1, columnIterator].Value != null)
+                            columnNames.Add(workSheet.Cells[1, columnIterator].Value.ToString(), columnIterator);
+                    }
+                }
+            }
+
+            return Json(columnNames, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
