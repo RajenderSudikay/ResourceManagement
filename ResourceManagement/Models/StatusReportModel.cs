@@ -44,4 +44,10 @@ namespace ResourceManagement.Models
         public string Index { get; set; }
 
     }
+
+    public class StatusReport_Template1Model
+    {
+        public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
+
+    }
 }

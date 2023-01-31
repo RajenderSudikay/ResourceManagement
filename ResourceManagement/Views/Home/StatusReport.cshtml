@@ -372,7 +372,7 @@
             }
             else {
                 var fieldIndexMappingModel = {
-                    FieldName: $(this).siblings('label').text(),
+                    FieldName: $(this).siblings('label').attr("for"),
                     Index: jQuery('#' + fieldId + ' :selected').val(),
                 }
                 excelColumnMappingFieldIndexs.push(fieldIndexMappingModel);

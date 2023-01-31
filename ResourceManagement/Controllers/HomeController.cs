@@ -1845,27 +1845,52 @@ namespace ResourceManagement.Controllers
                     var noOfCol = workSheet.Dimension.End.Column;
                     var noOfRow = workSheet.Dimension.End.Row;
 
-                    var columnNames = new List<string>();
 
-                    for (int columnIterator = 1; columnIterator <= noOfCol; columnIterator++)
-                    {
-                        columnNames.Add(workSheet.Cells[1, columnIterator].Value.ToString());
-                    }
+                    var indexList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.FieldsIndexJson);
+
+                    var Ticket_NumberIndex = indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index;
+                    var Ticket_SummaryIndex = indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index;
+
+                    var Ticket_Created_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index;
+                    var Ticket_CategoryIndex = indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index;
+
+                    var Ticket_RaisedbyIndex = indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index;
+                    var Ticket_PriorityIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index;
+
+                    var Ticket_StatusIndex = indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index;
+                    var Ticket_Closed_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index;
+
+                    var OrganisationIndex = indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index;
+                    var CommentsIndex = indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index;
 
 
-                    var reportRows = new List<string>();
+                    var reportModel = new StatusReport_Template1Model();
 
                     for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                     {
-                        reportRows.Add(workSheet.Cells[rowIterator, 2].Value.ToString());
+                        reportModel.Template1Reports.Add(new monthlyreports_Template1()
+                        {
+                            Ticket_Number = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString(),
+                            Ticket_Summary = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_SummaryIndex)].Value.ToString(),
+                            Ticket_Created_Date = System.Convert.ToDateTime(workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_Created_DateIndex)].Value.ToString()),
+                            Ticket_Category = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_CategoryIndex)].Value.ToString(),
+                            Ticket_Priority = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_PriorityIndex)].Value.ToString(),
+                            Ticket_Status = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_StatusIndex)].Value.ToString(),
+                            Ticket_Closed_Date = System.Convert.ToDateTime(workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_Closed_DateIndex)].Value.ToString()),
+                            Organisation = workSheet.Cells[rowIterator, System.Convert.ToInt32(OrganisationIndex)].Value.ToString(),
+                            //Comments = workSheet.Cells[rowIterator, System.Convert.ToInt32(CommentsIndex)].Value.ToString(),
+                            Consultant_Name = fileData.EmployeeName,
+                            Uploaded_Month = fileData.Month,
+                            Uniquekey = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString() + "_" + fileData.Month
+                        });
+
                     }
 
-                    var SystemInfo = SystemInformation();
+
                     using (var context = new TimeSheetEntities())
                     {
-
-
-                        //model.SuccessMessage = "Successfully added check-in for all the consultants who are exists in the sheet";
+                        context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
+                        context.SaveChanges();
                     }
 
                 }
