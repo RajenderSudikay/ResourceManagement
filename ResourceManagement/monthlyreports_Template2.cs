@@ -28,5 +28,7 @@ namespace ResourceManagement
         public string ConsultantName { get; set; }
         public string Uploaded_Month { get; set; }
         public string uniquekey { get; set; }
+        public string Uploadedby { get; set; }
+        public string FileNamee { get; set; }
     }
 }

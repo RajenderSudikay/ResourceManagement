@@ -1880,6 +1880,8 @@ namespace ResourceManagement.Controllers
                             Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
                             Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, System.Convert.ToInt32(CommentsIndex)].Value.ToString() : "",
+                            Uploadedby = fileData.EmployeeName,
+                            FileNamee = file.FileName,
                             Consultant_Name = fileData.EmployeeName,                            
                             Uploaded_Month = fileData.Month,
                             Uniquekey = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString() + "_" + fileData.Month

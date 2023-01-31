@@ -19,6 +19,7 @@ namespace ResourceManagement.Models
         //To change label title value  
         [DisplayName("Month")]
         public string Month { get; set; }
+        public string TemplateType { get; set; }
 
         //To change label title value  
         [DisplayName("Upload Report File")]
