@@ -1848,20 +1848,20 @@ namespace ResourceManagement.Controllers
 
                     var indexList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.FieldsIndexJson);
 
-                    var Ticket_NumberIndex = indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index;
-                    var Ticket_SummaryIndex = indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index;
+                    int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
+                    int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
-                    var Ticket_Created_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index;
-                    var Ticket_CategoryIndex = indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index;
+                    var Ticket_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index);
+                    var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
 
-                    var Ticket_RaisedbyIndex = indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index;
-                    var Ticket_PriorityIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index;
+                    var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
+                    var Ticket_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index);
 
-                    var Ticket_StatusIndex = indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index;
-                    var Ticket_Closed_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index;
+                    var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
+                    var Ticket_Closed_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index);
 
-                    var OrganisationIndex = indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index;
-                    var CommentsIndex = indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index;
+                    var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+                    var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
 
 
                     var reportModel = new StatusReport_Template1Model();
@@ -1870,16 +1870,17 @@ namespace ResourceManagement.Controllers
                     {
                         reportModel.Template1Reports.Add(new monthlyreports_Template1()
                         {
-                            Ticket_Number = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString(),
-                            Ticket_Summary = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_SummaryIndex)].Value.ToString(),
-                            Ticket_Created_Date = System.Convert.ToDateTime(workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_Created_DateIndex)].Value.ToString()),
-                            Ticket_Category = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_CategoryIndex)].Value.ToString(),
-                            Ticket_Priority = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_PriorityIndex)].Value.ToString(),
-                            Ticket_Status = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_StatusIndex)].Value.ToString(),
-                            Ticket_Closed_Date = System.Convert.ToDateTime(workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_Closed_DateIndex)].Value.ToString()),
-                            Organisation = workSheet.Cells[rowIterator, System.Convert.ToInt32(OrganisationIndex)].Value.ToString(),
-                            //Comments = workSheet.Cells[rowIterator, System.Convert.ToInt32(CommentsIndex)].Value.ToString(),
-                            Consultant_Name = fileData.EmployeeName,
+                            Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
+                            Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
+                            Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
+                            Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
+                            Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
+                            Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
+                            Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, System.Convert.ToInt32(CommentsIndex)].Value.ToString() : "",
+                            Consultant_Name = fileData.EmployeeName,                            
                             Uploaded_Month = fileData.Month,
                             Uniquekey = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString() + "_" + fileData.Month
                         });
