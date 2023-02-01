@@ -381,8 +381,24 @@
 
 
     jQuery(document).on("change", ".excel-columns", function () {
+
+        //This is newly selected dropdown value
         var currentField = jQuery(this);
+        //This is newly selected dropdown field ID
         var fieldId = currentField.attr("id");
+
+        var fieldMapping = jQuery('.excel-columns');
+        var excelColumnMappingFieldIndexs = new Array();
+        jQuery.each(fieldMapping, function () {
+            //Already Selected dropdown ID
+            var selectedField = jQuery(this);
+            var selectFieldId = selectedField.attr("id");
+            if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Excel Column Name" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
+                excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+            }
+        });
+
+
         if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Excel Column Name") {
             jQuery('#' + fieldId + '').css("border", "1px solid red");
             fileValidated = false;
@@ -390,6 +406,19 @@
         else {
             jQuery('#' + fieldId + '').css("border", "1px solid green");
         }
+
+        var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
+        if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+            jQuery('.warning-message-popup').html("<h2>You cannot select the excel column <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+            jQuery("#" + fieldId + " option:first").attr('selected', 'selected');
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+            jQuery('#modal-warning-message-popup').modal("show");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+
     });
 
 
