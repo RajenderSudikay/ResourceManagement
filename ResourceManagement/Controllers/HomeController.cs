@@ -1824,20 +1824,13 @@ namespace ResourceManagement.Controllers
         public JsonResult StatusReportsUpload(StatusReportModel fileData)
         {
             var model = new RMA_StatusReportModel();
-
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             model.RMA_EmployeeModel = employeeModel;
-
 
             HttpPostedFileBase file = fileData.ExcelFile;
 
             if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
             {
-                string fileName = file.FileName;
-                string fileContentType = file.ContentType;
-                byte[] fileBytes = new byte[file.ContentLength];
-                var data = file.InputStream.Read(fileBytes, 0, System.Convert.ToInt32(file.ContentLength));
-
                 using (var package = new ExcelPackage(file.InputStream))
                 {
                     var currentSheet = package.Workbook.Worksheets;
@@ -1845,61 +1838,251 @@ namespace ResourceManagement.Controllers
                     var noOfCol = workSheet.Dimension.End.Column;
                     var noOfRow = workSheet.Dimension.End.Row;
 
+                    var indexList = new List<FieldsIndex>();
+                    indexList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.FieldsIndexJson);
 
-                    var indexList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.FieldsIndexJson);
+                    switch (fileData.TemplateType)
+                    {
+                        case "Template1":
+                            Template1Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
 
-                    int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
-                    int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
+                        case "Template2":
+                            Template2Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
 
-                    var Ticket_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index);
-                    var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
+                        case "Template3":
+                            Template3Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
+                    }
+                }
+            }
 
-                    var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
-                    var Ticket_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
-                    var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
-                    var Ticket_Closed_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index);
+        private static void Template1Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+                int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
+                int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
-                    var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
-                    var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+                var Ticket_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index);
+                var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
 
+                var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
+                var Ticket_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index);
 
-                    var reportModel = new StatusReport_Template1Model();
+                var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
+                var Ticket_Closed_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index);
 
-                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template1Model();
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    //UNIQUE KEY VALUES CONDITION TO BE CHECKED HERE
+                    if (workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null)
                     {
                         reportModel.Template1Reports.Add(new monthlyreports_Template1()
                         {
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
                             Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
-                            Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
-                            Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
+                            Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
                             Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
                             Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
-                            Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
-                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, System.Convert.ToInt32(CommentsIndex)].Value.ToString() : "",
+                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
                             Uploadedby = fileData.EmployeeName,
                             FileNamee = file.FileName,
-                            Consultant_Name = fileData.EmployeeName,                            
+                            Consultant_Name = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
-                            Uniquekey = workSheet.Cells[rowIterator, System.Convert.ToInt32(Ticket_NumberIndex)].Value.ToString() + "_" + fileData.Month
+                            Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         });
-
                     }
+                }
 
+                using (var context = new TimeSheetEntities())
+                {
+                    context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
+                    context.SaveChanges();
+                    model.Response.StatusCode = 200;
+                    model.Response.Message = "Status Report Uploaded Successfully!";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
+        }
 
-                    using (var context = new TimeSheetEntities())
+        private static void StatusReportReponse(RMA_StatusReportModel model, Exception ex)
+        {
+            model.Response.StatusCode = 500;
+            if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+            {
+                var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                foreach (var actuallError in actuallErrors)
+                {
+                    if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
                     {
-                        context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
-                        context.SaveChanges();
+                        model.Response.Message = actuallError;
+                    }
+                }
+            }
+            else
+            {
+                model.Response.Message = ex.Message;
+            }
+        }
+
+        private static void Template2Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+
+                int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
+                int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
+
+                var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
+                var Project_Closing_Date_TargetIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closing_Date_Target").FirstOrDefault().Index);
+
+                var Project_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Category").FirstOrDefault().Index);
+                var Project_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Raisedby").FirstOrDefault().Index);
+
+                var Project_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Priority").FirstOrDefault().Index);
+                var Project_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Status").FirstOrDefault().Index);
+
+                var Project_Closed_Date_ActualIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closed_Date_Actual").FirstOrDefault().Index);
+                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+
+                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template2Model();
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (workSheet.Cells[rowIterator, Project_NameIndex].Value != null)
+                    {
+                        reportModel.Template2Reports.Add(new monthlyreports_Template2()
+                        {
+                            Project_Category = workSheet.Cells[rowIterator, Project_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Project_CategoryIndex].Value.ToString() : "",
+                            Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() : "",
+                            Project_Priority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString() : "",
+                            Project_Raisedby = workSheet.Cells[rowIterator, Project_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Project_RaisedbyIndex].Value.ToString() : "",
+                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : "",
+                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString() : "",
+
+                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            Uploadedby = fileData.EmployeeName,
+                            FileNamee = file.FileName,
+                            ConsultantName = fileData.EmployeeName,
+                            Uploaded_Month = fileData.Month,
+
+                            //NEED TO DECIDE
+                            uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
+
+                        });
                     }
 
                 }
+                using (var context = new TimeSheetEntities())
+                {
+                    context.monthlyreports_Template2.AddRange(reportModel.Template2Reports);
+                    context.SaveChanges();
+                    model.Response.StatusCode = 200;
+                    model.Response.Message = "Status Report Uploaded Successfully!";
+                }
             }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
+        }
 
-            return Json(model, JsonRequestBehavior.AllowGet);
+        private static void Template3Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+                int Test_IDIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_ID").FirstOrDefault().Index);
+                int Control_Group_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Group_Name").FirstOrDefault().Index);
+
+                var Test_CompletedIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Completed").FirstOrDefault().Index);
+                var Test_Due_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Due_Date").FirstOrDefault().Index);
+
+                var Test_Completion_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Completion_Date").FirstOrDefault().Index);
+                var Test_ConclusionIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Conclusion").FirstOrDefault().Index);
+
+                var Control_OwnerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Owner").FirstOrDefault().Index);
+                var Control_PerformerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Performer").FirstOrDefault().Index);
+
+                var Test_applicationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_application").FirstOrDefault().Index);
+                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+
+                var LayerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Layer").FirstOrDefault().Index);
+                var FrequencyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Frequency").FirstOrDefault().Index);
+
+                var Current_stepIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Current_step").FirstOrDefault().Index);
+                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template3Model();
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (workSheet.Cells[rowIterator, Test_IDIndex].Value != null)
+                    {
+                        reportModel.Template3Reports.Add(new monthlyreports_Template3()
+                        {
+                            Control_Group_Name = workSheet.Cells[rowIterator, Control_Group_NameIndex].Value != null ? workSheet.Cells[rowIterator, Control_Group_NameIndex].Value.ToString() : "",
+                            Control_Owner = workSheet.Cells[rowIterator, Control_OwnerIndex].Value != null ? workSheet.Cells[rowIterator, Control_OwnerIndex].Value.ToString() : "",
+                            Control_Performer = workSheet.Cells[rowIterator, Control_PerformerIndex].Value != null ? workSheet.Cells[rowIterator, Control_PerformerIndex].Value.ToString() : "",
+                            Current_step = workSheet.Cells[rowIterator, Current_stepIndex].Value != null ? workSheet.Cells[rowIterator, Current_stepIndex].Value.ToString() : "",
+                            Frequency = workSheet.Cells[rowIterator, FrequencyIndex].Value != null ? workSheet.Cells[rowIterator, FrequencyIndex].Value.ToString() : "",
+                            Layer = workSheet.Cells[rowIterator, LayerIndex].Value != null ? workSheet.Cells[rowIterator, LayerIndex].Value.ToString() : "",
+                            Test_application = workSheet.Cells[rowIterator, Test_applicationIndex].Value != null ? workSheet.Cells[rowIterator, Test_applicationIndex].Value.ToString() : "",
+                            Test_Completed = workSheet.Cells[rowIterator, Test_CompletedIndex].Value != null ? workSheet.Cells[rowIterator, Test_CompletedIndex].Value.ToString() : "",
+                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            Test_Completion_Date = workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value != null && workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Test_Conclusion = workSheet.Cells[rowIterator, Test_ConclusionIndex].Value != null ? workSheet.Cells[rowIterator, Test_ConclusionIndex].Value.ToString() : "",
+                            Test_Due_Date = workSheet.Cells[rowIterator, Test_Due_DateIndex].Value != null && workSheet.Cells[rowIterator, Test_Due_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Test_Due_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Test_ID = workSheet.Cells[rowIterator, Test_IDIndex].Value != null ? workSheet.Cells[rowIterator, Test_IDIndex].Value.ToString() : "",
+                            Uploadedby = fileData.EmployeeName,
+                            FileNamee = file.FileName,
+                            Consultantname = fileData.EmployeeName,
+                            Uploadedmonth = fileData.Month,
+
+                            //NEED TO DECIDE
+
+                            Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Test_IDIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
+
+                        });
+                    }
+
+                }
+                using (var context = new TimeSheetEntities())
+                {
+                    context.monthlyreports_Template3.AddRange(reportModel.Template3Reports);
+                    context.SaveChanges();
+                    model.Response.StatusCode = 200;
+                    model.Response.Message = "Status Report Uploaded Successfully!";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
         }
 
         public JsonResult ReadExcelColumnNames(StatusReportModel fileData)

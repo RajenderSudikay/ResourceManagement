@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,6 +18,7 @@ namespace ResourceManagement.Models
         [DisplayName("Month")]
         public string Month { get; set; }
         public string TemplateType { get; set; }
+        public string ProjectID { get; set; }
 
         //To change label title value  
         [DisplayName("Upload Report File")]
@@ -49,6 +48,22 @@ namespace ResourceManagement.Models
     public class StatusReport_Template1Model
     {
         public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
+    }
 
+    public class StatusReport_Template2Model
+    {
+        public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
+    }
+
+    public class StatusReport_Template3Model
+    {
+        public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
+    }
+
+    public class RMA_StatusReportModel
+    {
+        public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
+        public StatusReportModel StatusReportInfo { get; set; } = new StatusReportModel();
+        public JsonResponseModel Response { get; set; } = new JsonResponseModel();
     }
 }

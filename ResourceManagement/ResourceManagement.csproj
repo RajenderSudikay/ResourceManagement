@@ -416,6 +416,7 @@
     <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
     <Content Include="Views\Home\StatusReport.cshtml" />
     <Content Include="StatusReports.json" />
+    <Content Include="Views\Home\_ModalAlerts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

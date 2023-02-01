@@ -148,10 +148,4 @@ namespace ResourceManagement.Models
         public string ClientName { get; set; }
     }
 
-
-    public class RMA_StatusReportModel
-    {
-        public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
-        public StatusReportModel StatusReportInfo { get; set; } = new StatusReportModel();
-    }
 }
