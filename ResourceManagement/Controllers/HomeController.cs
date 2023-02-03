@@ -1784,36 +1784,23 @@ namespace ResourceManagement.Controllers
                         });
                     }
 
-                }
+                }                           
 
-                DateTime CurrentMonth = DateTime.Now;
-                DateTime LastMonth1 = DateTime.Now.AddMonths(-1);
-                DateTime LastMonth2 = DateTime.Now.AddMonths(-2);
-                DateTime LastMonth3 = DateTime.Now.AddMonths(-3);
+                var monthsList = new List<DateTime>();
+                monthsList.Add(DateTime.Now.AddMonths(-1));
+                monthsList.Add(DateTime.Now.AddMonths(-2));
+                monthsList.Add(DateTime.Now.AddMonths(-3));
+                monthsList.Add(DateTime.Now.AddMonths(-4));
+                monthsList.Add(DateTime.Now.AddMonths(-5));
 
-                model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                foreach(var month in monthsList)
                 {
-                    Text = CurrentMonth.ToString("MMM") + "-" + CurrentMonth.Year,
-                    Value = CurrentMonth.ToString("MMM") + "-" + CurrentMonth.Year
-                });
-
-                model.StatusReportInfo.MonthList.Add(new SelectListItem()
-                {
-                    Text = LastMonth1.ToString("MMM") + "-" + LastMonth1.Year,
-                    Value = LastMonth1.ToString("MMM") + "-" + LastMonth1.Year
-                });
-
-                model.StatusReportInfo.MonthList.Add(new SelectListItem()
-                {
-                    Text = LastMonth2.ToString("MMM") + "-" + LastMonth2.Year,
-                    Value = LastMonth2.ToString("MMM") + "-" + LastMonth2.Year
-                });
-
-                model.StatusReportInfo.MonthList.Add(new SelectListItem()
-                {
-                    Text = LastMonth3.ToString("MMM") + "-" + LastMonth3.Year,
-                    Value = LastMonth3.ToString("MMM") + "-" + LastMonth3.Year
-                });
+                    model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                    {
+                        Text = month.ToString("MMM") + "-" + month.Year,
+                        Value = month.ToString("MMM") + "-" + month.Year
+                    });
+                }            
 
             }
 
