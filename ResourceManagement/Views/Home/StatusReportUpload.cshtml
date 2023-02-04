@@ -425,6 +425,10 @@
     //Final submit post confirmation
     jQuery(".btn-upload-report").click(function () {
 
+        $(document).ajaxSend(function () {
+            $("#overlay").fadeIn(300);
+        });
+
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -506,15 +510,19 @@
                     if (data.Response.StatusCode == 200) {
                         jQuery('.status-report-card').empty();
                         fileData = new FormData();
-                        window.location.href = "/statusreport?success=true";
+                        window.location.href = "/statusreportsupload?success=true";
                     }
                     else {
                         jQuery('.status-report-card').empty();
                         fileData = new FormData();
-                        window.location.href = "/statusreport?success=false&error=" + data.Response.Message + "";
+                        window.location.href = "/statusreportsupload?success=false&error=" + data.Response.Message + "";
                     }
                 }
-            });
+            }).done(function () {
+                setTimeout(function () {
+                    $("#overlay").fadeOut(300);
+                }, 500);
+            });;
         }
         else {
             return false;

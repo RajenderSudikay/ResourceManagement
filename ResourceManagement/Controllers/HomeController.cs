@@ -1762,7 +1762,7 @@ namespace ResourceManagement.Controllers
         }
 
         //Status REPORt Code
-        public ActionResult StatusReport()
+        public ActionResult StatusReportUpload()
         {
             var model = new RMA_StatusReportModel();
 
