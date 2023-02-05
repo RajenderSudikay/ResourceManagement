@@ -417,6 +417,7 @@
     <Content Include="Views\Home\StatusReportUpload.cshtml" />
     <Content Include="StatusReports.json" />
     <Content Include="Views\Home\_ModalAlerts.cshtml" />
+    <Content Include="Views\Home\StatusReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

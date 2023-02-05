@@ -27,7 +27,7 @@ namespace ResourceManagement.Models
         public List<SelectListItem> EmployeeList { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();
         public string FieldsIndexJson { get; set; }
-        public string ValuesMappingJson { get; set; }        
+        public string ValuesMappingJson { get; set; }
         public string SuccessMessage { get; set; }
         public string FailureMessage { get; set; }
         public string SelectedColumnIndex { get; set; }
@@ -56,5 +56,12 @@ namespace ResourceManagement.Models
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
         public StatusReportModel StatusReportInfo { get; set; } = new StatusReportModel();
         public JsonResponseModel Response { get; set; } = new JsonResponseModel();
+    }
+
+    public class RMA_StatusReportViewModel
+    {
+        public RMA_StatusReportModel RMA_StatusReportModel { get; set; } = new RMA_StatusReportModel();
+
+        public monthlyreports_Template1 Template1Report { get; set; } = new monthlyreports_Template1();
     }
 }

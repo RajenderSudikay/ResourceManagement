@@ -1761,7 +1761,7 @@ namespace ResourceManagement.Controllers
             }
         }
 
-        //Status REPORt Code
+        //Status REPORt Upload Code
         public ActionResult StatusReportUpload()
         {
             var model = new RMA_StatusReportModel();
@@ -1931,7 +1931,7 @@ namespace ResourceManagement.Controllers
                                 IsNewTicket = true;
                             }
 
-                            if(IsClosedTicket)
+                            if (IsClosedTicket)
                             {
                                 if (workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty)
                                 {
@@ -1942,7 +1942,7 @@ namespace ResourceManagement.Controllers
                                 {
                                     ticketAge = 5;
                                 }
-                            }                      
+                            }
                         }
 
                         reportModel.Template1Reports.Add(new monthlyreports_Template1()
@@ -2202,5 +2202,40 @@ namespace ResourceManagement.Controllers
 
         }
 
+
+        //Status REPORt View Report Code
+        public ActionResult StatusReport()
+        {
+            var model = new RMA_StatusReportViewModel();
+
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_StatusReportModel.RMA_EmployeeModel = employeeModel;
+            return View(model);
+        }
+
+        static string getAbbreviatedName(int month, DateTime selectedDate)
+        {
+            DateTime date = new DateTime(selectedDate.Year, month, 1);
+            return date.ToString("MMM") + "-" + selectedDate.Year;
+        }
+
+        public JsonResult GetMonthsBasedOnYear(int year)
+        {
+            var selectedDate = new DateTime(year, 1, 1);
+
+            //Current month  report cant be seen, hence excluding the dropdown
+            var selctedDateMonth = System.Convert.ToInt32(DateTime.Now.ToString("MM")) - 1;
+
+            var monthsList = new List<string>();
+
+            for (int month = 1; month < selctedDateMonth; month++)
+            {
+                monthsList.Add(getAbbreviatedName(month, selectedDate));
+            }
+
+            monthsList.Reverse();
+            return Json(monthsList, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }

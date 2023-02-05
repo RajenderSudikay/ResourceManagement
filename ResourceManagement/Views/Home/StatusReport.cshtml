@@ -1,0 +1,273 @@
+﻿@model ResourceManagement.Models.RMA_StatusReportViewModel
+
+@{
+    ViewBag.Title = "Status Report Page";
+    var imagePath = "";
+}
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="padding-left: 69px !important">
+        <h2 class="text-uppercase text-white">Status Report</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID + ".png";
+
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    {
+                                        var clients = new List<string>();
+                                        foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            clients.Add(empProject.Client);
+                                        }
+                                        var empClients = string.Join(", ", clients);
+                                        <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-client emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Client</div>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    {
+                                        var projects = new List<string>();
+                                        foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            var sameProjectExists = false;
+
+                                            foreach (var project in projects)
+                                            {
+                                                if (project == empProject.Project_Name)
+                                                {
+                                                    sameProjectExists = true;
+                                                }
+                                            }
+
+                                            if (!sameProjectExists)
+                                            { projects.Add(empProject.Project_Name); }
+
+                                        }
+                                        var empProjects = string.Join(", ", projects);
+                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-project emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Name</div>
+                                    }
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <input type="hidden" class="emprole" value="@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
+
+        }
+
+    </div>
+</nav>
+
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card statusreport-card">
+
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group selectemp-div">
+                        <label for="reportemployeename">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeename" name="reportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportyear" class="">Year<b style="color:red">*</b></label>
+                        <select id="reportyear" name="reportyear" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected> -- Select Year -- </option>
+                            <option value="@System.DateTime.Now.Year.ToString()">@System.DateTime.Now.Year.ToString()</option>
+                            <option value="@System.DateTime.Now.AddYears(-1).Year">@System.DateTime.Now.AddYears(-1).Year</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportcategory" class="leavestartdate">Category<b style="color:red">*</b></label>
+                        <select id="reportyear" name="reportyear" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected> -- Select Category -- </option>
+                            <option value="Quarter">Quarter</option>
+                            <option value="HalfYear">Half Year</option>
+                            <option value="Annual">Annual</option>
+                        </select>
+                        <div class="invalid-feedback-reportmonth" style="color:red; display:none">
+                            Please Select Category
+                        </div>
+                    </div>
+                </div>*@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportmonth" class="leavestartdate">Month<b style="color:red">*</b></label>
+                        <input type="date" class="form-control" id="reportmonth" required />
+                        <div class="invalid-feedback-reportmonth" style="color:red; display:none">
+                            Please Select Month
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportClient">Client</label>
+                        <select id="reportClient" name="reportClient" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                            @foreach (var project in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                            {
+                                <option value="@project.Project_Code">@project.Client</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportClient">Client</label>
+                        <select id="reportClient" name="reportClient" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                            @foreach (var project in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                            {
+                                <option value="@project.Project_Code">@project.Client</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+            </div>*@
+
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg" style="width:100px; border-radius:10px"><b>Submit</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    Html.RenderPartial("_ModalAlerts");
+}
+
+<br />
+<br />
+
+<script>
+
+
+
+    GetEmployees();
+
+    function GetEmployees() {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                jQuery.each(obj, function (i, item) {
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                var useRole = jQuery('.emprole').val();
+
+                var empId = jQuery('.agent-navdrop-empid').text();
+                $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+
+                if (useRole == "consultant") {
+                    $("#selectEmployeename").prop("disabled", true);
+                }
+                else {
+                    $("#selectEmployeename").prop("disabled", false);
+                }
+            }
+        });
+    }
+
+</script>
