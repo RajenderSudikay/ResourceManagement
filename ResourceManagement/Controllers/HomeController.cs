@@ -1784,7 +1784,7 @@ namespace ResourceManagement.Controllers
                         });
                     }
 
-                }                           
+                }
 
                 var monthsList = new List<DateTime>();
                 monthsList.Add(DateTime.Now.AddMonths(-1));
@@ -1793,14 +1793,14 @@ namespace ResourceManagement.Controllers
                 monthsList.Add(DateTime.Now.AddMonths(-4));
                 monthsList.Add(DateTime.Now.AddMonths(-5));
 
-                foreach(var month in monthsList)
+                foreach (var month in monthsList)
                 {
                     model.StatusReportInfo.MonthList.Add(new SelectListItem()
                     {
                         Text = month.ToString("MMM") + "-" + month.Year,
                         Value = month.ToString("MMM") + "-" + month.Year
                     });
-                }            
+                }
 
             }
 
@@ -1848,10 +1848,26 @@ namespace ResourceManagement.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        public static double GetBusinessDays(DateTime startD, DateTime endD)
+        {
+            double calcBusinessDays =
+                1 + ((endD - startD).TotalDays * 5 -
+                (startD.DayOfWeek - endD.DayOfWeek) * 2) / 7;
+
+            if (endD.DayOfWeek == DayOfWeek.Saturday) calcBusinessDays--;
+            if (startD.DayOfWeek == DayOfWeek.Sunday) calcBusinessDays--;
+
+            return calcBusinessDays;
+        }
+
         private static void Template1Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
         {
             try
             {
+                //Ticket_Prioriy & Ticket& Status
+                var MappingValuesList = new List<FieldsIndex>();
+                MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
+
                 int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
                 int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
@@ -1874,6 +1890,61 @@ namespace ResourceManagement.Controllers
                     //UNIQUE KEY VALUES CONDITION TO BE CHECKED HERE
                     if (workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null)
                     {
+                        //This logic for report graphs
+                        var reportTicketPriority = "";
+                        if (workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null)
+                        {
+                            var rowIteratorPriority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString();
+                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
+                            if (mappingListItem != null)
+                            {
+                                reportTicketPriority = mappingListItem.FieldName.Trim();
+                            }
+                        }
+
+                        bool IsOpenTicket = false;
+                        bool IsClosedTicket = false;
+                        if (workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null)
+                        {
+                            var rowIteratorStatus = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString();
+                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorStatus).FirstOrDefault();
+                            if (mappingListItem != null)
+                            {
+                                rowIteratorStatus = mappingListItem.FieldName.Trim();
+                                IsClosedTicket = true;
+                            }
+                            else
+                            {
+                                IsOpenTicket = true;
+                            }
+                        }
+
+                        bool IsNewTicket = false;
+                        var ticketAge = 0;
+                        if (workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty)
+                        {
+                            var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString());
+                            var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+
+                            if (fileData.Month == ticketMonthYear)
+                            {
+                                IsNewTicket = true;
+                            }
+
+                            if(IsClosedTicket)
+                            {
+                                if (workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty)
+                                {
+                                    var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString());
+                                    ticketAge = System.Convert.ToInt32(GetBusinessDays(ticketDateCreated, ticketDateClosed));
+                                }
+                                else
+                                {
+                                    ticketAge = 5;
+                                }
+                            }                      
+                        }
+
                         reportModel.Template1Reports.Add(new monthlyreports_Template1()
                         {
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
@@ -2121,14 +2192,14 @@ namespace ResourceManagement.Controllers
                 }
             }
 
-            if(columnValues.Count > 0)
+            if (columnValues.Count > 0)
             {
                 var distinctColumnsValues = columnValues.Distinct();
                 return Json(JsonSerializer.Serialize(distinctColumnsValues), JsonRequestBehavior.AllowGet);
             }
 
             return Json(null);
-        
+
         }
 
     }

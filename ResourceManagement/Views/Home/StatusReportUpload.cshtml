@@ -507,8 +507,8 @@
                             mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
                         }
 
-                        jQuery.each(FieldInputSources, function (i, source) {
-                            mappingColumn.append(ExcelFieldMappingBasedonDropdownValue(fieldId + source));
+                        jQuery.each(FieldInputSources, function (i, source) {                       
+                            mappingColumn.append(ExcelFieldMappingBasedonDropdownValue(source));
                         });
 
                         jQuery.each(inputValues, function (i, inputVal) {
@@ -528,7 +528,6 @@
                 }
             });
         }
-
     });
 
 
