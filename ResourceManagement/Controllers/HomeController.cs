@@ -1808,7 +1808,7 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public JsonResult StatusReportsUpload(StatusReportModel fileData)
+        public JsonResult StatusReportsUploadAjax(StatusReportModel fileData)
         {
             var model = new RMA_StatusReportModel();
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
@@ -2095,6 +2095,40 @@ namespace ResourceManagement.Controllers
             }
 
             return Json(columnNames, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ReadSelectedColumnUniqueValues(StatusReportModel fileData)
+        {
+            HttpPostedFileBase file = fileData.ExcelFile;
+            var columnValues = new List<string>();
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    var selectedColumnIndex = System.Convert.ToInt32(fileData.SelectedColumnIndex);
+
+                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                    {
+                        if (workSheet.Cells[rowIterator, selectedColumnIndex].Value != null)
+                            columnValues.Add(workSheet.Cells[rowIterator, selectedColumnIndex].Value.ToString());
+                    }
+                }
+            }
+
+            if(columnValues.Count > 0)
+            {
+                var distinctColumnsValues = columnValues.Distinct();
+                return Json(JsonSerializer.Serialize(distinctColumnsValues), JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null);
+        
         }
 
     }

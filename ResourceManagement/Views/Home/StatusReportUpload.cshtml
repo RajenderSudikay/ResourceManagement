@@ -287,17 +287,29 @@
     function ExcelFieldMappingTemplate(fieldName) {
 
         return '<div class="form-group row">'
-            + '<label for=' + fieldName + ' class="control-label col-md-4" style="padding-top: 10px;">' + fieldName + ' <b style="color:red">*</b></label>'
+            + '<label for=' + fieldName + ' class="control-label col-md-4" style="padding-top: 10px;">' + fieldName + '<b style="color:red">*</b></label>'
             + '<select id=' + fieldName + ' name=' + fieldName + ' class="form-control col-md-6 excel-columns" required>'
-            + '<option value="Please Select Excel Column Name">Please select Applicable excel column name</option>'
+            + '<option value="Please Select Excel Column Name" disabled selected>Please select Applicable excel column name</option>'
             + '</select>'
+            + '<div class="dynamic-field-mapping" style="display:none">'
+            + '</div>'
             + '</div>'
     }
 
+
+    function ExcelFieldMappingBasedonDropdownValue(fieldName) {
+
+        return '<div class="form-group row">'
+            + '<label for=' + fieldName + ' class="control-label col-md-4" style="padding-top: 10px;">' + fieldName + '<b style="color:red">*</b></label>'
+            + '<select id=' + fieldName + ' name=' + fieldName + ' class="form-control col-md-6 excel-values-mapping" required>'
+            + '<option value="Please Select Required Value" disabled selected>Please Select Required Value</option>'
+            + '</select>'
+            + '</div>'
+    }
     // Create FormData object
     var fileData = new FormData();
 
-    $("#reportupload").change(function () {
+    jQuery("#reportupload").change(function () {
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -309,9 +321,7 @@
         }
     });
 
-
     jQuery('#statusreporttype').change(function (evt) {
-        jQuery('#modal-warning-message-popup').modal('show');
         jQuery(".dynamic-field-binding").empty();
         var selectedTemplate = jQuery('#statusreporttype :selected').val();
 
@@ -330,7 +340,6 @@
         jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Monthky report will be generated.</h2>");
         $('#modal-warning-message-popup').modal('show');
 
-        var dbTemplateFields = [];
         jQuery.getJSON("StatusReports.json", function (data) {
             var selectedTemplateJson = data.filter(v => v.Name === selectedTemplate)[0].fields;
             jQuery.each(selectedTemplateJson, function (key, val) {
@@ -357,7 +366,6 @@
 
             }
         });
-
     });
 
     jQuery(document).on("change", "#StatusReportInfo_Month", function () {
@@ -380,6 +388,45 @@
     });
 
 
+    jQuery(document).on("change", ".excel-values-mapping", function () {
+
+        //This is newly selected dropdown value
+        var currentField = jQuery(this);
+        //This is newly selected dropdown field ID
+        var fieldId = currentField.attr("id");
+
+        var fieldMapping = jQuery('.excel-values-mapping');
+        var excelColumnMappingFieldIndexs = new Array();
+        jQuery.each(fieldMapping, function () {
+            //Already Selected dropdown ID
+            var selectedField = jQuery(this);
+            var selectFieldId = selectedField.attr("id");
+            if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Required Value" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
+                excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+            }
+        });
+
+
+        if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Required Value") {
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+
+        var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
+        if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+            jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+            jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+            jQuery('#modal-warning-message-popup').modal("show");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+    });
+
     jQuery(document).on("change", ".excel-columns", function () {
 
         //This is newly selected dropdown value
@@ -401,7 +448,6 @@
 
         if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Excel Column Name") {
             jQuery('#' + fieldId + '').css("border", "1px solid red");
-            fileValidated = false;
         }
         else {
             jQuery('#' + fieldId + '').css("border", "1px solid green");
@@ -411,7 +457,7 @@
         if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
             jQuery('.warning-message-popup').html("<h2>You cannot select the excel column <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
-            jQuery("#" + fieldId + " option:first").attr('selected', 'selected');
+            jQuery("#" + fieldId + " option:first").prop("selected", "selected");
             jQuery('#' + fieldId + '').css("border", "1px solid red");
             jQuery('#modal-warning-message-popup').modal("show");
         }
@@ -419,15 +465,75 @@
             jQuery('#' + fieldId + '').css("border", "1px solid green");
         }
 
+        if (fieldId == "Ticket_Status" || fieldId == "Ticket_Priority") {
+            var selectedColumnIndex = jQuery('#' + fieldId + ' :selected').val();
+            var selectedColumnName = jQuery('#' + fieldId + ' :selected').text();
+
+            fileData.delete('SelectedColumnIndex');
+            fileData.delete('SelectedColumnName');
+
+            fileData.append('SelectedColumnIndex', selectedColumnIndex);
+            fileData.append('SelectedColumnName', selectedColumnName);
+
+            jQuery.ajax({
+                type: "POST",
+                url: "/ReadSelectedColumnUniqueValues",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                success: function (data) {
+                    if (data != null) {
+
+                        var mappingColumn = jQuery("#" + fieldId).siblings('.dynamic-field-mapping');
+                        mappingColumn.empty();
+                        var inputValues = jQuery.parseJSON(data);
+
+                        var FieldInputSources = new Array();
+
+                        if (fieldId == "Ticket_Status") {
+                            //FieldInputSources.push("Newly Raised");
+                            //FieldInputSources.push("Open");
+                            FieldInputSources.push("Closed");
+
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>")
+                        }
+
+                        if (fieldId == "Ticket_Priority") {
+                            FieldInputSources.push("Critical");
+                            FieldInputSources.push("High");
+                            FieldInputSources.push("Medium");
+                            FieldInputSources.push("Low");
+
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
+                        }
+
+                        jQuery.each(FieldInputSources, function (i, source) {
+                            mappingColumn.append(ExcelFieldMappingBasedonDropdownValue(fieldId + source));
+                        });
+
+                        jQuery.each(inputValues, function (i, inputVal) {
+                            mappingColumn.find('.excel-values-mapping').append('<option value="' + inputVal + '">' + inputVal + '</option>');
+                        });
+
+                        mappingColumn.find('.excel-values-mapping').append('<option value=NA>NA</option>');
+
+                        mappingColumn.css("display", "block");
+                        mappingColumn.css("width", "565px");
+                        mappingColumn.css("float", "right");
+                        mappingColumn.css("padding-left", "20px");
+                        mappingColumn.css("padding-top", "20px");
+                        mappingColumn.css("border", "1px solid green");
+                        mappingColumn.css("border-radius", "10px");
+                    }
+                }
+            });
+        }
+
     });
 
 
     //Final submit post confirmation
     jQuery(".btn-upload-report").click(function () {
-
-        $(document).ajaxSend(function () {
-            $("#overlay").fadeIn(300);
-        });
 
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
@@ -485,11 +591,32 @@
             }
         });
 
+        var excelValuesMapping = jQuery('.excel-values-mapping');
+        var excelValuesMappingIndexs = new Array();
+
+        jQuery.each(excelValuesMapping, function () {
+            var currentField = jQuery(this);
+            var fieldId = currentField.attr("id");
+            if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Required Value") {
+                jQuery('#' + fieldId + '').css("border", "1px solid red");
+                fileValidated = false;
+            }
+            else {
+                var fieldIndexMappingModel = {
+                    FieldName: $(this).siblings('label').attr("for"),
+                    Index: jQuery('#' + fieldId + ' :selected').val(),
+                }
+                excelValuesMappingIndexs.push(fieldIndexMappingModel);
+                jQuery('#' + fieldId + '').css("border", "1px solid green");
+            }
+        });
+
         if (fileValidated) {
             var empName = jQuery('#StatusReportInfo_EmployeeName :selected').text();
             var EmployeeID = jQuery('#StatusReportInfo_EmployeeName :selected').val();
             var reportMonth = jQuery('#StatusReportInfo_Month :selected').val();
             var fieldIndexJson = JSON.stringify(excelColumnMappingFieldIndexs);
+            var fieldValuesMappingJson = JSON.stringify(excelValuesMappingIndexs);
 
             fileData.append('EmployeeName', empName);
             fileData.append('EmployeeID', EmployeeID);
@@ -497,10 +624,11 @@
             fileData.append('FieldsIndexJson', fieldIndexJson);
             fileData.append('TemplateType', jQuery('#statusreporttype :selected').val());
             fileData.append('ProjectID', jQuery('#statusreportEmpClient :selected').val());
+            fileData.append('ValuesMappingJson', fieldValuesMappingJson);
 
             jQuery.ajax({
                 type: "POST",
-                url: "/StatusReportsUpload",
+                url: "/StatusReportsUploadAjax",
                 datatype: 'json',
                 contentType: false,
                 processData: false,
@@ -510,19 +638,15 @@
                     if (data.Response.StatusCode == 200) {
                         jQuery('.status-report-card').empty();
                         fileData = new FormData();
-                        window.location.href = "/statusreportsupload?success=true";
+                        window.location.href = "/statusreportupload?success=true";
                     }
                     else {
                         jQuery('.status-report-card').empty();
                         fileData = new FormData();
-                        window.location.href = "/statusreportsupload?success=false&error=" + data.Response.Message + "";
+                        window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";
                     }
                 }
-            }).done(function () {
-                setTimeout(function () {
-                    $("#overlay").fadeOut(300);
-                }, 500);
-            });;
+            });
         }
         else {
             return false;
@@ -559,6 +683,14 @@
             var yourCurrentUrl = window.location.href.split('?')[0];
             window.history.replaceState({}, '', yourCurrentUrl);
         }
+
+        jQuery(document).ajaxSend(function () {
+            jQuery("#overlay").fadeIn(300);
+        });
+
+        jQuery(document).ajaxComplete(function (event, request, set) {
+            jQuery("#overlay").fadeOut(300);
+        });
     });
 
 </script>

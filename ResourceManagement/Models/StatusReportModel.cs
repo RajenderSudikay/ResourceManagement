@@ -23,43 +23,34 @@ namespace ResourceManagement.Models
         //To change label title value  
         [DisplayName("Upload Report File")]
         public string ExcelPath { get; set; }
-
         public HttpPostedFileBase ExcelFile { get; set; }
-
         public List<SelectListItem> EmployeeList { get; set; } = new List<SelectListItem>();
-
         public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();
-
         public string FieldsIndexJson { get; set; }
-
+        public string ValuesMappingJson { get; set; }        
         public string SuccessMessage { get; set; }
-
         public string FailureMessage { get; set; }
+        public string SelectedColumnIndex { get; set; }
+        public string SelectedColumnName { get; set; }
     }
-
     public class FieldsIndex
     {
-
         public string FieldName { get; set; }
         public string Index { get; set; }
-
     }
 
     public class StatusReport_Template1Model
     {
         public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
     }
-
     public class StatusReport_Template2Model
     {
         public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
     }
-
     public class StatusReport_Template3Model
     {
         public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
     }
-
     public class RMA_StatusReportModel
     {
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();

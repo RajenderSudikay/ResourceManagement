@@ -944,3 +944,10 @@ input[type=number] {
 .is-hide {
     display: none;
 }
+
+/*.dynamic-field-mapping{
+    float:right;
+    width:560px;
+    padding-left:20px;
+    padding-top:25px;
+}*/
