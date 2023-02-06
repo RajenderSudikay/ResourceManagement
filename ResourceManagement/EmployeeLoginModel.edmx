@@ -312,6 +312,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does n
           <Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
           <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
           <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Is_Newly_created" Type="bit" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Ticket_Age" Type="int" />
+          <Property Name="ReportPriority" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -340,6 +346,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does n
           <Property Name="uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
           <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
           <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -369,6 +376,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does n
           <Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
           <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
           <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
         </EntityType>
         <EntityType Name="tbl_ambclogininformation">
           <Key>
@@ -1324,6 +1332,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Uniquekey" Type="String" Nullable="false" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Uploadedby" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="FileNamee" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Is_Newly_created" Type="Boolean" />
+          <Property Name="Is_Open" Type="Boolean" />
+          <Property Name="Is_Closed" Type="Boolean" />
+          <Property Name="Ticket_Age" Type="Int32" />
+          <Property Name="ReportPriority" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="monthlyreports_Template2">
           <Key>
@@ -1350,6 +1364,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="uniquekey" Type="String" Nullable="false" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Uploadedby" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="FileNamee" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="monthlyreports_Template3">
           <Key>
@@ -1376,6 +1391,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Uniquekey" Type="String" Nullable="false" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Uploadedby" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="FileNamee" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1868,6 +1884,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template1">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template1">
               <MappingFragment StoreEntitySet="monthlyreports_Template1">
+                <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
+                <ScalarProperty Name="ReportPriority" ColumnName="ReportPriority" />
+                <ScalarProperty Name="Ticket_Age" ColumnName="Ticket_Age" />
+                <ScalarProperty Name="Is_Closed" ColumnName="Is_Closed" />
+                <ScalarProperty Name="Is_Open" ColumnName="Is_Open" />
+                <ScalarProperty Name="Is_Newly_created" ColumnName="Is_Newly_created" />
                 <ScalarProperty Name="FileNamee" ColumnName="FileNamee" />
                 <ScalarProperty Name="Uploadedby" ColumnName="Uploadedby" />
                 <ScalarProperty Name="Uniquekey" ColumnName="Uniquekey" />
@@ -1889,6 +1911,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template2">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template2">
               <MappingFragment StoreEntitySet="monthlyreports_Template2">
+                <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
                 <ScalarProperty Name="FileNamee" ColumnName="FileNamee" />
                 <ScalarProperty Name="Uploadedby" ColumnName="Uploadedby" />
                 <ScalarProperty Name="uniquekey" ColumnName="uniquekey" />
@@ -1911,6 +1934,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template3">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template3">
               <MappingFragment StoreEntitySet="monthlyreports_Template3">
+                <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
                 <ScalarProperty Name="FileNamee" ColumnName="FileNamee" />
                 <ScalarProperty Name="Uploadedby" ColumnName="Uploadedby" />
                 <ScalarProperty Name="Uniquekey" ColumnName="Uniquekey" />

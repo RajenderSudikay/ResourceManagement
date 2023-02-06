@@ -29,5 +29,11 @@ namespace ResourceManagement
         public string Uniquekey { get; set; }
         public string Uploadedby { get; set; }
         public string FileNamee { get; set; }
+        public Nullable<bool> Is_Newly_created { get; set; }
+        public Nullable<bool> Is_Open { get; set; }
+        public Nullable<bool> Is_Closed { get; set; }
+        public Nullable<int> Ticket_Age { get; set; }
+        public string ReportPriority { get; set; }
+        public string Client_Name { get; set; }
     }
 }
