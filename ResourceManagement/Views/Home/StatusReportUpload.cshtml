@@ -618,11 +618,12 @@
             var fieldValuesMappingJson = JSON.stringify(excelValuesMappingIndexs);
 
             fileData.append('EmployeeName', empName);
-            fileData.append('EmployeeID', EmployeeID);
+            fileData.append('EmployeeID', EmployeeID);        
             fileData.append('Month', reportMonth);
             fileData.append('FieldsIndexJson', fieldIndexJson);
             fileData.append('TemplateType', jQuery('#statusreporttype :selected').val());
             fileData.append('ProjectID', jQuery('#statusreportEmpClient :selected').val());
+            fileData.append('ClientName', jQuery('#statusreportEmpClient :selected').text().trim());
             fileData.append('ValuesMappingJson', fieldValuesMappingJson);
 
             jQuery.ajax({

@@ -1901,6 +1901,10 @@ namespace ResourceManagement.Controllers
                                 reportTicketPriority = mappingListItem.FieldName.Trim();
                             }
                         }
+                        else
+                        {
+                            reportTicketPriority = "Low";
+                        }
 
                         bool IsOpenTicket = false;
                         bool IsClosedTicket = false;
@@ -1961,6 +1965,12 @@ namespace ResourceManagement.Controllers
                             FileNamee = file.FileName,
                             Consultant_Name = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
+                            Client_Name = fileData.ClientName,
+                            Is_Closed = IsClosedTicket,
+                            Is_Open = IsOpenTicket,
+                            Is_Newly_created = IsNewTicket,
+                            ReportPriority = reportTicketPriority,
+                            Ticket_Age = ticketAge,
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         });
                     }
@@ -2224,7 +2234,14 @@ namespace ResourceManagement.Controllers
             var selectedDate = new DateTime(year, 1, 1);
 
             //Current month  report cant be seen, hence excluding the dropdown
-            var selctedDateMonth = System.Convert.ToInt32(DateTime.Now.ToString("MM")) - 1;
+            var selctedDateMonth = System.Convert.ToInt32(DateTime.Now.ToString("MM"));
+
+            //For the old years all the months will be shiwn in the drdodown
+            //In below lopp started from 1 hence added selctedDateMonth as 12 + 1= 13
+            if (year != DateTime.Now.Year)
+            {
+                selctedDateMonth = 13;
+            }
 
             var monthsList = new List<string>();
 
@@ -2234,7 +2251,7 @@ namespace ResourceManagement.Controllers
             }
 
             monthsList.Reverse();
-            return Json(monthsList, JsonRequestBehavior.AllowGet);
+            return Json(JsonSerializer.Serialize(monthsList), JsonRequestBehavior.AllowGet);
 
         }
     }
