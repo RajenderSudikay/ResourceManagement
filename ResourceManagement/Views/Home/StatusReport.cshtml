@@ -185,7 +185,7 @@
                     <div class="form-group">
                         <label for="reportmonth" class="leavestartdate">Month<b style="color:red">*</b></label>
                         <select id="reportmonth" name="reportmonth" class="form-control form-select form-select-lg mb-3">
-                            <option disabled selected>-- Select Month --</option>                      
+                            <option disabled selected>-- Select Month --</option>
                         </select>
                         <div class="invalid-feedback-reportmonth" style="color:red; display:none">
                             Please Select Month
@@ -224,10 +224,15 @@
                 </div>*@
 
             <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg" style="width:100px; border-radius:10px"><b>View Report</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width:100px; border-radius:10px"><b>View Report</b></button>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="">
+    <div id="chartContainer" style="height: 250px;"></div>
 </div>
 
 @{
@@ -239,8 +244,32 @@
 
 <script>
 
-    $("#reportyear").on("change", function () {
-        alert()
+ 
+
+    jQuery(".btn-status-report-view").click(function () {
+    
+        var statusChartModel = {
+            ClientName: jQuery('#reportClient :selected').text(),
+            ProjectID: jQuery('#reportClient :selected').val(),
+            Year: jQuery('#reportyear :selected').val(),
+            Month: jQuery('#reportmonth :selected').text(),
+            MonthNumber: jQuery('#reportmonth :selected').val(),
+            EmployeeID: jQuery('#reportClient :selected').val(),
+            EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
+        };     
+
+        jQuery.ajax({
+            url: "/StatusGraphChartReport",
+            type: "POST",
+            dataType: "html",
+            data: { StatusReportChartModel: statusChartModel },
+            success: function (data) {
+                $('#chartContainer').html(data);
+            }
+        });
+    });
+
+    $("#reportyear").on("change", function () {      
         jQuery.ajax({
             url: "/GetMonthsBasedOnYear",
             type: "POST",
@@ -250,18 +279,15 @@
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
                 $('#reportmonth').empty();
-                $('#reportmonth').append('<option disabled selected>-- Select Month --</option>');            
+                $('#reportmonth').append('<option disabled selected>-- Select Month --</option>');
                 jQuery.each(obj, function (i, item) {
-                    $('#reportmonth').append('<option value="' + item + '">' + item + '</option>');
+                    $('#reportmonth').append('<option value="' + i.key + '">' + item.Value + '</option>');
                 });
             }
         });
     });
 
-
-
     GetEmployees();
-
     function GetEmployees() {
         jQuery.ajax({
             url: "/GetEmployees",
@@ -269,7 +295,7 @@
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
                 jQuery.each(obj, function (i, item) {
-                    $('#selectEmployeename').append('<option disabled selected>' + item.Employee_Name + '</option>');
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
                 });
 
                 jQuery.each(obj, function (i, item) {

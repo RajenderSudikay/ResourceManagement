@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Web;
 using System.Web.Mvc;
 
@@ -64,5 +65,32 @@ namespace ResourceManagement.Models
         public RMA_StatusReportModel RMA_StatusReportModel { get; set; } = new RMA_StatusReportModel();
 
         public monthlyreports_Template1 Template1Report { get; set; } = new monthlyreports_Template1();
+    }
+
+
+    public class StatusReportChartModel
+    {       
+
+        [JsonPropertyName("EmployeeName")]
+        public string EmployeeName { get; set; } = string.Empty;
+
+        [JsonPropertyName("EmployeeID")]
+        public string EmployeeID { get; set; } = string.Empty;
+
+        [JsonPropertyName("Month")]
+        public string Month { get; set; } = string.Empty;
+
+        [JsonPropertyName("MonthNumber")]
+        public int MonthNumber { get; set; } = 0;        
+
+        [JsonPropertyName("Year")]
+        public int Year { get; set; } = 0;
+
+        [JsonPropertyName("ProjectID")]
+        public string ProjectID { get; set; } = string.Empty;
+
+        [JsonPropertyName("ClientName")]
+        public string ClientName { get; set; } = string.Empty;
+
     }
 }

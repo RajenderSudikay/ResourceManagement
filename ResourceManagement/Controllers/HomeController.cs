@@ -2223,9 +2223,9 @@ namespace ResourceManagement.Controllers
             return View(model);
         }
 
-        static string getAbbreviatedName(int month, DateTime selectedDate)
+        static string getAbbreviatedName(DateTime selectedDate)
         {
-            DateTime date = new DateTime(selectedDate.Year, month, 1);
+            DateTime date = new DateTime(selectedDate.Year, selectedDate.Month, 1);
             return date.ToString("MMM") + "-" + selectedDate.Year;
         }
 
@@ -2243,16 +2243,32 @@ namespace ResourceManagement.Controllers
                 selctedDateMonth = 13;
             }
 
-            var monthsList = new List<string>();
+            var monthsList = new Dictionary<int, string>();
 
             for (int month = 1; month < selctedDateMonth; month++)
             {
-                monthsList.Add(getAbbreviatedName(month, selectedDate));
+                var newDate = new DateTime(year, month, 1);
+                monthsList.Add(month, getAbbreviatedName(newDate));
             }
 
-            monthsList.Reverse();
-            return Json(JsonSerializer.Serialize(monthsList), JsonRequestBehavior.AllowGet);
+            var requiredMonthsLost = monthsList.Reverse();
+            return Json(JsonSerializer.Serialize(requiredMonthsLost), JsonRequestBehavior.AllowGet);
+        }
 
+
+        public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
+        {
+            var selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, StatusReportChartModel.MonthNumber, 1);
+
+            var requiredReportMonths = new List<string>();
+            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate));
+            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-1)));
+            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-2)));
+            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-3)));
+
+
+
+            return PartialView();
         }
     }
 }

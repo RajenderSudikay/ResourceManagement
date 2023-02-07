@@ -1,0 +1,33 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+            var dataPoints = [];
+            var chart;
+            $.getJSON("test.json", function (data) {
+                $.each(data, function (key, value) {
+                    dataPoints.push({ x: parseInt(value)[0], y: parseInt(value[1]), z: parseInt(value[2]) });
+                });
+                chart = new CanvasJS.Chart("chartContainer", {
+                    title: {
+                        text: "Live Chart with dataPoints from External JSON"
+                    },
+                    data: [{
+                        type: "line",
+                        dataPoints: dataPoints,
+                    }]
+                });
+                chart.render();
+                setTimeout(function () { updateChart() }, 1000);
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body>
+</html> 

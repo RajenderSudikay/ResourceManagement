@@ -268,6 +268,7 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\Graph1DataPoint.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Models\LeaveOrHolidayModel.cs" />
     <Compile Include="Models\StatusReportModel.cs" />
@@ -418,6 +419,7 @@
     <Content Include="StatusReports.json" />
     <Content Include="Views\Home\_ModalAlerts.cshtml" />
     <Content Include="Views\Home\StatusReport.cshtml" />
+    <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
