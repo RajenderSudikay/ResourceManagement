@@ -2,26 +2,70 @@
 <html>
 <head>
     <script>
-        window.onload = function () {
-            var dataPoints = [];
-            var chart;
-            $.getJSON("test.json", function (data) {
-                $.each(data, function (key, value) {
-                    dataPoints.push({ x: parseInt(value)[0], y: parseInt(value[1]), z: parseInt(value[2]) });
-                });
-                chart = new CanvasJS.Chart("chartContainer", {
-                    title: {
-                        text: "Live Chart with dataPoints from External JSON"
-                    },
-                    data: [{
-                        type: "line",
-                        dataPoints: dataPoints,
-                    }]
-                });
-                chart.render();
-                setTimeout(function () { updateChart() }, 1000);
-            });
-        }
+        var chart = new CanvasJS.Chart("chartContainer", {
+	        animationEnabled: true,
+	        theme: "light2",
+            exportEnabled: true,
+            willReadFrequently: true,
+	        title: {
+		        text: "Monthly Report",
+            },
+            axisX: {
+                labelTextAlign: "left"
+            },
+            axisY: {
+                title: "Incidents count",
+                titleMaxWidth: 400,
+                titleFontWeight: "bold",
+                gridThickness: 0,
+                labelTextAlign: "left",
+                stripLines: [
+                    {
+                        value: 0,
+                        showOnTop: true,
+                        color: "gray",
+                        thickness: 0
+                    }
+                ]
+            },
+
+            data: [
+                {
+                    type: "column",
+                    showInLegend: true,
+                    name: "Newly Raised",
+                    legendText: "Newly Raised",
+                    indexLabel: "{y}",
+                    indexLabelFontWeight: "bold",
+                    legendMarkerColor: "rgb(0, 0, 204)",
+                    color: "rgb(0, 0, 204)",
+                    dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
+                },
+                {
+                    type: "column",
+                    legendText: "Open",
+                    indexLabel: "{y}",
+                    indexLabelFontWeight: "bold",
+                    name: "Open",
+                    showInLegend: true,
+                    legendMarkerColor: "rgb(255, 163, 26)",
+                    color: "rgb(255, 163, 26)",
+                    dataPoints: @Html.Raw(ViewBag.MOTDataPoints),
+                },
+                 {
+                    type: "column",
+                     legendText: "Closed",
+                     indexLabel: "{y}",
+                     indexLabelFontWeight: "bold",
+                     name: "Closed",
+                    showInLegend: true,
+                     legendMarkerColor: "rgb(51, 255, 153)",
+                     color: "rgb(51, 255, 153)",
+                    dataPoints: @Html.Raw(ViewBag.MCTDataPoints),
+                }
+            ]
+        });
+        chart.render();
 
     </script>
 </head>

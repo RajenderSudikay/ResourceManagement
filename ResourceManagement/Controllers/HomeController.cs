@@ -19,8 +19,10 @@ namespace ResourceManagement.Controllers
     using System.Web;
     using System.Web.UI;
     using static ResourceManagement.Helpers.DateHelper;
+    using static ResourceManagement.Models.Graph1DataPoint;
     using static ResourceManagement.Models.LeaveOrHolidayModel;
     using static ResourceManagement.Models.TimesheetReportModel;
+    using DataPoint = Models.DataPoint;
 
     public class HomeController : Controller
     {
@@ -2266,8 +2268,47 @@ namespace ResourceManagement.Controllers
             requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-2)));
             requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-3)));
 
+            var graph1Reports = new List<Root>();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
+                foreach (var requiredReportMonth in requiredReportMonths)
+                {
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth).ToList();
+
+                    var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
+                    MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
+                    {
+                        label = requiredReportMonth,
+                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
+                    });
+
+                    var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
+
+                    MonthWiseOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                    {
+                        label = requiredReportMonth,
+                        y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
+                    });
 
 
+                    var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
+
+                    MonthWiseClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                    {
+                        label = requiredReportMonth,
+                        y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
+                    });
+                }
+
+                ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
+                ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
+                ViewBag.MCTDataPoints = JsonConvert.SerializeObject(MonthWiseClosedTickets);               
+            }
             return PartialView();
         }
     }
