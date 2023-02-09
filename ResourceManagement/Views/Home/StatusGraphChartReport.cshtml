@@ -1,7 +1,11 @@
 ﻿<div id="chartContainer1" style="height: 250px; width: 100%;"></div>
 <br />
-<br />
 <div id="chartContainer2" style="height: 250px; width: 100%;"></div>
+<br />
+
+<div id="chartContainer3" style="width: 48%; height: 250px; display: inline-block;"></div>
+<div id="chartContainer4" style="width: 49%; height: 250px; display: inline-block; padding-left:30px"></div>
+
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 
@@ -120,6 +124,104 @@
                      legendMarkerColor: "rgb(51, 255, 153)",
                      color: "rgb(51, 255, 153)",
                     dataPoints: @Html.Raw(ViewBag.MCTDataPoints),
+                }
+            ]
+        });
+    chart.render();
+
+     var chart = new CanvasJS.Chart("chartContainer3", {
+	        animationEnabled: true,
+	        theme: "light2",
+            exportEnabled: true,
+            willReadFrequently: true,
+	        title: {
+		        text: "Open Tickets",
+            },
+            axisX: {
+                labelTextAlign: "left"
+            },
+            axisY: {
+                title: "Incidents count",
+                titleMaxWidth: 400,
+                titleFontWeight: "bold",
+                gridThickness: 0,
+                labelTextAlign: "left",
+                stripLines: [
+                    {
+                        value: 0,
+                        showOnTop: true,
+                        color: "gray",
+                        thickness: 0
+                    }
+                ]
+            },
+
+            data: [
+              {
+                    type: "column",
+                    showInLegend: true,
+                    name: "Critical",
+                    legendText: "Critical",
+                    indexLabel: "{y}",
+                    indexLabelFontWeight: "bold",
+                    legendMarkerColor: "rgb(0, 0, 204)",
+                    color: "rgb(0, 0, 204)",
+                    dataPoints: @Html.Raw(ViewBag.CriticlTickets),
+                },
+                 {
+                     type: "column",
+                     legendText: "High",
+                     indexLabel: "{y}",
+                     indexLabelFontWeight: "bold",
+                     name: "High",
+                    showInLegend: true,
+                     legendMarkerColor: "rgb(255,255,0)",
+                     color: "rgb(255,255,0)",
+                    dataPoints:  @Html.Raw(ViewBag.HighTickets),
+                },
+                  {
+                     type: "column",
+                     legendText: "Medium",
+                     indexLabel: "{y}",
+                     indexLabelFontWeight: "bold",
+                      name: "Medium",
+                    showInLegend: true,
+                      legendMarkerColor: "rgb(255,165,0)",
+                      color: "rgb(255,165,0)",
+                    dataPoints: @Html.Raw(ViewBag.LowTickets),
+                },
+                   {
+                     type: "column",
+                     legendText: "Low",
+                     indexLabel: "{y}",
+                     indexLabelFontWeight: "bold",
+                    showInLegend: true,
+                       legendMarkerColor: "rgb(128,128,128)",
+                       color: "rgb(128,128,128)",
+                    dataPoints: @Html.Raw(ViewBag.CriticlTickets),
+                }
+            ]
+        });
+    chart.render();
+
+
+     var chart = new CanvasJS.Chart("chartContainer4", {
+	        animationEnabled: true,
+	        theme: "light2",
+            exportEnabled: true,
+            willReadFrequently: true,
+	        title: {
+		        text: "Incident Closure Trend",
+            },
+            data: [
+              {
+                    type: "pie",
+                    startAngle: 240,
+                    indexLabelFontSize: 18,
+                    showInLegend: true,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: @Html.Raw(ViewBag.ClosedTrend),
                 }
             ]
         });

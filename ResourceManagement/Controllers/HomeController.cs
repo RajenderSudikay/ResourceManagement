@@ -2257,6 +2257,11 @@ namespace ResourceManagement.Controllers
             return Json(JsonSerializer.Serialize(requiredMonthsLost), JsonRequestBehavior.AllowGet);
         }
 
+        static double PercentageCalculate(int num, int totalNum)
+        {
+            var percenatage = (double)num / totalNum * 100;
+            return percenatage;
+        }
 
         public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
         {
@@ -2275,6 +2280,30 @@ namespace ResourceManagement.Controllers
                 var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
+                var CriticalOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var HighOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var LowOpenTickets = new List<Graph1DataPoint.DataPoint>();
+
+                //var sameDayClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                //var Twoto5DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                //var Sixto10DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                //var Elevento15DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                //var GT15DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
+                var IncidentsPieChart = new List<Graph1DataPoint.DataPoint>(); ;
+
+                var CriticalOTCount = 0;
+                var HighOTCount = 0;
+                var MediumOTCount = 0;
+                var LowOTCount = 0;
+
+                var sameDayCTCount = 0;
+                var Twoto5DayCTCount = 0;
+                var Sixto10DayCTCount = 0;
+                var Elevento15DayCTCount = 0;
+                var GT15DayCTCount = 0;
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
@@ -2295,6 +2324,21 @@ namespace ResourceManagement.Controllers
                         y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
                     });
 
+                    if (OpenTickets != null && OpenTickets.Count > 0)
+                    {
+                        var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
+                        CriticalOTCount += ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0;
+
+                        var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
+                        HighOTCount += highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0;
+
+                        var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
+                        MediumOTCount += mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0;
+
+                        var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
+                        LowOTCount += lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0;
+                    }
+
 
                     var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
 
@@ -2303,11 +2347,100 @@ namespace ResourceManagement.Controllers
                         label = requiredReportMonth,
                         y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
                     });
+
+                    if(closedTickets != null && closedTickets.Count > 0)
+                    {
+                        var sameDayTickets = closedTickets.Where(x => x.Ticket_Age == 1).ToList();
+                        sameDayCTCount += sameDayTickets != null && sameDayTickets.Count > 0 ? sameDayTickets.Count : 0;
+
+                        var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <=5).ToList();
+                        Twoto5DayCTCount += twoTo5Tickets != null && twoTo5Tickets.Count > 0 ? twoTo5Tickets.Count : 0;
+
+                        var sixTo10Tickets = closedTickets.Where(x => x.Ticket_Age >= 6 && x.Ticket_Age <= 10).ToList();
+                        Sixto10DayCTCount += sixTo10Tickets != null && sixTo10Tickets.Count > 0 ? sixTo10Tickets.Count : 0;
+
+                        var elevanTo15Tickets = closedTickets.Where(x => x.Ticket_Age >= 11 && x.Ticket_Age <= 15).ToList();
+                        Elevento15DayCTCount += elevanTo15Tickets != null && elevanTo15Tickets.Count > 0 ? elevanTo15Tickets.Count : 0;
+
+                        var Greater15Tickets = closedTickets.Where(x => x.Ticket_Age > 15).ToList();
+                        GT15DayCTCount += Greater15Tickets != null && Greater15Tickets.Count > 0 ? Greater15Tickets.Count : 0;
+                    }
                 }
+
+                CriticalOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = StatusReportChartModel.Month,
+                    y = CriticalOTCount
+                });
+
+                HighOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = StatusReportChartModel.Month,
+                    y = HighOTCount
+                });
+
+                MediumOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = StatusReportChartModel.Month,
+                    y = MediumOTCount
+                });
+
+                LowOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = StatusReportChartModel.Month,
+                    y = LowOTCount
+                });
+
+                var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
+
+                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = "Same Day",
+                    y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
+                    legendText = "Same Day"
+                });
+
+                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = "2-5",
+                    y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
+                    legendText = "2-5"
+                });
+
+                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = "6-10",
+                    y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
+                    legendText = "6-10"
+                });
+
+                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = "11-15",
+                    y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
+                    legendText = "11-15"
+                });
+
+                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                {
+                    label = "Grtr-15",
+                    y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
+                    legendText = "Grtr-15"
+                });
+               
 
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
-                ViewBag.MCTDataPoints = JsonConvert.SerializeObject(MonthWiseClosedTickets);               
+                ViewBag.MCTDataPoints = JsonConvert.SerializeObject(MonthWiseClosedTickets);
+
+                //OPEN Tickets will be considered for Selected month only
+                ViewBag.CriticlTickets = JsonConvert.SerializeObject(CriticalOpenTickets);
+                ViewBag.HighTickets = JsonConvert.SerializeObject(HighOpenTickets);
+                ViewBag.MediumTickets = JsonConvert.SerializeObject(MediumOpenTickets);
+                ViewBag.LowTickets = JsonConvert.SerializeObject(LowOpenTickets);
+
+                //CLOSED REPORT TREND
+                ViewBag.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
             }
             return PartialView();
         }
