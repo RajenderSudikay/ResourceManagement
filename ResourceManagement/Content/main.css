@@ -951,3 +951,13 @@ input[type=number] {
     padding-left:20px;
     padding-top:25px;
 }*/
+
+.report-content-resource {
+    padding-left: 15px;
+    padding-top: 20px;
+    font-size: small;
+}
+
+.table-striped-custom tr:nth-of-type(odd) {
+    background-color: rgba(72, 113, 248, 0.068);
+}
