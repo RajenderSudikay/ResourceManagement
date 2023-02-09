@@ -9,8 +9,15 @@ namespace ResourceManagement.Models
         public class DataPoint
         {
             public string label { get; set; }
+            public double y { get; set; }           
+        }
+
+        public class PieDataPoint
+        {
+            public string label { get; set; }
             public double y { get; set; }
-            public string legendText { get; set; }        
+            public string legendText { get; set; }
+            public string indexLabelFontColor { get; set; }
         }
 
         public class Root

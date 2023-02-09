@@ -2286,13 +2286,7 @@ namespace ResourceManagement.Controllers
                 var MediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 var LowOpenTickets = new List<Graph1DataPoint.DataPoint>();
 
-                //var sameDayClosedTickets = new List<Graph1DataPoint.DataPoint>();
-                //var Twoto5DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
-                //var Sixto10DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
-                //var Elevento15DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
-                //var GT15DayClosedTickets = new List<Graph1DataPoint.DataPoint>();
-
-                var IncidentsPieChart = new List<Graph1DataPoint.DataPoint>(); ;
+                var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>(); ;
 
                 var CriticalOTCount = 0;
                 var HighOTCount = 0;
@@ -2393,39 +2387,44 @@ namespace ResourceManagement.Controllers
 
                 var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
 
-                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "Same Day",
+                    label = "[Same Day]",
                     y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
-                    legendText = "Same Day"
+                    legendText = "Same Day",
+                    indexLabelFontColor = "rgb(109, 120, 173)"
                 });
 
-                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "2-5",
+                    label = "[2-5]",
                     y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
-                    legendText = "2-5"
+                    legendText = "2-5",
+                    indexLabelFontColor = "rgb(81, 205, 160)"
                 });
 
-                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "6-10",
+                    label = "[6-10]",
                     y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
-                    legendText = "6-10"
+                    legendText = "6-10",
+                    indexLabelFontColor = "rgb(223, 121, 112)"
                 });
 
-                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "11-15",
+                    label = "[11-15]",
                     y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
-                    legendText = "11-15"
+                    legendText = "11-15",
+                    indexLabelFontColor = "rgb(76, 156, 160)"
                 });
 
-                IncidentsPieChart.Add(new Graph1DataPoint.DataPoint()
+                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "Grtr-15",
+                    label = "[Grtr-15]",
                     y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
-                    legendText = "Grtr-15"
+                    legendText = "Grtr-15",
+                    indexLabelFontColor = "rgb(174, 125, 153)"
                 });
                
 
