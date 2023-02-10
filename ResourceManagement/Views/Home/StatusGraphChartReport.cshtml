@@ -275,7 +275,8 @@
                     indexLabelFontColor: "rgb(33, 103, 174)",
                     legendMarkerColor: "rgb(33, 103, 174)",
                     color: "rgb(33, 103, 174)",
-                    dataPoints: @Html.Raw(ViewBag.CriticlTickets),
+                    dataPoints:@Html.Raw(ViewBag.MCRITOTDataPoints),
+
                 },
                  {
                      type: "column",
@@ -287,7 +288,7 @@
                      legendMarkerColor: "rgb(255,215,0)",
                      color: "rgb(255,215,0)",
                      indexLabelFontColor: "rgb(255,215,0)",
-                    dataPoints:  @Html.Raw(ViewBag.HighTickets),
+                    dataPoints:@Html.Raw(ViewBag.MHIGOTDataPoints),
                 },
                   {
                      type: "column",
@@ -299,7 +300,7 @@
                       legendMarkerColor: "rgb(247, 150, 71)",
                       color: "rgb(247, 150, 71)",
                       indexLabelFontColor: "rgb(247, 150, 71)",
-                    dataPoints: @Html.Raw(ViewBag.LowTickets),
+                      dataPoints:@Html.Raw(ViewBag.MMEDIOTDataPoints),
                 },
                    {
                      type: "column",
@@ -310,7 +311,7 @@
                        legendMarkerColor: "rgb(47, 79, 79)",
                        color: "rgb(47, 79, 79)",
                        indexLabelFontColor: "rgb(47, 79, 79)",
-                    dataPoints: @Html.Raw(ViewBag.CriticlTickets),
+                   dataPoints:@Html.Raw(ViewBag.MLOWOTDataPoints),
                 }
             ]
         });

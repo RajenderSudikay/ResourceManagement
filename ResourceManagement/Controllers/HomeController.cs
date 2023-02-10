@@ -2305,7 +2305,7 @@ namespace ResourceManagement.Controllers
 
 
             var graph1Reports = new List<Root>();
-      
+
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
                 var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
@@ -2313,10 +2313,10 @@ namespace ResourceManagement.Controllers
                 var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
-                var CriticalOTCount = 0;
-                var HighOTCount = 0;
-                var MediumOTCount = 0;
-                var LowOTCount = 0;
+                var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseHighOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseLowOpenTickets = new List<Graph1DataPoint.DataPoint>();
 
                 var sameDayCTCount = 0;
                 var Twoto5DayCTCount = 0;
@@ -2349,17 +2349,34 @@ namespace ResourceManagement.Controllers
                     if (OpenTickets != null && OpenTickets.Count > 0)
                     {
                         var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
-                        CriticalOTCount += ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0;
 
+                        MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0
+                        });
+                        
                         var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
-                        HighOTCount += highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0;
+                        MonthWiseHighOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0
+                        });
 
                         var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
-                        MediumOTCount += mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0;
-
+                        MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0
+                        });
+                       
                         var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
-                        LowOTCount += lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0;
-
+                        MonthWiseLowOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0
+                        });
+                      
                         totalOpenTickets += OpenTickets.Count;
 
                     }
@@ -2378,8 +2395,8 @@ namespace ResourceManagement.Controllers
                     var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year).ToList();
 
                     if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
-                    {                    
-                        if(monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
+                    {
+                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
                         {
                             monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
                         }
@@ -2412,33 +2429,6 @@ namespace ResourceManagement.Controllers
                         totalClosedTickets += closedTickets.Count;
                     }
                 }
-
-                var CriticalOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var HighOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var LowOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                CriticalOpenTickets.Add(new Graph1DataPoint.DataPoint()
-                {
-                    label = StatusReportChartModel.Month,
-                    y = CriticalOTCount
-                });
-                HighOpenTickets.Add(new Graph1DataPoint.DataPoint()
-                {
-                    label = StatusReportChartModel.Month,
-                    y = HighOTCount
-                });
-                MediumOpenTickets.Add(new Graph1DataPoint.DataPoint()
-                {
-                    label = StatusReportChartModel.Month,
-                    y = MediumOTCount
-                });
-                LowOpenTickets.Add(new Graph1DataPoint.DataPoint()
-                {
-                    label = StatusReportChartModel.Month,
-                    y = LowOTCount
-                });
-
-
 
                 var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
                 var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
@@ -2496,23 +2486,28 @@ namespace ResourceManagement.Controllers
                     color = "rgb(247, 150, 71)"
                 });
 
-
+                //GRAPH1
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
                 ViewBag.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
 
+                //GRAPH2
                 ViewBag.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
 
-                //OPEN Tickets will be considered for Selected month only
-                ViewBag.CriticlTickets = JsonConvert.SerializeObject(CriticalOpenTickets);
-                ViewBag.HighTickets = JsonConvert.SerializeObject(HighOpenTickets);
-                ViewBag.MediumTickets = JsonConvert.SerializeObject(MediumOpenTickets);
-                ViewBag.LowTickets = JsonConvert.SerializeObject(LowOpenTickets);
+                //OPEN Tickets will be considered for Selected month only 
+                //GRAPH3
+                ViewBag.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
+                ViewBag.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
+                ViewBag.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
+                ViewBag.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);                
+           
 
                 //CLOSED REPORT TREND
+                //GRAPH4
                 ViewBag.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
 
                 //INCIDENTS SUMMARY
+                //GRAPH5
                 ViewBag.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
             }
             return PartialView();
