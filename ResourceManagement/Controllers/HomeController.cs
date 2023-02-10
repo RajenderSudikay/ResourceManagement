@@ -2281,13 +2281,6 @@ namespace ResourceManagement.Controllers
                 var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
-                var CriticalOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var HighOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var LowOpenTickets = new List<Graph1DataPoint.DataPoint>();
-
-                var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>(); ;
-
                 var CriticalOTCount = 0;
                 var HighOTCount = 0;
                 var MediumOTCount = 0;
@@ -2299,6 +2292,9 @@ namespace ResourceManagement.Controllers
                 var Elevento15DayCTCount = 0;
                 var GT15DayCTCount = 0;
 
+                var totalOpenTickets = 0;
+                var totalClosedTickets = 0;
+
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
                     var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth).ToList();
@@ -2307,7 +2303,7 @@ namespace ResourceManagement.Controllers
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
                         label = requiredReportMonth,
-                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
+                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0                     
                     });
 
                     var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
@@ -2331,6 +2327,9 @@ namespace ResourceManagement.Controllers
 
                         var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
                         LowOTCount += lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0;
+
+                        totalOpenTickets += OpenTickets.Count;
+
                     }
 
 
@@ -2342,12 +2341,12 @@ namespace ResourceManagement.Controllers
                         y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
                     });
 
-                    if(closedTickets != null && closedTickets.Count > 0)
+                    if (closedTickets != null && closedTickets.Count > 0)
                     {
                         var sameDayTickets = closedTickets.Where(x => x.Ticket_Age == 1).ToList();
                         sameDayCTCount += sameDayTickets != null && sameDayTickets.Count > 0 ? sameDayTickets.Count : 0;
 
-                        var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <=5).ToList();
+                        var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <= 5).ToList();
                         Twoto5DayCTCount += twoTo5Tickets != null && twoTo5Tickets.Count > 0 ? twoTo5Tickets.Count : 0;
 
                         var sixTo10Tickets = closedTickets.Where(x => x.Ticket_Age >= 6 && x.Ticket_Age <= 10).ToList();
@@ -2358,75 +2357,94 @@ namespace ResourceManagement.Controllers
 
                         var Greater15Tickets = closedTickets.Where(x => x.Ticket_Age > 15).ToList();
                         GT15DayCTCount += Greater15Tickets != null && Greater15Tickets.Count > 0 ? Greater15Tickets.Count : 0;
+
+                        totalClosedTickets += closedTickets.Count;
                     }
                 }
 
+                var CriticalOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var HighOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var LowOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 CriticalOpenTickets.Add(new Graph1DataPoint.DataPoint()
                 {
                     label = StatusReportChartModel.Month,
                     y = CriticalOTCount
                 });
-
                 HighOpenTickets.Add(new Graph1DataPoint.DataPoint()
                 {
                     label = StatusReportChartModel.Month,
                     y = HighOTCount
                 });
-
                 MediumOpenTickets.Add(new Graph1DataPoint.DataPoint()
                 {
                     label = StatusReportChartModel.Month,
                     y = MediumOTCount
                 });
-
                 LowOpenTickets.Add(new Graph1DataPoint.DataPoint()
                 {
                     label = StatusReportChartModel.Month,
                     y = LowOTCount
                 });
 
-                var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
 
+
+                var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[Same Day]",
+                    label = "",
                     y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
                     legendText = "Same Day",
                     indexLabelFontColor = "rgb(109, 120, 173)"
                 });
-
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[2-5]",
+                    label = "",
                     y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
                     legendText = "2-5",
                     indexLabelFontColor = "rgb(81, 205, 160)"
                 });
-
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[6-10]",
+                    label = "",
                     y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
                     legendText = "6-10",
                     indexLabelFontColor = "rgb(223, 121, 112)"
                 });
-
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[11-15]",
+                    label = "",
                     y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
                     legendText = "11-15",
                     indexLabelFontColor = "rgb(76, 156, 160)"
                 });
-
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[Grtr-15]",
+                    label = "",
                     y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
                     legendText = "Grtr-15",
                     indexLabelFontColor = "rgb(174, 125, 153)"
                 });
-               
+
+                var IncidentsSummaryPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                {
+                    label = "[" + System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets) + "]",
+                    y = PercentageCalculate(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                    legendText = "Closed",
+                    indexLabelFontColor = "rgb(81, 205, 160)",
+                    color = "rgb(81, 205, 160)",
+                });
+                IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                {
+                    label = "[" + System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets) + "]",
+                    y = PercentageCalculate(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                    legendText = "Open",
+                    indexLabelFontColor = "rgb(247, 150, 71)",
+                    color = "rgb(247, 150, 71)"
+                });
+
 
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
@@ -2440,6 +2458,9 @@ namespace ResourceManagement.Controllers
 
                 //CLOSED REPORT TREND
                 ViewBag.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
+
+                //INCIDENTS SUMMARY
+                ViewBag.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
             }
             return PartialView();
         }
