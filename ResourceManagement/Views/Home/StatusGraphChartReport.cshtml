@@ -100,7 +100,7 @@
 <div style="background-color: white; padding-top: 30px" />
 <hr style="color: red; background-color: rgb(33, 103, 174)" />
 
-<div id="chartContainer5" style="width: 48%; height: 250px; display: inline-block;"></div>
+<div id="chartContainer5" style="width: 48%; height: 300px; display: inline-block;"></div>
 <div id="chartContainer6" class="vl" style="width: 49%; height: 300px; display: inline-block; padding-left:0px"></div>
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -183,7 +183,7 @@
             willReadFrequently: true,
 	        title: {
                 text: "Monthly Raised Vs Closed",
-              /*  fontColor: "rgb(33, 103, 174)",*/
+                fontColor: "rgb(33, 103, 174)",
             },
             axisX: {
                 labelTextAlign: "left"
@@ -221,6 +221,7 @@
                  {
                      type: "line",
                      legendText: "Closed",
+                     indexLabelOrientation: "horizontal",
                      indexLabel: "{y}",
                      indexLabelFontSize: 12,
                      indexLabelFontWeight: "bolder",
@@ -350,7 +351,7 @@
             },
             data: [
               {
-                    type: "funnel",
+                    type: "doughnut",
                     startAngle: 240,
                     reversed: true,
                     indexLabelFontSize: 12,
