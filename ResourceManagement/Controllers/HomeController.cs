@@ -13,6 +13,7 @@ namespace ResourceManagement.Controllers
     using System.Configuration;
     using System.IO;
     using System.Net;
+    using System.Net.Http;
     using System.Net.Mail;
     using System.Text;
     using System.Text.Json;
@@ -2292,10 +2293,28 @@ namespace ResourceManagement.Controllers
             return percenatage;
         }
 
+        public string EmployeeProfileImagePath(StatusReportChartModel StatusReportChartModel)
+        {
+            var imageUrl = "/Assets/EmployeeImagesPNG/" + StatusReportChartModel.EmployeeID + ".png";
+            var baseUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority));
+            var url = new Uri(baseUri, VirtualPathUtility.ToAbsolute(imageUrl));
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Head, url);
+                var response = client.SendAsync(request).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    imageUrl = "/Assets/EmployeeImagesPNG/MaleDefault.png";
+                }              
+            }
+
+            return imageUrl;
+        }
+
         public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
         {
-
             var model = new GraphChartModel();
+            model.EmployeeImage = EmployeeProfileImagePath(StatusReportChartModel);
 
             var selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, StatusReportChartModel.MonthNumber, 1);
             model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
@@ -2306,7 +2325,6 @@ namespace ResourceManagement.Controllers
             requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
             requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3)));
             requiredReportMonths.Reverse();
-
 
             var graph1Reports = new List<Root>();
 
@@ -2334,7 +2352,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name== StatusReportChartModel.EmployeeName).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
@@ -2360,7 +2378,7 @@ namespace ResourceManagement.Controllers
                             label = requiredReportMonth.Month,
                             y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0
                         });
-                        
+
                         var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
                         MonthWiseHighOpenTickets.Add(new Graph1DataPoint.DataPoint()
                         {
@@ -2374,26 +2392,23 @@ namespace ResourceManagement.Controllers
                             label = requiredReportMonth.Month,
                             y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0
                         });
-                       
+
                         var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
                         MonthWiseLowOpenTickets.Add(new Graph1DataPoint.DataPoint()
                         {
                             label = requiredReportMonth.Month,
                             y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0
                         });
-                      
-                        totalOpenTickets += OpenTickets.Count;
 
+                        totalOpenTickets += OpenTickets.Count;
                     }
 
-
                     var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
-
                     MonthWiseTotalClosedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
                         label = requiredReportMonth.Month,
                         y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
-                    });                 
+                    });
 
                     if (closedTickets != null && closedTickets.Count > 0)
                     {
@@ -2425,7 +2440,6 @@ namespace ResourceManagement.Controllers
                             monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
                         }
                     }
-
                     MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
                         label = requiredReportMonth.Month,
@@ -2502,8 +2516,8 @@ namespace ResourceManagement.Controllers
                 ViewBag.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
                 ViewBag.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
                 ViewBag.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
-                ViewBag.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);                
-           
+                ViewBag.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);
+
 
                 //CLOSED REPORT TREND
                 //GRAPH4
@@ -2522,8 +2536,8 @@ namespace ResourceManagement.Controllers
             {
                 MonthEndDate = System.DateTime.DaysInMonth(inputDateTime.Year, inputDateTime.Month).ToString(),
                 MonthName = inputDateTime.ToString("MMM"),
-                year = inputDateTime.Year.ToString()               
+                year = inputDateTime.Year.ToString()
             };
-        }    
+        }
     }
 }

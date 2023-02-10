@@ -59,7 +59,7 @@
                                 </li>
                                 <li>
                                     <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
-                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count > 1)
                                     {
                                         var clients = new List<string>();
                                         foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
@@ -141,7 +141,7 @@
 </nav>
 
 
-<div class="card card-body" style="border-radius: 10px">
+<div class="card card-body status-report-view-options" style="border-radius: 10px">
     <div class="card statusreport-card">
         <div class="card-body ">
             <div class="row">
@@ -193,10 +193,12 @@
             </div>
             <div class="modal-footer mt-xl-4">
                 <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width:100px; border-radius:10px"><b>View Report</b></button>
+                <button type="button" class="btn btn-success btn-lg btn-download-report" style="border-radius:10px">Download Report</button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <div id="chartContainer" style="background-color: white;" class="mt-xl-4"></div>
@@ -210,6 +212,15 @@
 <br />
 
 <script>
+
+    jQuery('.btn-download-report').click(function () {
+        jQuery('.status-report-view-options').hide();
+        jQuery('.canvasjs-chart-toolbar').hide();
+        window.print();
+        jQuery('.status-report-view-options').show();
+        jQuery('.canvasjs-chart-toolbar').show();
+    });
+
     jQuery(".btn-status-report-view").click(function () {
 
         var statusChartModel = {

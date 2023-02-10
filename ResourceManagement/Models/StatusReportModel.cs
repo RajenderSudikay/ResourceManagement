@@ -107,8 +107,8 @@ namespace ResourceManagement.Models
     public class GraphChartModel
     {
         public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
-
         public SelectedReportMonthModel SelectedReportMonth { get; set; }
+        public string EmployeeImage { get; set; }
 
     }
 
