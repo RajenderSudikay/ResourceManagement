@@ -2375,13 +2375,13 @@ namespace ResourceManagement.Controllers
 
                     var monthSpecificLosedTicketsCount = 0;
 
-                    if(closedTickets != null && closedTickets.Count() > 0)
-                    {
-                        var specificMonthClosedTickets = closedTickets.Where(closedMonth => closedMonth.Closed_Month == requiredReportMonth.MonthNumber).ToList();
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year).ToList();
 
-                        if(specificMonthClosedTickets != null && specificMonthClosedTickets.Count > 0)
+                    if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
+                    {                    
+                        if(monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
                         {
-                            monthSpecificLosedTicketsCount = specificMonthClosedTickets.Count;
+                            monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
                         }
                     }
 

@@ -87,21 +87,21 @@
 <div style="background-color: none; padding-top: 30px" />
 <hr style="color: red; background-color: rgb(33, 103, 174)" />
 
-<div id="chartContainer1" style="height: 250px; width: 48%; display: inline-block;"></div>
-<div id="chartContainer2" style="height: 250px; width: 48%; display: inline-block;" class="vl"></div>
+<div id="chartContainer1" style="height: 300px; width: 48%; display: inline-block;"></div>
+<div id="chartContainer2" style="height: 300px; width: 48%; display: inline-block;" class="vl"></div>
 
 <div style="background-color: white; padding-top: 30px;" />
 <hr style="color: red; background-color: rgb(33, 103, 174)" />
 
-<div id="chartContainer3" style="width: 48%; height: 250px; display: inline-block;"></div>
-<div id="chartContainer4" class="vl" style="width: 49%; height: 250px; display: inline-block; padding-left:0px"></div>
+<div id="chartContainer3" style="width: 48%; height: 300px; display: inline-block;"></div>
+<div id="chartContainer4" class="vl" style="width: 49%; height: 300px; display: inline-block; padding-left:0px"></div>
 
 
 <div style="background-color: white; padding-top: 30px" />
 <hr style="color: red; background-color: rgb(33, 103, 174)" />
 
 <div id="chartContainer5" style="width: 48%; height: 250px; display: inline-block;"></div>
-<div id="chartContainer6" class="vl" style="width: 49%; height: 250px; display: inline-block; padding-left:0px"></div>
+<div id="chartContainer6" class="vl" style="width: 49%; height: 300px; display: inline-block; padding-left:0px"></div>
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
@@ -178,7 +178,7 @@
 
         var chart = new CanvasJS.Chart("chartContainer2", {
 	        animationEnabled: true,
-            theme: "dark2",
+            theme: "light2",
             exportEnabled: true,
             willReadFrequently: true,
 	        title: {
@@ -207,7 +207,7 @@
             data: [
               {
                     type: "line",
-                    showInLegend: true,
+                    indexLabelFontSize: 25,
                     name: "Newly Raised",
                     legendText: "Newly Raised",
                     indexLabel: "{y}",
@@ -215,16 +215,18 @@
                     indexLabelFontColor: "rgb(33, 103, 174)",
                     legendMarkerColor: "rgb(33, 103, 174)",
                     color: "rgb(33, 103, 174)",
+                    showInLegend: true,
                     dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
                 },
                  {
                      type: "line",
                      legendText: "Closed",
                      indexLabel: "{y}",
-                     indexLabelFontWeight: "bold",
-                     indexLabelFontColor: "rgb(81, 205, 160)",
+                     indexLabelFontSize: 12,
+                     indexLabelFontWeight: "bolder",
+                     indexLabelFontColor: "black",
                      name: "Closed",
-                    showInLegend: true,
+                     showInLegend: true,
                      legendMarkerColor: "rgb(81, 205, 160)",
                      color: "rgb(81, 205, 160)",
                     dataPoints: @Html.Raw(ViewBag.MSpecifCTDataPoints),
@@ -339,7 +341,7 @@
 
          var chart = new CanvasJS.Chart("chartContainer5", {
 	        animationEnabled: true,
-	        theme: "funnel",
+             theme: "light2",
             exportEnabled: true,
             willReadFrequently: true,
 	        title: {
@@ -350,6 +352,7 @@
               {
                     type: "funnel",
                     startAngle: 240,
+                    reversed: true,
                     indexLabelFontSize: 12,
                     showInLegend: true,
                     yValueFormatString: "##0.00\"%\"",
