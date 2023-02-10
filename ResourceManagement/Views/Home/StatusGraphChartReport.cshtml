@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model ResourceManagement.Models.GraphChartModel
+
+<style>
     .report-content-resource {
         padding-left: 15px;
         padding-top: 20px;
@@ -19,7 +21,19 @@
 <div class="" style="background-color: white; color: #2167ae;">
     <br />
     <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px" />
-    <img src="https://www.littelfuse.com/~/media/images/littelfuse/site-logo/lf_logo.png" style="float: right; margin-right: 20px" />
+    @{
+        var clientLogo = "";
+        if (Model.AMBC_Active_Emp_view.Client != "AMBC")
+        {
+
+        }
+        clientLogo = "/Assets/ClientLogos/" + Model.AMBC_Active_Emp_view.Client + ".png";
+    }
+    @if (clientLogo != "")
+    {
+        <img src='@clientLogo' style="float: right; margin-right: 20px; width: 200px" />
+    }
+
     <br />
 
     <div class="container">
@@ -29,11 +43,9 @@
                 <div style="padding-top: 50px; margin-left: 100px;">
                     <img src="~/Assets/MaleDefault.png" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 15px">
 
-                    <h2 style="padding-left:10px"><b>Rajender Sudikay</b></h2>
+                    <h2 style="padding-left:10px; text-align: center; width: 200px"><b>@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
                     <div class="report-content-resource">
-                        @*<p><b>Project Name:</b> JDE Security</p>*@
-                        <p><b>Project Started:</b> Aug-2020</p>
-                        <p><b>Reporting Manager:</b> Amy McGreal</p>
+                        <p><b>Reporting Manager:</b> @Model.AMBC_Active_Emp_view.Client_Report_Manager</p>
                     </div>
 
                 </div>
@@ -42,10 +54,10 @@
                 <div style="padding-top: 30px;">
                     <div>
                         <h2 style="font-size:xx-large;">
-                            JDE Security
+                            @Model.AMBC_Active_Emp_view.Client_Project_Name
                         </h2>
                         <h5>
-                            Project Status Report as of Nov 30th, 2022
+                            Project Status Report as of <b style="font-size: initial; color: green">@Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
                         </h5>
                     </div>
                 </div>
@@ -54,30 +66,21 @@
                 <div class="mt-xl-4">
                     <h2><b>Activity Details</b></h2>
                     <ul class="mt-xl-4">
-                        <li class="">Working on JDE Security approval process with User Managers, Controller, IT Manager and Security officer.</li>
-                        <li class="">
-                            Create User profile, Password Reset and Assigning/revoking role access for Users in JDE for different departments.
-                        </li>
-                        <li class="">Assign securities to JDE roles as per business requirement.</li>
-                        <li class="">Reviewing Consultant JDE roles expiration and follow-up with managers for role extensions.</li>
-                        <li class="">Review Batch report failures in JDE and monitor the jobs for next run.</li>
-                        <li class="">
-                            Work on JDE Audit tasks such as extract/upload requested data , run security reports and email to managers for approvals.
-                        </li>
-                        <li>
-                            Work on JDE termination Tasks in VFire, verify the users in JDE and take necessary actions.
-                        </li>
-                        <li class="">
-                            Work on JDE Audit tasks such as extract/upload requested data , run security reports and email to managers for approvals.
-                        </li>
-                        <li>
-                            Work on JDE termination Tasks in VFire, verify the users in JDE and take necessary actions.
-                        </li>
+                        @{
+                            var activitesDetails = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(activitesDetails))
+                        {
+                            foreach (var activity in activitesDetails.Split('|'))
+                            {
+                                <li class="">@activity</li>
+                            }
+                        }
+
                     </ul>
                 </div>
             </div>
-
-
         </div>
     </div>
 

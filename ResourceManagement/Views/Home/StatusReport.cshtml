@@ -166,20 +166,6 @@
             </div>
 
             <div class="row">
-                @*<div class="col-md-6">
-                        <div class="form-group">
-                            <label for="reportcategory" class="leavestartdate">Category<b style="color:red">*</b></label>
-                            <select id="reportyear" name="reportyear" class="form-control form-select form-select-lg mb-3">
-                                <option disabled selected> -- Select Category -- </option>
-                                <option value="Quarter">Quarter</option>
-                                <option value="HalfYear">Half Year</option>
-                                <option value="Annual">Annual</option>
-                            </select>
-                            <div class="invalid-feedback-reportmonth" style="color:red; display:none">
-                                Please Select Category
-                            </div>
-                        </div>
-                    </div>*@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="reportmonth" class="leavestartdate">Month<b style="color:red">*</b></label>
@@ -205,23 +191,6 @@
 
                 </div>
             </div>
-
-            @*<div class="row">
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="reportClient">Client</label>
-                            <select id="reportClient" name="reportClient" class="form-control form-select form-select-lg mb-3 date-timesheet">
-                                @foreach (var project in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
-                                {
-                                    <option value="@project.Project_Code">@project.Client</option>
-                                }
-                            </select>
-                        </div>
-
-                    </div>
-                </div>*@
-
             <div class="modal-footer mt-xl-4">
                 <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width:100px; border-radius:10px"><b>View Report</b></button>
             </div>
@@ -241,9 +210,6 @@
 <br />
 
 <script>
-
-
-
     jQuery(".btn-status-report-view").click(function () {
 
         var statusChartModel = {
@@ -252,7 +218,7 @@
             Year: jQuery('#reportyear :selected').val(),
             Month: jQuery('#reportmonth :selected').text(),
             MonthNumber: jQuery('#reportmonth :selected').val(),
-            EmployeeID: jQuery('#reportClient :selected').val(),
+            EmployeeID: jQuery('#selectEmployeename :selected').val(),
             EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
         };
 

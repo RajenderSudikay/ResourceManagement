@@ -320,6 +320,8 @@
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\Check-In.png" />
+    <Content Include="Assets\ClientLogos\Federal Signal.png" />
+    <Content Include="Assets\ClientLogos\Littelfuse.png" />
     <Content Include="Assets\FemaleDefault.png" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\email.png" />

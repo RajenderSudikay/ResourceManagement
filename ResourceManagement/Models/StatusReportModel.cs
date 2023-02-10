@@ -88,7 +88,7 @@ namespace ResourceManagement.Models
         public int Year { get; set; } = 0;
 
         [JsonPropertyName("ProjectID")]
-        public string ProjectID { get; set; } = string.Empty;
+        public int ProjectID { get; set; } = 0;
 
         [JsonPropertyName("ClientName")]
         public string ClientName { get; set; } = string.Empty;
@@ -101,5 +101,23 @@ namespace ResourceManagement.Models
         public Nullable<int> MonthNumber { get; set; } = 0;
         public Nullable<int> Year { get; set; } = 0;
       
+    }
+
+
+    public class GraphChartModel
+    {
+        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
+
+        public SelectedReportMonthModel SelectedReportMonth { get; set; }
+
+    }
+
+    public class SelectedReportMonthModel
+    {
+        public string MonthName { get; set; }
+        public string MonthEndDate { get; set; }
+        public string year { get; set; }
+        public string Suffix { get; set; }
+
     }
 }

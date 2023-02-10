@@ -2294,7 +2294,11 @@ namespace ResourceManagement.Controllers
 
         public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
         {
+
+            var model = new GraphChartModel();
+
             var selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, StatusReportChartModel.MonthNumber, 1);
+            model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
 
             var requiredReportMonths = new List<MonthWiseReportModel>();
             requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
@@ -2308,6 +2312,7 @@ namespace ResourceManagement.Controllers
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
+                model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName && x.Employee_ID == StatusReportChartModel.EmployeeID && x.Project_Code == StatusReportChartModel.ProjectID).FirstOrDefault();
                 var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
@@ -2510,7 +2515,17 @@ namespace ResourceManagement.Controllers
                 //GRAPH5
                 ViewBag.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
             }
-            return PartialView();
+            return PartialView(model);
         }
+
+        public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime)
+        {
+            return new SelectedReportMonthModel()
+            {
+                MonthEndDate = System.DateTime.DaysInMonth(inputDateTime.Year, inputDateTime.Month).ToString(),
+                MonthName = inputDateTime.ToString("MMM"),
+                year = inputDateTime.Year.ToString()               
+            };
+        }    
     }
 }
