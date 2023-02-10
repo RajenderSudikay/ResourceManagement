@@ -25,9 +25,8 @@
         var clientLogo = "";
         if (Model.AMBC_Active_Emp_view.Client != "AMBC")
         {
-
+            clientLogo = "/Assets/ClientLogos/" + Model.AMBC_Active_Emp_view.Client + ".png";
         }
-        clientLogo = "/Assets/ClientLogos/" + Model.AMBC_Active_Emp_view.Client + ".png";
     }
     @if (clientLogo != "")
     {
@@ -43,7 +42,7 @@
                 <div style="padding-top: 50px; margin-left: 100px;">
                     <img src="~/Assets/MaleDefault.png" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 15px">
 
-                    <h2 style="padding-left:10px; text-align: center; width: 200px"><b>@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
+                    <h2 style="padding-left:10px; text-align: center; width: 200px; padding-top: 10px"><b>@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
                     <div class="report-content-resource">
                         <p><b>Reporting Manager:</b> @Model.AMBC_Active_Emp_view.Client_Report_Manager</p>
                     </div>
@@ -219,6 +218,7 @@
                     indexLabelFontSize: 20,
                     name: "Newly Raised",
                     legendText: "Newly Raised",
+                 /*   indexLabelPlacement: "inside",*/
                     indexLabel: "{y}",
                     indexLabelFontWeight: "bold",
                     indexLabelFontColor: "rgb(33, 103, 174)",

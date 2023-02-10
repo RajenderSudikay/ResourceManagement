@@ -2334,7 +2334,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name== StatusReportChartModel.EmployeeName).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
@@ -2393,26 +2393,7 @@ namespace ResourceManagement.Controllers
                     {
                         label = requiredReportMonth.Month,
                         y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
-                    });
-
-                    var monthSpecificLosedTicketsCount = 0;
-
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year).ToList();
-
-                    if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
-                    {
-                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
-                        {
-                            monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
-                        }
-                    }
-
-
-                    MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
-                    {
-                        label = requiredReportMonth.Month,
-                        y = monthSpecificLosedTicketsCount
-                    });
+                    });                 
 
                     if (closedTickets != null && closedTickets.Count > 0)
                     {
@@ -2433,6 +2414,23 @@ namespace ResourceManagement.Controllers
 
                         totalClosedTickets += closedTickets.Count;
                     }
+
+                    var monthSpecificLosedTicketsCount = 0;
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName).ToList();
+
+                    if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
+                    {
+                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
+                        {
+                            monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
+                        }
+                    }
+
+                    MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                    {
+                        label = requiredReportMonth.Month,
+                        y = monthSpecificLosedTicketsCount
+                    });
                 }
 
                 var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
