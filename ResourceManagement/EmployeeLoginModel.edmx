@@ -229,6 +229,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="project_staus" Type="varchar" MaxLength="15" />
           <Property Name="project_shift" Type="varchar" MaxLength="15" />
           <Property Name="clientreportmanager" Type="varchar" MaxLength="250" />
+          <Property Name="ActualProjectName" Type="varchar" MaxLength="1500" />
+          <Property Name="ProjectRolesResponsibilities" Type="varchar" MaxLength="2500" />
         </EntityType>
         <EntityType Name="emp_project_log">
           <Key>
@@ -318,6 +320,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does n
           <Property Name="Ticket_Age" Type="int" />
           <Property Name="ReportPriority" Type="varchar" MaxLength="1500" />
           <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -563,6 +571,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp_view' does not h
           <Property Name="Employee Joining Day" Type="date" />
           <Property Name="Employee Image Path" Type="varchar" MaxLength="250" />
           <Property Name="Project Code" Type="int" Nullable="false" />
+          <Property Name="Client Project Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Roles Responsibilities" Type="varchar" MaxLength="2500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.ambclogin_leave_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -738,7 +748,9 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [AMBC_Active_Emp_view].[AMBC PM Mail Address] AS [AMBC PM Mail Address], 
     [AMBC_Active_Emp_view].[Employee Joining Day] AS [Employee Joining Day], 
     [AMBC_Active_Emp_view].[Employee Image Path] AS [Employee Image Path], 
-    [AMBC_Active_Emp_view].[Project Code] AS [Project Code]
+    [AMBC_Active_Emp_view].[Project Code] AS [Project Code], 
+    [AMBC_Active_Emp_view].[Client Project Name] AS [Client Project Name], 
+    [AMBC_Active_Emp_view].[Roles Responsibilities] AS [Roles Responsibilities]
     FROM [dbo].[AMBC_Active_Emp_view] AS [AMBC_Active_Emp_view]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ambclogin_leave_view" EntityType="Self.ambclogin_leave_view" store:Type="Views" store:Schema="dbo">
@@ -933,6 +945,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="project_staus" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="project_shift" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="clientreportmanager" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ActualProjectName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectRolesResponsibilities" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="emp_project_log">
           <Key>
@@ -1211,6 +1225,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_Image_Path" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Project_Code" Type="Int32" Nullable="false" />
           <Property Name="Access_Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Project_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Roles_Responsibilities" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="today_att">
           <Key>
@@ -1338,6 +1354,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Ticket_Age" Type="Int32" />
           <Property Name="ReportPriority" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="Created_Year" Type="Int32" />
+          <Property Name="Created_Month" Type="Int32" />
+          <Property Name="Closed_Year" Type="Int32" />
+          <Property Name="Closed_Month" Type="Int32" />
+          <Property Name="Is_ToDo" Type="Boolean" />
+          <Property Name="Is_Cancelled" Type="Boolean" />
         </EntityType>
         <EntityType Name="monthlyreports_Template2">
           <Key>
@@ -1540,6 +1562,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="emp_project">
             <EntityTypeMapping TypeName="TimesheetDBModel.emp_project">
               <MappingFragment StoreEntitySet="emp_project">
+                <ScalarProperty Name="ProjectRolesResponsibilities" ColumnName="ProjectRolesResponsibilities" />
+                <ScalarProperty Name="ActualProjectName" ColumnName="ActualProjectName" />
                 <ScalarProperty Name="clientreportmanager" ColumnName="clientreportmanager" />
                 <ScalarProperty Name="uniqprojno" ColumnName="uniqprojno" />
                 <ScalarProperty Name="proj_name" ColumnName="proj_name" />
@@ -1802,6 +1826,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AMBC_Active_Emp_view">
             <EntityTypeMapping TypeName="TimesheetDBModel.AMBC_Active_Emp_view">
               <MappingFragment StoreEntitySet="AMBC_Active_Emp_view">
+                <ScalarProperty Name="Roles_Responsibilities" ColumnName="Roles Responsibilities" />
+                <ScalarProperty Name="Client_Project_Name" ColumnName="Client Project Name" />
                 <ScalarProperty Name="Access_Role" ColumnName="Access Role" />
                 <ScalarProperty Name="Project_Code" ColumnName="Project Code" />
                 <ScalarProperty Name="Employee_Image_Path" ColumnName="Employee Image Path" />
@@ -1884,6 +1910,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template1">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template1">
               <MappingFragment StoreEntitySet="monthlyreports_Template1">
+                <ScalarProperty Name="Is_Cancelled" ColumnName="Is_Cancelled" />
+                <ScalarProperty Name="Is_ToDo" ColumnName="Is_ToDo" />
+                <ScalarProperty Name="Closed_Month" ColumnName="Closed_Month" />
+                <ScalarProperty Name="Closed_Year" ColumnName="Closed_Year" />
+                <ScalarProperty Name="Created_Month" ColumnName="Created_Month" />
+                <ScalarProperty Name="Created_Year" ColumnName="Created_Year" />
                 <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
                 <ScalarProperty Name="ReportPriority" ColumnName="ReportPriority" />
                 <ScalarProperty Name="Ticket_Age" ColumnName="Ticket_Age" />

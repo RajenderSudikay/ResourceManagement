@@ -1927,10 +1927,17 @@ namespace ResourceManagement.Controllers
 
                         bool IsNewTicket = false;
                         var ticketAge = 0;
+                        var closedYear = 0;
+                        var closedMonth = 0;
+                        var createdYear = 0;
+                        var createdMonth = 0;
+
                         if (workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty)
                         {
                             var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString());
                             var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+                            createdYear = ticketDateCreated.Year;
+                            createdMonth = ticketDateCreated.Month;
 
                             if (fileData.Month == ticketMonthYear)
                             {
@@ -1943,6 +1950,9 @@ namespace ResourceManagement.Controllers
                                 {
                                     var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString());
                                     ticketAge = System.Convert.ToInt32(GetBusinessDays(ticketDateCreated, ticketDateClosed));
+
+                                    closedYear = ticketDateClosed.Year;
+                                    closedMonth = ticketDateClosed.Month;
                                 }
                                 else
                                 {
@@ -1973,6 +1983,10 @@ namespace ResourceManagement.Controllers
                             Is_Newly_created = IsNewTicket,
                             ReportPriority = reportTicketPriority,
                             Ticket_Age = ticketAge,
+                            Closed_Month = closedMonth,
+                            Closed_Year = closedYear,
+                            Created_Month = createdMonth,
+                            Created_Year = createdYear,
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         });
                     }

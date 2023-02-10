@@ -35,5 +35,11 @@ namespace ResourceManagement
         public Nullable<int> Ticket_Age { get; set; }
         public string ReportPriority { get; set; }
         public string Client_Name { get; set; }
+        public Nullable<int> Created_Year { get; set; }
+        public Nullable<int> Created_Month { get; set; }
+        public Nullable<int> Closed_Year { get; set; }
+        public Nullable<int> Closed_Month { get; set; }
+        public Nullable<bool> Is_ToDo { get; set; }
+        public Nullable<bool> Is_Cancelled { get; set; }
     }
 }

@@ -507,7 +507,7 @@
                             mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
                         }
 
-                        jQuery.each(FieldInputSources, function (i, source) {                       
+                        jQuery.each(FieldInputSources, function (i, source) {
                             mappingColumn.append(ExcelFieldMappingBasedonDropdownValue(source));
                         });
 
@@ -618,14 +618,13 @@
             var fieldValuesMappingJson = JSON.stringify(excelValuesMappingIndexs);
 
             fileData.append('EmployeeName', empName);
-            fileData.append('EmployeeID', EmployeeID);        
+            fileData.append('EmployeeID', EmployeeID);
             fileData.append('Month', reportMonth);
             fileData.append('FieldsIndexJson', fieldIndexJson);
             fileData.append('TemplateType', jQuery('#statusreporttype :selected').val());
             fileData.append('ProjectID', jQuery('#statusreportEmpClient :selected').val());
             fileData.append('ClientName', jQuery('#statusreportEmpClient :selected').text().trim());
-            fileData.append('ValuesMappingJson', fieldValuesMappingJson);
-
+            fileData.append('ValuesMappingJson', fieldValuesMappingJson);        
             jQuery.ajax({
                 type: "POST",
                 url: "/StatusReportsUploadAjax",
@@ -684,13 +683,6 @@
             window.history.replaceState({}, '', yourCurrentUrl);
         }
 
-        jQuery(document).ajaxSend(function () {
-            jQuery("#overlay").fadeIn(300);
-        });
-
-        jQuery(document).ajaxComplete(function (event, request, set) {
-            jQuery("#overlay").fadeOut(300);
-        });
     });
 
 </script>
