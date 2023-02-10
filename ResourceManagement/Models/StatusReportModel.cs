@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Web;
@@ -69,7 +70,7 @@ namespace ResourceManagement.Models
 
 
     public class StatusReportChartModel
-    {       
+    {
 
         [JsonPropertyName("EmployeeName")]
         public string EmployeeName { get; set; } = string.Empty;
@@ -81,7 +82,7 @@ namespace ResourceManagement.Models
         public string Month { get; set; } = string.Empty;
 
         [JsonPropertyName("MonthNumber")]
-        public int MonthNumber { get; set; } = 0;        
+        public int MonthNumber { get; set; } = 0;
 
         [JsonPropertyName("Year")]
         public int Year { get; set; } = 0;
@@ -92,5 +93,13 @@ namespace ResourceManagement.Models
         [JsonPropertyName("ClientName")]
         public string ClientName { get; set; } = string.Empty;
 
+    }
+
+    public class MonthWiseReportModel
+    {
+        public string Month { get; set; } = string.Empty;
+        public Nullable<int> MonthNumber { get; set; } = 0;
+        public Nullable<int> Year { get; set; } = 0;
+      
     }
 }

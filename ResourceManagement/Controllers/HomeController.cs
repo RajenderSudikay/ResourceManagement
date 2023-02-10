@@ -2245,6 +2245,21 @@ namespace ResourceManagement.Controllers
             return date.ToString("MMM") + "-" + selectedDate.Year;
         }
 
+        public static MonthWiseReportModel ReportGetMonthInfo(DateTime selectedDate)
+        {
+            DateTime date = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+            var monthInfo = new MonthWiseReportModel()
+            {
+                Month = date.ToString("MMM") + "-" + selectedDate.Year,
+                Year = date.Year,
+                MonthNumber = date.Month
+            };
+
+            return monthInfo;
+        }
+
+
+
         public JsonResult GetMonthsBasedOnYear(int year)
         {
             var selectedDate = new DateTime(year, 1, 1);
@@ -2281,19 +2296,22 @@ namespace ResourceManagement.Controllers
         {
             var selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, StatusReportChartModel.MonthNumber, 1);
 
-            var requiredReportMonths = new List<string>();
-            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate));
-            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-1)));
-            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-2)));
-            requiredReportMonths.Add(getAbbreviatedName(selectedReportedMonthStartDate.AddMonths(-3)));
+            var requiredReportMonths = new List<MonthWiseReportModel>();
+            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
+            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
+            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3)));
+            requiredReportMonths.Reverse();
+
 
             var graph1Reports = new List<Root>();
-
+      
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
                 var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
                 var CriticalOTCount = 0;
                 var HighOTCount = 0;
@@ -2311,20 +2329,20 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
-                        label = requiredReportMonth,
-                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0                     
+                        label = requiredReportMonth.Month,
+                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
                     });
 
                     var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
 
                     MonthWiseOpenTickets.Add(new Graph1DataPoint.DataPoint()
                     {
-                        label = requiredReportMonth,
+                        label = requiredReportMonth.Month,
                         y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
                     });
 
@@ -2349,10 +2367,29 @@ namespace ResourceManagement.Controllers
 
                     var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
 
-                    MonthWiseClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                    MonthWiseTotalClosedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
-                        label = requiredReportMonth,
+                        label = requiredReportMonth.Month,
                         y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
+                    });
+
+                    var monthSpecificLosedTicketsCount = 0;
+
+                    if(closedTickets != null && closedTickets.Count() > 0)
+                    {
+                        var specificMonthClosedTickets = closedTickets.Where(closedMonth => closedMonth.Closed_Month == requiredReportMonth.MonthNumber).ToList();
+
+                        if(specificMonthClosedTickets != null && specificMonthClosedTickets.Count > 0)
+                        {
+                            monthSpecificLosedTicketsCount = specificMonthClosedTickets.Count;
+                        }
+                    }
+
+
+                    MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                    {
+                        label = requiredReportMonth.Month,
+                        y = monthSpecificLosedTicketsCount
                     });
 
                     if (closedTickets != null && closedTickets.Count > 0)
@@ -2462,7 +2499,9 @@ namespace ResourceManagement.Controllers
 
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
-                ViewBag.MCTDataPoints = JsonConvert.SerializeObject(MonthWiseClosedTickets);
+                ViewBag.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
+
+                ViewBag.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
 
                 //OPEN Tickets will be considered for Selected month only
                 ViewBag.CriticlTickets = JsonConvert.SerializeObject(CriticalOpenTickets);
