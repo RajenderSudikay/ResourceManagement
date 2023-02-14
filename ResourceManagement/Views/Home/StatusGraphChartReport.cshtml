@@ -17,6 +17,23 @@
         margin-left: 30px;
     }
 
+    .grapgh1firsttd {
+        width: 50px !important;
+        text-align: center !important;
+        font-weight: bold;
+        color: white !important;
+        border-top: 0px solid #0095a8 !important;
+        background-color: white;
+    }
+
+    .graph1contenttd {
+        text-align: center !important;
+     /*   width: 160px !important;*/
+        border-left: 1px solid #0095a8 !important;
+        border-top: 1px solid #0095a8 !important;
+        font-weight: bold !important;
+        vertical-align: middle !important;
+    }
 </style>
 
 
@@ -93,8 +110,41 @@
 <div style="background-color: none; padding-top: 30px" />
 
 
-<div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:30px;"></div>
-<div style="background-color: white; padding-top: 50px; border-top: 1px solid green" />
+<div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:150px;"></div>
+<table class="table chartContainer1-table" style="width: 60% !important; margin-left: 150px !important; border: 1px solid #0095a8 !important;">
+    <tbody>
+
+        @{
+            var monthwiseInfosNewlyRaised = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MNRTDataPoints);
+            var monthwiseInfosOpen = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MOTDataPoints);
+            var monthwiseInfosClosed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MCTTotalDataPoints);
+        }     
+        <tr>
+            <td class="grapgh1firsttd" style="background-color: rgb(33, 103, 174) !important">Newly Raised</td>
+            @foreach (var monthwiseInfonewRaise in monthwiseInfosNewlyRaised)
+            {
+                <td class="graph1contenttd" style="color: rgb(33, 103, 174) !important;">@monthwiseInfonewRaise.y</td>
+            }
+
+        </tr>
+        <tr>
+            <td class="grapgh1firsttd" style="background-color: rgb(247, 150, 71) !important">Open</td>
+            @foreach (var monthwiseInfoOpen in monthwiseInfosOpen)
+            {
+                <td class="graph1contenttd" style="color: rgb(247, 150, 71) !important;">@monthwiseInfoOpen.y</td>
+            }
+        </tr>
+        <tr>
+            <td class="grapgh1firsttd" style="background-color: rgb(81, 205, 160) !important">Closed</td>
+
+            @foreach (var monthwiseInfoClosed in monthwiseInfosClosed)
+            {
+                <td class="graph1contenttd" style="color: rgb(81, 205, 160) !important; width: 180px !important ">@monthwiseInfoClosed.y</td>
+            }
+        </tr>
+    </tbody>
+</table>
+<div style="background-color: white; padding-top: 50px;" />
 
 
 <div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 30px;"></div>
@@ -132,9 +182,9 @@
                 },
                 axisX: {
                     labelTextAlign: "left",
-                    tickLength: 5,
-                    tickThickness: 5,
-                    tickColor: "red"
+                    tickLength: 10,
+                    tickThickness: 10,
+                    tickColor: "red",
                 },
                 axisY: {
                    title: "Incidents count",
@@ -155,12 +205,12 @@
                 data: [
                     {
                         type: "column",
-                        showInLegend: true,
+                       /* showInLegend: true,*/
                         name: "Newly Raised",
                         legendText: "Newly Raised",
-                        indexLabel: "{y}",
-                        indexLabelFontWeight: "bold",
-                        indexLabelFontColor: "rgb(33, 103, 174)",
+                        //indexLabel: "{y}",
+                        //indexLabelFontWeight: "bold",
+                        //indexLabelFontColor: "rgb(33, 103, 174)",
                         legendMarkerColor: "rgb(33, 103, 174)",
                         color: "rgb(33, 103, 174)",
                         dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
@@ -168,11 +218,11 @@
                     {
                         type: "column",
                         legendText: "Open",
-                        indexLabel: "{y}",
-                        indexLabelFontWeight: "bold",
-                        indexLabelFontColor: "rgb(247, 150, 71)",
+                        //indexLabel: "{y}",
+                        //indexLabelFontWeight: "bold",
+                        //indexLabelFontColor: "rgb(247, 150, 71)",
                         name: "Open",
-                        showInLegend: true,
+                    /*    showInLegend: true,*/
                         legendMarkerColor: "rgb(247, 150, 71)",
                         color: "rgb(247, 150, 71)",
                         dataPoints: @Html.Raw(ViewBag.MOTDataPoints),
@@ -180,11 +230,11 @@
                      {
                         type: "column",
                          legendText: "Closed",
-                         indexLabel: "{y}",
-                         indexLabelFontWeight: "bold",
-                         indexLabelFontColor: "rgb(81, 205, 160)",
+                         //indexLabel: "{y}",
+                         //indexLabelFontWeight: "bold",
+                         //indexLabelFontColor: "rgb(81, 205, 160)",
                          name: "Closed",
-                        showInLegend: true,
+                     /*   showInLegend: true,*/
                          legendMarkerColor: "rgb(81, 205, 160)",
                          color: "rgb(81, 205, 160)",
                         dataPoints: @Html.Raw(ViewBag.MCTTotalDataPoints),
@@ -204,8 +254,8 @@
             },
             axisX: {
                 labelTextAlign: "left",
-                tickLength: 5,
-                tickThickness: 5,
+                tickLength: 10,
+                tickThickness: 10,
                 tickColor: "red"
             },
             axisY: {
@@ -268,8 +318,8 @@
             },
             axisX: {
                 labelTextAlign: "left",
-                tickLength: 5,
-                tickThickness: 5,
+                tickLength: 10,
+                tickThickness: 10,
                 tickColor: "red"
             },
             axisY: {
