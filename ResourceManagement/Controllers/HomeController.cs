@@ -1911,18 +1911,35 @@ namespace ResourceManagement.Controllers
 
                         bool IsOpenTicket = false;
                         bool IsClosedTicket = false;
+                        bool IsTODOTicket = false;
+                        bool IsCancelledTicket = false;
                         if (workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null)
                         {
                             var rowIteratorStatus = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString();
-                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorStatus).FirstOrDefault();
-                            if (mappingListItem != null)
+                            var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                            if (mappingClosedListItem != null)
                             {
-                                rowIteratorStatus = mappingListItem.FieldName.Trim();
+                                rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
                                 IsClosedTicket = true;
                             }
                             else
-                            {
-                                IsOpenTicket = true;
+                            {    
+                                var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingTODOListItem != null)
+                                {
+                                    IsTODOTicket = true;
+                                }
+
+                                var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingCancelledListItem != null)
+                                {
+                                    IsCancelledTicket = true;
+                                }
+
+                                if(!IsTODOTicket && !IsCancelledTicket)
+                                {
+                                    IsOpenTicket = true;
+                                }                            
                             }
                         }
 
@@ -1988,6 +2005,8 @@ namespace ResourceManagement.Controllers
                             Closed_Year = closedYear,
                             Created_Month = createdMonth,
                             Created_Year = createdYear,
+                            Is_Cancelled = IsCancelledTicket,
+                            Is_ToDo = IsTODOTicket,                            
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         });
                     }
@@ -2352,7 +2371,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
@@ -2431,7 +2450,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     var monthSpecificLosedTicketsCount = 0;
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName).ToList();
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false).ToList();
 
                     if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                     {
