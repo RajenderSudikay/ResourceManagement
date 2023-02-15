@@ -1863,6 +1863,14 @@ namespace ResourceManagement.Controllers
             return calcBusinessDays;
         }
 
+
+        public static DateTime FirstDayOfMonth()
+        {
+            var date = DateTime.Now;
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+
         private static void Template1Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
         {
             try
@@ -1888,11 +1896,30 @@ namespace ResourceManagement.Controllers
 
                 var reportModel = new StatusReport_Template1Model();
 
+                var currentDateStartDate = FirstDayOfMonth();
+                var validationErrors = false;
+
                 for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                 {
                     //CHECK IF THE REPORT CONTAINS OLD MONTH DATA ONLY
                     //CHECKING WITH CREATED DATE AND CLOSED DATE VALUES
+                    var createdDateValue = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    if (createdDateValue > currentDateStartDate)
+                    {
+                        validationErrors = true;
+                        model.Response.StatusCode = 400;
+                        model.Response.Message = "Looks like in the uploaded report Created Date field <br>is having future date's like.. (" + createdDateValue + ").<br> You are not allowed to upload future date records" ;
+                        break;
+                    }
 
+                    var ClosedDateValue = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    if (ClosedDateValue > currentDateStartDate)
+                    {
+                        validationErrors = true;
+                        model.Response.StatusCode = 400;
+                        model.Response.Message = "Looks like in the uploaded report Closed Date field <br>is having future date's like.. (" + ClosedDateValue + ").<br> You are not allowed to upload future date records";
+                        break;
+                    }
 
                     //UNIQUE KEY VALUES CONDITION TO BE CHECKED HERE
                     if (workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null)
@@ -2020,10 +2047,14 @@ namespace ResourceManagement.Controllers
 
                 using (var context = new TimeSheetEntities())
                 {
-                    context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
-                    context.SaveChanges();
-                    model.Response.StatusCode = 200;
-                    model.Response.Message = "Status Report Uploaded Successfully!";
+                    if (!validationErrors)
+                    {
+                        context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
+                        context.SaveChanges();
+                        model.Response.StatusCode = 200;
+                        model.Response.Message = "Status Report Uploaded Successfully!";
+                    }
+
                 }
             }
             catch (Exception ex)

@@ -413,7 +413,9 @@
                 var selectedValues = jQuery('#' + selectFieldId).val();
                 for (var i = 0; i < selectedValues.length; i++)//see that I removed the $ preceeding the `for` keyword, it should not have been there
                 {
-                    excelColumnMappingFieldIndexs.push(selectedValues[i]);
+                    if (selectedValues[i] != "NA") {
+                        excelColumnMappingFieldIndexs.push(selectedValues[i]);
+                    }                   
                 }
             }
             else {
@@ -733,9 +735,10 @@
                 jQuery('.message-success-popup').modal('show');
             }
             else {
-                var responseError = getUrlVars()["error"];
-                jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                jQuery('.database-response').html("<h2>" + responseError + "</h2>");
+                var responseError = getUrlVars()["error"];          
+                var decodedUrlText = decodeURIComponent(responseError);
+                jQuery('.error-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                jQuery('.database-response').html("<h2>" + decodedUrlText + "</h2>");
                 jQuery('#modal-db-error-alert').modal('show');
             }
 
