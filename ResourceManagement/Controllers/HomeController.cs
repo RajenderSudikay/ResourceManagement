@@ -1890,6 +1890,10 @@ namespace ResourceManagement.Controllers
 
                 for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                 {
+                    //CHECK IF THE REPORT CONTAINS OLD MONTH DATA ONLY
+                    //CHECKING WITH CREATED DATE AND CLOSED DATE VALUES
+
+
                     //UNIQUE KEY VALUES CONDITION TO BE CHECKED HERE
                     if (workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null)
                     {
