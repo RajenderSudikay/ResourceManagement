@@ -2351,7 +2351,7 @@ namespace ResourceManagement.Controllers
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName && x.Employee_ID == StatusReportChartModel.EmployeeID && x.Project_Code == StatusReportChartModel.ProjectID).FirstOrDefault();
+                model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName).FirstOrDefault();
                 var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
