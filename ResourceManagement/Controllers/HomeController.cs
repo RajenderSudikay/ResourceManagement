@@ -1923,7 +1923,7 @@ namespace ResourceManagement.Controllers
                                 IsClosedTicket = true;
                             }
                             else
-                            {    
+                            {
                                 var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
                                 if (mappingTODOListItem != null)
                                 {
@@ -1936,10 +1936,10 @@ namespace ResourceManagement.Controllers
                                     IsCancelledTicket = true;
                                 }
 
-                                if(!IsTODOTicket && !IsCancelledTicket)
+                                if (!IsTODOTicket && !IsCancelledTicket)
                                 {
                                     IsOpenTicket = true;
-                                }                            
+                                }
                             }
                         }
 
@@ -2006,8 +2006,9 @@ namespace ResourceManagement.Controllers
                             Created_Month = createdMonth,
                             Created_Year = createdYear,
                             Is_Cancelled = IsCancelledTicket,
-                            Is_ToDo = IsTODOTicket,     
-                            
+                            Is_ToDo = IsTODOTicket,
+                            EmplyeeID = fileData.EmployeeID,
+                            ProjectID = System.Convert.ToInt32(fileData.ProjectID),
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         });
                     }
@@ -2325,7 +2326,7 @@ namespace ResourceManagement.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     imageUrl = "/Assets/EmployeeImagesPNG/MaleDefault.png";
-                }              
+                }
             }
 
             return imageUrl;
@@ -2372,7 +2373,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
@@ -2451,7 +2452,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     var monthSpecificLosedTicketsCount = 0;
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false).ToList();
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                     {
