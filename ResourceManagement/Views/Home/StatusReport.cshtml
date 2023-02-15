@@ -149,7 +149,7 @@
                     <div class="form-group selectemp-div">
                         <label for="reportemployeename">Employee Name<b style="color:red">*</b></label>
                         <select id="selectEmployeename" name="reportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                            <option disabled selected> -- Select Employee Name -- </option>
+                            <option disabled selected>-- Select Employee Name --</option>
                         </select>
                     </div>
                 </div>
@@ -157,10 +157,13 @@
                     <div class="form-group">
                         <label for="reportyear" class="">Year<b style="color:red">*</b></label>
                         <select id="reportyear" name="reportyear" class="form-control form-select form-select-lg mb-3">
-                            <option disabled selected> -- Select Year -- </option>
+                            <option disabled selected>-- Select Year --</option>
                             <option value="@System.DateTime.Now.Year.ToString()">@System.DateTime.Now.Year.ToString()</option>
                             <option value="@System.DateTime.Now.AddYears(-1).Year">@System.DateTime.Now.AddYears(-1).Year</option>
                         </select>
+                        <div class="invalid-feedback-reportyear" style="color:red; display:none">
+                            Please Select Year
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,7 +196,7 @@
             </div>
             <div class="modal-footer mt-xl-4">
                 <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width:100px; border-radius:10px"><b>View Report</b></button>
-                <button type="button" class="btn btn-success btn-lg btn-download-report" style="border-radius:10px">Download Report</button>
+                <button type="button" class="btn btn-success btn-lg btn-download-report" style="border-radius:10px; display: none">Download Report</button>
             </div>
         </div>
     </div>
@@ -225,25 +228,53 @@
 
     jQuery(".btn-status-report-view").click(function () {
 
-        var statusChartModel = {
-            ClientName: jQuery('#reportClient :selected').text(),
-            ProjectID: jQuery('#reportClient :selected').val(),
-            Year: jQuery('#reportyear :selected').val(),
-            Month: jQuery('#reportmonth :selected').text(),
-            MonthNumber: jQuery('#reportmonth :selected').val(),
-            EmployeeID: jQuery('#selectEmployeename :selected').val(),
-            EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
-        };
+        var formValidated = true;
+        if (jQuery('#reportyear :selected').text() == "-- Select Year --") {
+            jQuery('#reportyear').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportyear').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportyear').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportyear').hide();
+        }
 
-        jQuery.ajax({
-            url: "/StatusGraphChartReport",
-            type: "POST",
-            dataType: "html",
-            data: { StatusReportChartModel: statusChartModel },
-            success: function (data) {
-                $('#chartContainer').html(data);
-            }
-        });
+        if (jQuery('#reportmonth :selected').text() == "-- Select Month --") {
+            jQuery('#reportmonth').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportmonth').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportyear').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportmonth').hide();
+        }
+
+        if (formValidated == true) {
+
+            var statusChartModel = {
+                ClientName: jQuery('#reportClient :selected').text(),
+                ProjectID: jQuery('#reportClient :selected').val(),
+                Year: jQuery('#reportyear :selected').val(),
+                Month: jQuery('#reportmonth :selected').text(),
+                MonthNumber: jQuery('#reportmonth :selected').val(),
+                EmployeeID: jQuery('#selectEmployeename :selected').val(),
+                EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
+            };
+
+            jQuery.ajax({
+                url: "/StatusGraphChartReport",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportChartModel: statusChartModel },
+                success: function (data) {
+                    jQuery('.btn-download-report').show();
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+        else {
+            return false;
+        }
     });
 
     $("#reportyear").on("change", function () {
