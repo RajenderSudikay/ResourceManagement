@@ -409,8 +409,17 @@
             //Already Selected dropdown ID
             var selectedField = jQuery(this);
             var selectFieldId = selectedField.attr("id");
-            if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Required Value" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
-                excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+            if (jQuery(this).prop('multiple') && jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Excel Column Name" && selectFieldId != fieldId) {
+                var selectedValues = jQuery('#' + selectFieldId).val();
+                for (var i = 0; i < selectedValues.length; i++)//see that I removed the $ preceeding the `for` keyword, it should not have been there
+                {
+                    excelColumnMappingFieldIndexs.push(selectedValues[i]);
+                }
+            }
+            else {
+                if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Required Value" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
+                    excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+                }
             }
         });
 
@@ -422,13 +431,32 @@
             jQuery('#' + fieldId + '').css("border", "1px solid green");
         }
 
-        var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
-        if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
-            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-            jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
-            jQuery("#" + fieldId + " option:first").prop("selected", "selected");
-            jQuery('#' + fieldId + '').css("border", "1px solid red");
-            jQuery('#modal-warning-message-popup').modal("show");
+        if (excelColumnMappingFieldIndexs != null && excelColumnMappingFieldIndexs.length > 1) {
+            if (currentField.prop('multiple')) {
+                var selectedValues = jQuery('#' + fieldId).val();
+                for (var i = 0; i < selectedValues.length; i++)//see that I removed the $ preceeding the `for` keyword, it should not have been there
+                {
+                    var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == selectedValues[i]);
+                    if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                        jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + selectedValues[i] + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+                        jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+                        jQuery('#' + fieldId + '').css("border", "1px solid red");
+                        jQuery('#modal-warning-message-popup').modal("show");
+                        return false;
+                    }
+                }
+            }
+            else {
+                var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
+                if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+                    jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                    jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+                    jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+                    jQuery('#' + fieldId + '').css("border", "1px solid red");
+                    jQuery('#modal-warning-message-popup').modal("show");
+                }
+            }
         }
         else {
             jQuery('#' + fieldId + '').css("border", "1px solid green");
@@ -621,14 +649,13 @@
                 var index = "";
                 if (isMultiSelectField) {
                     var selectedValues = jQuery('#' + fieldId).val();
-                   
+
                     jQuery.each(selectedValues, function (i, item) {
                         index += item + "|"
                     });
 
                     index = index.trim('|');
                     index = index.substring(0, index.length - 1);
-                    alert(index)
 
                 }
                 else {
