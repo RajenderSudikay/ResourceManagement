@@ -41,5 +41,7 @@ namespace ResourceManagement
         public Nullable<int> Closed_Month { get; set; }
         public Nullable<bool> Is_ToDo { get; set; }
         public Nullable<bool> Is_Cancelled { get; set; }
+        public string EmplyeeID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
     }
 }

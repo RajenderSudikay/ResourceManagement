@@ -34,5 +34,7 @@ namespace ResourceManagement
         public string Uploadedby { get; set; }
         public string FileNamee { get; set; }
         public string Client_Name { get; set; }
+        public string EmplyeeID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
     }
 }
