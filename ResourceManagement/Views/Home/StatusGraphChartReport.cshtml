@@ -28,7 +28,7 @@
 
     .graph1contenttd {
         text-align: center !important;
-     /*   width: 160px !important;*/
+        /*   width: 160px !important;*/
         border-left: 1px solid #0095a8 !important;
         border-top: 1px solid #0095a8 !important;
         font-weight: bold !important;
@@ -111,61 +111,59 @@
 
 
 <div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:150px;"></div>
-<table class="table chartContainer1-table" style="width: 60% !important; margin-left: 150px !important; border: 1px solid #0095a8 !important;">
-    <tbody>
+@*TABLE ADDED FOR NOW COMMENTED*@
+@*<table class="table chartContainer1-table" style="width: 60% !important; margin-left: 150px !important; border: 1px solid #0095a8 !important;">
+        <tbody>
 
-        @{
-            var monthwiseInfosNewlyRaised = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MNRTDataPoints);
-            var monthwiseInfosOpen = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MOTDataPoints);
-            var monthwiseInfosClosed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MCTTotalDataPoints);
-        }     
-        <tr>
-            <td class="grapgh1firsttd" style="background-color: rgb(33, 103, 174) !important">Newly Raised</td>
-            @foreach (var monthwiseInfonewRaise in monthwiseInfosNewlyRaised)
-            {
-                <td class="graph1contenttd" style="color: rgb(33, 103, 174) !important;">@monthwiseInfonewRaise.y</td>
+            @{
+                var monthwiseInfosNewlyRaised = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MNRTDataPoints);
+                var monthwiseInfosOpen = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MOTDataPoints);
+                var monthwiseInfosClosed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MCTTotalDataPoints);
             }
+            <tr>
+                <td class="grapgh1firsttd" style="background-color: rgb(33, 103, 174) !important">Newly Raised</td>
+                @foreach (var monthwiseInfonewRaise in monthwiseInfosNewlyRaised)
+                {
+                    <td class="graph1contenttd" style="color: rgb(33, 103, 174) !important;">@monthwiseInfonewRaise.y</td>
+                }
 
-        </tr>
-        <tr>
-            <td class="grapgh1firsttd" style="background-color: rgb(247, 150, 71) !important">Open</td>
-            @foreach (var monthwiseInfoOpen in monthwiseInfosOpen)
-            {
-                <td class="graph1contenttd" style="color: rgb(247, 150, 71) !important;">@monthwiseInfoOpen.y</td>
-            }
-        </tr>
-        <tr>
-            <td class="grapgh1firsttd" style="background-color: rgb(81, 205, 160) !important">Closed</td>
+            </tr>
+            <tr>
+                <td class="grapgh1firsttd" style="background-color: rgb(247, 150, 71) !important">Open</td>
+                @foreach (var monthwiseInfoOpen in monthwiseInfosOpen)
+                {
+                    <td class="graph1contenttd" style="color: rgb(247, 150, 71) !important;">@monthwiseInfoOpen.y</td>
+                }
+            </tr>
+            <tr>
+                <td class="grapgh1firsttd" style="background-color: rgb(81, 205, 160) !important">Closed</td>
 
-            @foreach (var monthwiseInfoClosed in monthwiseInfosClosed)
-            {
-                <td class="graph1contenttd" style="color: rgb(81, 205, 160) !important; width: 180px !important ">@monthwiseInfoClosed.y</td>
-            }
-        </tr>
-    </tbody>
-</table>
+                @foreach (var monthwiseInfoClosed in monthwiseInfosClosed)
+                {
+                    <td class="graph1contenttd" style="color: rgb(81, 205, 160) !important; width: 180px !important ">@monthwiseInfoClosed.y</td>
+                }
+            </tr>
+        </tbody>
+    </table>*@
 <div style="background-color: white; padding-top: 50px;" />
 
 
-<div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 30px;"></div>
+<div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 150px;"></div>
 <div style="background-color: white; padding-top: 50px; border-top: 1px solid green" />
 
 
-<div id="chartContainer3" style="width: 60%; height: 250px; display: inline-block; margin-left: 30px;"></div>
+<div id="chartContainer3" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px; "></div>
 <div style="background-color: white; padding-top: 90px; border-top: 1px solid green" />
-<div id="chartContainer4" style="width: 60%; height: 250px; display: inline-block; padding-left: 0px; margin-left: 30px;"></div>
+<div id="chartContainer4" style="width: 60%; height: 250px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
 
 <div style="background-color: white; padding-top: 50px; border-top: 1px solid green" />
-<div id="chartContainer5" style="width: 60%; height: 250px; display: inline-block; margin-left: 30px;"></div>
+<div id="chartContainer5" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px;"></div>
 
 <div style="background-color: white; padding-top: 100px;" />
 
 <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;">
     <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
 </div>
-
-
-
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
@@ -182,8 +180,8 @@
                 },
                 axisX: {
                     labelTextAlign: "left",
-                    tickLength: 10,
-                    tickThickness: 10,
+                    tickLength: 6,
+                    tickThickness: 6,
                     tickColor: "red",
                 },
                 axisY: {
@@ -205,12 +203,12 @@
                 data: [
                     {
                         type: "column",
-                       /* showInLegend: true,*/
+                        showInLegend: true,
                         name: "Newly Raised",
                         legendText: "Newly Raised",
-                        //indexLabel: "{y}",
-                        //indexLabelFontWeight: "bold",
-                        //indexLabelFontColor: "rgb(33, 103, 174)",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(33, 103, 174)",
                         legendMarkerColor: "rgb(33, 103, 174)",
                         color: "rgb(33, 103, 174)",
                         dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
@@ -218,11 +216,11 @@
                     {
                         type: "column",
                         legendText: "Open",
-                        //indexLabel: "{y}",
-                        //indexLabelFontWeight: "bold",
-                        //indexLabelFontColor: "rgb(247, 150, 71)",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(247, 150, 71)",
                         name: "Open",
-                    /*    showInLegend: true,*/
+                        showInLegend: true,
                         legendMarkerColor: "rgb(247, 150, 71)",
                         color: "rgb(247, 150, 71)",
                         dataPoints: @Html.Raw(ViewBag.MOTDataPoints),
@@ -230,11 +228,11 @@
                      {
                         type: "column",
                          legendText: "Closed",
-                         //indexLabel: "{y}",
-                         //indexLabelFontWeight: "bold",
-                         //indexLabelFontColor: "rgb(81, 205, 160)",
+                         indexLabel: "{y}",
+                         indexLabelFontWeight: "bold",
+                         indexLabelFontColor: "rgb(81, 205, 160)",
                          name: "Closed",
-                     /*   showInLegend: true,*/
+                        showInLegend: true,
                          legendMarkerColor: "rgb(81, 205, 160)",
                          color: "rgb(81, 205, 160)",
                         dataPoints: @Html.Raw(ViewBag.MCTTotalDataPoints),
