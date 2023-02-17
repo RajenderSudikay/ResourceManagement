@@ -9,7 +9,15 @@ namespace ResourceManagement.Models
         public class DataPoint
         {
             public string label { get; set; }
-            public double y { get; set; }                    
+            public double y { get; set; }           
+        }
+
+        public class MonthWiseDataPoint
+        {
+            public string Priority { get; set; }
+            public string label { get; set; }
+            public double y { get; set; }
+            public double totalTickets { get; set; }
         }
 
         public class PieDataPoint
@@ -19,6 +27,8 @@ namespace ResourceManagement.Models
             public string legendText { get; set; }
             public string indexLabelFontColor { get; set; }
             public string color { get; set; }
+
+            public double Percentage { get; set; }
         }
 
         public class Root

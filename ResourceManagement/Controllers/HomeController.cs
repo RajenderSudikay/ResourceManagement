@@ -2345,7 +2345,7 @@ namespace ResourceManagement.Controllers
 
         static double PercentageCalculate(int num, int totalNum)
         {
-            var percenatage = (double)num / totalNum * 100;           
+            var percenatage = (double)num / totalNum * 100;
             return percenatage;
         }
 
@@ -2399,10 +2399,15 @@ namespace ResourceManagement.Controllers
                 var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
                 var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
-                var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseHighOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseLowOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                var MonthWiseHighOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+
+                var MonthWiseCriticlTotalTickets = 0;
+                var MonthWiseHighOpenTotalTickets = 0;
+                var MonthWiseMediumOpenTotalTickets = 0;
+                var MonthWiseLowOpenTotalTickets = 0;
 
                 var sameDayCTCount = 0;
                 var Twoto5DayCTCount = 0;
@@ -2442,31 +2447,58 @@ namespace ResourceManagement.Controllers
                     {
                         var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
 
-                        MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        if (ctiticalTickets != null && ctiticalTickets.Count > 0)
                         {
+                            MonthWiseCriticlTotalTickets += ctiticalTickets.Count;
+                        }
+
+                        MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                        {
+                            Priority = "Critical",
                             label = requiredReportMonth.Month,
-                            y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0
+                            y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0,
+                            totalTickets = MonthWiseCriticlTotalTickets
                         });
+
 
                         var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
-                        MonthWiseHighOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        if (highTickets != null && highTickets.Count > 0)
                         {
+                            MonthWiseHighOpenTotalTickets += highTickets.Count;
+                        }
+                        MonthWiseHighOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                        {
+                            Priority = "High",
                             label = requiredReportMonth.Month,
-                            y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0
+                            y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0,
+                            totalTickets = MonthWiseHighOpenTotalTickets
                         });
 
+
                         var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
-                        MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        if (mediumTickets != null && mediumTickets.Count > 0)
                         {
+                            MonthWiseMediumOpenTotalTickets += mediumTickets.Count;
+                        }
+                        MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                        {
+                            Priority = "Medium",
                             label = requiredReportMonth.Month,
-                            y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0
+                            y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0,
+                            totalTickets = MonthWiseMediumOpenTotalTickets
                         });
 
                         var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
-                        MonthWiseLowOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        if (lowTickets != null && lowTickets.Count > 0)
                         {
+                            MonthWiseLowOpenTotalTickets += lowTickets.Count;
+                        }
+                        MonthWiseLowOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                        {
+                            Priority = "Low",
                             label = requiredReportMonth.Month,
-                            y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0
+                            y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0,
+                            totalTickets = MonthWiseLowOpenTotalTickets
                         });
 
                         totalOpenTickets += OpenTickets.Count;
@@ -2518,10 +2550,12 @@ namespace ResourceManagement.Controllers
 
                 var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
                 var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
+
                 IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
                     label = "",
                     y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
+                    Percentage = PercentageCalculateCustom(sameDayCTCount, totalClosedInciendents),
                     legendText = "Same Day",
                     indexLabelFontColor = "rgb(109, 120, 173)"
                 });
@@ -2529,6 +2563,7 @@ namespace ResourceManagement.Controllers
                 {
                     label = "",
                     y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
+                    Percentage = PercentageCalculateCustom(Twoto5DayCTCount, totalClosedInciendents),
                     legendText = "2-5",
                     indexLabelFontColor = "rgb(81, 205, 160)"
                 });
@@ -2536,6 +2571,7 @@ namespace ResourceManagement.Controllers
                 {
                     label = "",
                     y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
+                    Percentage = PercentageCalculateCustom(Sixto10DayCTCount, totalClosedInciendents),
                     legendText = "6-10",
                     indexLabelFontColor = "rgb(223, 121, 112)"
                 });
@@ -2543,6 +2579,7 @@ namespace ResourceManagement.Controllers
                 {
                     label = "",
                     y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
+                    Percentage = PercentageCalculateCustom(Elevento15DayCTCount, totalClosedInciendents),
                     legendText = "11-15",
                     indexLabelFontColor = "rgb(76, 156, 160)"
                 });
@@ -2550,40 +2587,93 @@ namespace ResourceManagement.Controllers
                 {
                     label = "",
                     y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
+                    Percentage = PercentageCalculateCustom(GT15DayCTCount, totalClosedInciendents),
                     legendText = "Grtr-15",
                     indexLabelFontColor = "rgb(174, 125, 153)"
                 });
 
+                var highestCosedDateRange = IncidentsPieChart.OrderByDescending(percentage => percentage.y).FirstOrDefault();
+                if (highestCosedDateRange != null)
+                {
+                    var grpah4OverallStatus = "" + highestCosedDateRange.Percentage + "% tickets closed within " + highestCosedDateRange.legendText + " days from the logged date.";
+                    ViewBag.Graph4OverallStatus = grpah4OverallStatus;
+                }
+
+
                 var IncidentsSummaryPieChart = new List<Graph1DataPoint.PieDataPoint>();
                 IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[" + System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets) + "]",
+                    label = System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
                     y = PercentageCalculate(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                    Percentage = PercentageCalculateCustom(totalClosedTickets, totalClosedTickets + totalOpenTickets),
                     legendText = "Closed",
                     indexLabelFontColor = "rgb(81, 205, 160)",
                     color = "rgb(81, 205, 160)",
                 });
                 IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
                 {
-                    label = "[" + System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets) + "]",
+                    label = System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
                     y = PercentageCalculate(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                    Percentage = PercentageCalculateCustom(totalOpenTickets, totalClosedTickets + totalOpenTickets),
                     legendText = "Open",
                     indexLabelFontColor = "rgb(247, 150, 71)",
                     color = "rgb(247, 150, 71)"
                 });
 
+                var addonlyInStatusText = "";
+                if (IncidentsSummaryPieChart[0].Percentage > IncidentsSummaryPieChart[1].Percentage)
+                {
+                    addonlyInStatusText = " only";
+                }
+                var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + addonlyInStatusText + " " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
+                ViewBag.Graph5OverallStatus = grpah5OverallStatus;
+
                 //GRAPH1
                 var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
-                ViewBag.MNRTOverallTicketRate = overallTicketRunRate;
+                ViewBag.Graph1OverallStatus = overallTicketRunRate;
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
                 ViewBag.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
 
+
                 //GRAPH2
+                var newlyRaiseTicketsOrder = MonthWisenewlyRaisedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                double highestNewRiasedTickNum = 0;
+                string highestNewRiasedTickMonth = "";
+                if (newlyRaiseTicketsOrder != null && newlyRaiseTicketsOrder.Count() > 0)
+                {
+                    highestNewRiasedTickMonth = newlyRaiseTicketsOrder[0].label;
+                    highestNewRiasedTickNum = newlyRaiseTicketsOrder[0].y;
+                }
+
+                var closedTicketsOrder = MonthSpecificClosedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                double highestClosedTickNum = 0;
+                string highestClosedTickMonth = "";
+                if (closedTicketsOrder != null && closedTicketsOrder.Count() > 0)
+                {
+                    highestClosedTickMonth = closedTicketsOrder[0].label;
+                    highestClosedTickNum = closedTicketsOrder[0].y;
+                }
+                if (highestNewRiasedTickNum > 0 && highestNewRiasedTickMonth != string.Empty)
+                {
+                    var grpah2OverallStatus = "In " + highestClosedTickMonth + " we closed ~" + highestClosedTickNum + " tickets";
+                    ViewBag.Graph2OverallStatus = grpah2OverallStatus;
+                }
+
                 ViewBag.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
+
 
                 //OPEN Tickets will be considered for Selected month only 
                 //GRAPH3
+                var allPriorityTickets = MonthWiseCriticlOpenTickets.Concat(MonthWiseHighOpenTickets).Concat(MonthWiseMediumOpenTickets).Concat(MonthWiseLowOpenTickets);
+                var highestPrirityTickets = allPriorityTickets.OrderByDescending(ticket => ticket.totalTickets).FirstOrDefault();
+                if (highestPrirityTickets != null)
+                {
+                    var grpah3OverallStatus = "" + highestPrirityTickets.totalTickets + " " + highestPrirityTickets.Priority + " priority tickets are in Open till date.";
+                    ViewBag.Graph3OverallStatus = grpah3OverallStatus;
+                }
+
+
                 ViewBag.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
                 ViewBag.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
                 ViewBag.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
