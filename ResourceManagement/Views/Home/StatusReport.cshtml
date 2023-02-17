@@ -220,10 +220,12 @@
         jQuery('.chartContainer1-table').css("width", "70%");
         jQuery('.status-report-view-options').hide();
         jQuery('.canvasjs-chart-toolbar').hide();
+        jQuery('.chartbelowhrline').css('margin-left', '0px');
         window.print();
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
         jQuery('.chartContainer1-table').css("width", "60%");
+        jQuery('.chartbelowhrline').css('margin-left', '-70px');
     });
 
     jQuery(".btn-status-report-view").click(function () {

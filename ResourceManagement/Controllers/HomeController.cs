@@ -1908,7 +1908,7 @@ namespace ResourceManagement.Controllers
                     {
                         validationErrors = true;
                         model.Response.StatusCode = 400;
-                        model.Response.Message = "Looks like in the uploaded report Created Date field <br>is having future date's like.. (" + createdDateValue + ").<br> You are not allowed to upload future date records" ;
+                        model.Response.Message = "Looks like in the uploaded report Created Date field <br>is having future date's like.. (" + createdDateValue + ").<br> You are not allowed to upload future date records";
                         break;
                     }
 
@@ -1967,7 +1967,7 @@ namespace ResourceManagement.Controllers
                                     IsCancelledTicket = true;
                                 }
 
-                                if (!IsTODOTicket && !IsCancelledTicket)
+                                if (!IsCancelledTicket)
                                 {
                                     IsOpenTicket = true;
                                 }
@@ -2345,7 +2345,14 @@ namespace ResourceManagement.Controllers
 
         static double PercentageCalculate(int num, int totalNum)
         {
-            var percenatage = (double)num / totalNum * 100;
+            var percenatage = (double)num / totalNum * 100;           
+            return percenatage;
+        }
+
+        static double PercentageCalculateCustom(int num, int totalNum)
+        {
+            //var percenatage = (double)num / totalNum * 100;
+            var percenatage = (int)Math.Round((double)(100 * num) / totalNum, MidpointRounding.AwayFromZero);
             return percenatage;
         }
 
@@ -2403,14 +2410,20 @@ namespace ResourceManagement.Controllers
                 var Elevento15DayCTCount = 0;
                 var GT15DayCTCount = 0;
 
+                var totalNewlyRaisedTickets = 0;
                 var totalOpenTickets = 0;
                 var totalClosedTickets = 0;
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
+                    if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
+                    {
+                        totalNewlyRaisedTickets += System.Convert.ToInt32(newlyCreatedTickets.Count());
+                    }
+
                     MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
                     {
                         label = requiredReportMonth.Month,
@@ -2487,7 +2500,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     var monthSpecificLosedTicketsCount = 0;
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_ToDo == false && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                     {
@@ -2560,6 +2573,8 @@ namespace ResourceManagement.Controllers
                 });
 
                 //GRAPH1
+                var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
+                ViewBag.MNRTOverallTicketRate = overallTicketRunRate;
                 ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
                 ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
                 ViewBag.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
