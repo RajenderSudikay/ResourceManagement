@@ -2620,12 +2620,7 @@ namespace ResourceManagement.Controllers
                     color = "rgb(247, 150, 71)"
                 });
 
-                var addonlyInStatusText = "";
-                if (IncidentsSummaryPieChart[0].Percentage > IncidentsSummaryPieChart[1].Percentage)
-                {
-                    addonlyInStatusText = " only";
-                }
-                var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + addonlyInStatusText + " " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
+                var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
                 ViewBag.Graph5OverallStatus = grpah5OverallStatus;
 
                 //GRAPH1

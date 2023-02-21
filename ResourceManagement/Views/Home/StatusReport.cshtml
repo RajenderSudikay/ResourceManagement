@@ -5,6 +5,36 @@
     var imagePath = "";
 }
 
+<style>
+    span.circle {
+        background: white;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        color: green;
+        display: inline-block;
+        font-weight: bold;
+        line-height: 40px;
+        margin-right: 5px;
+        text-align: center;
+        width: 160px;
+        height: 160px;
+        font-size: x-large;
+        vertical-align: middle;
+        border: 5px solid green;
+        margin-left: 50px;
+        margin-bottom: -130px;
+    }
+
+    .textstyle {
+        position: absolute;
+        margin-top: 50px;
+        margin-left: -41px;
+        font-size: xxx-large;
+        font-weight: 100
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
     <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -216,8 +246,6 @@
 
 <script>
 
-  
-
     jQuery('.btn-download-report').click(function () {
         jQuery('.chartContainer1-table').css("width", "70%");
         jQuery('.status-report-view-options').hide();
@@ -228,6 +256,7 @@
         jQuery('.canvasjs-chart-toolbar').show();
         jQuery('.chartContainer1-table').css("width", "60%");
         jQuery('.chartbelowhrline').css('margin-left', '-70px');
+        jQuery('.canvasjs-chart-toolbar').hide();
     });
 
     jQuery(".btn-status-report-view").click(function () {
