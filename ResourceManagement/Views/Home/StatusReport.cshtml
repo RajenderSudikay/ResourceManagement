@@ -201,15 +201,49 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="reportmonth" class="leavestartdate">Month<b style="color:red">*</b></label>
+                        <label for="reporttype" class="leavestartdate">Report Type<b style="color:red">*</b></label>
+                        <select id="reporttype" name="reporttype" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected>-- Select Type --</option>
+                            <option value="Month Report">Month Report</option>
+                            <option value="Quarterly Report">Quarter Report</option>
+                            <option value="Half Year Report">Half Year Report</option>
+                            <option value="Annual Report">Annual Report</option>
+                        </select>
+                        <div class="invalid-feedback-reporttype" style="color:red; display:none">
+                            Please Select Type
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportmonth" class="leavestartdate">Period<b style="color:red">*</b></label>
                         <select id="reportmonth" name="reportmonth" class="form-control form-select form-select-lg mb-3">
                             <option disabled selected>-- Select Month --</option>
                         </select>
                         <div class="invalid-feedback-reportmonth" style="color:red; display:none">
-                            Please Select Month
+                            Please Select Period
                         </div>
-                    </div>
+                    </div>                  
                 </div>
+            </div>
+
+            <div class="row">
+                @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportgraphtypes">Select Graphs</label>
+                        <select id="reportgraphtypes" name="reportgraphtypes" class="form-control form-select form-select-lg mb-3" multiple>
+                            <option disabled selected>-- Select Graphs --</option>
+                            <option value="Month Report">Monthly Repot</option>
+                            <option value="Quarterly Report">Monthly Raised Vs Closed</option>
+                            <option value="Half Year Report">Open Tickets</option>
+                            <option value="Annual Report">Incidents Closure Trend</option>
+                            <option value="Annual Report">Incidents Summary</option>
+                        </select>
+                    </div>
+                </div>*@
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -310,13 +344,13 @@
         }
     });
 
-    $("#reportyear").on("change", function () {
+    $("#reporttype").on("change", function () {
         jQuery.ajax({
             url: "/GetMonthsBasedOnYear",
             type: "POST",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ year: jQuery(this).val() }),
+            data: JSON.stringify({ year: jQuery('#reportyear :selected').val(), reportType: jQuery('#reporttype :selected').val()}),
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
                 $('#reportmonth').empty();

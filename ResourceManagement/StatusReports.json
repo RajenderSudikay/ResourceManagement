@@ -3,15 +3,10 @@
     "Name": "Template1",
     "fields": {
       "Field1": "Ticket_Number",
-      "Field2": "Ticket_Summary",
       "Field3": "Ticket_Created_Date",
-      "Field4": "Ticket_Category",
-      "Field5": "Ticket_Raisedby",
       "Field6": "Ticket_Priority",
       "Field7": "Ticket_Status",
-      "Field8": "Ticket_Closed_Date",
-      "Field9": "Organisation",
-      "Field10": "Comments"
+      "Field8": "Ticket_Closed_Date"
     }
   },
   {

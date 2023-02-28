@@ -2317,27 +2317,87 @@ namespace ResourceManagement.Controllers
 
 
 
-        public JsonResult GetMonthsBasedOnYear(int year)
+        public JsonResult GetMonthsBasedOnYear(int year, string reportType)
         {
+
             var selectedDate = new DateTime(year, 1, 1);
 
             //Current month  report cant be seen, hence excluding the dropdown
             var selctedDateMonth = System.Convert.ToInt32(DateTime.Now.ToString("MM"));
 
-            //For the old years all the months will be shiwn in the drdodown
-            //In below lopp started from 1 hence added selctedDateMonth as 12 + 1= 13
             if (year != DateTime.Now.Year)
             {
-                selctedDateMonth = 13;
-            }
+                selctedDateMonth = 12;
+            }          
 
-            var monthsList = new Dictionary<int, string>();
+            var monthsList = new Dictionary<string, string>();
 
-            for (int month = 1; month < selctedDateMonth; month++)
+            if (reportType == "Month Report")
             {
-                var newDate = new DateTime(year, month, 1);
-                monthsList.Add(month, getAbbreviatedName(newDate));
+                var currentMonthStartdate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                for (int month = 1; month <= selctedDateMonth; month++)
+                {
+                    var newDate = new DateTime(year, month, 1);
+
+                    if(newDate != currentMonthStartdate)
+                    {
+                        monthsList.Add(System.Convert.ToString(month), getAbbreviatedName(newDate));
+                    }
+                   
+                }
+
             }
+
+            var inputMonthList = new Dictionary<string, int>();
+
+            //Based on this value in loop month start will be looped
+            var monthStartFrom = 0;
+
+            if (reportType == "Quarterly Report")
+            {
+                inputMonthList.Add("Quarter-1", 3);
+                inputMonthList.Add("Quarter-2", 6);
+                inputMonthList.Add("Quarter-3", 9);
+                inputMonthList.Add("Quarter-4", 12);
+
+                monthStartFrom = 2;
+            }
+
+            if (reportType == "Half Year Report")
+            {
+                inputMonthList.Add("First Half Year", 6);
+                inputMonthList.Add("Second Half Year", 12);
+
+                monthStartFrom = 5;
+            }
+
+            if (reportType == "Annual Report")
+            {
+                inputMonthList.Add("Annual Report", 12); 
+                monthStartFrom = 11;
+            }
+
+            foreach (var quarter in inputMonthList)
+            {
+                var monthNames = string.Empty;             
+                var quarterExists = false;
+
+                if (quarter.Value <= selctedDateMonth)
+                {
+                    var startMonth = quarter.Value - monthStartFrom;
+                    for (int month = startMonth; month <= quarter.Value; month++)
+                    {
+                        var newDate = new DateTime(year, month, 1);
+                        monthNames += getAbbreviatedName(newDate) + "|";
+                        quarterExists = true;
+                    }
+                }
+                if (quarterExists)
+                {
+                    monthsList.Add(monthNames, quarter.Key);
+                }
+            }
+
 
             var requiredMonthsLost = monthsList.Reverse();
             return Json(JsonSerializer.Serialize(requiredMonthsLost), JsonRequestBehavior.AllowGet);
