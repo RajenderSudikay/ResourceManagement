@@ -51,6 +51,52 @@
         margin: 0;
         padding: 0;
     }
+
+    .chartbelowhrline {
+        margin-left: -70px;
+        text-align: center;
+        padding-top: 20px
+    }
+
+    .sticky-container {
+        padding: 0px;
+        margin: 0px;
+        position: fixed;
+        right: -119px;
+        top: 300px;
+        width: 200px;
+    }
+
+    .sticky li {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px 0px 1px 0px;
+        -webkit-transition: all 0.25s ease-in-out;
+        -moz-transition: all 0.25s ease-in-out;
+        -o-transition: all 0.25s ease-in-out;
+        transition: all 0.25s ease-in-out;
+        cursor: pointer;
+        filter: gray;
+        /*  -webkit-filter: grayscale(100%);*/
+    }
+
+        .sticky li:hover {
+            margin-left: -115px;
+            -webkit-filter: grayscale(0%);
+        }
+
+        .sticky li img {
+            float: left;
+            margin: 2px 2px 2px 2px;
+            margin-right: 10px;
+        }
+
+        .sticky li p {
+            padding: 0px;
+            margin: 0px;
+            text-transform: uppercase;
+            line-height: 43px;
+        }
 </style>
 
 
@@ -129,45 +175,10 @@
 
 <br />
 <div style="background-color: none; padding-top: 30px" />
-
-
-<div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:150px;"></div>
-
-@*TABLE ADDED FOR NOW COMMENTED*@
-@*<table class="table chartContainer1-table" style="width: 60% !important; margin-left: 150px !important; border: 1px solid #0095a8 !important;">
-        <tbody>
-
-            @{
-                var monthwiseInfosNewlyRaised = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MNRTDataPoints);
-                var monthwiseInfosOpen = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MOTDataPoints);
-                var monthwiseInfosClosed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResourceManagement.Models.Graph1DataPoint.DataPoint>>(ViewBag.MCTTotalDataPoints);
-            }
-            <tr>
-                <td class="grapgh1firsttd" style="background-color: rgb(33, 103, 174) !important">Newly Raised</td>
-                @foreach (var monthwiseInfonewRaise in monthwiseInfosNewlyRaised)
-                {
-                    <td class="graph1contenttd" style="color: rgb(33, 103, 174) !important;">@monthwiseInfonewRaise.y</td>
-                }
-
-            </tr>
-            <tr>
-                <td class="grapgh1firsttd" style="background-color: rgb(247, 150, 71) !important">Open</td>
-                @foreach (var monthwiseInfoOpen in monthwiseInfosOpen)
-                {
-                    <td class="graph1contenttd" style="color: rgb(247, 150, 71) !important;">@monthwiseInfoOpen.y</td>
-                }
-            </tr>
-            <tr>
-                <td class="grapgh1firsttd" style="background-color: rgb(81, 205, 160) !important">Closed</td>
-
-                @foreach (var monthwiseInfoClosed in monthwiseInfosClosed)
-                {
-                    <td class="graph1contenttd" style="color: rgb(81, 205, 160) !important; width: 180px !important ">@monthwiseInfoClosed.y</td>
-                }
-            </tr>
-        </tbody>
-    </table>*@
-<div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
+<div class="chartContainer1">
+    <div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
+</div>
 
 
 <div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 150px;"></div>
@@ -189,6 +200,34 @@
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+
+
+<div class="sticky-container">
+    <ul class="sticky">
+        <li style="background-color: #0095a8; color: white; font-weight:bold">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
+            <p><a>HIDE</a></p>
+        </li>
+        <li style="background-color: rgb(81, 205, 160); color: white; font-weight: bold ">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
+            <p>HIDE</p>
+        </li>
+        <li style="background-color: black; color: white; font-weight: bold ">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
+            <p>HIDE</p>
+        </li>
+        <li style="background-color: rgb(33, 103, 174); color: white; font-weight: bold ">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
+            <p>HIDE</p>
+        </li>
+        <li style="background-color: rgb(223, 121, 112); color: white; font-weight: bold ">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
+            <p>HIDE</p>
+        </li>
+
+    </ul>
+</div>
 
 <script>
            var chart = new CanvasJS.Chart("chartContainer1", {

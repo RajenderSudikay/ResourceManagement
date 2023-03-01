@@ -323,6 +323,11 @@
     <Content Include="Assets\ClientLogos\Federal Signal.png" />
     <Content Include="Assets\ClientLogos\Littelfuse.png" />
     <Content Include="Assets\FemaleDefault.png" />
+    <Content Include="Assets\Graphs\bar-graph.png" />
+    <Content Include="Assets\Graphs\Closure-Trend.png" />
+    <Content Include="Assets\Graphs\ClosureTrend.png" />
+    <Content Include="Assets\Graphs\Incident-Summary.png" />
+    <Content Include="Assets\Graphs\Open-Tickets.png" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\email.png" />
     <Content Include="Assets\Icons\graphic-designer.png" />
