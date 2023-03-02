@@ -97,6 +97,11 @@
             text-transform: uppercase;
             line-height: 43px;
         }
+
+    .employeeInfo {
+        color: #2167ae !important;
+        margin-bottom: 2px
+    }
 </style>
 
 
@@ -121,17 +126,20 @@
         <div class="row">
 
             <div class="col-md">
-                <div style="padding-top: 50px; margin-left: 50px; color: #2167ae !important">
+                <div style="padding-top: 50px; margin-left: 100px; color: #2167ae !important">
                     <img src="@Model.EmployeeImage" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 15px; height: 160px">
-                    @*<span class="circle"><span class="textstyle">93%</span></span>*@
                     <h2 style="padding-left: 10px; text-align: center; width: 200px; padding-top: 10px; color: #2167ae !important"><b style="color: #2167ae !important">@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
                     <div class="report-content-resource">
-                        <p style="color: #2167ae !important"><b style="color: #2167ae !important">Reporting Manager:</b> @Model.AMBC_Active_Emp_view.Client_Report_Manager</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">Email:</b> @Model.AMBC_Active_Emp_view.AMBC_Mail_Address</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">Phone#:</b> @Model.AMBC_Active_Emp_view.Contact_Number</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">Client Manager:</b> @Model.AMBC_Active_Emp_view.Client_Report_Manager</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">AMBC Manager:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">Availability:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
+                        <p class="employeeInfo"><b style="color: #2167ae !important">Future PTO:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
                     </div>
-                    <div id="container" style="margin-left: -30px"></div>
-                    <div style="color: rgb(81, 205, 160); font-size: medium; margin-top: -50px; z-index: 99999; text-align: center; font-weight: bold; position: relative !important; ">Availability: 93%</div>
                 </div>
             </div>
+
 
             <div class="col-md" style="color: rgb(0, 128, 128) !important; background-color: white; border-radius: 30px; width: 18rem; margin-right: 50px; margin-top: 50px; border: 1px solid rgb(0, 128, 128) ">
                 <div style="padding-top: 30px;">
@@ -512,129 +520,16 @@
     jQuery('.canvasjs-chart-toolbar').hide();
     jQuery('.page-name-title').text(jQuery('.page-name-title-updated').text());
 
-
-    anychart.onDocumentReady(function () {
-
-        // create data
-        var data = [96.5];
-
-        // set the gauge type
-        var gauge = anychart.gauges.linear();
-
-        // set the data for the gauge
-        gauge.data(data);
-
-        // set the layout
-        gauge.layout('horizontal');
-
-        // create a color scale
-        var scaleBarColorScale = anychart.scales.ordinalColor().ranges(
-            [
-                {
-                    from: 0,
-                    to: 25,
-                    color: ['#dd2c00']
-                },
-                {
-                    from: 25,
-                    to: 50,
-                    color: ['#ef6c00']
-                },
-                {
-                    from: 50,
-                    to: 75,
-                    color: ['#16685d']
-                },
-                {
-                    from: 75,
-                    to: 100,
-                    color: ['#00838f']
-                }
-            ]
-        );
-
-        // create a Scale Bar
-        var scaleBar = gauge.scaleBar(0);
-
-        // set the relative height of the control points of the scale bar
-        scaleBar.points([
-            { height: 1, left: 1, right: 0 }
-        ]);
-
-        // set the height and offset of the Scale Bar (both as percentages of the gauge height)
-        scaleBar.width('10%');
-        scaleBar.offset('31%');
-
-        // use the color scale (defined earlier) as the color scale of the Scale Bar
-        scaleBar.colorScale(scaleBarColorScale);
-
-        // add a marker pointer
-        var marker = gauge.marker(0);
-
-        // set the color of the marker
-        marker.color('black');
-
-        // set the width of the marker
-        marker.width(15);
-
-        // set the offset of the pointer as a percentage of the gauge width
-        marker.offset('43%');
-
-        // set the marker type
-        marker.type('triangle-up');
-
-        // set the zIndex of the marker
-        marker.zIndex(10);
-
-        // configure the scale
-        var scale = gauge.scale();
-        scale.minimum(0);
-        scale.maximum(100);
-        scale.ticks().interval(10);
-
-        // configure the axis
-        var axis = gauge.axis();
-        axis.minorTicks(true)
-        axis.minorTicks().stroke('#cecece');
-        axis.width('1%');
-        axis.offset('29.5%');
-        axis.orientation('top');
-
-        // format axis labels
-        axis.labels().format('{%value}%');
-
-        // set paddings
-        gauge.padding([0, 50]);
-
-        // set the container id
-        gauge.container('container');
-
-        // initiate drawing the gauge
-        gauge.draw();
-
-
-
-
-        setTimeout(function () {
-            $('.anychart-credits-text').hide();
-            $('.anychart-credits-logo').hide();
-
-
-        }, 500);
-
-    });
-
-
-    $(document).ready(function () {
-        $(document).on("click", ".chartshowhide", function () {
-            var className = $(this).attr('data-target');
-            if ($('.'+className).css('display') == 'none') {
-            $('.' + className).show();
+    jQuery(document).ready(function () {
+        jQuery(document).on("click", ".chartshowhide", function () {
+            var className = jQuery(this).attr('data-target');
+            if (jQuery('.'+className).css('display') == 'none') {
+                jQuery('.' + className).show();
                 $(this).text("HIDE");
             }
             else {
-            $('.' + className).hide();
-                $(this).text("SHOW");
+                jQuery('.' + className).hide();
+                jQuery(this).text("SHOW");
             }
         });
     });
