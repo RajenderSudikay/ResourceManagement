@@ -180,20 +180,25 @@
     <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
 </div>
 
+<div class="chartContainer2">
+    <div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph2OverallStatus) </b></h2></div>
+</div>
 
-<div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 150px;"></div>
-<div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph2OverallStatus) </b></h2></div>
+<div class="chartContainer3">
+    <div id="chartContainer3" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px; "></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph3OverallStatus)</b></h2></div>
+</div>
 
+<div class="chartContainer4">
+    <div id="chartContainer4" style="width: 60%; height: 250px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph4OverallStatus)</b></h2></div>
+</div>
 
-<div id="chartContainer3" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px; "></div>
-<div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph3OverallStatus)</b></h2></div>
-<div id="chartContainer4" style="width: 60%; height: 250px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
-
-<div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph4OverallStatus)</b></h2></div>
-<div id="chartContainer5" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px;"></div>
-
-<div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph5OverallStatus)</b></h2></div>
-
+<div class="chartContainer5">
+    <div id="chartContainer5" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px;"></div>
+    <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph5OverallStatus)</b></h2></div>
+</div>
 <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
     <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
 </div>
@@ -207,29 +212,31 @@
     <ul class="sticky">
         <li style="background-color: #0095a8; color: white; font-weight:bold">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
-            <p><a>HIDE</a></p>
+            <p class="chartshowhide" data-target="chartContainer1">HIDE</p>
         </li>
         <li style="background-color: rgb(81, 205, 160); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
-            <p>HIDE</p>
+            <p class="chartshowhide" data-target="chartContainer2">HIDE</p>
         </li>
         <li style="background-color: black; color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
-            <p>HIDE</p>
+            <p class="chartshowhide" data-target="chartContainer3">HIDE</p>
         </li>
         <li style="background-color: rgb(33, 103, 174); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
-            <p>HIDE</p>
+            <p class="chartshowhide" data-target="chartContainer4">HIDE</p>
         </li>
         <li style="background-color: rgb(223, 121, 112); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
-            <p>HIDE</p>
+            <p class="chartshowhide" data-target="chartContainer5">HIDE</p>
         </li>
 
     </ul>
 </div>
 
 <script>
+
+
            var chart = new CanvasJS.Chart("chartContainer1", {
                 animationEnabled: true,
                theme: "light2",
@@ -611,8 +618,25 @@
         setTimeout(function () {
             $('.anychart-credits-text').hide();
             $('.anychart-credits-logo').hide();
+
+
         }, 500);
 
+    });
+
+
+    $(document).ready(function () {
+        $(document).on("click", ".chartshowhide", function () {
+            var className = $(this).attr('data-target');
+            if ($('.'+className).css('display') == 'none') {
+            $('.' + className).show();
+                $(this).text("HIDE");
+            }
+            else {
+            $('.' + className).hide();
+                $(this).text("SHOW");
+            }
+        });
     });
 
 
