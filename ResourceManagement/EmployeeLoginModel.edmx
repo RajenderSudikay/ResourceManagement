@@ -595,6 +595,87 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.ambclogin_leave_view' does not h
           <Property Name="Leave Type" Type="varchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability_Final' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability_Final">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_Year" />
+            <PropertyRef Name="ConslAvl" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Consultant_WorkedDays" Type="numeric" Precision="38" Scale="1" />
+          <Property Name="Monthly_WorkingDays" Type="int" />
+          <Property Name="ConslAvl" Type="varchar" MaxLength="42" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability1">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month1" Type="char" MaxLength="3" />
+          <Property Name="year1" Type="int" />
+          <Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="TXNCount" Type="int" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability2">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+          <Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability3">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+          <Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="int" />
+          <Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
+          <Property Name="FinalValue" Type="numeric" Precision="13" Scale="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability4' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability4">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
+          <Property Name="DaysCount" Type="numeric" Precision="38" Scale="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability5' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="consultantavailiability5">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="month_year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="finalleavetype" Type="varchar" MaxLength="250" />
+          <Property Name="Working Days" Type="numeric" Precision="38" Scale="1" />
+          <Property Name="WorkDays" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.halfday_leave_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="halfday_leave_view">
           <Key>
@@ -768,6 +849,62 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [ambclogin_leave_view].[Leave Date] AS [Leave Date], 
     [ambclogin_leave_view].[Leave Type] AS [Leave Type]
     FROM [dbo].[ambclogin_leave_view] AS [ambclogin_leave_view]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability_Final" EntityType="Self.consultantavailiability_Final" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability_Final].[Employee Code] AS [Employee Code], 
+    [consultantavailiability_Final].[Month_Year] AS [Month_Year], 
+    [consultantavailiability_Final].[Consultant_WorkedDays] AS [Consultant_WorkedDays], 
+    [consultantavailiability_Final].[Monthly_WorkingDays] AS [Monthly_WorkingDays], 
+    [consultantavailiability_Final].[ConslAvl] AS [ConslAvl]
+    FROM [dbo].[consultantavailiability_Final] AS [consultantavailiability_Final]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability1" EntityType="Self.consultantavailiability1" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability1].[Employee Code] AS [Employee Code], 
+    [consultantavailiability1].[Month1] AS [Month1], 
+    [consultantavailiability1].[year1] AS [year1], 
+    [consultantavailiability1].[Month_year] AS [Month_year], 
+    [consultantavailiability1].[TXNCount] AS [TXNCount], 
+    [consultantavailiability1].[Leave Type] AS [Leave Type]
+    FROM [dbo].[consultantavailiability1] AS [consultantavailiability1]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability2" EntityType="Self.consultantavailiability2" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability2].[Employee Code] AS [Employee Code], 
+    [consultantavailiability2].[Month_year] AS [Month_year], 
+    [consultantavailiability2].[Leave Type] AS [Leave Type], 
+    [consultantavailiability2].[LeaveTypeValue] AS [LeaveTypeValue], 
+    [consultantavailiability2].[TXNCount] AS [TXNCount]
+    FROM [dbo].[consultantavailiability2] AS [consultantavailiability2]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability3" EntityType="Self.consultantavailiability3" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability3].[employee code] AS [employee code], 
+    [consultantavailiability3].[Month_Year] AS [Month_Year], 
+    [consultantavailiability3].[Leave Type] AS [Leave Type], 
+    [consultantavailiability3].[LeaveTypeValue] AS [LeaveTypeValue], 
+    [consultantavailiability3].[TXNCount] AS [TXNCount], 
+    [consultantavailiability3].[FinalLeaveType] AS [FinalLeaveType], 
+    [consultantavailiability3].[FinalValue] AS [FinalValue]
+    FROM [dbo].[consultantavailiability3] AS [consultantavailiability3]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability4" EntityType="Self.consultantavailiability4" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability4].[employee code] AS [employee code], 
+    [consultantavailiability4].[Month_Year] AS [Month_Year], 
+    [consultantavailiability4].[FinalLeaveType] AS [FinalLeaveType], 
+    [consultantavailiability4].[DaysCount] AS [DaysCount]
+    FROM [dbo].[consultantavailiability4] AS [consultantavailiability4]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability5" EntityType="Self.consultantavailiability5" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [consultantavailiability5].[employee code] AS [employee code], 
+    [consultantavailiability5].[month_year] AS [month_year], 
+    [consultantavailiability5].[finalleavetype] AS [finalleavetype], 
+    [consultantavailiability5].[Working Days] AS [Working Days], 
+    [consultantavailiability5].[WorkDays] AS [WorkDays]
+    FROM [dbo].[consultantavailiability5] AS [consultantavailiability5]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="halfday_leave_view" EntityType="Self.halfday_leave_view" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1291,6 +1428,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="monthlyreports_Template1" EntityType="TimesheetDBModel.monthlyreports_Template1" />
           <EntitySet Name="monthlyreports_Template2" EntityType="TimesheetDBModel.monthlyreports_Template2" />
           <EntitySet Name="monthlyreports_Template3" EntityType="TimesheetDBModel.monthlyreports_Template3" />
+          <EntitySet Name="consultantavailiability_Final" EntityType="TimesheetDBModel.consultantavailiability_Final" />
+          <EntitySet Name="consultantavailiability1" EntityType="TimesheetDBModel.consultantavailiability1" />
+          <EntitySet Name="consultantavailiability2" EntityType="TimesheetDBModel.consultantavailiability2" />
+          <EntitySet Name="consultantavailiability3" EntityType="TimesheetDBModel.consultantavailiability3" />
+          <EntitySet Name="consultantavailiability4" EntityType="TimesheetDBModel.consultantavailiability4" />
+          <EntitySet Name="consultantavailiability5" EntityType="TimesheetDBModel.consultantavailiability5" />
         </EntityContainer>
         <EntityType Name="tbld_ambclogininformation">
           <Key>
@@ -1430,6 +1573,75 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="EmplyeeID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="ProjectID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="consultantavailiability_Final">
+          <Key>
+            <PropertyRef Name="Employee_Code" />
+            <PropertyRef Name="Month_Year" />
+            <PropertyRef Name="ConslAvl" />
+          </Key>
+          <Property Name="Employee_Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month_Year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Consultant_WorkedDays" Type="Decimal" Precision="38" Scale="1" />
+          <Property Name="Monthly_WorkingDays" Type="Int32" />
+          <Property Name="ConslAvl" Type="String" Nullable="false" MaxLength="42" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="consultantavailiability1">
+          <Key>
+            <PropertyRef Name="Employee_Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee_Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month1" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="year1" Type="Int32" />
+          <Property Name="Month_year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="TXNCount" Type="Int32" />
+          <Property Name="Leave_Type" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="consultantavailiability2">
+          <Key>
+            <PropertyRef Name="Employee_Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee_Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month_year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Leave_Type" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LeaveTypeValue" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="consultantavailiability3">
+          <Key>
+            <PropertyRef Name="employee_code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee_code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month_Year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Leave_Type" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LeaveTypeValue" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="Int32" />
+          <Property Name="FinalLeaveType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="FinalValue" Type="Decimal" Precision="13" Scale="1" />
+        </EntityType>
+        <EntityType Name="consultantavailiability4">
+          <Key>
+            <PropertyRef Name="employee_code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee_code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month_Year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="FinalLeaveType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DaysCount" Type="Decimal" Precision="38" Scale="1" />
+        </EntityType>
+        <EntityType Name="consultantavailiability5">
+          <Key>
+            <PropertyRef Name="employee_code" />
+            <PropertyRef Name="month_year" />
+          </Key>
+          <Property Name="employee_code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="month_year" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="finalleavetype" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Working_Days" Type="Decimal" Precision="38" Scale="1" />
+          <Property Name="WorkDays" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2010,6 +2222,74 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="Test_Completed" ColumnName="Test_Completed" />
                 <ScalarProperty Name="Control_Group_Name" ColumnName="Control_Group_Name" />
                 <ScalarProperty Name="Test_ID" ColumnName="Test_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability_Final">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability_Final">
+              <MappingFragment StoreEntitySet="consultantavailiability_Final">
+                <ScalarProperty Name="ConslAvl" ColumnName="ConslAvl" />
+                <ScalarProperty Name="Monthly_WorkingDays" ColumnName="Monthly_WorkingDays" />
+                <ScalarProperty Name="Consultant_WorkedDays" ColumnName="Consultant_WorkedDays" />
+                <ScalarProperty Name="Month_Year" ColumnName="Month_Year" />
+                <ScalarProperty Name="Employee_Code" ColumnName="Employee Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability1">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability1">
+              <MappingFragment StoreEntitySet="consultantavailiability1">
+                <ScalarProperty Name="Leave_Type" ColumnName="Leave Type" />
+                <ScalarProperty Name="TXNCount" ColumnName="TXNCount" />
+                <ScalarProperty Name="Month_year" ColumnName="Month_year" />
+                <ScalarProperty Name="year1" ColumnName="year1" />
+                <ScalarProperty Name="Month1" ColumnName="Month1" />
+                <ScalarProperty Name="Employee_Code" ColumnName="Employee Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability2">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability2">
+              <MappingFragment StoreEntitySet="consultantavailiability2">
+                <ScalarProperty Name="TXNCount" ColumnName="TXNCount" />
+                <ScalarProperty Name="LeaveTypeValue" ColumnName="LeaveTypeValue" />
+                <ScalarProperty Name="Leave_Type" ColumnName="Leave Type" />
+                <ScalarProperty Name="Month_year" ColumnName="Month_year" />
+                <ScalarProperty Name="Employee_Code" ColumnName="Employee Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability3">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability3">
+              <MappingFragment StoreEntitySet="consultantavailiability3">
+                <ScalarProperty Name="FinalValue" ColumnName="FinalValue" />
+                <ScalarProperty Name="FinalLeaveType" ColumnName="FinalLeaveType" />
+                <ScalarProperty Name="TXNCount" ColumnName="TXNCount" />
+                <ScalarProperty Name="LeaveTypeValue" ColumnName="LeaveTypeValue" />
+                <ScalarProperty Name="Leave_Type" ColumnName="Leave Type" />
+                <ScalarProperty Name="Month_Year" ColumnName="Month_Year" />
+                <ScalarProperty Name="employee_code" ColumnName="employee code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability4">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability4">
+              <MappingFragment StoreEntitySet="consultantavailiability4">
+                <ScalarProperty Name="DaysCount" ColumnName="DaysCount" />
+                <ScalarProperty Name="FinalLeaveType" ColumnName="FinalLeaveType" />
+                <ScalarProperty Name="Month_Year" ColumnName="Month_Year" />
+                <ScalarProperty Name="employee_code" ColumnName="employee code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consultantavailiability5">
+            <EntityTypeMapping TypeName="TimesheetDBModel.consultantavailiability5">
+              <MappingFragment StoreEntitySet="consultantavailiability5">
+                <ScalarProperty Name="WorkDays" ColumnName="WorkDays" />
+                <ScalarProperty Name="Working_Days" ColumnName="Working Days" />
+                <ScalarProperty Name="finalleavetype" ColumnName="finalleavetype" />
+                <ScalarProperty Name="month_year" ColumnName="month_year" />
+                <ScalarProperty Name="employee_code" ColumnName="employee code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

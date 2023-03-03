@@ -206,6 +206,24 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="consultantavailiability1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability4.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability5.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability_Final.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
