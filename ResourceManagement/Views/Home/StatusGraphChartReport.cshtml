@@ -2,9 +2,11 @@
 
 <style>
     .report-content-resource {
-        padding-left: 15px;
-        padding-top: 20px;
-        font-size: small;
+        padding-left: 15px !important;
+        padding-top: 20px !important;
+        font-size: small !important;
+        margin-left: 10px !important;
+        margin-top: -15px !important
     }
 
     .table-striped-custom tr:nth-of-type(odd) {
@@ -37,7 +39,7 @@
 
     .hrlineDiv {
         background-color: white;
-        padding-top: 30px;
+        padding-top: 50px;
         text-align: center;
         margin-bottom: 30px;
         border-bottom: 1px solid rgb(0, 128, 128) !important;
@@ -55,7 +57,6 @@
     .chartbelowhrline {
         margin-left: -70px;
         text-align: center;
-        padding-top: 20px
     }
 
     .sticky-container {
@@ -99,15 +100,26 @@
         }
 
     .employeeInfo {
-        color: #2167ae !important;
-        margin-bottom: 2px
+        color: white !important;
+        margin-bottom: 10px !important
+    }
+
+    .empPersonelInfoe {
+        margin-left: 35px !important;
+        margin-top: -18px !important;
+        color: white !important
+    }
+
+    .empAvaliability {
+        margin-top: -22px !important;
+        margin-left: 73px !important;
     }
 </style>
 
 
 <div class="" style="background-color: white; color: #2167ae;">
     <br />
-    <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px" />
+    <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px !important;  height: 70px !important; margin-top: -10px !important;width: 200px !important" />
     @{
         var clientLogo = "";
         if (Model.AMBC_Active_Emp_view.Client != "AMBC")
@@ -117,7 +129,7 @@
     }
     @if (clientLogo != "")
     {
-        <img src='@clientLogo' style="float: right; margin-right: 20px; width: 200px" />
+        <img src='@clientLogo' style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
     }
 
     <br />
@@ -126,22 +138,42 @@
         <div class="row">
 
             <div class="col-md">
-                <div style="padding-top: 50px; margin-left: 100px; color: #2167ae !important">
-                    <img src="@Model.EmployeeImage" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 15px; height: 160px">
-                    <h2 style="padding-left: 10px; text-align: center; width: 200px; padding-top: 10px; color: #2167ae !important"><b style="color: #2167ae !important">@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
+                <div style="padding-top: 50px !important; margin-left: 100px !important; color: #2167ae !important; background-color: #23366f !important; margin-top: 30px !important; margin-right: 50px !important; border-bottom-right-radius: 10px !important; border-bottom-left-radius: 10px !important; border: 3px solid #23366f !important ">
+                    <div style="background-color: white !important; border-bottom-left-radius: 30px !important; margin-top: -50px !important; margin-top: -50px !important; padding-top: 10px !important">
+                        <img src="@Model.EmployeeImage" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 75px; height: 160px">
+                        <h2 style="padding-left: 75px; text-align: center; width: 200px; padding-top: 10px; color: #2167ae !important"><b style="color: #2167ae !important">@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
+                    </div>
+
                     <div class="report-content-resource">
-                        <p class="employeeInfo"><b style="color: #2167ae !important">Email:</b> @Model.AMBC_Active_Emp_view.AMBC_Mail_Address</p>
-                        <p class="employeeInfo"><b style="color: #2167ae !important">Phone#:</b> @Model.AMBC_Active_Emp_view.Contact_Number</p>
-                        <p class="employeeInfo"><b style="color: #2167ae !important">Client Manager:</b> @Model.AMBC_Active_Emp_view.Client_Report_Manager</p>
-                        <p class="employeeInfo"><b style="color: #2167ae !important">AMBC Manager:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
-                        <p class="employeeInfo"><b style="color: #2167ae !important">Availability:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
-                        <p class="employeeInfo"><b style="color: #2167ae !important">Future PTO:</b> @Model.AMBC_Active_Emp_view.AMBC_Project_Manager</p>
+                        <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div> </div>
+                        <div class="employeeInfo">
+                            <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.Contact_Number</div>
+                        </div>
+
+                        <div class="employeeInfo">
+                            <img src="~/Assets/Icons/icons8-employee-48.png" width="25" /><div class="empPersonelInfoe">
+                                @Model.AMBC_Active_Emp_view.Client_Report_Manager
+                            </div>
+                        </div>
+
+                        <div class="employeeInfo" style="color: white !important;">
+                            <img src="~/Assets/Icons/checked.png" width="25" /><div class="empPersonelInfoe">
+
+                                <meter id="disk_d" value="0.82" style="height: 20px">82.3%</meter><div class="empAvaliability"><b style="color: white !important;">Feb availability: </b> <b style="color: white !important;">82.3%</b></div>
+                            </div>
+                        </div>
+                        <div class="employeeInfo">
+                            <img src="~/Assets/Icons/availability.png" width="25" /><div class="empPersonelInfoe">
+                                <meter id="disk_d" value="1" style="height: 20px">100%</meter><div class="empAvaliability"><b style="color: white !important;">Mar availability: </b><b style="color: white !important;">100%</b></div>
+                            </div>
+                        </div>
+                      
                     </div>
                 </div>
             </div>
 
 
-            <div class="col-md" style="color: rgb(0, 128, 128) !important; background-color: white; border-radius: 30px; width: 18rem; margin-right: 50px; margin-top: 50px; border: 1px solid rgb(0, 128, 128) ">
+            <div class="col-md" style="color: rgb(0, 128, 128) !important; background-color: white; border-radius: 30px; width: 18rem; margin-right: 50px; margin-top: 30px; border: 0px solid rgb(0, 128, 128) ">
                 <div style="padding-top: 30px;">
                     <div>
                         <h2 style="font-size: xx-large; color: rgb(0, 128, 128) !important">
@@ -182,29 +214,28 @@
 </div>
 
 <br />
-<div style="background-color: none; padding-top: 30px" />
-<div class="chartContainer1">
-    <div id="chartContainer1" style="height: 250px; width: 60%; display: inline-block; margin-left:150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
+<div style="background-color: none; padding-top: 50px !important" />
+<div class="chartContainer1 chartdiv">
+    <div id="chartContainer1" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
 </div>
 
-<div class="chartContainer2">
-    <div id="chartContainer2" style="height: 250px; width: 60%; display: inline-block; margin-left: 150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph2OverallStatus) </b></h2></div>
+<div class="chartContainer2 chartdiv">
+    <div id="chartContainer2" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph2OverallStatus) </b></h2></div>
+</div>
+<div class="chartContainer3 chartdiv">
+    <div id="chartContainer3" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph3OverallStatus)</b></h2></div>
 </div>
 
-<div class="chartContainer3">
-    <div id="chartContainer3" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px; "></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph3OverallStatus)</b></h2></div>
+<div class="chartContainer4 chartdiv">
+    <div id="chartContainer4" style="width: 60%; height: 215px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph4OverallStatus)</b></h2></div>
 </div>
 
-<div class="chartContainer4">
-    <div id="chartContainer4" style="width: 60%; height: 250px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph4OverallStatus)</b></h2></div>
-</div>
-
-<div class="chartContainer5">
-    <div id="chartContainer5" style="width: 60%; height: 250px; display: inline-block; margin-left: 150px;"></div>
+<div class="chartContainer5 chartdiv">
+    <div id="chartContainer5" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px;"></div>
     <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph5OverallStatus)</b></h2></div>
 </div>
 <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">

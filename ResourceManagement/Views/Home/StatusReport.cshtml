@@ -286,6 +286,21 @@
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.chartbelowhrline').css('margin-left', '0px');
         jQuery('.sticky-container').hide();
+
+        var count = 0;
+        $('.chartdiv').each(function (index, value) {
+            if ($(this).css('display') == 'none') {
+
+            }
+            else {
+                count++;
+
+                if (count == 3) {
+                    $(this).css("margin-top", "100px !important")
+                }
+            }
+        });
+
         window.print();
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
