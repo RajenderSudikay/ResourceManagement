@@ -281,30 +281,30 @@
 <script>
 
     jQuery('.btn-download-report').click(function () {
-        jQuery('.chartContainer1-table').css("width", "70%");
+     /*   jQuery('.chartContainer1-table').css("width", "70%");*/
         jQuery('.status-report-view-options').hide();
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.chartbelowhrline').css('margin-left', '0px');
         jQuery('.sticky-container').hide();
 
-        var count = 0;
-        $('.chartdiv').each(function (index, value) {
-            if ($(this).css('display') == 'none') {
+        //var count = 0;
+        //$('.chartdiv').each(function (index, value) {
+        //    if ($(this).css('display') == 'none') {
 
-            }
-            else {
-                count++;
+        //    }
+        //    else {
+        //        count++;
 
-                if (count == 3) {
-                    $(this).css("margin-top", "100px !important")
-                }
-            }
-        });
+        //        if (count == 3) {
+        //            $(this).css("margin-top", "100px !important")
+        //        }
+        //    }
+        //});
 
         window.print();
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
-        jQuery('.chartContainer1-table').css("width", "60%");
+     /*   jQuery('.chartContainer1-table').css("width", "60%");*/
         jQuery('.chartbelowhrline').css('margin-left', '-70px');
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.sticky-container').show();
