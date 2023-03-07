@@ -2328,7 +2328,7 @@ namespace ResourceManagement.Controllers
             if (year != DateTime.Now.Year)
             {
                 selctedDateMonth = 12;
-            }          
+            }
 
             var monthsList = new Dictionary<string, string>();
 
@@ -2339,11 +2339,11 @@ namespace ResourceManagement.Controllers
                 {
                     var newDate = new DateTime(year, month, 1);
 
-                    if(newDate != currentMonthStartdate)
+                    if (newDate != currentMonthStartdate)
                     {
-                        monthsList.Add(System.Convert.ToString(month), getAbbreviatedName(newDate));
+                        var monthName = getAbbreviatedName(newDate);
+                        monthsList.Add(System.Convert.ToString(monthName + "&" + month), monthName);
                     }
-                   
                 }
 
             }
@@ -2373,13 +2373,13 @@ namespace ResourceManagement.Controllers
 
             if (reportType == "Annual Report")
             {
-                inputMonthList.Add("Annual Report", 12); 
+                inputMonthList.Add("Annual Report", 12);
                 monthStartFrom = 11;
             }
 
             foreach (var quarter in inputMonthList)
             {
-                var monthNames = string.Empty;             
+                var monthNames = string.Empty;
                 var quarterExists = false;
 
                 if (quarter.Value <= selctedDateMonth)
@@ -2388,7 +2388,7 @@ namespace ResourceManagement.Controllers
                     for (int month = startMonth; month <= quarter.Value; month++)
                     {
                         var newDate = new DateTime(year, month, 1);
-                        monthNames += getAbbreviatedName(newDate) + "|";
+                        monthNames += getAbbreviatedName(newDate) + "&" + month + "|";
                         quarterExists = true;
                     }
                 }
@@ -2439,15 +2439,38 @@ namespace ResourceManagement.Controllers
             var model = new GraphChartModel();
             model.EmployeeImage = EmployeeProfileImagePath(StatusReportChartModel);
 
-            var selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, StatusReportChartModel.MonthNumber, 1);
-            model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
-
+            var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
-            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
-            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
-            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
-            requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3)));
-            requiredReportMonths.Reverse();
+            if (StatusReportChartModel.ReportType == "Month Report")
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
+                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3)));
+                requiredReportMonths.Reverse();
+            }
+
+            else 
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
+                {
+                    if (selectedMonthNumber != string.Empty)
+                    {
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
+                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                        requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+                    }
+                }
+            }
 
             var graph1Reports = new List<Root>();
 

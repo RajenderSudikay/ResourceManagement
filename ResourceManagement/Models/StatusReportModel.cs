@@ -93,6 +93,8 @@ namespace ResourceManagement.Models
         [JsonPropertyName("ClientName")]
         public string ClientName { get; set; } = string.Empty;
 
+        [JsonPropertyName("ReportType")]
+        public string ReportType { get; set; } = string.Empty;  
     }
 
     public class MonthWiseReportModel
