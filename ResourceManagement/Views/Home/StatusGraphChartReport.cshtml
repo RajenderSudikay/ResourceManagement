@@ -2,11 +2,13 @@
 
 <style>
     .report-content-resource {
-        padding-left: 15px !important;
-        padding-top: 20px !important;
+        /*  padding-left: 15px !important;
+        padding-top: 20px !important;*/
         font-size: small !important;
-        margin-left: 10px !important;
-        margin-top: -15px !important
+        /* margin-left: 10px !important;
+        margin-top: -15px !important*/
+
+        margin-top: -20px !important;
     }
 
     .table-striped-custom tr:nth-of-type(odd) {
@@ -39,10 +41,10 @@
 
     .hrlineDiv {
         background-color: white;
-        padding-top: 50px;
+        padding-top: 90px;
         text-align: center;
         margin-bottom: 30px;
-        border-bottom: 1px solid rgb(0, 128, 128) !important;
+        /*border-bottom: 1px solid rgb(0, 128, 128) !important;*/
         margin-left: 150px;
         margin-right: 150px
     }
@@ -78,7 +80,6 @@
         transition: all 0.25s ease-in-out;
         cursor: pointer;
         filter: gray;
-        /*  -webkit-filter: grayscale(100%);*/
     }
 
         .sticky li:hover {
@@ -100,19 +101,28 @@
         }
 
     .employeeInfo {
-        color: white !important;
-        margin-bottom: 10px !important
+        color: #23366f !important;
+        margin-bottom: 2px !important;
     }
 
     .empPersonelInfoe {
         margin-left: 35px !important;
         margin-top: -18px !important;
-        color: white !important
+        color: #23366f !important
     }
 
     .empAvaliability {
         margin-top: -22px !important;
         margin-left: 73px !important;
+    }
+
+    .report-activity {
+        margin-left: 70px !important;
+        margin-top: 30px !important;
+    }
+
+    .multplechartdiv {
+       margin-left: 75px !important;
     }
 </style>
 
@@ -134,11 +144,98 @@
 
     <br />
 
-    <div class="container">
+    <div class="report-banner">
+        <div class="banner-wrapper">
+            <div class="banner-media">
+                <div class="banner-image__circle">
+                    <figure>
+                        <img src="@Model.EmployeeImage" class="banner-img" width="170" height="170" />
+                    </figure>
+                    <p class="banner-empname">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                </div>
+                <div class="banner-decoration">
+                    @*<div class="banner-decoration__elements">*@
+                    <span class="banner-decoration__circle"></span>
+                    <span class="banner-decoration__half-mask">
+                        <span class="banner-decoration__half-mask__circle bg-height">
+                        </span>
+                    </span>
+                    <span class="banner-decoration__mini-circle bg-height"></span>
+                    @*</div>*@
+                </div>
+            </div>
+            <div class="banner-content">
+                <div style="padding-top: 30px;">
+                    <div>
+                        <h2 style="font-size: xx-large; color: #23366f !important ">
+                            @Model.AMBC_Active_Emp_view.Client_Project_Name
+                        </h2>
+                        <h5 style="color: #23366f !important ">
+                            Project Status Report as of <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                        </h5>
+
+                        <h5 style="color: #23366f !important ">
+                            Report Period <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  Nov to @Model.SelectedReportMonth.MonthName</b>
+                        </h5>
+
+                        <div style="display: none" class="page-name-title-updated">Status Report - @Model.AMBC_Active_Emp_view.Employee_Name @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</div>
+
+                    </div>
+
+                </div>
+
+                <hr style="background-color: red !important; height: 1px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+
+                <div class="report-content-resource">
+                    <br />
+                    <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div> </div>
+                    <div class="employeeInfo">
+                        <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.Contact_Number</div>
+                    </div>
+
+                    <div class="employeeInfo">
+                        <img src="~/Assets/Icons/icons8-employee-48.png" width="25" /><div class="empPersonelInfoe">
+                            @Model.AMBC_Active_Emp_view.Client_Report_Manager
+                        </div>
+                    </div>
+
+                    <div class="employeeInfo" style="color: white !important;">
+                        <img src="~/Assets/Icons/checked.png" width="25" /><div class="empPersonelInfoe">
+
+                            <meter id="disk_d" value="0.82" style="height: 20px">82.3%</meter><div class="empAvaliability"><b style="color: #23366f !important;">82.3%</b></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="report-activity">
+        <h2><b style="color: rgb(0, 128, 128) !important">Activity Details</b></h2>
+        <ul class="mt-xl-4">
+            @{
+                var activitesDetails = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
+            }
+
+            @if (!string.IsNullOrWhiteSpace(activitesDetails))
+            {
+                foreach (var activity in activitesDetails.Split('|'))
+                {
+                    <li class="" style="color: rgb(0, 128, 128) !important ">@activity</li>
+                }
+            }
+
+        </ul>
+    </div>
+
+    <!--<div class="container">
         <div class="row">
 
             <div class="col-md">
-                <div style="padding-top: 50px !important; margin-left: 100px !important; color: #2167ae !important; background-color: #23366f !important; margin-top: 30px !important; margin-right: 50px !important; border-bottom-right-radius: 10px !important; border-bottom-left-radius: 10px !important; border: 3px solid #23366f !important ">
+                <div style="padding-top: 100px !important; margin-left: 100px !important; color: #2167ae !important; background-color: #23366f !important; margin-top: 70px !important; margin-right: 50px !important; border-bottom-right-radius: 10px !important; border-bottom-left-radius: 10px !important; border: 3px solid #23366f !important ">
                     <div style="background-color: white !important; border-bottom-left-radius: 30px !important; margin-top: -50px !important; margin-top: -50px !important; padding-top: 10px !important">
                         <img src="@Model.EmployeeImage" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 75px; height: 160px">
                         <h2 style="padding-left: 75px; text-align: center; width: 200px; padding-top: 10px; color: #2167ae !important"><b style="color: #2167ae !important">@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
@@ -164,14 +261,14 @@
                             </div>
                         </div>
 
-                        <br />
-                        @*<div class="employeeInfo">
-                                <img src="~/Assets/Icons/availability.png" width="25" /><div class="empPersonelInfoe">
-                                    <meter id="disk_d" value="1" style="height: 20px">100%</meter><div class="empAvaliability"><b style="color: white !important;">Mar availability: </b><b style="color: white !important;">100%</b></div>
-                                </div>
-                            </div>*@
+                        <br />-->
+    @*<div class="employeeInfo">
+            <img src="~/Assets/Icons/availability.png" width="25" /><div class="empPersonelInfoe">
+                <meter id="disk_d" value="1" style="height: 20px">100%</meter><div class="empAvaliability"><b style="color: white !important;">Mar availability: </b><b style="color: white !important;">100%</b></div>
+            </div>
+        </div>*@
 
-                    </div>
+    <!--</div>
                 </div>
             </div>
 
@@ -197,12 +294,12 @@
                     <h2><b style="color: rgb(0, 128, 128) !important">Activity Details</b></h2>
                     <ul class="mt-xl-4">
                         @{
-                            var activitesDetails = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
+                            var activitesDetails1 = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
                         }
 
-                        @if (!string.IsNullOrWhiteSpace(activitesDetails))
+                        @if (!string.IsNullOrWhiteSpace(activitesDetails1))
                         {
-                            foreach (var activity in activitesDetails.Split('|'))
+                            foreach (var activity in activitesDetails1.Split('|'))
                             {
                                 <li class="" style="color: rgb(0, 128, 128) !important ">@activity</li>
                             }
@@ -212,35 +309,51 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 </div>
 
+
+
 <br />
-<div style="background-color: none; padding-top: 50px !important" />
+
+<div style="background-color: none; padding-top: 30px !important" />
 <div class="chartContainer1 chartdiv">
-    <div id="chartContainer1" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</b></h2></div>
+    <div id="chartContainer1" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -55px; color: #0095a8 !important; font-size: medium; font-family: cursive; font-size: larger ">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</p>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
 </div>
 
 <div class="chartContainer2 chartdiv">
-    <div id="chartContainer2" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph2OverallStatus) </b></h2></div>
+    <div id="chartContainer2" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -65px; color: #3b5998 !important; font-size: medium; font-family: cursive; font-size: larger ">
+        @Html.Raw(ViewBag.Graph2OverallStatus)
+    </p>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
 </div>
 <div class="chartContainer3 chartdiv">
-    <div id="chartContainer3" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph3OverallStatus)</b></h2></div>
+    <div id="chartContainer3" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger ">@Html.Raw(ViewBag.Graph3OverallStatus)</p>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
 </div>
 
-<div class="chartContainer4 chartdiv">
-    <div id="chartContainer4" style="width: 60%; height: 215px; display: inline-block; padding-left: 0px; margin-left: 150px;"></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph4OverallStatus)</b></h2></div>
+<div class="container">
+    <div class="row">
+        <div class="col chartContainer4 chartdiv multplechartdiv">
+
+            <div id="chartContainer4" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block; padding-left: 0px;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(0, 128, 128) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px;">@Html.Raw(ViewBag.Graph4OverallStatus)</p>
+            <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+
+        </div>
+        <div class="col chartContainer5 chartdiv">
+
+            <div id="chartContainer5" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(74, 172, 197) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px; ">@Html.Raw(ViewBag.Graph5OverallStatus)</p>
+            <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+
+        </div>
+    </div>
 </div>
 
-<div class="chartContainer5 chartdiv">
-    <div id="chartContainer5" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px;"></div>
-    <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important">@Html.Raw(ViewBag.Graph5OverallStatus)</b></h2></div>
-</div>
+
+
+
 <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
     <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
 </div>
@@ -252,23 +365,23 @@
 
 <div class="sticky-container">
     <ul class="sticky">
-        <li style="background-color: #0095a8; color: white; font-weight:bold">
+        <li style="background-color: #0095a8; color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
             <p class="chartshowhide" data-target="chartContainer1">HIDE</p>
         </li>
-        <li style="background-color: rgb(81, 205, 160); color: white; font-weight: bold ">
+        <li style="background-color: #3b5998; color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
             <p class="chartshowhide" data-target="chartContainer2">HIDE</p>
         </li>
-        <li style="background-color: black; color: white; font-weight: bold ">
+        <li style="background-color: #005983; color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
             <p class="chartshowhide" data-target="chartContainer3">HIDE</p>
         </li>
-        <li style="background-color: rgb(33, 103, 174); color: white; font-weight: bold ">
+        <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
             <p class="chartshowhide" data-target="chartContainer4">HIDE</p>
         </li>
-        <li style="background-color: rgb(223, 121, 112); color: white; font-weight: bold ">
+        <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
             <p class="chartshowhide" data-target="chartContainer5">HIDE</p>
         </li>
@@ -286,8 +399,19 @@
                 willReadFrequently: true,
                 title: {
                     text: "Monthly Report",
-                    fontColor: "rgb(33, 103, 174)",
-                },
+                    fontColor: "white",
+                    fontSize: 15,
+                    padding: 10,
+                    margin: 15,
+                    backgroundColor: "#0095a8",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+               },
+               legend: {
+                   horizontalAlign: "right", // left, center ,right
+                   verticalAlign: "center",  // top, center, bottom
+                   margin: 30,
+               },
                 axisX: {
                     labelTextAlign: "left",
                     tickLength: 6,
@@ -358,7 +482,18 @@
             willReadFrequently: true,
 	        title: {
                 text: "Monthly Raised Vs Closed",
-                fontColor: "rgb(33, 103, 174)",
+                fontColor: "white",
+                fontSize: 15,
+                padding: 10,
+                margin: 15,
+                backgroundColor: "#3b5998",
+                cornerRadius: 10,
+                fontWeight: "bold"
+            },
+            legend: {
+                horizontalAlign: "right", // left, center ,right
+                verticalAlign: "center",  // top, center, bottom
+                margin: 15,
             },
             axisX: {
                 labelTextAlign: "left",
@@ -367,7 +502,7 @@
                 tickColor: "red"
             },
             axisY: {
-               title: "Incidents count",
+             /*  title: "Incidents count",*/
                 titleMaxWidth: 400,
                 titleFontWeight: "bold",
                 gridThickness: 0,
@@ -384,14 +519,15 @@
 
             data: [
               {
-                    type: "line",
-                    indexLabelFontSize: 20,
+                    type: "area",
+                    indexLabelFontSize: 28,
                     name: "Newly Raised",
                     legendText: "Newly Raised",
                  /*   indexLabelPlacement: "inside",*/
                     indexLabel: "{y}",
                     indexLabelFontWeight: "bold",
                     indexLabelFontColor: "rgb(33, 103, 174)",
+                    indexLabelTextAlign: "left",
                     legendMarkerColor: "rgb(33, 103, 174)",
                     color: "rgb(33, 103, 174)",
                     showInLegend: true,
@@ -402,7 +538,7 @@
                      legendText: "Closed",
                      indexLabelOrientation: "horizontal",
                      indexLabel: "{y}",
-                     indexLabelFontSize: 12,
+                     indexLabelFontSize: 9,
                      indexLabelFontWeight: "bolder",
                      indexLabelFontColor: "black",
                      name: "Closed",
@@ -422,8 +558,19 @@
             willReadFrequently: true,
 	        title: {
                 text: "Open Tickets",
-                fontColor: "rgb(33, 103, 174)",
-            },
+                fontColor: "white",
+                fontSize: 15,
+                padding: 10,
+                margin: 15,
+                backgroundColor: "#005983",
+                cornerRadius: 10,
+                fontWeight: "bold"
+         },
+         legend: {
+             horizontalAlign: "right", // left, center ,right
+             verticalAlign: "center",  // top, center, bottom
+             margin: 15,
+         },
             axisX: {
                 labelTextAlign: "left",
                 tickLength: 6,
@@ -454,9 +601,9 @@
                     legendText: "Critical",
                     indexLabel: "{y}",
                     indexLabelFontWeight: "bold",
-                    indexLabelFontColor: "rgb(33, 103, 174)",
-                    legendMarkerColor: "rgb(33, 103, 174)",
-                    color: "rgb(33, 103, 174)",
+                    indexLabelFontColor: "rgb(192, 80, 78)",
+                    legendMarkerColor: "rgb(192, 80, 78)",
+                    color: "rgb(192, 80, 78)",
                     dataPoints:@Html.Raw(ViewBag.MCRITOTDataPoints),
 
                 },
@@ -467,9 +614,9 @@
                      indexLabelFontWeight: "bold",
                      name: "High",
                     showInLegend: true,
-                     legendMarkerColor: "rgb(255,215,0)",
-                     color: "rgb(255,215,0)",
-                     indexLabelFontColor: "rgb(255,215,0)",
+                     legendMarkerColor: "rgb(155, 187, 88)",
+                     color: "rgb(155, 187, 88)",
+                     indexLabelFontColor: "rgb(155, 187, 88)",
                     dataPoints:@Html.Raw(ViewBag.MHIGOTDataPoints),
                 },
                   {
@@ -479,9 +626,9 @@
                      indexLabelFontWeight: "bold",
                       name: "Medium",
                     showInLegend: true,
-                      legendMarkerColor: "rgb(247, 150, 71)",
-                      color: "rgb(247, 150, 71)",
-                      indexLabelFontColor: "rgb(247, 150, 71)",
+                      legendMarkerColor: "#005983",
+                      color: "#005983",
+                      indexLabelFontColor: "#005983",
                       dataPoints:@Html.Raw(ViewBag.MMEDIOTDataPoints),
                 },
                    {
@@ -490,9 +637,9 @@
                      indexLabel: "{y}",
                      indexLabelFontWeight: "bold",
                     showInLegend: true,
-                       legendMarkerColor: "rgb(47, 79, 79)",
-                       color: "rgb(47, 79, 79)",
-                       indexLabelFontColor: "rgb(47, 79, 79)",
+                       legendMarkerColor: "rgb(74, 172, 197)",
+                       color: "rgb(74, 172, 197)",
+                       indexLabelFontColor: "rgb(74, 172, 197)",
                    dataPoints:@Html.Raw(ViewBag.MLOWOTDataPoints),
                 }
             ]
@@ -507,8 +654,19 @@
             willReadFrequently: true,
 	        title: {
                 text: "Incident Closure Trend",
-               fontColor: "rgb(33, 103, 174)",
-            },
+                fontColor: "white",
+                fontSize: 15,
+                padding: 10,
+                marginRight: 50,
+                backgroundColor: "rgb(0, 128, 128)",
+                cornerRadius: 10,
+                fontWeight: "bold"
+         },
+         legend: {
+             horizontalAlign: "right", // left, center ,right
+             verticalAlign: "center",  // top, center, bottom          
+         },
+
             data: [
               {
                     type: "pie",
@@ -530,8 +688,19 @@
             willReadFrequently: true,
 	        title: {
                 text: "Incidents Summary",
-                fontColor: "rgb(33, 103, 174)",
-            },
+                fontColor: "white",
+                fontSize: 15,
+                padding: 10,
+                marginLeft: 50,
+                backgroundColor: "rgb(74, 172, 197)",
+                cornerRadius: 10,
+                fontWeight: "bold"
+             },
+             legend: {
+                 horizontalAlign: "right", // left, center ,right
+                 verticalAlign: "center",  // top, center, bottom                
+             },
+
             data: [
               {
                     type: "doughnut",

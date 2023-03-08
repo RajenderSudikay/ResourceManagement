@@ -33,6 +33,114 @@
         font-size: xxx-large;
         font-weight: 100
     }
+
+    .banner-image__circle {
+        display: block !important;
+        width: 350px !important;
+        height: 250px !important;
+        /*   border-radius: 50%;*/
+        overflow: hidden !important;
+        /*     margin-left: 80px;*/
+        background-color: white !important;
+        margin-top: 50px !important;
+        border: 3px solid #91bfe3 !important;
+        position: relative;
+    }
+
+    .banner-img {
+        margin-bottom: 0 !important;
+        margin-left: 65px !important;
+        margin-top: 0px !important;
+        /* border-radius: 20%; */
+        border-radius: 50% !important;
+        border: 10px solid white !important;
+    }
+
+    .banner-decoration {
+       /* position: fixed !important;*/
+        bottom: 0 !important;
+        left: 112px !important;
+        z-index: 10 !important;
+        height: 136px !important;
+    }
+
+
+    .banner-decoration__elements {
+    }
+
+    .banner-decoration__circle {
+        display: block !important;
+        width: 60px !important;
+        height: 60px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        top: 85px !important;
+        background-color: #23366f !important;
+        position: relative;
+        bottom: -147px !important;
+        right: -30px !important;
+        padding: 15px !important;
+        box-sizing: inherit !important;
+        margin-top: -231px;
+        position: relative;
+    }
+
+    .banner-decoration__half-mask {
+        display: block !important;
+        top: 60px !important;
+        left: 80px !important;
+        width: 15px !important;
+        height: 40px !important;
+        overflow: hidden !important;
+        -webkit-transform: rotate(45deg) !important;
+        -ms-transform: rotate(45deg) !important;
+        transform: rotate(45deg) !important;
+        margin-top: -5px !important;
+        position: relative;
+    
+    }
+
+    .banner-decoration__half-mask__circle {
+        display: block !important;
+        width: 42px !important;
+        height: 42px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        background-color: #2167ae !important;
+        margin-bottom: 40px !important;
+        padding: 15px !important;
+    }
+
+    .banner-decoration__mini-circle {
+        display: block !important;    
+        top: -41px !important;
+        right: -43px !important;
+        width: 36px !important;
+        height: 36px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        margin-bottom: 0 !important;
+        background-color: #5495cf !important;
+        position: relative;
+    }
+
+    .report-banner {
+        background-color: #91bfe3 !important;
+        height: 250px !important;
+      /*  border: 1px solid #91bfe3 !important*/
+    }
+
+    .banner-empname {
+        text-align: center !important;
+        font-weight: bold !important;
+        color: #23366f !important;
+        font-size: large !important;
+        margin-left: -45px !important
+    }
+    .banner-content {
+        margin-left: 430px !important;
+        margin-top: -170px !important
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
@@ -91,7 +199,8 @@
                                     <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
                                     @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count > 1)
                                     {
-                                        var clients = new List<string>();
+                                        var clients = new List<string>
+                                            ();
                                         foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
                                         {
                                             clients.Add(empProject.Client);
@@ -111,7 +220,8 @@
                                     <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
                                     @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count() > 1)
                                     {
-                                        var projects = new List<string>();
+                                        var projects = new List<string>
+                                            ();
                                         foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
                                         {
                                             var sameProjectExists = false;
@@ -268,6 +378,9 @@
 
 
 
+
+
+
 <div id="chartContainer" style="background-color: white;" class="mt-xl-4"></div>
 
 
@@ -296,6 +409,11 @@
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.chartbelowhrline').css('margin-left', '0px');
         jQuery('.sticky-container').hide();
+        jQuery('.chartimagediv').css('margin-left', '100px');
+        jQuery('.chartimagedivmultiple').css('margin-left', '10px');
+        jQuery('.chartparah').css('margin-left', '685px');
+        jQuery('.chartparah3').css('margin-left', '715px');
+        
 
         //var count = 0;
         //$('.chartdiv').each(function (index, value) {
@@ -318,6 +436,8 @@
         jQuery('.chartbelowhrline').css('margin-left', '-70px');
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.sticky-container').show();
+        jQuery('.chartparah').css('margin-left', '735px !important');
+        jQuery('.chartparah3').css('margin-left', '762px !important');
     });
 
     jQuery(".btn-status-report-view").click(function () {
