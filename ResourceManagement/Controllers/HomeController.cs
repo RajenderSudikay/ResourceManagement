@@ -2089,22 +2089,19 @@ namespace ResourceManagement.Controllers
             try
             {
 
-                int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
-                int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
+                //Ticket_Prioriy & Ticket& Status
+                var MappingValuesList = new List<FieldsIndex>();
+                MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
 
+
+                int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
                 var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
                 var Project_Closing_Date_TargetIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closing_Date_Target").FirstOrDefault().Index);
-
-                var Project_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Category").FirstOrDefault().Index);
-                var Project_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Raisedby").FirstOrDefault().Index);
-
                 var Project_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Priority").FirstOrDefault().Index);
                 var Project_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Status").FirstOrDefault().Index);
-
                 var Project_Closed_Date_ActualIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closed_Date_Actual").FirstOrDefault().Index);
-                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
-
-                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+                var CompletedPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "CompletedPercentage").FirstOrDefault().Index);
+                var RemainingPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "RemainingPercentage").FirstOrDefault().Index);
 
                 var reportModel = new StatusReport_Template2Model();
 
@@ -2112,24 +2109,76 @@ namespace ResourceManagement.Controllers
                 {
                     if (workSheet.Cells[rowIterator, Project_NameIndex].Value != null)
                     {
+
+                        //PRIORITY LOGIC
+                        var reportTicketPriority = "";
+                        if (workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null)
+                        {
+                            var rowIteratorPriority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString();
+                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
+                            if (mappingListItem != null)
+                            {
+                                reportTicketPriority = mappingListItem.FieldName.Trim();
+                            }
+                        }
+                        else
+                        {
+                            reportTicketPriority = "Low";
+                        }
+
+                        bool IsOpenTicket = false;
+                        bool IsClosedTicket = false;
+                        bool IsTODOTicket = false;
+                        bool IsCancelledTicket = false;
+
+                        if (workSheet.Cells[rowIterator, Project_StatusIndex].Value != null)
+                        {
+                            var rowIteratorStatus = workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString();
+                            var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                            if (mappingClosedListItem != null)
+                            {
+                                rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
+                                IsClosedTicket = true;
+                            }
+                            else
+                            {
+                                var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingTODOListItem != null)
+                                {
+                                    IsTODOTicket = true;
+                                }
+
+                                var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingCancelledListItem != null)
+                                {
+                                    IsCancelledTicket = true;
+                                }
+
+                                if (!IsCancelledTicket)
+                                {
+                                    IsOpenTicket = true;
+                                }
+                            }
+                        }
+
                         reportModel.Template2Reports.Add(new monthlyreports_Template2()
                         {
-                            Project_Category = workSheet.Cells[rowIterator, Project_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Project_CategoryIndex].Value.ToString() : "",
-                            Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() : "",
                             Project_Priority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString() : "",
-                            Project_Raisedby = workSheet.Cells[rowIterator, Project_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Project_RaisedbyIndex].Value.ToString() : "",
                             Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : "",
-                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString() : "",
-
-                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
-                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            
+                            CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value) : 0,
+                            RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value) : 0,
                             Uploadedby = fileData.EmployeeName,
                             FileNamee = file.FileName,
                             ConsultantName = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
+                            ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+
+                            Project_Raisedby = "DELETE",
 
                             //NEED TO DECIDE
                             uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
@@ -2455,7 +2504,7 @@ namespace ResourceManagement.Controllers
                 requiredReportMonths.Reverse();
             }
 
-            else 
+            else
             {
                 var selectedMonth = StatusReportChartModel.Month;
                 var selectedMonthNumbers = selectedMonth.Split('|');

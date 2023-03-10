@@ -503,7 +503,7 @@
             jQuery('#' + fieldId + '').css("border", "1px solid green");
         }
 
-        if ((fieldId == "Ticket_Status" || fieldId == "Ticket_Priority") && jQuery('#' + fieldId + ' :selected').val() != "Please Select Excel Column Name") {
+        if ((fieldId == "Ticket_Status" || fieldId == "Ticket_Priority" || fieldId == "Project_Priority" || fieldId == "Project_Status") && jQuery('#' + fieldId + ' :selected').val() != "Please Select Excel Column Name") {
             var selectedColumnIndex = jQuery('#' + fieldId + ' :selected').val();
             var selectedColumnName = jQuery('#' + fieldId + ' :selected').text();
 
@@ -530,7 +530,7 @@
 
                         var multipleSelect = "";
 
-                        if (fieldId == "Ticket_Status") {
+                        if (fieldId == "Ticket_Status" || fieldId == "Project_Status") {
                             //FieldInputSources.push("Newly Raised");
                             //FieldInputSources.push("Open");
                             FieldInputSources.push({ "Closed": "Please select all  <b> ' CLOSED ' </b>  related status for which no action required from your end!" });
@@ -541,7 +541,7 @@
                             multipleSelect = "multiple";
                         }
 
-                        if (fieldId == "Ticket_Priority") {
+                        if (fieldId == "Ticket_Priority" || fieldId == "Project_Priority") {
                             FieldInputSources.push({ "Critical": "" });
                             FieldInputSources.push({ "High": "" });
                             FieldInputSources.push({ "Medium": "" });

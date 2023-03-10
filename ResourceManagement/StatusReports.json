@@ -13,16 +13,13 @@
     "Name": "Template2",
     "fields": {
       "Field1": "Project_Name",
-      "Field2": "Project_Summary",
-      "Field3": "Project_Created_Date",
-      "Field4": "Project_Closing_Date_Target",
-      "Field5": "Project_Category",
-      "Field6": "Project_Raisedby",
-      "Field7": "Project_Priority",
-      "Field8": "Project_Status",
-      "Field9": "Project_Closed_Date_Actual",
-      "Field10": "Organisation",
-      "Field11": "Comments"
+      "Field2": "Project_Created_Date",
+      "Field3": "Project_Closing_Date_Target",
+      "Field4": "Project_Priority",
+      "Field5": "Project_Status",
+      "Field6": "Project_Closed_Date_Actual",
+      "Field7": "CompletedPercentage",
+      "Field8": "RemainingPercentage"     
     }
   },
   {
