@@ -35,5 +35,13 @@ namespace ResourceManagement
         public Nullable<int> ProjectID { get; set; }
         public Nullable<decimal> CompletedPercentage { get; set; }
         public Nullable<decimal> RemainingPercentage { get; set; }
+        public Nullable<bool> Is_Open { get; set; }
+        public Nullable<bool> Is_Closed { get; set; }
+        public Nullable<bool> Is_ToDo { get; set; }
+        public Nullable<bool> Is_Cancelled { get; set; }
+        public Nullable<int> Created_Year { get; set; }
+        public Nullable<int> Created_Month { get; set; }
+        public Nullable<int> Closed_Year { get; set; }
+        public Nullable<int> Closed_Month { get; set; }
     }
 }

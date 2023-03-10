@@ -361,6 +361,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does n
           <Property Name="ProjectID" Type="int" />
           <Property Name="CompletedPercentage" Type="decimal" Precision="5" Scale="2" />
           <Property Name="RemainingPercentage" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -393,6 +401,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does n
           <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
           <Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
           <Property Name="ProjectID" Type="int" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
         </EntityType>
         <EntityType Name="tbl_ambclogininformation">
           <Key>
@@ -1544,6 +1560,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="ProjectID" Type="Int32" />
           <Property Name="CompletedPercentage" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="RemainingPercentage" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Is_Open" Type="Boolean" />
+          <Property Name="Is_Closed" Type="Boolean" />
+          <Property Name="Is_ToDo" Type="Boolean" />
+          <Property Name="Is_Cancelled" Type="Boolean" />
+          <Property Name="Created_Year" Type="Int32" />
+          <Property Name="Created_Month" Type="Int32" />
+          <Property Name="Closed_Year" Type="Int32" />
+          <Property Name="Closed_Month" Type="Int32" />
         </EntityType>
         <EntityType Name="monthlyreports_Template3">
           <Key>
@@ -1573,6 +1597,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Client_Name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="EmplyeeID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="ProjectID" Type="Int32" />
+          <Property Name="Is_Open" Type="Boolean" />
+          <Property Name="Is_Closed" Type="Boolean" />
+          <Property Name="Is_ToDo" Type="Boolean" />
+          <Property Name="Is_Cancelled" Type="Boolean" />
+          <Property Name="Created_Year" Type="Int32" />
+          <Property Name="Created_Month" Type="Int32" />
+          <Property Name="Closed_Year" Type="Int32" />
+          <Property Name="Closed_Month" Type="Int32" />
         </EntityType>
         <EntityType Name="consultantavailiability_Final">
           <Key>
@@ -2173,6 +2205,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template2">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template2">
               <MappingFragment StoreEntitySet="monthlyreports_Template2">
+                <ScalarProperty Name="Closed_Month" ColumnName="Closed_Month" />
+                <ScalarProperty Name="Closed_Year" ColumnName="Closed_Year" />
+                <ScalarProperty Name="Created_Month" ColumnName="Created_Month" />
+                <ScalarProperty Name="Created_Year" ColumnName="Created_Year" />
+                <ScalarProperty Name="Is_Cancelled" ColumnName="Is_Cancelled" />
+                <ScalarProperty Name="Is_ToDo" ColumnName="Is_ToDo" />
+                <ScalarProperty Name="Is_Closed" ColumnName="Is_Closed" />
+                <ScalarProperty Name="Is_Open" ColumnName="Is_Open" />
                 <ScalarProperty Name="RemainingPercentage" ColumnName="RemainingPercentage" />
                 <ScalarProperty Name="CompletedPercentage" ColumnName="CompletedPercentage" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
@@ -2200,6 +2240,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template3">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template3">
               <MappingFragment StoreEntitySet="monthlyreports_Template3">
+                <ScalarProperty Name="Closed_Month" ColumnName="Closed_Month" />
+                <ScalarProperty Name="Closed_Year" ColumnName="Closed_Year" />
+                <ScalarProperty Name="Created_Month" ColumnName="Created_Month" />
+                <ScalarProperty Name="Created_Year" ColumnName="Created_Year" />
+                <ScalarProperty Name="Is_Cancelled" ColumnName="Is_Cancelled" />
+                <ScalarProperty Name="Is_ToDo" ColumnName="Is_ToDo" />
+                <ScalarProperty Name="Is_Closed" ColumnName="Is_Closed" />
+                <ScalarProperty Name="Is_Open" ColumnName="Is_Open" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="EmplyeeID" ColumnName="EmplyeeID" />
                 <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
