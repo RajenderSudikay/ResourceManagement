@@ -171,11 +171,11 @@
                             @Model.AMBC_Active_Emp_view.Client_Project_Name
                         </h2>
                         <h5 style="color: #23366f !important ">
-                            Project Status Report as of <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                            Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
                         </h5>
 
-                        <h5 style="color: #23366f !important ">
-                            Report Period <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  Nov to @Model.SelectedReportMonth.MonthName</b>
+                        <h5 style="color: #23366f !important; margin-left: 72px !important">
+                            Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  Nov to @Model.SelectedReportMonth.MonthName</b>
                         </h5>
 
                         <div style="display: none" class="page-name-title-updated">Status Report - @Model.AMBC_Active_Emp_view.Employee_Name @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</div>
@@ -184,25 +184,24 @@
 
                 </div>
 
-                <hr style="background-color: red !important; height: 1px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+                <hr style="background-color: red !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
 
                 <div class="report-content-resource">
                     <br />
-                    <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe"><b>@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
+                    <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
                     <div class="employeeInfo">
-                        <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe"><b>@Model.AMBC_Active_Emp_view.Contact_Number</b></div>
+                        <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.Contact_Number</b></div>
                     </div>
 
                     <div class="employeeInfo">
                         <img src="~/Assets/Icons/icons8-employee-48.png" width="25" /><div class="empPersonelInfoe">
-                                                                                          <b>@Model.AMBC_Active_Emp_view.Client_Report_Manager</b>
+                            <b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.Client_Report_Manager</b>
                         </div>
                     </div>
 
                     <div class="employeeInfo" style="color: white !important;">
-                        <img src="~/Assets/Icons/checked.png" width="25" /><div class="empPersonelInfoe">
-
-                            <meter id="disk_d" value="0.82" style="height: 20px">82.3%</meter><div class="empAvaliability"><b style="color: #23366f !important;">82.3%</b></div>
+                        <div id="circle">
+                            <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">10%</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 18px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
                         </div>
                     </div>
                 </div>
