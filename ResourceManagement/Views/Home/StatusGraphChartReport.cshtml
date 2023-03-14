@@ -122,7 +122,7 @@
     }
 
     .multplechartdiv {
-       margin-left: 75px !important;
+        margin-left: 75px !important;
     }
 </style>
 
@@ -188,14 +188,14 @@
 
                 <div class="report-content-resource">
                     <br />
-                    <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div> </div>
+                    <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe"><b>@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
                     <div class="employeeInfo">
-                        <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.Contact_Number</div>
+                        <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe"><b>@Model.AMBC_Active_Emp_view.Contact_Number</b></div>
                     </div>
 
                     <div class="employeeInfo">
                         <img src="~/Assets/Icons/icons8-employee-48.png" width="25" /><div class="empPersonelInfoe">
-                            @Model.AMBC_Active_Emp_view.Client_Report_Manager
+                                                                                          <b>@Model.AMBC_Active_Emp_view.Client_Report_Manager</b>
                         </div>
                     </div>
 
@@ -230,87 +230,6 @@
 
         </ul>
     </div>
-
-    <!--<div class="container">
-        <div class="row">
-
-            <div class="col-md">
-                <div style="padding-top: 100px !important; margin-left: 100px !important; color: #2167ae !important; background-color: #23366f !important; margin-top: 70px !important; margin-right: 50px !important; border-bottom-right-radius: 10px !important; border-bottom-left-radius: 10px !important; border: 3px solid #23366f !important ">
-                    <div style="background-color: white !important; border-bottom-left-radius: 30px !important; margin-top: -50px !important; margin-top: -50px !important; padding-top: 10px !important">
-                        <img src="@Model.EmployeeImage" alt="Avatar" style="border-radius: 50%; width: 150px; margin-left: 75px; height: 160px">
-                        <h2 style="padding-left: 75px; text-align: center; width: 200px; padding-top: 10px; color: #2167ae !important"><b style="color: #2167ae !important">@Model.AMBC_Active_Emp_view.Employee_Name</b></h2>
-                    </div>
-
-                    <div class="report-content-resource">
-                        <br />
-                        <div class="employeeInfo">  <img src="~/Assets/Icons/email.png" width="25" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div> </div>
-                        <div class="employeeInfo">
-                            <img src="~/Assets/Icons/phone.png" width="20" /><div class="empPersonelInfoe">@Model.AMBC_Active_Emp_view.Contact_Number</div>
-                        </div>
-
-                        <div class="employeeInfo">
-                            <img src="~/Assets/Icons/icons8-employee-48.png" width="25" /><div class="empPersonelInfoe">
-                                @Model.AMBC_Active_Emp_view.Client_Report_Manager
-                            </div>
-                        </div>
-
-                        <div class="employeeInfo" style="color: white !important;">
-                            <img src="~/Assets/Icons/checked.png" width="25" /><div class="empPersonelInfoe">
-
-                                <meter id="disk_d" value="0.82" style="height: 20px">82.3%</meter><div class="empAvaliability"><b style="color: white !important;">Feb availability: </b> <b style="color: white !important;">82.3%</b></div>
-                            </div>
-                        </div>
-
-                        <br />-->
-    @*<div class="employeeInfo">
-            <img src="~/Assets/Icons/availability.png" width="25" /><div class="empPersonelInfoe">
-                <meter id="disk_d" value="1" style="height: 20px">100%</meter><div class="empAvaliability"><b style="color: white !important;">Mar availability: </b><b style="color: white !important;">100%</b></div>
-            </div>
-        </div>*@
-
-    <!--</div>
-                </div>
-            </div>
-
-
-            <div class="col-md" style="color: rgb(0, 128, 128) !important; background-color: white; border-radius: 30px; width: 18rem; margin-right: 50px; margin-top: 30px; border: 0px solid rgb(0, 128, 128) ">
-                <div style="padding-top: 30px;">
-                    <div>
-                        <h2 style="font-size: xx-large; color: rgb(0, 128, 128) !important">
-                            @Model.AMBC_Active_Emp_view.Client_Project_Name
-                        </h2>
-                        <h5 style="color: rgb(0, 128, 128) !important ">
-                            Project Status Report as of <b style="font-size: initial; color: green !important">@Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
-                        </h5>
-
-                        <div style="display: none" class="page-name-title-updated">Status Report - @Model.AMBC_Active_Emp_view.Employee_Name @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</div>
-
-                    </div>
-
-                </div>
-                <hr style="background-color: red !important; height: 2px" />
-
-                <div class="mt-xl-4">
-                    <h2><b style="color: rgb(0, 128, 128) !important">Activity Details</b></h2>
-                    <ul class="mt-xl-4">
-                        @{
-                            var activitesDetails1 = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
-                        }
-
-                        @if (!string.IsNullOrWhiteSpace(activitesDetails1))
-                        {
-                            foreach (var activity in activitesDetails1.Split('|'))
-                            {
-                                <li class="" style="color: rgb(0, 128, 128) !important ">@activity</li>
-                            }
-                        }
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>-->
-
 </div>
 
 
@@ -352,6 +271,11 @@
 </div>
 
 
+<div class="chartContainer6 chartdiv">
+    <div id="chartContainer6" class="chartimagediv" style="width: 75%; height: @ViewBag.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
+    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+</div>
+
 
 
 <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
@@ -384,6 +308,10 @@
         <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold ">
             <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
             <p class="chartshowhide" data-target="chartContainer5">HIDE</p>
+        </li>
+        <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Project Status.png" />
+            <p class="chartshowhide" data-target="chartContainer6">HIDE</p>
         </li>
 
     </ul>
@@ -460,7 +388,7 @@
                         dataPoints: @Html.Raw(ViewBag.MOTDataPoints),
                     },
                      {
-                        type: "column",
+                         type: "column",
                          legendText: "Closed",
                          indexLabel: "{y}",
                          indexLabelFontWeight: "bold",
@@ -664,7 +592,7 @@
          },
          legend: {
              horizontalAlign: "right", // left, center ,right
-             verticalAlign: "center",  // top, center, bottom          
+             verticalAlign: "center",  // top, center, bottom
          },
 
             data: [
@@ -698,7 +626,7 @@
              },
              legend: {
                  horizontalAlign: "right", // left, center ,right
-                 verticalAlign: "center",  // top, center, bottom                
+                 verticalAlign: "center",  // top, center, bottom
              },
 
             data: [
@@ -715,6 +643,76 @@
             ]
         });
     chart.render();
+
+
+    var chart = new CanvasJS.Chart("chartContainer6",
+        {
+            animationEnabled: true,
+            theme: "light2",
+            exportEnabled: true,
+            willReadFrequently: true,
+            axisY: {
+            /*    title: "percentage",*/
+                titleFontColor: "#005983",
+                titleFontSize: 15,
+                interlacedColor: "rgb(255,250,250)",
+                gridColor: "#FFBFD5",
+                gridThickness: 0,
+                labelTextAlign: "left",
+                stripLines: [
+                    {
+                        value: 0,
+                        showOnTop: true,
+                        color: "gray",
+                        thickness: 0
+                    }
+                ]
+            },
+            axisX: {
+                labelFontColor: "#005983",
+                labelFontSize: 10
+            },
+
+            title: {
+                text: "Project Status Report",
+                fontColor: "white",
+                fontSize: 15,
+                padding: 10,
+                marginBottom: 50,
+                backgroundColor: "rgb(0, 128, 128)",
+                cornerRadius: 10,
+                fontWeight: "bold"
+            },
+            legend: {
+                horizontalAlign: "right", // left, center ,right
+                verticalAlign: "center",  // top, center, bottom
+            },
+            data: [
+                {
+                    indexLabel: "{y}%",
+                    indexLabelFontColor: "white",
+                    indexLabelPlacement: "inside",
+                    type: "stackedBar100",
+                    color: "rgb(0, 128, 128)",
+                    name: "Completed %",
+                    showInLegend: true,
+                    dataPoints: @Html.Raw(ViewBag.ProjectComppletionDataPoints),
+                },
+                {
+                    indexLabel: "{y}%",
+                    indexLabelFontColor: "white",
+                    indexLabelPlacement: "inside",
+                    type: "stackedBar100",
+                    name: "Remaining %",
+                    color: "#a4c4c0",
+                    showInLegend: true,
+                    dataPoints: @Html.Raw(ViewBag.ProjectRemainingDataPoints),
+                }
+            ]
+        });
+
+        chart.render();
+
 
 
     jQuery('.canvasjs-chart-credit').hide();

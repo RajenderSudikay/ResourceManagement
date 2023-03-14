@@ -9,7 +9,7 @@ namespace ResourceManagement.Models
         public class DataPoint
         {
             public string label { get; set; }
-            public double y { get; set; }           
+            public double y { get; set; }
         }
 
         public class MonthWiseDataPoint
@@ -37,11 +37,28 @@ namespace ResourceManagement.Models
             public string name { get; set; }
             public bool showInLegend { get; set; }
             public string legendText { get; set; }
-            public string legendMarkerColor { get; set; }     
+            public string legendMarkerColor { get; set; }
             public string yValueFormatString { get; set; }
             public List<DataPoint> dataPoints { get; set; } = new List<DataPoint>();
             public string axisYType { get; set; }
         }
 
     }
+
+    public class ProjectGraphDataPoint
+    {
+        public class Reports
+        {
+            public string label { get; set; }
+            public decimal? completionPercenatge { get; set; }
+            public decimal? remainingPercenatge { get; set; }
+        }
+
+        public class DataPoint
+        {
+            public string label { get; set; }
+            public decimal? y { get; set; }         
+        }
+    }
+
 }

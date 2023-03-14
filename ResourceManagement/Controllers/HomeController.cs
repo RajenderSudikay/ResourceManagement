@@ -2109,56 +2109,85 @@ namespace ResourceManagement.Controllers
                 {
                     if (workSheet.Cells[rowIterator, Project_NameIndex].Value != null)
                     {
-
                         //PRIORITY LOGIC
-                        var reportTicketPriority = "";
-                        if (workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null)
+                        var projectPriority = "";
+                        if (workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString()))
                         {
                             var rowIteratorPriority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString();
                             var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
                             if (mappingListItem != null)
                             {
-                                reportTicketPriority = mappingListItem.FieldName.Trim();
+                                projectPriority = mappingListItem.FieldName.Trim();
+                            }
+                            else
+                            {
+                                projectPriority = "Low";
                             }
                         }
                         else
                         {
-                            reportTicketPriority = "Low";
+                            projectPriority = "Low";
                         }
 
-                        bool IsOpenTicket = false;
-                        bool IsClosedTicket = false;
-                        bool IsTODOTicket = false;
-                        bool IsCancelledTicket = false;
+                        bool IsOpenProject = false;
+                        bool IsClosedProject = false;
+                        bool IsTODOProject = false;
+                        bool IsCancelledProject = false;
 
-                        if (workSheet.Cells[rowIterator, Project_StatusIndex].Value != null)
+                        var defaultStatus = "default";
+
+                        if (workSheet.Cells[rowIterator, Project_StatusIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString()))
                         {
                             var rowIteratorStatus = workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString();
                             var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
                             if (mappingClosedListItem != null)
                             {
                                 rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
-                                IsClosedTicket = true;
+                                IsClosedProject = true;
                             }
                             else
                             {
                                 var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
                                 if (mappingTODOListItem != null)
                                 {
-                                    IsTODOTicket = true;
+                                    IsTODOProject = true;
                                 }
 
                                 var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
                                 if (mappingCancelledListItem != null)
                                 {
-                                    IsCancelledTicket = true;
+                                    IsCancelledProject = true;
                                 }
 
-                                if (!IsCancelledTicket)
+                                if (!IsCancelledProject)
                                 {
-                                    IsOpenTicket = true;
+                                    IsOpenProject = true;
                                 }
                             }
+                        }
+                        else
+                        {
+                            IsOpenProject = true;
+                        }
+
+                        var closedYear = 0;
+                        var closedMonth = 0;
+                        var createdYear = 0;
+                        var createdMonth = 0;
+
+                        if (workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString() != string.Empty)
+                        {
+                            var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString());
+                            var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+                            createdYear = ticketDateCreated.Year;
+                            createdMonth = ticketDateCreated.Month;
+                        }
+
+                        if (workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString() != string.Empty)
+                        {
+                            var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString());
+                            closedYear = ticketDateClosed.Year;
+                            closedMonth = ticketDateClosed.Month;
                         }
 
                         reportModel.Template2Reports.Add(new monthlyreports_Template2()
@@ -2167,9 +2196,9 @@ namespace ResourceManagement.Controllers
                             Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() : "",
-                            Project_Priority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString() : "",
-                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : "",
-                            
+                            Project_Priority = projectPriority,
+                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : defaultStatus,
+
                             CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value) : 0,
                             RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value) : 0,
                             Uploadedby = fileData.EmployeeName,
@@ -2177,6 +2206,15 @@ namespace ResourceManagement.Controllers
                             ConsultantName = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
                             ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                            Is_Cancelled = IsCancelledProject,
+                            Is_Closed = IsClosedProject,
+                            Is_Open = IsOpenProject,
+                            Is_ToDo = IsTODOProject,
+
+                            Created_Month = createdMonth,
+                            Created_Year = createdYear,
+                            Closed_Month = closedMonth,
+                            Closed_Year = closedYear,
 
                             Project_Raisedby = "DELETE",
 
@@ -2536,6 +2574,8 @@ namespace ResourceManagement.Controllers
                 var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
                 var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
 
+                var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
+
                 var MonthWiseCriticlTotalTickets = 0;
                 var MonthWiseHighOpenTotalTickets = 0;
                 var MonthWiseMediumOpenTotalTickets = 0;
@@ -2678,6 +2718,22 @@ namespace ResourceManagement.Controllers
                         label = requiredReportMonth.Month,
                         y = monthSpecificLosedTicketsCount
                     });
+
+
+                    //TEMPLATE2 code updates
+                    var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.ConsultantName == StatusReportChartModel.EmployeeName && project.Is_Cancelled == false && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+
+                    //In case of Month report for selected month only report will generate
+                    if (StatusReportChartModel.ReportType == "Month Report" && model.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
+                    {
+                        ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                    }
+                    if (StatusReportChartModel.ReportType != "Month Report")
+                    {
+                        ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                    }
+
+
                 }
 
                 var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
@@ -2814,8 +2870,65 @@ namespace ResourceManagement.Controllers
                 //INCIDENTS SUMMARY
                 //GRAPH5
                 ViewBag.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
+
+
+                //TEMPLTE 2 UPDATES
+                if (ProjectReports != null && ProjectReports.Count > 0)
+                {
+                    var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
+
+                    var uniqueProjects = allProjects.Distinct().ToList();
+
+
+                    var projectReportHeight = "140px";
+                    if (uniqueProjects != null && uniqueProjects.Count > 2)
+                    {
+                        var height = uniqueProjects.Count * 50;
+                        projectReportHeight = height + "px";
+                    }
+                    ViewBag.ProjectReportHeight = projectReportHeight;
+
+                    var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                    var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                    foreach (var uniqueProject in uniqueProjects)
+                    {
+                        if (ProjectComppletionDataPoints.Where(x => x.label == uniqueProject.label).FirstOrDefault() == null)
+                        {
+                            ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                            {
+                                label = uniqueProject.label,
+                                y = uniqueProject.completionPercenatge
+                            });
+
+                            ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                            {
+                                label = uniqueProject.label,
+                                y = uniqueProject.remainingPercenatge
+                            });
+                        }
+
+                    }
+
+                    ViewBag.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
+                    ViewBag.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
+                }
+
+
             }
             return PartialView(model);
+        }
+
+        private static void ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth)
+        {
+            foreach (var projectDetailForSelectedMonth in projectDetailsForSelectedMonth)
+            {
+                ProjectReports.Add(new ProjectGraphDataPoint.Reports()
+                {
+                    label = projectDetailForSelectedMonth.Project_Name,
+                    completionPercenatge = projectDetailForSelectedMonth.CompletedPercentage,
+                    remainingPercenatge = projectDetailForSelectedMonth.RemainingPercentage
+                });
+            }
         }
 
         public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime)
@@ -2824,7 +2937,8 @@ namespace ResourceManagement.Controllers
             {
                 MonthEndDate = System.DateTime.DaysInMonth(inputDateTime.Year, inputDateTime.Month).ToString(),
                 MonthName = inputDateTime.ToString("MMM"),
-                year = inputDateTime.Year.ToString()
+                year = inputDateTime.Year.ToString(),
+                ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString()
             };
         }
     }

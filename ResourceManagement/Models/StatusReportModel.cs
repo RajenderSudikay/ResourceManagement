@@ -120,6 +120,7 @@ namespace ResourceManagement.Models
         public string MonthEndDate { get; set; }
         public string year { get; set; }
         public string Suffix { get; set; }
+        public string ShortFormat { get; set; }
 
     }
 }

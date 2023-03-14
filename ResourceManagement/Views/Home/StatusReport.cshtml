@@ -43,7 +43,7 @@
         /*     margin-left: 80px;*/
         background-color: white !important;
         margin-top: 50px !important;
-        border: 3px solid #91bfe3 !important;
+        border: 3px solid rgb(74, 172, 197) !important;
         position: relative;
     }
 
@@ -125,9 +125,9 @@
     }
 
     .report-banner {
-        background-color: #91bfe3 !important;
+        background-color: rgb(74, 172, 197) !important;
         height: 250px !important;
-      /*  border: 1px solid #91bfe3 !important*/
+        /*  border: 1px solid #91bfe3 !important*/
     }
 
     .banner-empname {
@@ -403,6 +403,12 @@
 
     });
 
+    jQuery('#reportmonth').change(function (evt) {
+        jQuery('#reportmonth').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportmonth').hide();
+
+    });
+
     jQuery('.btn-download-report').click(function () {
         /*   jQuery('.chartContainer1-table').css("width", "70%");*/
         jQuery('.status-report-view-options').hide();
@@ -459,9 +465,19 @@
             formValidated = false;
         }
         else {
-            jQuery('#reportyear').css("border", "1px solid green");
+            jQuery('#reportmonth').css("border", "1px solid green");
             jQuery('.invalid-feedback-reportmonth').hide();
         }
+
+        if (jQuery('#reporttype :selected').text() == "-- Select Type --") {
+            jQuery('#reporttype').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reporttype').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reporttype').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reporttype').hide();
+        }        
 
         if (formValidated == true) {
 
