@@ -2206,6 +2206,7 @@ namespace ResourceManagement.Controllers
                             ConsultantName = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
                             ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                            EmplyeeID = fileData.EmployeeID,
                             Is_Cancelled = IsCancelledProject,
                             Is_Closed = IsClosedProject,
                             Is_Open = IsOpenProject,
@@ -2215,8 +2216,6 @@ namespace ResourceManagement.Controllers
                             Created_Year = createdYear,
                             Closed_Month = closedMonth,
                             Closed_Year = closedYear,
-
-                            Project_Raisedby = "DELETE",
 
                             //NEED TO DECIDE
                             uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
@@ -2528,6 +2527,8 @@ namespace ResourceManagement.Controllers
 
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
+
+            Decimal emplyeeAvailabiliy = 0;
             if (StatusReportChartModel.ReportType == "Month Report")
             {
                 var selectedMonth = StatusReportChartModel.Month;
@@ -2538,7 +2539,12 @@ namespace ResourceManagement.Controllers
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
-                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3)));
+
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
+                requiredReportMonths.Add(startingMonthForTheReport);
+
+                model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
+
                 requiredReportMonths.Reverse();
             }
 
@@ -2546,17 +2552,28 @@ namespace ResourceManagement.Controllers
             {
                 var selectedMonth = StatusReportChartModel.Month;
                 var selectedMonthNumbers = selectedMonth.Split('|');
-
+                int firstMonthFromTheSelection = 0;
+                var reportStartMonth = "";
                 foreach (var selectedMonthNumber in selectedMonthNumbers)
                 {
                     if (selectedMonthNumber != string.Empty)
                     {
+                      
                         var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
+
                         model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
-                        requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        if (firstMonthFromTheSelection == 0)
+                        {
+                            reportStartMonth = selectedMonthInfo.Month;
+                        }
+                        requiredReportMonths.Add(selectedMonthInfo);
+                        firstMonthFromTheSelection++;
                     }
                 }
+                model.SelectedReportMonth.ReportStartMonth = reportStartMonth;
             }
 
             var graph1Reports = new List<Root>();
@@ -2593,6 +2610,14 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
+                    var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == StatusReportChartModel.EmployeeID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+
+                    if (specifMonthAvailablity != null)
+                    {
+                        var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                        emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                    }
+
                     var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
@@ -2810,6 +2835,14 @@ namespace ResourceManagement.Controllers
 
                 var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
                 ViewBag.Graph5OverallStatus = grpah5OverallStatus;
+
+
+                //EMPLOYEE DETAILS
+                var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+
+                Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+
+                ViewBag.EmaployeeAvailabity = availabity;
 
                 //GRAPH1
                 var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);

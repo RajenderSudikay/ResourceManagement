@@ -94,7 +94,7 @@ namespace ResourceManagement.Models
         public string ClientName { get; set; } = string.Empty;
 
         [JsonPropertyName("ReportType")]
-        public string ReportType { get; set; } = string.Empty;  
+        public string ReportType { get; set; } = string.Empty;
     }
 
     public class MonthWiseReportModel
@@ -102,7 +102,7 @@ namespace ResourceManagement.Models
         public string Month { get; set; } = string.Empty;
         public Nullable<int> MonthNumber { get; set; } = 0;
         public Nullable<int> Year { get; set; } = 0;
-      
+
     }
 
 
@@ -121,6 +121,7 @@ namespace ResourceManagement.Models
         public string year { get; set; }
         public string Suffix { get; set; }
         public string ShortFormat { get; set; }
+        public string ReportStartMonth { get; set; }
 
     }
 }
