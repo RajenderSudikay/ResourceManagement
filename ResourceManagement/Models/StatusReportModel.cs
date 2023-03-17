@@ -95,6 +95,12 @@ namespace ResourceManagement.Models
 
         [JsonPropertyName("ReportType")]
         public string ReportType { get; set; } = string.Empty;
+
+        [JsonPropertyName("TemplateType")]
+        public string TemplateType { get; set; } = string.Empty;
+
+        [JsonPropertyName("TemplateNumber")]
+        public string TemplateNumber { get; set; } = string.Empty;
     }
 
     public class MonthWiseReportModel
@@ -124,4 +130,15 @@ namespace ResourceManagement.Models
         public string ReportStartMonth { get; set; }
 
     }
+
+    public class RMA_UploadedStatusReportViewModel
+    {
+        public StatusReportChartModel Model { get; set; }
+        public bool IsExcelReport { get; set; }
+        public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
+        public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
+        public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
+        public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
+    }
+
 }

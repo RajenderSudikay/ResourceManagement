@@ -454,6 +454,7 @@
     <Content Include="Views\Home\_ModalAlerts.cshtml" />
     <Content Include="Views\Home\StatusReport.cshtml" />
     <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
+    <Content Include="Views\Home\UploadedStatusReportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

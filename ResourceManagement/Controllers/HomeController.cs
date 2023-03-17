@@ -2558,7 +2558,7 @@ namespace ResourceManagement.Controllers
                 {
                     if (selectedMonthNumber != string.Empty)
                     {
-                      
+
                         var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
 
@@ -2973,6 +2973,152 @@ namespace ResourceManagement.Controllers
                 year = inputDateTime.Year.ToString(),
                 ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString()
             };
+        }
+
+        public ActionResult UploadedStatusReportView(StatusReportChartModel StatusReportChartModel)
+        {
+            RMA_UploadedStatusReportViewModel model = StatusUploadedReportModel(StatusReportChartModel);
+            return PartialView(model);
+        }
+
+        private static RMA_UploadedStatusReportViewModel StatusUploadedReportModel(StatusReportChartModel StatusReportChartModel)
+        {
+            var model = new RMA_UploadedStatusReportViewModel();
+
+            var selectedReportedMonthStartDate = new DateTime();
+            var requiredReportMonths = new List<MonthWiseReportModel>();
+
+            if (StatusReportChartModel.ReportType == "Month Report")
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+            }
+
+            else
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
+                {
+                    if (selectedMonthNumber != string.Empty)
+                    {
+
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        requiredReportMonths.Add(selectedMonthInfo);
+
+                    }
+                }
+            }
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                model.RMA_EmployeeModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName).FirstOrDefault();
+
+                foreach (var requiredReportMonth in requiredReportMonths)
+                {
+                    if (StatusReportChartModel.TemplateNumber == "Template1")
+                    {
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                        if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                        {
+                            model.Template1Reports.AddRange(selectedMonthTickets);
+                        }
+                    }
+                    //TEMPLATE2 code updates
+                    if (StatusReportChartModel.TemplateNumber == "Template2")
+                    {
+                        var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.ConsultantName == StatusReportChartModel.EmployeeName && project.Is_Cancelled == false && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                        if (monthProjectReport != null && monthProjectReport.Count > 0)
+                        {
+                            model.Template2Reports.AddRange(monthProjectReport);
+                        }
+                    }
+
+                }
+
+            }
+
+            return model;
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ExportStatusReports(string GridHtml)
+        {
+            StatusReportChartModel ajaxReportModel = JsonConvert.DeserializeObject<StatusReportChartModel>(GridHtml);
+
+            List<SourceFile> sourceFiles = new List<SourceFile>();
+
+            var requiredZIPFileName = string.Empty;
+
+            string htmlContent = "";
+
+            if (ajaxReportModel != null)
+            {
+                requiredZIPFileName = ajaxReportModel.EmployeeName + "-" + ajaxReportModel.TemplateType + "-status report-";
+
+                var model = StatusUploadedReportModel(ajaxReportModel);
+                model.IsExcelReport = true;
+
+                //foreach (var employee in timeSheetAjaxReportModel.Employees)
+                //{
+                //    var employeeId = employee.Split('&')[0];
+                //    var emplyeeName = employee.Split('&')[1];
+
+                //    if (timeSheetAjaxReportModel.Type == ".xls")
+                //    {
+                htmlContent = RenderPartialToString(this, "UploadedStatusReportView", model, ViewData, TempData);
+
+                //string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
+
+                byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
+
+                sourceFiles.Add(new SourceFile()
+                {
+                    FileBytes = byteArray,
+                    Extension = ".xls",
+                    Name = requiredZIPFileName
+                });
+                //    }
+                //}
+            }
+
+            byte[] fileBytes = null;
+
+            // create a working memory stream
+            using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+            {
+                // create a zip
+                using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
+                {
+                    // interate through the source files
+                    foreach (SourceFile f in sourceFiles)
+                    {
+                        // add the item name to the zip
+                        System.IO.Compression.ZipArchiveEntry zipItem = zip.CreateEntry(f.Name + "." + f.Extension);
+                        // add the item bytes to the zip entry by opening the original file and copying the bytes
+                        using (System.IO.MemoryStream originalFileMemoryStream = new System.IO.MemoryStream(f.FileBytes))
+                        {
+                            using (System.IO.Stream entryStream = zipItem.Open())
+                            {
+                                originalFileMemoryStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+                fileBytes = memoryStream.ToArray();
+            }
+
+            // download the constructed zip
+            //Response.AddHeader("Content-Disposition", "attachment; filename=" + requiredZIPFileName + ".zip");
+
+            return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", "attachment;filename=ExportedHtml.xls");
+
+            //return File(fileBytes, "application/zip");
         }
     }
 }

@@ -1,0 +1,102 @@
+﻿@model ResourceManagement.Models.RMA_UploadedStatusReportViewModel
+
+@{
+    ViewBag.Title = "Status Report Uploaded View Page";
+}
+
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card status-report-card">
+        <div class="card-body ">
+
+            @if (Model != null && Model.Template1Reports.Count > 0)
+            {
+                <table class="table" id="timesheet-table" style="margin-top: 2px">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            @if (!Model.IsExcelReport)
+                            {
+                                <th class="" scope="col" style="text-align: center">Report Month</th>
+                            }
+
+                            <th class="" scope="col" style="text-align: center">Ticket Number</th>
+                            <th class="" scope="col" style="text-align: center">Created_Date</th>
+                            <th class="" scope="col" style=" text-align: center">Priority</th>
+                            <th class="" scope="col" style="text-align: center">Status</th>
+                            <th class="" scope="col" style="text-align: center">Closed_Date</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+
+                        @foreach (var report in Model.Template1Reports)
+                        {
+                            <tr style="background-color: #fff" class="time">
+                                @if (!Model.IsExcelReport)
+                                {
+                                    <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                }
+                                <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
+                                <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                                <td scope="row" style="vertical-align: middle; text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            }
+
+
+            @if (Model != null && Model.Template2Reports.Count > 0)
+            {
+                <table class="table" id="timesheet-table" style="margin-top: 2px">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #BCD2E8">
+                            @if (!Model.IsExcelReport)
+                            {
+                                <th class="" scope="col" style="text-align: center">Report Month</th>
+                            }
+                            <th class="" scope="col" style="text-align: center">Project Name</th>
+                            <th class="" scope="col" style="text-align: center">Created Date</th>
+                            <th class="" scope="col" style=" text-align: center">Closing Date Target</th>
+                            <th class="" scope="col" style="text-align: center">Priority</th>
+                            <th class="" scope="col" style="text-align: center">Status</th>
+                            <th class="" scope="col" style="text-align: center">Closed Date Actual</th>
+                            <th class="" scope="col" style="text-align: center">Completed %</th>
+                            <th class="" scope="col" style="text-align: center">Remaining %</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+
+                        @foreach (var report in Model.Template2Reports)
+                        {
+                            <tr style="background-color: #fff" class="time">
+                                @if (!Model.IsExcelReport)
+                                {
+                                    <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                }
+                                <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
+                                <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
+                                <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
+                                <td scope="row" style="vertical-align: middle; text-align: center">@report.Project_Status</td>
+                                <td scope="row" style="vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
+                                <td scope="row" style="vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
+                                <td scope="row" style="text-align:center; vertical-align:middle">@report.RemainingPercentage</td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </div>
+</div>

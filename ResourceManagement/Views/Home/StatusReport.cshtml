@@ -353,20 +353,6 @@
             </div>
 
             <div class="row">
-                @*<div class="col-md-6">
-                        <div class="form-group">
-                            <label for="reportgraphtypes">Select Graphs</label>
-                            <select id="reportgraphtypes" name="reportgraphtypes" class="form-control form-select form-select-lg mb-3" multiple>
-                                <option disabled selected>-- Select Graphs --</option>
-                                <option value="Month Report">Monthly Repot</option>
-                                <option value="Quarterly Report">Monthly Raised Vs Closed</option>
-                                <option value="Half Year Report">Open Tickets</option>
-                                <option value="Annual Report">Incidents Closure Trend</option>
-                                <option value="Annual Report">Incidents Summary</option>
-                            </select>
-                        </div>
-                    </div>*@
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="reportClient">Client</label>
@@ -377,10 +363,36 @@
                             }
                         </select>
                     </div>
-
+                </div>
+                <div class="col-md-6 reporttemplatetyep" style="display: none">
+                    <div class="form-group">
+                        <label for="uploadreporttype">Report Template Type: <b style="color:red">*</b></label>
+                        <select id="statusreportupload" name="uploadreporttype" class="form-control form-select form-select-lg mb-3" required aria-describedby="statusreportuploadhelp">
+                            <option value="-- Select Template --" selected disabled>-- Select Template --</option>
+                            <option value="Template1">Incident Report</option>
+                            <option value="Template2">Project Report</option>
+                            <option value="Template3">Test Report</option>
+                        </select>
+                        <div id="statusreportuploadhelp" class="form-text" style="color:blueviolet !important"><b>This field is required to download the uploaded reports from database (The one which you uploaded).</b></div>
+                        <div class="invalid-feedback-statusreportupload" style="color:red; display:none">
+                            Please Select Template
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view" style="width: 150px; border-radius: 10px; float: right; /* margin-left: 34px !important; */ margin-right: 890px !important; background-color: #005983 !important; position: absolute; "><b>View Uploaded Report</b></button>
+                @using (Html.BeginForm("ExportStatusReports", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+
+                    <div class="form-group col-lg-4" style="margin-left:10px">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius:15px" />
+                        </div>
+                    </div>
+                }
                 <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width:100px; border-radius:10px"><b>View Report</b></button>
                 <button type="button" class="btn btn-success btn-lg btn-download-report" style="border-radius:10px; display: none">Download Report</button>
             </div>
@@ -405,9 +417,35 @@
 
 <script>
 
+    jQuery(".btn-status-report-generate").on("click", function () {
+        //var isAllRequiredInputsSelected = TimeSheetReportsInPutsValidate();
+        //if (isAllRequiredInputsSelected == false) {
+        //    return false;
+        //}
+
+        var statusChartModel = {
+            ClientName: jQuery('#reportClient :selected').text(),
+            ProjectID: jQuery('#reportClient :selected').val(),
+            Year: jQuery('#reportyear :selected').val(),
+            Month: jQuery('#reportmonth :selected').val(),
+            ReportType: jQuery('#reporttype :selected').val(),
+            EmployeeID: jQuery('#selectEmployeename :selected').val(),
+            EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
+            TemplateType: jQuery('#statusreportupload :selected').text().trim(),
+            TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+        };
+
+        var GridHtml = JSON.stringify(statusChartModel).toString();
+
+        $("input[name='GridHtml']").val(GridHtml);
+
+    });
+
     jQuery('#reportyear').change(function (evt) {
         jQuery("#reporttype").prop("selectedIndex", 0);
         jQuery("#reportmonth").prop("selectedIndex", 0);
+        jQuery('#reportyear').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportyear').hide();
 
         //INSTEAD OF MAKING AJAX CALL MAKING EMPTY FIRST THEN ADDING DEFAULT SELECT OPTION TO DROPDOWN
         jQuery('#reportmonth').empty();
@@ -418,6 +456,12 @@
     jQuery('#reportmonth').change(function (evt) {
         jQuery('#reportmonth').css("border", "1px solid green");
         jQuery('.invalid-feedback-reportmonth').hide();
+
+    });
+
+    jQuery('#statusreportupload').change(function (evt) {
+        jQuery('#statusreportupload').css("border", "1px solid green");
+        jQuery('.invalid-feedback-statusreportupload').hide();
 
     });
 
@@ -433,21 +477,6 @@
         jQuery('.chartparah3').css('margin-left', '715px');
         jQuery('.employeeinfohr').css("width", "90%");
 
-
-        //var count = 0;
-        //$('.chartdiv').each(function (index, value) {
-        //    if ($(this).css('display') == 'none') {
-
-        //    }
-        //    else {
-        //        count++;
-
-        //        if (count == 3) {
-        //            $(this).css("margin-top", "100px !important")
-        //        }
-        //    }
-        //});
-
         window.print();
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
@@ -460,8 +489,7 @@
         jQuery('.employeeinfohr').css("width", "75% !important");
     });
 
-    jQuery(".btn-status-report-view").click(function () {
-
+    function ReportFormValidate() {
         var formValidated = true;
         if (jQuery('#reportyear :selected').text() == "-- Select Year --") {
             jQuery('#reportyear').css("border", "1px solid red");
@@ -493,8 +521,12 @@
             jQuery('.invalid-feedback-reporttype').hide();
         }
 
-        if (formValidated == true) {
+        return formValidated;
+    }
 
+    jQuery(".btn-status-report-view").click(function () {
+        var formValidated = ReportFormValidate();
+        if (formValidated == true) {
             var statusChartModel = {
                 ClientName: jQuery('#reportClient :selected').text(),
                 ProjectID: jQuery('#reportClient :selected').val(),
@@ -521,7 +553,53 @@
         }
     });
 
+    jQuery(".btn-status-uploaded-view").click(function () {
+        var formValidated = ReportFormValidate();
+        jQuery('.reporttemplatetyep').show();
+
+        if (jQuery('#statusreportupload :selected').text() == "-- Select Template --") {
+            jQuery('#statusreportupload').css("border", "1px solid red");
+            jQuery('.invalid-feedback-statusreportupload').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#statusreportupload').css("border", "1px solid green");
+            jQuery('.invalid-feedback-statusreportupload').hide();
+        }
+
+        if (formValidated == true) {
+            var statusChartModel = {
+                ClientName: jQuery('#reportClient :selected').text(),
+                ProjectID: jQuery('#reportClient :selected').val(),
+                Year: jQuery('#reportyear :selected').val(),
+                Month: jQuery('#reportmonth :selected').val(),
+                ReportType: jQuery('#reporttype :selected').val(),
+                EmployeeID: jQuery('#selectEmployeename :selected').val(),
+                EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
+                TemplateType: jQuery('#statusreportupload :selected').text().trim(),
+                TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+            };
+
+            jQuery.ajax({
+                url: "/UploadedStatusReportView",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportChartModel: statusChartModel },
+                success: function (data) {
+                    jQuery('.btn-download-report').show();
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
     $("#reporttype").on("change", function () {
+        jQuery('#reporttype').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reporttype').hide();
+
         jQuery.ajax({
             url: "/GetMonthsBasedOnYear",
             type: "POST",
