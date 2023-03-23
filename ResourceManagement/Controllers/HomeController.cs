@@ -2502,9 +2502,9 @@ namespace ResourceManagement.Controllers
             return percenatage;
         }
 
-        public string EmployeeProfileImagePath(StatusReportChartModel StatusReportChartModel)
+        public string EmployeeProfileImagePath(string EmpID)
         {
-            var imageUrl = "/Assets/EmployeeImagesPNG/" + StatusReportChartModel.EmployeeID + ".png";
+            var imageUrl = "/Assets/EmployeeImagesPNG/" + EmpID + ".png";
             var baseUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority));
             var url = new Uri(baseUri, VirtualPathUtility.ToAbsolute(imageUrl));
             using (var client = new HttpClient())
@@ -2523,7 +2523,7 @@ namespace ResourceManagement.Controllers
         public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
         {
             var model = new GraphChartModel();
-            model.EmployeeImage = EmployeeProfileImagePath(StatusReportChartModel);
+            model.EmployeeImage = EmployeeProfileImagePath(StatusReportChartModel.EmployeeID[0]);
 
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
@@ -2610,7 +2610,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var requiredReportMonth in requiredReportMonths)
                 {
-                    var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == StatusReportChartModel.EmployeeID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+                    var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == StatusReportChartModel.EmployeeID[0] && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
 
                     if (specifMonthAvailablity != null)
                     {
@@ -2618,7 +2618,7 @@ namespace ResourceManagement.Controllers
                         emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
                     }
 
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID[0] && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                     if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
@@ -2729,7 +2729,7 @@ namespace ResourceManagement.Controllers
                     }
 
                     var monthSpecificLosedTicketsCount = 0;
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
+                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID[0] && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
 
                     if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                     {
@@ -2981,10 +2981,10 @@ namespace ResourceManagement.Controllers
             return PartialView(model);
         }
 
-        private static RMA_UploadedStatusReportViewModel StatusUploadedReportModel(StatusReportChartModel StatusReportChartModel)
+        private RMA_UploadedStatusReportViewModel StatusUploadedReportModel(StatusReportChartModel StatusReportChartModel)
         {
             var model = new RMA_UploadedStatusReportViewModel();
-
+            model.AjaxModel = StatusReportChartModel;
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
 
@@ -3009,37 +3009,44 @@ namespace ResourceManagement.Controllers
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
                         var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
                         requiredReportMonths.Add(selectedMonthInfo);
-
                     }
                 }
             }
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                model.RMA_EmployeeModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName).FirstOrDefault();
-
-                foreach (var requiredReportMonth in requiredReportMonths)
+                foreach (var empID in StatusReportChartModel.EmployeeID)
                 {
-                    if (StatusReportChartModel.TemplateNumber == "Template1")
+                    var empReportModel = new RMA_UploadedStatusReportModel();
+
+                    empReportModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
+                    empReportModel.EmployeeImage = EmployeeProfileImagePath(empReportModel.AMBC_Active_Emp_view.Employee_ID.ToString());
+
+
+                    foreach (var requiredReportMonth in requiredReportMonths)
                     {
-                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
-                        if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                        if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
-                            model.Template1Reports.AddRange(selectedMonthTickets);
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID).ToList();
+                            if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                empReportModel.Template1Reports.AddRange(selectedMonthTickets);
+                            }
                         }
-                    }
-                    //TEMPLATE2 code updates
-                    if (StatusReportChartModel.TemplateNumber == "Template2")
-                    {
-                        var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.ConsultantName == StatusReportChartModel.EmployeeName && project.Is_Cancelled == false && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
-                        if (monthProjectReport != null && monthProjectReport.Count > 0)
+                        //TEMPLATE2 code updates
+                        if (StatusReportChartModel.TemplateNumber == "Template2")
                         {
-                            model.Template2Reports.AddRange(monthProjectReport);
+                            var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.Is_Cancelled == false && project.EmplyeeID == empID).ToList();
+                            if (monthProjectReport != null && monthProjectReport.Count > 0)
+                            {
+                                empReportModel.Template2Reports.AddRange(monthProjectReport);
+                            }
                         }
+
                     }
 
+                    model.ViewModel.Add(empReportModel);
                 }
-
             }
 
             return model;

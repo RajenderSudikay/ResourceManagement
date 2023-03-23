@@ -76,7 +76,7 @@ namespace ResourceManagement.Models
         public string EmployeeName { get; set; } = string.Empty;
 
         [JsonPropertyName("EmployeeID")]
-        public string EmployeeID { get; set; } = string.Empty;
+        public List<string> EmployeeID { get; set; } = new List<string>();
 
         [JsonPropertyName("Month")]
         public string Month { get; set; } = string.Empty;
@@ -133,9 +133,16 @@ namespace ResourceManagement.Models
 
     public class RMA_UploadedStatusReportViewModel
     {
-        public StatusReportChartModel Model { get; set; }
-        public bool IsExcelReport { get; set; }
-        public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
+        public bool IsExcelReport { get; set; } = false;
+        public StatusReportChartModel AjaxModel { get; set; } = new StatusReportChartModel();
+        public List<RMA_UploadedStatusReportModel> ViewModel { get; set; } = new List<RMA_UploadedStatusReportModel>();
+
+    }
+
+    public class RMA_UploadedStatusReportModel
+    {
+        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; } = new AMBC_Active_Emp_view();
+        public string EmployeeImage { get; set; }
         public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
         public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
         public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
