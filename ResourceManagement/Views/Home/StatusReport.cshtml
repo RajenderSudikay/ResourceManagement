@@ -466,8 +466,10 @@
 
         if (jQuery('#reportCategory :selected').val() == "UploadedReports") {
             jQuery('.reporttemplatetyep').css("display", "block");
+            jQuery("#selectEmployeename").attr("multiple", "multiple");
         }
         else {
+            jQuery("#selectEmployeename").removeAttr("multiple");
             jQuery('.reporttemplatetyep').css("display", "none");
         }
     });

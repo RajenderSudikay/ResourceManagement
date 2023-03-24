@@ -111,12 +111,37 @@ namespace ResourceManagement.Models
 
     }
 
-
     public class GraphChartModel
     {
-        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
+        public List<GraphChartViewModel> ViewModel { get; set; }
         public SelectedReportMonthModel SelectedReportMonth { get; set; }
+    }
+
+
+    public class GraphChartViewModel
+    {
+        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }     
         public string EmployeeImage { get; set; }
+        public string Graph4OverallStatus { get; set; }
+        public string Graph5OverallStatus { get; set; }
+        public Int32 EmaployeeAvailabity { get; set; }
+        public double Graph1OverallStatus { get; set; }
+        public string MNRTDataPoints { get; set; }
+        public string MOTDataPoints { get; set; }
+        public string MCTTotalDataPoints { get; set; }
+        public string Graph2OverallStatus { get; set; }
+        public string MSpecifCTDataPoints { get; set; }
+        public string Graph3OverallStatus { get; set; }
+        public string MCRITOTDataPoints { get; set; }
+        public string MHIGOTDataPoints { get; set; }
+        public string MMEDIOTDataPoints { get; set; }
+        public string MLOWOTDataPoints { get; set; }
+        public string ClosedTrend { get; set; }
+        public string IncidentsSummary { get; set; }
+        public string ProjectReportHeight { get; set; }
+        public string ProjectComppletionDataPoints { get; set; }
+        public string ProjectRemainingDataPoints { get; set; }
+
 
     }
 

@@ -1,204 +1,344 @@
 ﻿@model ResourceManagement.Models.GraphChartModel
 
 <style>
-  
+
+    .report-content-resource {
+        /*  padding-left: 15px !important;
+                    padding-top: 20px !important;*/
+        font-size: small !important;
+        /* margin-left: 10px !important;
+                    margin-top: -15px !important*/
+
+        margin-top: -20px !important;
+    }
+
+    .table-striped-custom tr:nth-of-type(odd) {
+        background-color: rgba(72, 113, 248, 0.068);
+    }
+
+    .vl {
+        border-left: 1px solid rgb(33, 103, 174);
+        height: 250px;
+        margin-left: 30px;
+    }
+
+    .grapgh1firsttd {
+        width: 50px !important;
+        text-align: center !important;
+        font-weight: bold;
+        color: white !important;
+        border-top: 0px solid #0095a8 !important;
+        background-color: white;
+    }
+
+    .graph1contenttd {
+        text-align: center !important;
+        /*   width: 160px !important;*/
+        border-left: 1px solid #0095a8 !important;
+        border-top: 1px solid #0095a8 !important;
+        font-weight: bold !important;
+        vertical-align: middle !important;
+    }
+
+    .hrlineDiv {
+        background-color: white;
+        padding-top: 90px;
+        text-align: center;
+        margin-bottom: 30px;
+        /*border-bottom: 1px solid rgb(0, 128, 128) !important;*/
+        margin-left: 150px;
+        margin-right: 150px
+    }
+
+    /*    html, body, #container {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }*/
+
+    .chartbelowhrline {
+        margin-left: -70px;
+        text-align: center;
+    }
+
+    .sticky-container {
+        padding: 0px;
+        margin: 0px;
+        position: fixed;
+        right: -119px;
+        top: 300px;
+        width: 200px;
+    }
+
+    .sticky li {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px 0px 1px 0px;
+        -webkit-transition: all 0.25s ease-in-out;
+        -moz-transition: all 0.25s ease-in-out;
+        -o-transition: all 0.25s ease-in-out;
+        transition: all 0.25s ease-in-out;
+        cursor: pointer;
+        filter: gray;
+    }
+
+        .sticky li:hover {
+            margin-left: -115px;
+            -webkit-filter: grayscale(0%);
+        }
+
+        .sticky li img {
+            float: left;
+            margin: 2px 2px 2px 2px;
+            margin-right: 10px;
+        }
+
+        .sticky li p {
+            padding: 0px;
+            margin: 0px;
+            text-transform: uppercase;
+            line-height: 43px;
+        }
+
+    .employeeInfo {
+        color: #23366f !important;
+        margin-bottom: 2px !important;
+    }
+
+    .empPersonelInfoe {
+        margin-left: 35px !important;
+        margin-top: -18px !important;
+        color: #23366f !important
+    }
+
+    .empAvaliability {
+        margin-top: -22px !important;
+        margin-left: 73px !important;
+    }
+
+    .report-activity {
+        margin-left: 70px !important;
+        margin-top: 30px !important;
+    }
+
+    .multplechartdiv {
+        margin-left: 75px !important;
+    }
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
-<div class="" style="background-color: white; color: #2167ae;">
-    <br />
-    <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px !important;  height: 70px !important; margin-top: -10px !important;width: 200px !important" />
-    @{
-        var clientLogo = "";
-        if (Model.AMBC_Active_Emp_view.Client != "AMBC")
-        {
-            clientLogo = "/Assets/ClientLogos/" + Model.AMBC_Active_Emp_view.Client + ".png";
+@if (Model == null && Model.ViewModel == null && Model.ViewModel.Count == 0)
+{
+    return;
+}
+@{
+    int i = 1;
+}
+
+@foreach (var chartModel in Model.ViewModel)
+{
+    var chart1Name = "chart1Container" + i;
+    var chart2Name = "chart2Container" + i;
+    var chart3Name = "chart3Container" + i;
+    var chart4Name = "chart4Container" + i;
+    var chart5Name = "chart5Container" + i;
+    var chart6Name = "chart6Container" + i;
+    i++;
+
+    <div class="" style="background-color: white; color: #2167ae;">
+        <br />
+        <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px !important;  height: 70px !important; margin-top: -10px !important;width: 200px !important" />
+        @{
+            var clientLogo = "";
+            if (chartModel.AMBC_Active_Emp_view.Client != "AMBC")
+            {
+                clientLogo = "/Assets/ClientLogos/" + chartModel.AMBC_Active_Emp_view.Client + ".png";
+            }
         }
-    }
-    @if (clientLogo != "")
-    {
-        <img src='@clientLogo' style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
-    }
+        @if (clientLogo != "")
+        {
+            <img src='@clientLogo' style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
+        }
 
-    <br />
+        <br />
 
-    <div class="report-banner">
-        <div class="banner-wrapper">
-            <div class="banner-media">
-                <div class="banner-image__circle">
-                    <figure>
-                        <img src="@Model.EmployeeImage" class="banner-img" width="170" height="170" />
-                    </figure>
-                    <p class="banner-empname">@Model.AMBC_Active_Emp_view.Employee_Name</p>
-                </div>
-                <div class="banner-decoration">
-                    @*<div class="banner-decoration__elements">*@
-                    <span class="banner-decoration__circle"></span>
-                    <span class="banner-decoration__half-mask">
-                        <span class="banner-decoration__half-mask__circle bg-height">
+        <div class="report-banner">
+            <div class="banner-wrapper">
+                <div class="banner-media">
+                    <div class="banner-image__circle">
+                        <figure>
+                            <img src="@chartModel.EmployeeImage" class="banner-img" width="170" height="170" />
+                        </figure>
+                        <p class="banner-empname">@chartModel.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+                    <div class="banner-decoration">
+                        @*<div class="banner-decoration__elements">*@
+                        <span class="banner-decoration__circle"></span>
+                        <span class="banner-decoration__half-mask">
+                            <span class="banner-decoration__half-mask__circle bg-height">
+                            </span>
                         </span>
-                    </span>
-                    <span class="banner-decoration__mini-circle bg-height"></span>
-                    @*</div>*@
-                </div>
-            </div>
-            <div class="banner-content">
-                <div style="padding-top: 30px;">
-                    <div>
-                        <h2 style="font-size: xx-large; color: #23366f !important ">
-                            @Model.AMBC_Active_Emp_view.Client_Project_Name
-                        </h2>
-                        <h5 style="color: #23366f !important ">
-                            Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
-                        </h5>
-
-                        <h5 style="color: #23366f !important; margin-left: 72px !important">
-                            Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName</b>
-                        </h5>
-
-                        <div style="display: none" class="page-name-title-updated">Status Report - @Model.AMBC_Active_Emp_view.Employee_Name @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</div>
-
+                        <span class="banner-decoration__mini-circle bg-height"></span>
+                        @*</div>*@
                     </div>
-
                 </div>
+                <div class="banner-content">
+                    <div style="padding-top: 30px;">
+                        <div>
+                            <h2 style="font-size: xx-large; color: #23366f !important ">
+                                @chartModel.AMBC_Active_Emp_view.Client_Project_Name
+                            </h2>
+                            <h5 style="color: #23366f !important ">
+                                Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                            </h5>
 
-                <hr class="employeeinfohr" style="background-color: red !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+                            <h5 style="color: #23366f !important; margin-left: 72px !important">
+                                Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName</b>
+                            </h5>
 
-                <div class="report-content-resource">
-                    <br />
-                    <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="25" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
-                    <div class="employeeInfo">
-                        <img src="~/Assets/Icons/phone-call.png" width="20" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.Contact_Number</b></div>
-                    </div>
+                            <div style="display: none" class="page-name-title-updated">Status Report - @chartModel.AMBC_Active_Emp_view.Employee_Name @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</div>
 
-                    <div class="employeeInfo">
-                        <img src="~/Assets/Icons/project-management.png" width="25" /><div class="empPersonelInfoe">
-                            <b style="color: #23366f !important ">@Model.AMBC_Active_Emp_view.Client_Report_Manager</b>
                         </div>
+
                     </div>
 
-                    <div class="employeeInfo" style="color: white !important;">
-                        <div id="circle">
-                            <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@ViewBag.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 18px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                    <hr class="employeeinfohr" style="background-color: red !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+
+                    <div class="report-content-resource">
+                        <br />
+                        <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="25" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
+                        <div class="employeeInfo">
+                            <img src="~/Assets/Icons/phone-call.png" width="20" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@chartModel.AMBC_Active_Emp_view.Contact_Number</b></div>
+                        </div>
+
+                        <div class="employeeInfo">
+                            <img src="~/Assets/Icons/project-management.png" width="25" /><div class="empPersonelInfoe">
+                                <b style="color: #23366f !important ">@chartModel.AMBC_Active_Emp_view.Client_Report_Manager</b>
+                            </div>
+                        </div>
+
+                        <div class="employeeInfo" style="color: white !important;">
+                            <div id="circle">
+                                <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@chartModel.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 18px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="report-activity">
+            <h2><b style="color: rgb(0, 128, 128) !important">Activity Details</b></h2>
+            <ul class="mt-xl-4">
+                @{
+                    var activitesDetails = chartModel.AMBC_Active_Emp_view.Roles_Responsibilities;
+                }
+
+                @if (!string.IsNullOrWhiteSpace(activitesDetails))
+                {
+                    foreach (var activity in activitesDetails.Split('|'))
+                    {
+                        <li class="" style="color: rgb(0, 128, 128) !important ">@activity</li>
+                    }
+                }
+
+            </ul>
+        </div>
     </div>
 
-    <div class="report-activity">
-        <h2><b style="color: rgb(0, 128, 128) !important">Activity Details</b></h2>
-        <ul class="mt-xl-4">
-            @{
-                var activitesDetails = Model.AMBC_Active_Emp_view.Roles_Responsibilities;
-            }
+    <br />
 
-            @if (!string.IsNullOrWhiteSpace(activitesDetails))
-            {
-                foreach (var activity in activitesDetails.Split('|'))
-                {
-                    <li class="" style="color: rgb(0, 128, 128) !important ">@activity</li>
-                }
-            }
+    <div style="background-color: none; padding-top: 30px !important" />
+    <div class="@chart1Name chartdiv">
+        <div id="@chart1Name" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -55px; color: #0095a8 !important; font-size: medium; font-family: cursive; font-size: larger ">Overall Ticket Run rate ~@Html.Raw(chartModel.Graph1OverallStatus)</p>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
+    <div class="@chart2Name chartdiv">
+        <div id="@chart2Name" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -65px; color: #3b5998 !important; font-size: medium; font-family: cursive; font-size: larger ">
+            @Html.Raw(chartModel.Graph2OverallStatus)
+        </p>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+    <div class="@chart3Name chartdiv">
+        <div id="@chart3Name" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger ">@Html.Raw(chartModel.Graph3OverallStatus)</p>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col @chart4Name chartdiv multplechartdiv">
+
+                <div id="@chart4Name" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block; padding-left: 0px;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(0, 128, 128) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px;">@Html.Raw(chartModel.Graph4OverallStatus)</p>
+                <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+
+            </div>
+            <div class="col @chart5Name chartdiv">
+
+                <div id="@chart5Name" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(74, 172, 197) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px; ">@Html.Raw(chartModel.Graph5OverallStatus)</p>
+                <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="@chart6Name chartdiv">
+            <div id="@chart6Name" class="chartimagediv" style="width: 75%; height: @chartModel.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
+            <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+        </div>*@
+
+
+
+    <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
+        <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
+    </div>
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+
+
+    <div class="sticky-container">
+        <ul class="sticky">
+            <li style="background-color: #0095a8; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
+                <p class="chartshowhide" data-target="@chart1Name">HIDE</p>
+            </li>
+            <li style="background-color: #3b5998; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
+                <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
+            </li>
+            <li style="background-color: #005983; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
+                <p class="chartshowhide" data-target="@chart3Name">HIDE</p>
+            </li>
+            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
+                <p class="chartshowhide" data-target="@chart4Name">HIDE</p>
+            </li>
+            <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
+                <p class="chartshowhide" data-target="@chart5Name">HIDE</p>
+            </li>
+            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Project Status.png" />
+                <p class="chartshowhide" data-target="@chart6Name">HIDE</p>
+            </li>
 
         </ul>
     </div>
-</div>
+
+    <script>
 
 
-
-<br />
-
-<div style="background-color: none; padding-top: 30px !important" />
-<div class="chartContainer1 chartdiv">
-    <div id="chartContainer1" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -55px; color: #0095a8 !important; font-size: medium; font-family: cursive; font-size: larger ">Overall Ticket Run rate ~@Html.Raw(ViewBag.Graph1OverallStatus)</p>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-</div>
-
-<div class="chartContainer2 chartdiv">
-    <div id="chartContainer2" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -65px; color: #3b5998 !important; font-size: medium; font-family: cursive; font-size: larger ">
-        @Html.Raw(ViewBag.Graph2OverallStatus)
-    </p>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-</div>
-<div class="chartContainer3 chartdiv">
-    <div id="chartContainer3" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger ">@Html.Raw(ViewBag.Graph3OverallStatus)</p>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col chartContainer4 chartdiv multplechartdiv">
-
-            <div id="chartContainer4" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block; padding-left: 0px;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(0, 128, 128) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px;">@Html.Raw(ViewBag.Graph4OverallStatus)</p>
-            <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-
-        </div>
-        <div class="col chartContainer5 chartdiv">
-
-            <div id="chartContainer5" class="chartimagedivmultiple" style="height: 215px; width: 400px; display: inline-block;"></div><p class="multiplechartparah" style="position: absolute; margin-left: 85px; margin-top: 5px; color: rgb(74, 172, 197) !important; font-size: medium; font-family: cursive; font-size: larger; width: 330px; ">@Html.Raw(ViewBag.Graph5OverallStatus)</p>
-            <div style="background-color: white; padding-top: 30px; text-align: center; margin-bottom: 30px; margin-left: 150px; margin-right: 150px "><h2 class="chartbelowhrline" style="margin-left: -70px"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="chartContainer6 chartdiv">
-    <div id="chartContainer6" class="chartimagediv" style="width: 75%; height: @ViewBag.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
-    <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-</div>
-
-
-
-<div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
-    <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
-</div>
-
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-
-
-
-<div class="sticky-container">
-    <ul class="sticky">
-        <li style="background-color: #0095a8; color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
-            <p class="chartshowhide" data-target="chartContainer1">HIDE</p>
-        </li>
-        <li style="background-color: #3b5998; color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
-            <p class="chartshowhide" data-target="chartContainer2">HIDE</p>
-        </li>
-        <li style="background-color: #005983; color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
-            <p class="chartshowhide" data-target="chartContainer3">HIDE</p>
-        </li>
-        <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
-            <p class="chartshowhide" data-target="chartContainer4">HIDE</p>
-        </li>
-        <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
-            <p class="chartshowhide" data-target="chartContainer5">HIDE</p>
-        </li>
-        <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Project Status.png" />
-            <p class="chartshowhide" data-target="chartContainer6">HIDE</p>
-        </li>
-
-    </ul>
-</div>
-
-<script>
-
-
-           var chart = new CanvasJS.Chart("chartContainer1", {
+           var chart = new CanvasJS.Chart("@chart1Name", {
                 animationEnabled: true,
                theme: "light2",
-                exportEnabled: true,
-                willReadFrequently: true,
+               exportEnabled: true,
+               willReadFrequently: true,
                 title: {
                     text: "Monthly Report",
                     fontColor: "white",
@@ -247,7 +387,7 @@
                         indexLabelFontColor: "rgb(33, 103, 174)",
                         legendMarkerColor: "rgb(33, 103, 174)",
                         color: "rgb(33, 103, 174)",
-                        dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
+                        dataPoints: @Html.Raw(chartModel.MNRTDataPoints),
                     },
                     {
                         type: "column",
@@ -259,7 +399,7 @@
                         showInLegend: true,
                         legendMarkerColor: "rgb(247, 150, 71)",
                         color: "rgb(247, 150, 71)",
-                        dataPoints: @Html.Raw(ViewBag.MOTDataPoints),
+                        dataPoints: @Html.Raw(chartModel.MOTDataPoints),
                     },
                      {
                          type: "column",
@@ -271,13 +411,13 @@
                         showInLegend: true,
                          legendMarkerColor: "rgb(81, 205, 160)",
                          color: "rgb(81, 205, 160)",
-                        dataPoints: @Html.Raw(ViewBag.MCTTotalDataPoints),
+                        dataPoints: @Html.Raw(chartModel.MCTTotalDataPoints),
                     }
                ]
             });
         chart.render();
 
-        var chart = new CanvasJS.Chart("chartContainer2", {
+        var chart = new CanvasJS.Chart("@chart2Name", {
 	        animationEnabled: true,
             theme: "light2",
             exportEnabled: true,
@@ -333,7 +473,7 @@
                     legendMarkerColor: "rgb(33, 103, 174)",
                     color: "rgb(33, 103, 174)",
                     showInLegend: true,
-                    dataPoints: @Html.Raw(ViewBag.MNRTDataPoints),
+                    dataPoints: @Html.Raw(chartModel.MNRTDataPoints),
                 },
                  {
                      type: "line",
@@ -347,17 +487,17 @@
                      showInLegend: true,
                      legendMarkerColor: "rgb(81, 205, 160)",
                      color: "rgb(81, 205, 160)",
-                    dataPoints: @Html.Raw(ViewBag.MSpecifCTDataPoints),
+                    dataPoints: @Html.Raw(chartModel.MSpecifCTDataPoints),
                 }
             ]
         });
     chart.render();
 
-     var chart = new CanvasJS.Chart("chartContainer3", {
+     var chart = new CanvasJS.Chart("@chart3Name", {
 	        animationEnabled: true,
             theme: "light2",
-            exportEnabled: true,
-            willReadFrequently: true,
+         exportEnabled: true,
+         willReadFrequently: true,
 	        title: {
                 text: "Open Tickets",
                 fontColor: "white",
@@ -406,7 +546,7 @@
                     indexLabelFontColor: "rgb(192, 80, 78)",
                     legendMarkerColor: "rgb(192, 80, 78)",
                     color: "rgb(192, 80, 78)",
-                    dataPoints:@Html.Raw(ViewBag.MCRITOTDataPoints),
+                    dataPoints:@Html.Raw(chartModel.MCRITOTDataPoints),
 
                 },
                  {
@@ -419,7 +559,7 @@
                      legendMarkerColor: "rgb(155, 187, 88)",
                      color: "rgb(155, 187, 88)",
                      indexLabelFontColor: "rgb(155, 187, 88)",
-                    dataPoints:@Html.Raw(ViewBag.MHIGOTDataPoints),
+                    dataPoints:@Html.Raw(chartModel.MHIGOTDataPoints),
                 },
                   {
                      type: "column",
@@ -431,7 +571,7 @@
                       legendMarkerColor: "#005983",
                       color: "#005983",
                       indexLabelFontColor: "#005983",
-                      dataPoints:@Html.Raw(ViewBag.MMEDIOTDataPoints),
+                      dataPoints:@Html.Raw(chartModel.MMEDIOTDataPoints),
                 },
                    {
                      type: "column",
@@ -442,18 +582,18 @@
                        legendMarkerColor: "rgb(74, 172, 197)",
                        color: "rgb(74, 172, 197)",
                        indexLabelFontColor: "rgb(74, 172, 197)",
-                   dataPoints:@Html.Raw(ViewBag.MLOWOTDataPoints),
+                   dataPoints:@Html.Raw(chartModel.MLOWOTDataPoints),
                 }
             ]
         });
     chart.render();
 
 
-     var chart = new CanvasJS.Chart("chartContainer4", {
+     var chart = new CanvasJS.Chart("@chart4Name", {
 	        animationEnabled: true,
 	        theme: "light2",
-            exportEnabled: true,
-            willReadFrequently: true,
+         exportEnabled: true,
+         willReadFrequently: true,
 	        title: {
                 text: "Incident Closure Trend",
                 fontColor: "white",
@@ -477,17 +617,17 @@
                     showInLegend: true,
                     yValueFormatString: "##0.00\"%\"",
                     indexLabel: "{label} {y}",
-                    dataPoints: @Html.Raw(ViewBag.ClosedTrend),
+                    dataPoints: @Html.Raw(chartModel.ClosedTrend),
                 }
             ]
         });
     chart.render();
 
-         var chart = new CanvasJS.Chart("chartContainer5", {
+         var chart = new CanvasJS.Chart("@chart5Name", {
 	        animationEnabled: true,
              theme: "light2",
-            exportEnabled: true,
-            willReadFrequently: true,
+             exportEnabled: true,
+             willReadFrequently: true,
 	        title: {
                 text: "Incidents Summary",
                 fontColor: "white",
@@ -512,14 +652,13 @@
                     showInLegend: true,
                     yValueFormatString: "##0.00\"%\"",
                     indexLabel: "{label}",
-                    dataPoints: @Html.Raw(ViewBag.IncidentsSummary),
+                    dataPoints: @Html.Raw(chartModel.IncidentsSummary),
                 }
             ]
         });
     chart.render();
 
-
-    var chart = new CanvasJS.Chart("chartContainer6",
+    @*var chart = new CanvasJS.Chart("@chart6Name",
         {
             animationEnabled: true,
             theme: "light2",
@@ -570,7 +709,7 @@
                     color: "rgb(0, 128, 128)",
                     name: "Completed %",
                     showInLegend: true,
-                    dataPoints: @Html.Raw(ViewBag.ProjectComppletionDataPoints),
+                    dataPoints: @Html.Raw(chartModel.ProjectComppletionDataPoints),
                 },
                 {
                     indexLabel: "{y}%",
@@ -580,12 +719,12 @@
                     name: "Remaining %",
                     color: "#a4c4c0",
                     showInLegend: true,
-                    dataPoints: @Html.Raw(ViewBag.ProjectRemainingDataPoints),
+                    dataPoints: @Html.Raw(chartModel.ProjectRemainingDataPoints),
                 }
             ]
         });
 
-        chart.render();
+        chart.render();*@
 
 
 
@@ -609,8 +748,18 @@
         });
     });
 
+                    $('.carousel').carousel({
+                        interval: 2000
+                    });
 
-</script>
+    </script>
+
+}
+
+
+
+
+
 
 
 

@@ -2522,8 +2522,10 @@ namespace ResourceManagement.Controllers
 
         public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
         {
-            var model = new GraphChartModel();
-            model.EmployeeImage = EmployeeProfileImagePath(StatusReportChartModel.EmployeeID[0]);
+            var graphModel = new GraphChartModel();
+
+            graphModel.ViewModel = new List<GraphChartViewModel>();
+
 
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
@@ -2534,7 +2536,7 @@ namespace ResourceManagement.Controllers
                 var selectedMonth = StatusReportChartModel.Month;
                 var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
                 selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
-                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
 
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
@@ -2543,7 +2545,7 @@ namespace ResourceManagement.Controllers
                 var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
                 requiredReportMonths.Add(startingMonthForTheReport);
 
-                model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
+                graphModel.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
 
                 requiredReportMonths.Reverse();
             }
@@ -2562,7 +2564,7 @@ namespace ResourceManagement.Controllers
                         var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
 
-                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                        graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
 
                         var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
                         if (firstMonthFromTheSelection == 0)
@@ -2573,382 +2575,391 @@ namespace ResourceManagement.Controllers
                         firstMonthFromTheSelection++;
                     }
                 }
-                model.SelectedReportMonth.ReportStartMonth = reportStartMonth;
+                graphModel.SelectedReportMonth.ReportStartMonth = reportStartMonth;
             }
 
             var graph1Reports = new List<Root>();
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_Name == StatusReportChartModel.EmployeeName).FirstOrDefault();
-                var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
-                var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
-                var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
-                var MonthWiseHighOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
-                var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
-                var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                foreach (var empID in StatusReportChartModel.EmployeeID)
+                {                 
+                    var model = new GraphChartViewModel();
+                    model.EmployeeImage = EmployeeProfileImagePath(empID);
 
-                var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
+                    model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
+                    var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
-                var MonthWiseCriticlTotalTickets = 0;
-                var MonthWiseHighOpenTotalTickets = 0;
-                var MonthWiseMediumOpenTotalTickets = 0;
-                var MonthWiseLowOpenTotalTickets = 0;
+                    var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseHighOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
 
-                var sameDayCTCount = 0;
-                var Twoto5DayCTCount = 0;
-                var Sixto10DayCTCount = 0;
-                var Elevento15DayCTCount = 0;
-                var GT15DayCTCount = 0;
+                    var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
 
-                var totalNewlyRaisedTickets = 0;
-                var totalOpenTickets = 0;
-                var totalClosedTickets = 0;
+                    var MonthWiseCriticlTotalTickets = 0;
+                    var MonthWiseHighOpenTotalTickets = 0;
+                    var MonthWiseMediumOpenTotalTickets = 0;
+                    var MonthWiseLowOpenTotalTickets = 0;
 
-                foreach (var requiredReportMonth in requiredReportMonths)
-                {
-                    var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == StatusReportChartModel.EmployeeID[0] && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+                    var sameDayCTCount = 0;
+                    var Twoto5DayCTCount = 0;
+                    var Sixto10DayCTCount = 0;
+                    var Elevento15DayCTCount = 0;
+                    var GT15DayCTCount = 0;
 
-                    if (specifMonthAvailablity != null)
+                    var totalNewlyRaisedTickets = 0;
+                    var totalOpenTickets = 0;
+                    var totalClosedTickets = 0;
+
+                    foreach (var requiredReportMonth in requiredReportMonths)
                     {
-                        var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
-                        emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
-                    }
+                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
 
-                    var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID[0] && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
-
-                    var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
-                    if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
-                    {
-                        totalNewlyRaisedTickets += System.Convert.ToInt32(newlyCreatedTickets.Count());
-                    }
-
-                    MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
-                    {
-                        label = requiredReportMonth.Month,
-                        y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
-                    });
-
-                    var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
-
-                    MonthWiseOpenTickets.Add(new Graph1DataPoint.DataPoint()
-                    {
-                        label = requiredReportMonth.Month,
-                        y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
-                    });
-
-                    if (OpenTickets != null && OpenTickets.Count > 0)
-                    {
-                        var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
-
-                        if (ctiticalTickets != null && ctiticalTickets.Count > 0)
+                        if (specifMonthAvailablity != null)
                         {
-                            MonthWiseCriticlTotalTickets += ctiticalTickets.Count;
+                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                            emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
                         }
 
-                        MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName).ToList();
+
+                        var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
+                        if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
                         {
-                            Priority = "Critical",
+                            totalNewlyRaisedTickets += System.Convert.ToInt32(newlyCreatedTickets.Count());
+                        }
+
+                        MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
                             label = requiredReportMonth.Month,
-                            y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0,
-                            totalTickets = MonthWiseCriticlTotalTickets
+                            y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
                         });
 
+                        var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
 
-                        var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
-                        if (highTickets != null && highTickets.Count > 0)
+                        MonthWiseOpenTickets.Add(new Graph1DataPoint.DataPoint()
                         {
-                            MonthWiseHighOpenTotalTickets += highTickets.Count;
-                        }
-                        MonthWiseHighOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
-                        {
-                            Priority = "High",
                             label = requiredReportMonth.Month,
-                            y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0,
-                            totalTickets = MonthWiseHighOpenTotalTickets
+                            y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
                         });
 
-
-                        var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
-                        if (mediumTickets != null && mediumTickets.Count > 0)
+                        if (OpenTickets != null && OpenTickets.Count > 0)
                         {
-                            MonthWiseMediumOpenTotalTickets += mediumTickets.Count;
-                        }
-                        MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
-                        {
-                            Priority = "Medium",
-                            label = requiredReportMonth.Month,
-                            y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0,
-                            totalTickets = MonthWiseMediumOpenTotalTickets
-                        });
+                            var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
 
-                        var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
-                        if (lowTickets != null && lowTickets.Count > 0)
-                        {
-                            MonthWiseLowOpenTotalTickets += lowTickets.Count;
-                        }
-                        MonthWiseLowOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
-                        {
-                            Priority = "Low",
-                            label = requiredReportMonth.Month,
-                            y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0,
-                            totalTickets = MonthWiseLowOpenTotalTickets
-                        });
-
-                        totalOpenTickets += OpenTickets.Count;
-                    }
-
-                    var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
-                    MonthWiseTotalClosedTickets.Add(new Graph1DataPoint.DataPoint()
-                    {
-                        label = requiredReportMonth.Month,
-                        y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
-                    });
-
-                    if (closedTickets != null && closedTickets.Count > 0)
-                    {
-                        var sameDayTickets = closedTickets.Where(x => x.Ticket_Age == 1).ToList();
-                        sameDayCTCount += sameDayTickets != null && sameDayTickets.Count > 0 ? sameDayTickets.Count : 0;
-
-                        var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <= 5).ToList();
-                        Twoto5DayCTCount += twoTo5Tickets != null && twoTo5Tickets.Count > 0 ? twoTo5Tickets.Count : 0;
-
-                        var sixTo10Tickets = closedTickets.Where(x => x.Ticket_Age >= 6 && x.Ticket_Age <= 10).ToList();
-                        Sixto10DayCTCount += sixTo10Tickets != null && sixTo10Tickets.Count > 0 ? sixTo10Tickets.Count : 0;
-
-                        var elevanTo15Tickets = closedTickets.Where(x => x.Ticket_Age >= 11 && x.Ticket_Age <= 15).ToList();
-                        Elevento15DayCTCount += elevanTo15Tickets != null && elevanTo15Tickets.Count > 0 ? elevanTo15Tickets.Count : 0;
-
-                        var Greater15Tickets = closedTickets.Where(x => x.Ticket_Age > 15).ToList();
-                        GT15DayCTCount += Greater15Tickets != null && Greater15Tickets.Count > 0 ? Greater15Tickets.Count : 0;
-
-                        totalClosedTickets += closedTickets.Count;
-                    }
-
-                    var monthSpecificLosedTicketsCount = 0;
-                    var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Consultant_Name == StatusReportChartModel.EmployeeName && ticket.Is_Cancelled == false && ticket.EmplyeeID == StatusReportChartModel.EmployeeID[0] && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
-
-                    if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
-                    {
-                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
-                        {
-                            monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
-                        }
-                    }
-                    MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
-                    {
-                        label = requiredReportMonth.Month,
-                        y = monthSpecificLosedTicketsCount
-                    });
-
-
-                    //TEMPLATE2 code updates
-                    var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.ConsultantName == StatusReportChartModel.EmployeeName && project.Is_Cancelled == false && StatusReportChartModel.ProjectID == StatusReportChartModel.ProjectID).ToList();
-
-                    //In case of Month report for selected month only report will generate
-                    if (StatusReportChartModel.ReportType == "Month Report" && model.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
-                    {
-                        ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
-                    }
-                    if (StatusReportChartModel.ReportType != "Month Report")
-                    {
-                        ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
-                    }
-
-
-                }
-
-                var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
-                var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
-
-                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = "",
-                    y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
-                    Percentage = PercentageCalculateCustom(sameDayCTCount, totalClosedInciendents),
-                    legendText = "Same Day",
-                    indexLabelFontColor = "rgb(109, 120, 173)"
-                });
-                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = "",
-                    y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
-                    Percentage = PercentageCalculateCustom(Twoto5DayCTCount, totalClosedInciendents),
-                    legendText = "2-5",
-                    indexLabelFontColor = "rgb(81, 205, 160)"
-                });
-                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = "",
-                    y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
-                    Percentage = PercentageCalculateCustom(Sixto10DayCTCount, totalClosedInciendents),
-                    legendText = "6-10",
-                    indexLabelFontColor = "rgb(223, 121, 112)"
-                });
-                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = "",
-                    y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
-                    Percentage = PercentageCalculateCustom(Elevento15DayCTCount, totalClosedInciendents),
-                    legendText = "11-15",
-                    indexLabelFontColor = "rgb(76, 156, 160)"
-                });
-                IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = "",
-                    y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
-                    Percentage = PercentageCalculateCustom(GT15DayCTCount, totalClosedInciendents),
-                    legendText = "Grtr-15",
-                    indexLabelFontColor = "rgb(174, 125, 153)"
-                });
-
-                var highestCosedDateRange = IncidentsPieChart.OrderByDescending(percentage => percentage.y).FirstOrDefault();
-                if (highestCosedDateRange != null)
-                {
-                    var grpah4OverallStatus = "" + highestCosedDateRange.Percentage + "% tickets closed within " + highestCosedDateRange.legendText + " days from the logged date.";
-                    ViewBag.Graph4OverallStatus = grpah4OverallStatus;
-                }
-
-
-                var IncidentsSummaryPieChart = new List<Graph1DataPoint.PieDataPoint>();
-                IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
-                    y = PercentageCalculate(totalClosedTickets, totalClosedTickets + totalOpenTickets),
-                    Percentage = PercentageCalculateCustom(totalClosedTickets, totalClosedTickets + totalOpenTickets),
-                    legendText = "Closed",
-                    indexLabelFontColor = "rgb(81, 205, 160)",
-                    color = "rgb(81, 205, 160)",
-                });
-                IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
-                {
-                    label = System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
-                    y = PercentageCalculate(totalOpenTickets, totalClosedTickets + totalOpenTickets),
-                    Percentage = PercentageCalculateCustom(totalOpenTickets, totalClosedTickets + totalOpenTickets),
-                    legendText = "Open",
-                    indexLabelFontColor = "rgb(247, 150, 71)",
-                    color = "rgb(247, 150, 71)"
-                });
-
-                var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
-                ViewBag.Graph5OverallStatus = grpah5OverallStatus;
-
-
-                //EMPLOYEE DETAILS
-                var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
-
-                Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
-
-                ViewBag.EmaployeeAvailabity = availabity;
-
-                //GRAPH1
-                var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
-                ViewBag.Graph1OverallStatus = overallTicketRunRate;
-                ViewBag.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
-                ViewBag.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
-                ViewBag.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
-
-
-                //GRAPH2
-                var newlyRaiseTicketsOrder = MonthWisenewlyRaisedTickets.OrderByDescending(ticket => ticket.y).ToList();
-                double highestNewRiasedTickNum = 0;
-                string highestNewRiasedTickMonth = "";
-                if (newlyRaiseTicketsOrder != null && newlyRaiseTicketsOrder.Count() > 0)
-                {
-                    highestNewRiasedTickMonth = newlyRaiseTicketsOrder[0].label;
-                    highestNewRiasedTickNum = newlyRaiseTicketsOrder[0].y;
-                }
-
-                var closedTicketsOrder = MonthSpecificClosedTickets.OrderByDescending(ticket => ticket.y).ToList();
-                double highestClosedTickNum = 0;
-                string highestClosedTickMonth = "";
-                if (closedTicketsOrder != null && closedTicketsOrder.Count() > 0)
-                {
-                    highestClosedTickMonth = closedTicketsOrder[0].label;
-                    highestClosedTickNum = closedTicketsOrder[0].y;
-                }
-                if (highestNewRiasedTickNum > 0 && highestNewRiasedTickMonth != string.Empty)
-                {
-                    var grpah2OverallStatus = "In " + highestClosedTickMonth + " we closed ~" + highestClosedTickNum + " tickets";
-                    ViewBag.Graph2OverallStatus = grpah2OverallStatus;
-                }
-
-                ViewBag.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
-
-
-                //OPEN Tickets will be considered for Selected month only 
-                //GRAPH3
-                var allPriorityTickets = MonthWiseCriticlOpenTickets.Concat(MonthWiseHighOpenTickets).Concat(MonthWiseMediumOpenTickets).Concat(MonthWiseLowOpenTickets);
-                var highestPrirityTickets = allPriorityTickets.OrderByDescending(ticket => ticket.totalTickets).FirstOrDefault();
-                if (highestPrirityTickets != null)
-                {
-                    var grpah3OverallStatus = "" + highestPrirityTickets.totalTickets + " " + highestPrirityTickets.Priority + " priority tickets are in Open till date.";
-                    ViewBag.Graph3OverallStatus = grpah3OverallStatus;
-                }
-
-
-                ViewBag.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
-                ViewBag.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
-                ViewBag.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
-                ViewBag.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);
-
-
-                //CLOSED REPORT TREND
-                //GRAPH4
-                ViewBag.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
-
-                //INCIDENTS SUMMARY
-                //GRAPH5
-                ViewBag.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
-
-
-                //TEMPLTE 2 UPDATES
-                if (ProjectReports != null && ProjectReports.Count > 0)
-                {
-                    var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
-
-                    var uniqueProjects = allProjects.Distinct().ToList();
-
-
-                    var projectReportHeight = "140px";
-                    if (uniqueProjects != null && uniqueProjects.Count > 2)
-                    {
-                        var height = uniqueProjects.Count * 50;
-                        projectReportHeight = height + "px";
-                    }
-                    ViewBag.ProjectReportHeight = projectReportHeight;
-
-                    var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
-                    var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
-                    foreach (var uniqueProject in uniqueProjects)
-                    {
-                        if (ProjectComppletionDataPoints.Where(x => x.label == uniqueProject.label).FirstOrDefault() == null)
-                        {
-                            ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                            if (ctiticalTickets != null && ctiticalTickets.Count > 0)
                             {
-                                label = uniqueProject.label,
-                                y = uniqueProject.completionPercenatge
+                                MonthWiseCriticlTotalTickets += ctiticalTickets.Count;
+                            }
+
+                            MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Critical",
+                                label = requiredReportMonth.Month,
+                                y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0,
+                                totalTickets = MonthWiseCriticlTotalTickets
                             });
 
-                            ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+
+                            var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
+                            if (highTickets != null && highTickets.Count > 0)
                             {
-                                label = uniqueProject.label,
-                                y = uniqueProject.remainingPercenatge
+                                MonthWiseHighOpenTotalTickets += highTickets.Count;
+                            }
+                            MonthWiseHighOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "High",
+                                label = requiredReportMonth.Month,
+                                y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0,
+                                totalTickets = MonthWiseHighOpenTotalTickets
                             });
+
+
+                            var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
+                            if (mediumTickets != null && mediumTickets.Count > 0)
+                            {
+                                MonthWiseMediumOpenTotalTickets += mediumTickets.Count;
+                            }
+                            MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Medium",
+                                label = requiredReportMonth.Month,
+                                y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0,
+                                totalTickets = MonthWiseMediumOpenTotalTickets
+                            });
+
+                            var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
+                            if (lowTickets != null && lowTickets.Count > 0)
+                            {
+                                MonthWiseLowOpenTotalTickets += lowTickets.Count;
+                            }
+                            MonthWiseLowOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Low",
+                                label = requiredReportMonth.Month,
+                                y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0,
+                                totalTickets = MonthWiseLowOpenTotalTickets
+                            });
+
+                            totalOpenTickets += OpenTickets.Count;
                         }
+
+                        var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
+                        MonthWiseTotalClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
+                        });
+
+                        if (closedTickets != null && closedTickets.Count > 0)
+                        {
+                            var sameDayTickets = closedTickets.Where(x => x.Ticket_Age == 1).ToList();
+                            sameDayCTCount += sameDayTickets != null && sameDayTickets.Count > 0 ? sameDayTickets.Count : 0;
+
+                            var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <= 5).ToList();
+                            Twoto5DayCTCount += twoTo5Tickets != null && twoTo5Tickets.Count > 0 ? twoTo5Tickets.Count : 0;
+
+                            var sixTo10Tickets = closedTickets.Where(x => x.Ticket_Age >= 6 && x.Ticket_Age <= 10).ToList();
+                            Sixto10DayCTCount += sixTo10Tickets != null && sixTo10Tickets.Count > 0 ? sixTo10Tickets.Count : 0;
+
+                            var elevanTo15Tickets = closedTickets.Where(x => x.Ticket_Age >= 11 && x.Ticket_Age <= 15).ToList();
+                            Elevento15DayCTCount += elevanTo15Tickets != null && elevanTo15Tickets.Count > 0 ? elevanTo15Tickets.Count : 0;
+
+                            var Greater15Tickets = closedTickets.Where(x => x.Ticket_Age > 15).ToList();
+                            GT15DayCTCount += Greater15Tickets != null && Greater15Tickets.Count > 0 ? Greater15Tickets.Count : 0;
+
+                            totalClosedTickets += closedTickets.Count;
+                        }
+
+                        var monthSpecificLosedTicketsCount = 0;
+                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName).ToList();
+
+                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
+                        {
+                            if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
+                            {
+                                monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
+                            }
+                        }
+                        MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = monthSpecificLosedTicketsCount
+                        });
+
+
+                        //TEMPLATE2 code updates
+                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
+
+                        //In case of Month report for selected month only report will generate
+                        if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
+                        {
+                            ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                        }
+                        if (StatusReportChartModel.ReportType != "Month Report")
+                        {
+                            ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                        }
+
 
                     }
 
-                    ViewBag.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
-                    ViewBag.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
-                }
+                    var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                    var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
 
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(sameDayCTCount, totalClosedInciendents),
+                        legendText = "Same Day",
+                        indexLabelFontColor = "rgb(109, 120, 173)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Twoto5DayCTCount, totalClosedInciendents),
+                        legendText = "2-5",
+                        indexLabelFontColor = "rgb(81, 205, 160)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Sixto10DayCTCount, totalClosedInciendents),
+                        legendText = "6-10",
+                        indexLabelFontColor = "rgb(223, 121, 112)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Elevento15DayCTCount, totalClosedInciendents),
+                        legendText = "11-15",
+                        indexLabelFontColor = "rgb(76, 156, 160)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(GT15DayCTCount, totalClosedInciendents),
+                        legendText = "Grtr-15",
+                        indexLabelFontColor = "rgb(174, 125, 153)"
+                    });
+
+                    var highestCosedDateRange = IncidentsPieChart.OrderByDescending(percentage => percentage.y).FirstOrDefault();
+                    if (highestCosedDateRange != null)
+                    {
+                        var grpah4OverallStatus = "" + highestCosedDateRange.Percentage + "% tickets closed within " + highestCosedDateRange.legendText + " days from the logged date.";
+                        model.Graph4OverallStatus = grpah4OverallStatus;
+                    }
+
+
+                    var IncidentsSummaryPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                    IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
+                        y = PercentageCalculate(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                        Percentage = PercentageCalculateCustom(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                        legendText = "Closed",
+                        indexLabelFontColor = "rgb(81, 205, 160)",
+                        color = "rgb(81, 205, 160)",
+                    });
+                    IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
+                        y = PercentageCalculate(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                        Percentage = PercentageCalculateCustom(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                        legendText = "Open",
+                        indexLabelFontColor = "rgb(247, 150, 71)",
+                        color = "rgb(247, 150, 71)"
+                    });
+
+                    var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
+                    model.Graph5OverallStatus = grpah5OverallStatus;
+
+
+                    //EMPLOYEE DETAILS
+                    var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+
+                    Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+
+                    model.EmaployeeAvailabity = availabity;
+
+                    //GRAPH1
+                    var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
+                    model.Graph1OverallStatus = overallTicketRunRate;
+                    model.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
+                    model.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
+                    model.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
+
+
+                    //GRAPH2
+                    var newlyRaiseTicketsOrder = MonthWisenewlyRaisedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                    double highestNewRiasedTickNum = 0;
+                    string highestNewRiasedTickMonth = "";
+                    if (newlyRaiseTicketsOrder != null && newlyRaiseTicketsOrder.Count() > 0)
+                    {
+                        highestNewRiasedTickMonth = newlyRaiseTicketsOrder[0].label;
+                        highestNewRiasedTickNum = newlyRaiseTicketsOrder[0].y;
+                    }
+
+                    var closedTicketsOrder = MonthSpecificClosedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                    double highestClosedTickNum = 0;
+                    string highestClosedTickMonth = "";
+                    if (closedTicketsOrder != null && closedTicketsOrder.Count() > 0)
+                    {
+                        highestClosedTickMonth = closedTicketsOrder[0].label;
+                        highestClosedTickNum = closedTicketsOrder[0].y;
+                    }
+                    if (highestNewRiasedTickNum > 0 && highestNewRiasedTickMonth != string.Empty)
+                    {
+                        var grpah2OverallStatus = "In " + highestClosedTickMonth + " we closed ~" + highestClosedTickNum + " tickets";
+                        model.Graph2OverallStatus = grpah2OverallStatus;
+                    }
+
+                    model.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
+
+
+                    //OPEN Tickets will be considered for Selected month only 
+                    //GRAPH3
+                    var allPriorityTickets = MonthWiseCriticlOpenTickets.Concat(MonthWiseHighOpenTickets).Concat(MonthWiseMediumOpenTickets).Concat(MonthWiseLowOpenTickets);
+                    var highestPrirityTickets = allPriorityTickets.OrderByDescending(ticket => ticket.totalTickets).FirstOrDefault();
+                    if (highestPrirityTickets != null)
+                    {
+                        var grpah3OverallStatus = "" + highestPrirityTickets.totalTickets + " " + highestPrirityTickets.Priority + " priority tickets are in Open till date.";
+                        model.Graph3OverallStatus = grpah3OverallStatus;
+                    }
+
+
+                    model.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
+                    model.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
+                    model.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
+                    model.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);
+
+
+                    //CLOSED REPORT TREND
+                    //GRAPH4
+                    model.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
+
+                    //INCIDENTS SUMMARY
+                    //GRAPH5
+                    model.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
+
+
+                    //TEMPLTE 2 UPDATES
+                    if (ProjectReports != null && ProjectReports.Count > 0)
+                    {
+                        var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
+
+                        var uniqueProjects = allProjects.Distinct().ToList();
+
+
+                        var projectReportHeight = "140px";
+                        if (uniqueProjects != null && uniqueProjects.Count > 2)
+                        {
+                            var height = uniqueProjects.Count * 50;
+                            projectReportHeight = height + "px";
+                        }
+                        model.ProjectReportHeight = projectReportHeight;
+
+                        var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                        var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                        foreach (var uniqueProject in uniqueProjects)
+                        {
+                            if (ProjectComppletionDataPoints.Where(x => x.label == uniqueProject.label).FirstOrDefault() == null)
+                            {
+                                ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = uniqueProject.label,
+                                    y = uniqueProject.completionPercenatge
+                                });
+
+                                ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = uniqueProject.label,
+                                    y = uniqueProject.remainingPercenatge
+                                });
+                            }
+
+                        }
+
+                        model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
+                        model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
+                    }
+
+                    graphModel.ViewModel.Add(model);
+
+                }
 
             }
-            return PartialView(model);
+            return PartialView(graphModel);
         }
 
         private static void ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth)
