@@ -2584,7 +2584,7 @@ namespace ResourceManagement.Controllers
             {
 
                 foreach (var empID in StatusReportChartModel.EmployeeID)
-                {                 
+                {
                     var model = new GraphChartViewModel();
                     model.EmployeeImage = EmployeeProfileImagePath(empID);
 
@@ -3137,6 +3137,28 @@ namespace ResourceManagement.Controllers
             return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", "attachment;filename=ExportedHtml.xls");
 
             //return File(fileBytes, "application/zip");
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleIncidentReport(string GridHtml)
+        {
+
+            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Incident-Report.xlsx";
+            var fileName = "Sample-Incident-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleProjectReport(string GridHtml)
+        {
+
+            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Project-Report.xlsx";
+            var fileName = "Sample-Project-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
         }
     }
 }

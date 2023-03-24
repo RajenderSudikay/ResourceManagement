@@ -140,13 +140,55 @@
     </div>
 </nav>
 
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card status-report-card">
+        <div class="card-body ">
+
+            <p style="color: #005983"><b>NOTE:</b> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+
+            <h2 style="color: #005983; font-family: Calibri; font-style: italic; text-decoration-line: underline ">Download Sample Templates using below links</h2>
+            <br />
+
+            <div class="form-group row">
+
+                @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+
+                    <div class="form-group col-lg-4" style="margin-left:10px">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Sample Incident Template" style="border-radius: 10px; background-color: #005983" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="form-group row">
+                @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+
+                    <div class="form-group col-lg-4" style="margin-left:10px">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Sample Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px " />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card status-report-card">
         <div class="card-body ">
 
             <div class="">
-                <h4 style="font-size: 1.5rem; text-align: center; background-color: black; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>
+                <h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -162,6 +204,8 @@
                     <br />
 
                 }
+
+
                 <form class="needs-validation" novalidate>
 
                     <div class="form-group row">
@@ -211,7 +255,6 @@
                             <option value="Please Select Report Type">Please Select Report Type</option>
                             <option value="Template1">Incident Report</option>
                             <option value="Template2">Project Report</option>
-                            <option value="Template3">Test Report</option>
                         </select>
 
                         <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:180px">
@@ -415,7 +458,7 @@
                 {
                     if (selectedValues[i] != "NA") {
                         excelColumnMappingFieldIndexs.push(selectedValues[i]);
-                    }                   
+                    }
                 }
             }
             else {
@@ -735,7 +778,7 @@
                 jQuery('.message-success-popup').modal('show');
             }
             else {
-                var responseError = getUrlVars()["error"];          
+                var responseError = getUrlVars()["error"];
                 var decodedUrlText = decodeURIComponent(responseError);
                 jQuery('.error-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
                 jQuery('.database-response').html("<h2>" + decodedUrlText + "</h2>");

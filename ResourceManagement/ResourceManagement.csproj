@@ -408,6 +408,8 @@
     <Content Include="EmployeeLoginModel.edmx.diagram">
       <DependentUpon>EmployeeLoginModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Assets\Reports\Sample-Incident-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Project-Report.xlsx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
