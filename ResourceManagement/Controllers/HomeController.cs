@@ -2528,7 +2528,7 @@ namespace ResourceManagement.Controllers
 
             graphModel.ViewModel = new List<GraphChartViewModel>();
 
-    
+
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
 
@@ -3040,7 +3040,7 @@ namespace ResourceManagement.Controllers
                     {
                         if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
-                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID).ToList();
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
                             if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
                             {
                                 empReportModel.Template1Reports.AddRange(selectedMonthTickets);
