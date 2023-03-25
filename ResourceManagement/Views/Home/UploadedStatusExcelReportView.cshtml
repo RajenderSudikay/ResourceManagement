@@ -136,6 +136,42 @@
                     </tbody>
                 </table>
             }
+
+            if (Model.AjaxModel.TemplateNumber == "Template3")
+            {
+                <table class="table" id="timesheet-table" style="margin-top: 2px">
+                    <thead class="table-bordered">
+                        <tr style="background-color: #005983">
+                            <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>
+                            <th class="" scope="col" style="text-align: center; color: white">Status</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="timesheet-table-grid">
+
+                        @foreach (var report in reportModel.Template1Reports)
+                        {
+                            <tr style="background-color: #fff" class="time">
+                                <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                            </tr>
+                        }
+
+                        @if (reportModel.Template1Reports.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="9">
+                                    <h2 style="MARGIN-LEFT: 40px; padding-top: 15px"></h2>
+                                </td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            }
         }
     }
 

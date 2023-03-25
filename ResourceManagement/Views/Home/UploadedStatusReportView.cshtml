@@ -160,18 +160,18 @@
 
                                             @foreach (var report in reportModel.Template1Reports)
                                             {
-                                            <tr style="background-color: #fff" class="time">
-                                                <td scope="row" style=" vertical-align:middle; text-align: center">@report.TicketingToolName</td>
-                                                @if (!Model.IsExcelReport)
-                                                {
-                                                    <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
-                                                }
-                                                <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
-                                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
-                                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
-                                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
-                                                <td scope="row" style="text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
-                                            </tr>
+                                                <tr style="background-color: #fff" class="time">
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.TicketingToolName</td>
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                                                    <td scope="row" style="text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
+                                                </tr>
                                             }
 
                                             @if (reportModel.Template1Reports.Count == 0)
@@ -193,7 +193,7 @@
                                 {
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
-                                            <tr style="background-color: #005983">                                              
+                                            <tr style="background-color: #005983">
                                                 @if (!Model.IsExcelReport)
                                                 {
                                                     <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
@@ -214,21 +214,21 @@
 
                                             @foreach (var report in reportModel.Template2Reports)
                                             {
-                                            <tr style="background-color: #fff" class="time">
-                                              
-                                                @if (!Model.IsExcelReport)
-                                                {
-                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
-                                                }
-                                                <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Status</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
-                                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
-                                                <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.RemainingPercentage</td>
-                                            </tr>
+                                                <tr style="background-color: #fff" class="time">
+
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style=" vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Status</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
+                                                    <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.RemainingPercentage</td>
+                                                </tr>
                                             }
 
                                             @if (reportModel.Template2Reports.Count == 0)
@@ -244,6 +244,55 @@
                                         </tbody>
                                     </table>
                                 }
+
+                                @if (Model.AjaxModel.TemplateNumber == "Template3")
+                                {
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #005983">
+                                                <th class="" scope="col" style="text-align: center; color: white">Tool Name</th>
+                                                @if (!Model.IsExcelReport)
+                                                {
+                                                    <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
+                                                }
+
+                                                <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>                                               
+                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>                                           
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @foreach (var report in reportModel.Template1Reports)
+                                            {
+                                                <tr style="background-color: #fff" class="time">
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.TicketingToolName</td>
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>                                                 
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>                                                 
+                                                </tr>
+                                            }
+
+                                            @if (reportModel.Template1Reports.Count == 0)
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px"></h2>
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                }
+
+
 
                             </div>
                         </div>

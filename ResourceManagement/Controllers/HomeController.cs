@@ -3105,7 +3105,7 @@ namespace ResourceManagement.Controllers
                     {
                         if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
-                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
                             if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
                             {
                                 empReportModel.Template1Reports.AddRange(selectedMonthTickets);
@@ -3118,6 +3118,16 @@ namespace ResourceManagement.Controllers
                             if (monthProjectReport != null && monthProjectReport.Count > 0)
                             {
                                 empReportModel.Template2Reports.AddRange(monthProjectReport);
+                            }
+                        }
+
+                        //TEMPLATE3 code updates
+                        if (StatusReportChartModel.TemplateNumber == "Template3")
+                        {
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == true && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+                            if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                empReportModel.Template1Reports.AddRange(selectedMonthTickets);
                             }
                         }
 
