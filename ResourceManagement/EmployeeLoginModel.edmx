@@ -328,6 +328,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does n
           <Property Name="Is_Cancelled" Type="bit" />
           <Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
           <Property Name="ProjectID" Type="int" />
+          <Property Name="IsAuditReport" Type="bit" />
+          <Property Name="TicketingToolName" Type="varchar" MaxLength="1500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1529,6 +1531,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Is_Cancelled" Type="Boolean" />
           <Property Name="EmplyeeID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="ProjectID" Type="Int32" />
+          <Property Name="IsAuditReport" Type="Boolean" />
+          <Property Name="TicketingToolName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="monthlyreports_Template2">
           <Key>
@@ -2170,6 +2174,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="monthlyreports_Template1">
             <EntityTypeMapping TypeName="TimesheetDBModel.monthlyreports_Template1">
               <MappingFragment StoreEntitySet="monthlyreports_Template1">
+                <ScalarProperty Name="TicketingToolName" ColumnName="TicketingToolName" />
+                <ScalarProperty Name="IsAuditReport" ColumnName="IsAuditReport" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="EmplyeeID" ColumnName="EmplyeeID" />
                 <ScalarProperty Name="Is_Cancelled" ColumnName="Is_Cancelled" />

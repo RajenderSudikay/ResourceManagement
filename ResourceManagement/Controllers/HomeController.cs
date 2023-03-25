@@ -2628,7 +2628,7 @@ namespace ResourceManagement.Controllers
                             emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
                         }
 
-                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
 
                         var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                         if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
@@ -2739,7 +2739,7 @@ namespace ResourceManagement.Controllers
                         }
 
                         var monthSpecificLosedTicketsCount = 0;
-                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
+                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
 
                         if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                         {
@@ -3040,7 +3040,7 @@ namespace ResourceManagement.Controllers
                     {
                         if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
-                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
                             if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
                             {
                                 empReportModel.Template1Reports.AddRange(selectedMonthTickets);

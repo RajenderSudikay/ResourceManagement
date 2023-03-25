@@ -43,5 +43,7 @@ namespace ResourceManagement
         public Nullable<bool> Is_Cancelled { get; set; }
         public string EmplyeeID { get; set; }
         public Nullable<int> ProjectID { get; set; }
+        public Nullable<bool> IsAuditReport { get; set; }
+        public string TicketingToolName { get; set; }
     }
 }
