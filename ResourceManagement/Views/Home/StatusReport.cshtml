@@ -480,6 +480,15 @@
     jQuery('#reportClient').change(function (evt) {
         jQuery('#selectEmployeename').empty();
         GetEmployees(jQuery(this).val());
+        jQuery('#reportClient').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportClient').hide();
+
+    });
+
+    jQuery('#statusreportToolName').change(function (evt) {      
+        jQuery('#statusreportToolName').css("border", "1px solid green");
+        jQuery('.client-invalid-toolname').hide();
+
     });
 
     jQuery('#reportCategory').change(function (evt) {
@@ -715,8 +724,7 @@
                 type: "POST",
                 dataType: "html",
                 data: { StatusReportChartModel: statusChartModel },
-                success: function (data) {
-                    jQuery('.btn-download-report').show();
+                success: function (data) {                 
                     $('#chartContainer').html(data);
                 }
             });
