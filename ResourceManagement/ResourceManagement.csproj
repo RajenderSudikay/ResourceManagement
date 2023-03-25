@@ -459,6 +459,7 @@
     <Content Include="Views\Home\StatusReport.cshtml" />
     <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
     <Content Include="Views\Home\UploadedStatusReportView.cshtml" />
+    <Content Include="Views\Home\UploadedStatusExcelReportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

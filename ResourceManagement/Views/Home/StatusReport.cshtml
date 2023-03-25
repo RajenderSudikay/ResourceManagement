@@ -514,14 +514,15 @@
     jQuery(".btn-status-report-generate").on("click", function () {
         var statusChartModel = {
             ClientName: jQuery('#reportClient :selected').text(),
-            ProjectID: jQuery('#reportClient :selected').val(),
+            /*       ProjectID: jQuery('#reportClient :selected').val(),*/
             Year: jQuery('#reportyear :selected').val(),
             Month: jQuery('#reportmonth :selected').val(),
             ReportType: jQuery('#reporttype :selected').val(),
-            EmployeeID: jQuery('#selectEmployeename :selected').val(),
-            EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),
+            EmployeeID: jQuery('#selectEmployeename').val(),
+            /*   EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),*/
             TemplateType: jQuery('#statusreportupload :selected').text().trim(),
             TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+            ToolName: jQuery('#statusreportToolName').val(),
         };
 
         var GridHtml = JSON.stringify(statusChartModel).toString();

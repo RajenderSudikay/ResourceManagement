@@ -3101,7 +3101,6 @@ namespace ResourceManagement.Controllers
                     empReportModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
                     empReportModel.EmployeeImage = EmployeeProfileImagePath(empReportModel.AMBC_Active_Emp_view.Employee_ID.ToString());
 
-
                     foreach (var requiredReportMonth in requiredReportMonths)
                     {
                         if (StatusReportChartModel.TemplateNumber == "Template1")
@@ -3136,75 +3135,77 @@ namespace ResourceManagement.Controllers
         public ActionResult ExportStatusReports(string GridHtml)
         {
             StatusReportChartModel ajaxReportModel = JsonConvert.DeserializeObject<StatusReportChartModel>(GridHtml);
-
             List<SourceFile> sourceFiles = new List<SourceFile>();
-
-            var requiredZIPFileName = string.Empty;
+            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType + ajaxReportModel.ReportType + "-status report-";
 
             string htmlContent = "";
+            var excelFileName = "";
+
+            var isMultipleEmployeesSelected = ajaxReportModel.EmployeeID.Count() == 1 ? false : true;
 
             if (ajaxReportModel != null)
             {
-                requiredZIPFileName = ajaxReportModel.EmployeeName + "-" + ajaxReportModel.TemplateType + "-status report-";
-
-                var model = StatusUploadedReportModel(ajaxReportModel);
-                model.IsExcelReport = true;
-
-                //foreach (var employee in timeSheetAjaxReportModel.Employees)
-                //{
-                //    var employeeId = employee.Split('&')[0];
-                //    var emplyeeName = employee.Split('&')[1];
-
-                //    if (timeSheetAjaxReportModel.Type == ".xls")
-                //    {
-                htmlContent = RenderPartialToString(this, "UploadedStatusReportView", model, ViewData, TempData);
-
-                //string htmlContent = new System.Net.WebClient().DownloadString(urlAddress);
-
-                byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
-
-                sourceFiles.Add(new SourceFile()
+                foreach (var employee in ajaxReportModel.EmployeeID)
                 {
-                    FileBytes = byteArray,
-                    Extension = ".xls",
-                    Name = requiredZIPFileName
-                });
-                //    }
-                //}
+                    var selectedEmp = new List<string>();
+                    selectedEmp.Add(employee);
+
+                    ajaxReportModel.EmployeeID = selectedEmp;
+                    var model = StatusUploadedReportModel(ajaxReportModel);
+                    model.IsExcelReport = true;
+
+                    htmlContent = RenderPartialToString(this, "UploadedStatusExcelReportView", model, ViewData, TempData);
+
+                    byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
+
+                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xls";
+
+                    sourceFiles.Add(new SourceFile()
+                    {
+                        FileBytes = byteArray,
+                        Extension = ".xls",
+                        Name = excelFileName
+                    });
+
+                }
             }
 
-            byte[] fileBytes = null;
-
-            // create a working memory stream
-            using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+            if (!isMultipleEmployeesSelected)
             {
-                // create a zip
-                using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
+                return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", excelFileName);
+            }
+            else
+            {
+                byte[] fileBytes = null;
+
+                // create a working memory stream
+                using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
                 {
-                    // interate through the source files
-                    foreach (SourceFile f in sourceFiles)
+                    // create a zip
+                    using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
                     {
-                        // add the item name to the zip
-                        System.IO.Compression.ZipArchiveEntry zipItem = zip.CreateEntry(f.Name + "." + f.Extension);
-                        // add the item bytes to the zip entry by opening the original file and copying the bytes
-                        using (System.IO.MemoryStream originalFileMemoryStream = new System.IO.MemoryStream(f.FileBytes))
+                        // interate through the source files
+                        foreach (SourceFile f in sourceFiles)
                         {
-                            using (System.IO.Stream entryStream = zipItem.Open())
+                            // add the item name to the zip
+                            System.IO.Compression.ZipArchiveEntry zipItem = zip.CreateEntry(f.Name + "." + f.Extension);
+                            // add the item bytes to the zip entry by opening the original file and copying the bytes
+                            using (System.IO.MemoryStream originalFileMemoryStream = new System.IO.MemoryStream(f.FileBytes))
                             {
-                                originalFileMemoryStream.CopyTo(entryStream);
+                                using (System.IO.Stream entryStream = zipItem.Open())
+                                {
+                                    originalFileMemoryStream.CopyTo(entryStream);
+                                }
                             }
                         }
                     }
+                    fileBytes = memoryStream.ToArray();
                 }
-                fileBytes = memoryStream.ToArray();
+
+                // download the constructed zip
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + requiredZIPFileName + ".zip");
+                return File(fileBytes, "application/zip");
             }
-
-            // download the constructed zip
-            //Response.AddHeader("Content-Disposition", "attachment; filename=" + requiredZIPFileName + ".zip");
-
-            return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", "attachment;filename=ExportedHtml.xls");
-
-            //return File(fileBytes, "application/zip");
         }
 
         [HttpPost]
