@@ -2637,7 +2637,10 @@ namespace ResourceManagement.Controllers
                         }
 
                         var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
-
+                        if (selectedMonthTickets != null && selectedMonthTickets.Count() > 0)
+                        {
+                            graphModel.IsIncidentReportExists = true;
+                        }
                         var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                         if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
                         {
@@ -2781,9 +2784,9 @@ namespace ResourceManagement.Controllers
                         //TEMPLATE3 code updates
                         var AuditReportsForSelectedMonth = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && ticket.IsAuditReport == true).ToList();
 
-
                         if (AuditReportsForSelectedMonth != null && AuditReportsForSelectedMonth.Count() > 0)
                         {
+                            graphModel.IsAuditReportExists = true;
                             var EfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == true).ToList();
                             var InEfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == false).ToList();
 
@@ -2974,12 +2977,14 @@ namespace ResourceManagement.Controllers
 
 
                     //TEMPLTE 2 UPDATES
+                    var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                    var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
                     if (ProjectReports != null && ProjectReports.Count > 0)
                     {
+                        graphModel.IsProjectReportExists = true;
+
                         var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
-
                         var uniqueProjects = allProjects.Distinct().ToList();
-
 
                         var projectReportHeight = "140px";
                         if (uniqueProjects != null && uniqueProjects.Count > 2)
@@ -2989,8 +2994,7 @@ namespace ResourceManagement.Controllers
                         }
                         model.ProjectReportHeight = projectReportHeight;
 
-                        var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
-                        var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+
                         foreach (var uniqueProject in uniqueProjects)
                         {
                             if (ProjectComppletionDataPoints.Where(x => x.label == uniqueProject.label).FirstOrDefault() == null)
@@ -3009,10 +3013,9 @@ namespace ResourceManagement.Controllers
                             }
 
                         }
-
-                        model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
-                        model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
                     }
+                    model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
+                    model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
 
                     //TEMPLATE 3 UPDATES
                     model.MSpecifcAudDataoints = JsonConvert.SerializeObject(MonthWiseAuditTickets);

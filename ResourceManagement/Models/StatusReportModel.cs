@@ -121,6 +121,9 @@ namespace ResourceManagement.Models
     {
         public List<GraphChartViewModel> ViewModel { get; set; }
         public SelectedReportMonthModel SelectedReportMonth { get; set; }
+        public bool IsIncidentReportExists { get; set; } = false;
+        public bool IsProjectReportExists { get; set; } = false;
+        public bool IsAuditReportExists { get; set; } = false;
     }
 
 

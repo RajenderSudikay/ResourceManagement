@@ -1,10 +1,5 @@
 ﻿@model ResourceManagement.Models.GraphChartModel
 
-<style>
-</style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-
 @if (Model == null && Model.ViewModel == null && Model.ViewModel.Count == 0)
 {
     return;
@@ -21,7 +16,7 @@
     var chart4Name = "chart4Container" + i;
     var chart5Name = "chart5Container" + i;
     var chart6Name = "chart6Container" + i;
-    var chart7Name = "chart7Container" + i;  
+    var chart7Name = "chart7Container" + i;
     i++;
 
     <div class="" style="background-color: white; color: #2167ae;">
@@ -128,23 +123,30 @@
     <br />
 
     <div style="background-color: none; padding-top: 30px !important" />
-    <div class="@chart1Name chartdiv">
+
+    var hideIncidentReport = "";
+    if (Model.IsIncidentReportExists == false)
+    {
+        hideIncidentReport = "hide";
+    }
+
+    <div class="@chart1Name chartdiv @hideIncidentReport">
         <div id="@chart1Name" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -55px; color: #0095a8 !important; font-size: medium; font-family: cursive; font-size: larger ">Overall Ticket Run rate ~@Html.Raw(chartModel.Graph1OverallStatus)</p>
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
 
-    <div class="@chart2Name chartdiv">
+    <div class="@chart2Name chartdiv @hideIncidentReport">
         <div id="@chart2Name" class="chartimagediv" style="height: 215px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -65px; color: #3b5998 !important; font-size: medium; font-family: cursive; font-size: larger ">
             @Html.Raw(chartModel.Graph2OverallStatus)
         </p>
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
-    <div class="@chart3Name chartdiv">
+    <div class="@chart3Name chartdiv @hideIncidentReport">
         <div id="@chart3Name" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger ">@Html.Raw(chartModel.Graph3OverallStatus)</p>
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
 
-    <div class="container">
+    <div class="container @hideIncidentReport">
         <div class="row">
             <div class="col @chart4Name chartdiv multplechartdiv">
 
@@ -161,15 +163,25 @@
         </div>
     </div>
 
+    var hideProjectReport = "";
+    if (Model.IsProjectReportExists == false)
+    {
+        hideProjectReport = "hide";
+    }
 
-    @*<div class="@chart6Name chartdiv">
-            <div id="@chart6Name" class="chartimagediv" style="width: 75%; height: @chartModel.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
-            <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-        </div>*@
+    <div class="@chart6Name chartdiv @hideProjectReport">
+        <div id="@chart6Name" class="chartimagediv" style="width: 75%; height: @chartModel.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
 
+    var hideAuditReport = "";
+    if (Model.IsAuditReportExists == false)
+    {
+        hideAuditReport = "hide";
+    }
 
-    <div class="@chart7Name chartdiv">
-        <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "></p>
+    <div class="@chart7Name chartdiv @hideAuditReport">
+        <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah7" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "></p>
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
 
@@ -178,38 +190,33 @@
         <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
     </div>
 
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-
-
-
     <div class="sticky-container">
         <ul class="sticky">
-            <li style="background-color: #0095a8; color: white; font-weight: bold ">
+            <li style="background-color: #0095a8; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/bar-graph.png" />
                 <p class="chartshowhide" data-target="@chart1Name">HIDE</p>
             </li>
-            <li style="background-color: #3b5998; color: white; font-weight: bold ">
+            <li style="background-color: #3b5998; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
                 <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
             </li>
-            <li style="background-color: #005983; color: white; font-weight: bold ">
+            <li style="background-color: #005983; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Open-Tickets.png" />
                 <p class="chartshowhide" data-target="@chart3Name">HIDE</p>
             </li>
-            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
+            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Closure-Trend.png" />
                 <p class="chartshowhide" data-target="@chart4Name">HIDE</p>
             </li>
-            <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold ">
+            <li style="background-color: rgb(74, 172, 197); color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Incident-Summary.png" />
                 <p class="chartshowhide" data-target="@chart5Name">HIDE</p>
             </li>
-            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
+            <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold " class="@hideProjectReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Project Status.png" />
                 <p class="chartshowhide" data-target="@chart6Name">HIDE</p>
             </li>
-            <li style="background-color: #005983; color: white; font-weight: bold ">
+            <li style="background-color: #005983; color: white; font-weight: bold " class="@hideAuditReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Audit-report.png" />
                 <p class="chartshowhide" data-target="@chart7Name">HIDE</p>
             </li>
@@ -218,13 +225,14 @@
     </div>
 
     <script>
+        var hideIndentsScripts = "@hideIncidentReport";
+        if (hideIndentsScripts != "hide") {
 
-
-           var chart = new CanvasJS.Chart("@chart1Name", {
+            var chart = new CanvasJS.Chart("@chart1Name", {
                 animationEnabled: true,
-               theme: "light2",
-               exportEnabled: true,
-               willReadFrequently: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
                 title: {
                     text: "Monthly Report",
                     fontColor: "white",
@@ -234,12 +242,12 @@
                     backgroundColor: "#0095a8",
                     cornerRadius: 10,
                     fontWeight: "bold"
-               },
-               legend: {
-                   horizontalAlign: "right", // left, center ,right
-                   verticalAlign: "center",  // top, center, bottom
-                   margin: 30,
-               },
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                    margin: 30,
+                },
                 axisX: {
                     labelTextAlign: "left",
                     tickLength: 6,
@@ -247,7 +255,7 @@
                     tickColor: "red",
                 },
                 axisY: {
-                   title: "Incidents count",
+                    title: "Incidents count",
                     titleMaxWidth: 400,
                     titleFontWeight: "bold",
                     gridThickness: 0,
@@ -287,360 +295,50 @@
                         color: "rgb(247, 150, 71)",
                         dataPoints: @Html.Raw(chartModel.MOTDataPoints),
                     },
-                     {
-                         type: "column",
-                         legendText: "Closed",
-                         indexLabel: "{y}",
-                         indexLabelFontWeight: "bold",
-                         indexLabelFontColor: "rgb(81, 205, 160)",
-                         name: "Closed",
+                    {
+                        type: "column",
+                        legendText: "Closed",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(81, 205, 160)",
+                        name: "Closed",
                         showInLegend: true,
-                         legendMarkerColor: "rgb(81, 205, 160)",
-                         color: "rgb(81, 205, 160)",
+                        legendMarkerColor: "rgb(81, 205, 160)",
+                        color: "rgb(81, 205, 160)",
                         dataPoints: @Html.Raw(chartModel.MCTTotalDataPoints),
                     }
-               ]
+                ]
             });
-        chart.render();
+            chart.render();
 
-        var chart = new CanvasJS.Chart("@chart2Name", {
-	        animationEnabled: true,
-            theme: "light2",
-            exportEnabled: true,
-            willReadFrequently: true,
-	        title: {
-                text: "Monthly Raised Vs Closed",
-                fontColor: "white",
-                fontSize: 15,
-                padding: 10,
-                margin: 15,
-                backgroundColor: "#3b5998",
-                cornerRadius: 10,
-                fontWeight: "bold"
-            },
-            legend: {
-                horizontalAlign: "right", // left, center ,right
-                verticalAlign: "center",  // top, center, bottom
-                margin: 15,
-            },
-            axisX: {
-                labelTextAlign: "left",
-                tickLength: 6,
-                tickThickness: 6,
-                tickColor: "red"
-            },
-            axisY: {
-             /*  title: "Incidents count",*/
-                titleMaxWidth: 400,
-                titleFontWeight: "bold",
-                gridThickness: 0,
-                labelTextAlign: "left",
-                stripLines: [
-                    {
-                        value: 0,
-                        showOnTop: true,
-                        color: "gray",
-                        thickness: 0
-                    }
-                ]
-            },
-
-            data: [
-              {
-                    type: "area",
-                    indexLabelFontSize: 28,
-                    name: "Newly Raised",
-                    legendText: "Newly Raised",
-                 /*   indexLabelPlacement: "inside",*/
-                    indexLabel: "{y}",
-                    indexLabelFontWeight: "bold",
-                    indexLabelFontColor: "rgb(33, 103, 174)",
-                    indexLabelTextAlign: "left",
-                    legendMarkerColor: "rgb(33, 103, 174)",
-                    color: "rgb(33, 103, 174)",
-                    showInLegend: true,
-                    dataPoints: @Html.Raw(chartModel.MNRTDataPoints),
-                },
-                 {
-                     type: "line",
-                     legendText: "Closed",
-                     indexLabelOrientation: "horizontal",
-                     indexLabel: "{y}",
-                     indexLabelFontSize: 9,
-                     indexLabelFontWeight: "bolder",
-                     indexLabelFontColor: "black",
-                     name: "Closed",
-                     showInLegend: true,
-                     legendMarkerColor: "rgb(81, 205, 160)",
-                     color: "rgb(81, 205, 160)",
-                    dataPoints: @Html.Raw(chartModel.MSpecifCTDataPoints),
-                }
-            ]
-        });
-    chart.render();
-
-     var chart = new CanvasJS.Chart("@chart3Name", {
-	        animationEnabled: true,
-            theme: "light2",
-         exportEnabled: true,
-         willReadFrequently: true,
-	        title: {
-                text: "Open Tickets",
-                fontColor: "white",
-                fontSize: 15,
-                padding: 10,
-                margin: 15,
-                backgroundColor: "#005983",
-                cornerRadius: 10,
-                fontWeight: "bold"
-         },
-         legend: {
-             horizontalAlign: "right", // left, center ,right
-             verticalAlign: "center",  // top, center, bottom
-             margin: 15,
-         },
-            axisX: {
-                labelTextAlign: "left",
-                tickLength: 6,
-                tickThickness: 6,
-                tickColor: "red"
-            },
-            axisY: {
-               title: "Incidents count",
-                titleMaxWidth: 400,
-                titleFontWeight: "bold",
-                gridThickness: 0,
-                labelTextAlign: "left",
-                stripLines: [
-                    {
-                        value: 0,
-                        showOnTop: true,
-                        color: "gray",
-                        thickness: 0
-                    }
-                ]
-            },
-
-            data: [
-              {
-                    type: "column",
-                    showInLegend: true,
-                    name: "Critical",
-                    legendText: "Critical",
-                    indexLabel: "{y}",
-                    indexLabelFontWeight: "bold",
-                    indexLabelFontColor: "rgb(192, 80, 78)",
-                    legendMarkerColor: "rgb(192, 80, 78)",
-                    color: "rgb(192, 80, 78)",
-                    dataPoints:@Html.Raw(chartModel.MCRITOTDataPoints),
-
-                },
-                 {
-                     type: "column",
-                     legendText: "High",
-                     indexLabel: "{y}",
-                     indexLabelFontWeight: "bold",
-                     name: "High",
-                    showInLegend: true,
-                     legendMarkerColor: "rgb(155, 187, 88)",
-                     color: "rgb(155, 187, 88)",
-                     indexLabelFontColor: "rgb(155, 187, 88)",
-                    dataPoints:@Html.Raw(chartModel.MHIGOTDataPoints),
-                },
-                  {
-                     type: "column",
-                     legendText: "Medium",
-                     indexLabel: "{y}",
-                     indexLabelFontWeight: "bold",
-                      name: "Medium",
-                    showInLegend: true,
-                      legendMarkerColor: "#005983",
-                      color: "#005983",
-                      indexLabelFontColor: "#005983",
-                      dataPoints:@Html.Raw(chartModel.MMEDIOTDataPoints),
-                },
-                   {
-                     type: "column",
-                     legendText: "Low",
-                     indexLabel: "{y}",
-                     indexLabelFontWeight: "bold",
-                    showInLegend: true,
-                       legendMarkerColor: "rgb(74, 172, 197)",
-                       color: "rgb(74, 172, 197)",
-                       indexLabelFontColor: "rgb(74, 172, 197)",
-                   dataPoints:@Html.Raw(chartModel.MLOWOTDataPoints),
-                }
-            ]
-        });
-    chart.render();
-
-
-     var chart = new CanvasJS.Chart("@chart4Name", {
-	        animationEnabled: true,
-	        theme: "light2",
-         exportEnabled: true,
-         willReadFrequently: true,
-	        title: {
-                text: "Incident Closure Trend",
-                fontColor: "white",
-                fontSize: 15,
-                padding: 10,
-                marginRight: 50,
-                backgroundColor: "rgb(0, 128, 128)",
-                cornerRadius: 10,
-                fontWeight: "bold"
-         },
-         legend: {
-             horizontalAlign: "right", // left, center ,right
-             verticalAlign: "center",  // top, center, bottom
-         },
-
-            data: [
-              {
-                    type: "pie",
-                    startAngle: 240,
-                    indexLabelFontSize: 12,
-                    showInLegend: true,
-                    yValueFormatString: "##0.00\"%\"",
-                    indexLabel: "{label} {y}",
-                    dataPoints: @Html.Raw(chartModel.ClosedTrend),
-                }
-            ]
-        });
-    chart.render();
-
-         var chart = new CanvasJS.Chart("@chart5Name", {
-	        animationEnabled: true,
-             theme: "light2",
-             exportEnabled: true,
-             willReadFrequently: true,
-	        title: {
-                text: "Incidents Summary",
-                fontColor: "white",
-                fontSize: 15,
-                padding: 10,
-                marginLeft: 50,
-                backgroundColor: "rgb(74, 172, 197)",
-                cornerRadius: 10,
-                fontWeight: "bold"
-             },
-             legend: {
-                 horizontalAlign: "right", // left, center ,right
-                 verticalAlign: "center",  // top, center, bottom
-             },
-
-            data: [
-              {
-                    type: "doughnut",
-                    startAngle: 240,
-                    reversed: true,
-                    indexLabelFontSize: 12,
-                    showInLegend: true,
-                    yValueFormatString: "##0.00\"%\"",
-                    indexLabel: "{label}",
-                    dataPoints: @Html.Raw(chartModel.IncidentsSummary),
-                }
-            ]
-        });
-    chart.render();
-
-    @*var chart = new CanvasJS.Chart("@chart6Name",
-        {
-            animationEnabled: true,
-            theme: "light2",
-            exportEnabled: true,
-            willReadFrequently: true,
-            axisY: {
-            /*    title: "percentage",*/
-                titleFontColor: "#005983",
-                titleFontSize: 15,
-                interlacedColor: "rgb(255,250,250)",
-                gridColor: "#FFBFD5",
-                gridThickness: 0,
-                labelTextAlign: "left",
-                stripLines: [
-                    {
-                        value: 0,
-                        showOnTop: true,
-                        color: "gray",
-                        thickness: 0
-                    }
-                ]
-            },
-            axisX: {
-                labelFontColor: "#005983",
-                labelFontSize: 10
-            },
-
-            title: {
-                text: "Project Status Report",
-                fontColor: "white",
-                fontSize: 15,
-                padding: 10,
-                marginBottom: 50,
-                backgroundColor: "rgb(0, 128, 128)",
-                cornerRadius: 10,
-                fontWeight: "bold"
-            },
-            legend: {
-                horizontalAlign: "right", // left, center ,right
-                verticalAlign: "center",  // top, center, bottom
-            },
-            data: [
-                {
-                    indexLabel: "{y}%",
-                    indexLabelFontColor: "white",
-                    indexLabelPlacement: "inside",
-                    type: "stackedBar100",
-                    color: "rgb(0, 128, 128)",
-                    name: "Completed %",
-                    showInLegend: true,
-                    dataPoints: @Html.Raw(chartModel.ProjectComppletionDataPoints),
-                },
-                {
-                    indexLabel: "{y}%",
-                    indexLabelFontColor: "white",
-                    indexLabelPlacement: "inside",
-                    type: "stackedBar100",
-                    name: "Remaining %",
-                    color: "#a4c4c0",
-                    showInLegend: true,
-                    dataPoints: @Html.Raw(chartModel.ProjectRemainingDataPoints),
-                }
-            ]
-        });
-
-        chart.render();*@
-
-
-           var chart = new CanvasJS.Chart("@chart7Name", {
+            var chart = new CanvasJS.Chart("@chart2Name", {
                 animationEnabled: true,
-               theme: "light2",
-               exportEnabled: true,
-               willReadFrequently: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
                 title: {
-                    text: "Audit Report",
-                    fontColor: "rgb(81, 205, 160)",
+                    text: "Monthly Raised Vs Closed",
+                    fontColor: "white",
                     fontSize: 15,
                     padding: 10,
                     margin: 15,
-                    backgroundColor: "#005983",
+                    backgroundColor: "#3b5998",
                     cornerRadius: 10,
                     fontWeight: "bold"
-               },
-               legend: {
-                   horizontalAlign: "right", // left, center ,right
-                   verticalAlign: "center",  // top, center, bottom
-                   margin: 30,
-               },
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                    margin: 15,
+                },
                 axisX: {
                     labelTextAlign: "left",
                     tickLength: 6,
                     tickThickness: 6,
-                    tickColor: "red",
+                    tickColor: "red"
                 },
                 axisY: {
-                   title: "Test count",
+                    /*  title: "Incidents count",*/
                     titleMaxWidth: 400,
                     titleFontWeight: "bold",
                     gridThickness: 0,
@@ -656,46 +354,364 @@
                 },
 
                 data: [
-                     {
-                         type: "column",
-                         legendText: "Closed",
-                         indexLabel: "{y}",
-                         indexLabelFontWeight: "bold",
-                         indexLabelFontColor: "rgb(81, 205, 160)",
-                         name: "Closed",
-                         showInLegend: true,
-                         legendMarkerColor: "rgb(81, 205, 160)",
-                         color: "rgb(81, 205, 160)",
+                    {
+                        type: "area",
+                        indexLabelFontSize: 28,
+                        name: "Newly Raised",
+                        legendText: "Newly Raised",
+                        /*   indexLabelPlacement: "inside",*/
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(33, 103, 174)",
+                        indexLabelTextAlign: "left",
+                        legendMarkerColor: "rgb(33, 103, 174)",
+                        color: "rgb(33, 103, 174)",
+                        showInLegend: true,
+                        dataPoints: @Html.Raw(chartModel.MNRTDataPoints),
+                    },
+                    {
+                        type: "line",
+                        legendText: "Closed",
+                        indexLabelOrientation: "horizontal",
+                        indexLabel: "{y}",
+                        indexLabelFontSize: 9,
+                        indexLabelFontWeight: "bolder",
+                        indexLabelFontColor: "black",
+                        name: "Closed",
+                        showInLegend: true,
+                        legendMarkerColor: "rgb(81, 205, 160)",
+                        color: "rgb(81, 205, 160)",
+                        dataPoints: @Html.Raw(chartModel.MSpecifCTDataPoints),
+                    }
+                ]
+            });
+            chart.render();
+
+            var chart = new CanvasJS.Chart("@chart3Name", {
+                animationEnabled: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
+                title: {
+                    text: "Open Tickets",
+                    fontColor: "white",
+                    fontSize: 15,
+                    padding: 10,
+                    margin: 15,
+                    backgroundColor: "#005983",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                    margin: 15,
+                },
+                axisX: {
+                    labelTextAlign: "left",
+                    tickLength: 6,
+                    tickThickness: 6,
+                    tickColor: "red"
+                },
+                axisY: {
+                    title: "Incidents count",
+                    titleMaxWidth: 400,
+                    titleFontWeight: "bold",
+                    gridThickness: 0,
+                    labelTextAlign: "left",
+                    stripLines: [
+                        {
+                            value: 0,
+                            showOnTop: true,
+                            color: "gray",
+                            thickness: 0
+                        }
+                    ]
+                },
+
+                data: [
+                    {
+                        type: "column",
+                        showInLegend: true,
+                        name: "Critical",
+                        legendText: "Critical",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(192, 80, 78)",
+                        legendMarkerColor: "rgb(192, 80, 78)",
+                        color: "rgb(192, 80, 78)",
+                        dataPoints:@Html.Raw(chartModel.MCRITOTDataPoints),
+
+                    },
+                    {
+                        type: "column",
+                        legendText: "High",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        name: "High",
+                        showInLegend: true,
+                        legendMarkerColor: "rgb(155, 187, 88)",
+                        color: "rgb(155, 187, 88)",
+                        indexLabelFontColor: "rgb(155, 187, 88)",
+                        dataPoints:@Html.Raw(chartModel.MHIGOTDataPoints),
+                    },
+                    {
+                        type: "column",
+                        legendText: "Medium",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        name: "Medium",
+                        showInLegend: true,
+                        legendMarkerColor: "#005983",
+                        color: "#005983",
+                        indexLabelFontColor: "#005983",
+                        dataPoints:@Html.Raw(chartModel.MMEDIOTDataPoints),
+                    },
+                    {
+                        type: "column",
+                        legendText: "Low",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        showInLegend: true,
+                        legendMarkerColor: "rgb(74, 172, 197)",
+                        color: "rgb(74, 172, 197)",
+                        indexLabelFontColor: "rgb(74, 172, 197)",
+                        dataPoints:@Html.Raw(chartModel.MLOWOTDataPoints),
+                    }
+                ]
+            });
+            chart.render();
+
+
+            var chart = new CanvasJS.Chart("@chart4Name", {
+                animationEnabled: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
+                title: {
+                    text: "Incident Closure Trend",
+                    fontColor: "white",
+                    fontSize: 15,
+                    padding: 10,
+                    marginRight: 50,
+                    backgroundColor: "rgb(0, 128, 128)",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                },
+
+                data: [
+                    {
+                        type: "pie",
+                        startAngle: 240,
+                        indexLabelFontSize: 12,
+                        showInLegend: true,
+                        yValueFormatString: "##0.00\"%\"",
+                        indexLabel: "{label} {y}",
+                        dataPoints: @Html.Raw(chartModel.ClosedTrend),
+                    }
+                ]
+            });
+            chart.render();
+
+            var chart = new CanvasJS.Chart("@chart5Name", {
+                animationEnabled: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
+                title: {
+                    text: "Incidents Summary",
+                    fontColor: "white",
+                    fontSize: 15,
+                    padding: 10,
+                    marginLeft: 50,
+                    backgroundColor: "rgb(74, 172, 197)",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                },
+
+                data: [
+                    {
+                        type: "doughnut",
+                        startAngle: 240,
+                        reversed: true,
+                        indexLabelFontSize: 12,
+                        showInLegend: true,
+                        yValueFormatString: "##0.00\"%\"",
+                        indexLabel: "{label}",
+                        dataPoints: @Html.Raw(chartModel.IncidentsSummary),
+                    }
+                ]
+            });
+            chart.render();
+        }
+
+        var hideProjectsScripts = "@hideProjectReport";
+        if (hideProjectsScripts != "hide") {
+
+            var chart = new CanvasJS.Chart("@chart6Name",
+                {
+                    animationEnabled: true,
+                    theme: "light2",
+                    exportEnabled: true,
+                    willReadFrequently: true,
+                    axisY: {
+                        /*    title: "percentage",*/
+                        titleFontColor: "#005983",
+                        titleFontSize: 15,
+                        interlacedColor: "rgb(255,250,250)",
+                        gridColor: "#FFBFD5",
+                        gridThickness: 0,
+                        labelTextAlign: "left",
+                        stripLines: [
+                            {
+                                value: 0,
+                                showOnTop: true,
+                                color: "gray",
+                                thickness: 0
+                            }
+                        ]
+                    },
+                    axisX: {
+                        labelFontColor: "#005983",
+                        labelFontSize: 10
+                    },
+
+                    title: {
+                        text: "Project Status Report",
+                        fontColor: "white",
+                        fontSize: 15,
+                        padding: 10,
+                        marginBottom: 50,
+                        backgroundColor: "rgb(0, 128, 128)",
+                        cornerRadius: 10,
+                        fontWeight: "bold"
+                    },
+                    legend: {
+                        horizontalAlign: "right", // left, center ,right
+                        verticalAlign: "center",  // top, center, bottom
+                    },
+                    data: [
+                        {
+                            indexLabel: "{y}%",
+                            indexLabelFontColor: "white",
+                            indexLabelPlacement: "inside",
+                            type: "stackedBar100",
+                            color: "rgb(0, 128, 128)",
+                            name: "Completed %",
+                            showInLegend: true,
+                            dataPoints: @Html.Raw(chartModel.ProjectComppletionDataPoints),
+                        },
+                        {
+                            indexLabel: "{y}%",
+                            indexLabelFontColor: "white",
+                            indexLabelPlacement: "inside",
+                            type: "stackedBar100",
+                            name: "Remaining %",
+                            color: "#a4c4c0",
+                            showInLegend: true,
+                            dataPoints: @Html.Raw(chartModel.ProjectRemainingDataPoints),
+                        }
+                    ]
+                });
+
+            chart.render();
+        }
+
+        var hideAuditScripts = "@hideAuditReport";
+        if (hideAuditScripts != "hide") {
+
+            var chart = new CanvasJS.Chart("@chart7Name", {
+                animationEnabled: true,
+                theme: "light2",
+                exportEnabled: true,
+                willReadFrequently: true,
+                title: {
+                    text: "Audit Report",
+                    fontColor: "rgb(81, 205, 160)",
+                    fontSize: 15,
+                    padding: 10,
+                    margin: 15,
+                    backgroundColor: "#005983",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+                },
+                legend: {
+                    horizontalAlign: "right", // left, center ,right
+                    verticalAlign: "center",  // top, center, bottom
+                    margin: 30,
+                },
+                axisX: {
+                    labelTextAlign: "left",
+                    tickLength: 6,
+                    tickThickness: 6,
+                    tickColor: "red",
+                },
+                axisY: {
+                    title: "Test count",
+                    titleMaxWidth: 400,
+                    titleFontWeight: "bold",
+                    gridThickness: 0,
+                    labelTextAlign: "left",
+                    stripLines: [
+                        {
+                            value: 0,
+                            showOnTop: true,
+                            color: "gray",
+                            thickness: 0
+                        }
+                    ]
+                },
+
+                data: [
+                    {
+                        type: "column",
+                        legendText: "Closed",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        indexLabelFontColor: "rgb(81, 205, 160)",
+                        name: "Closed",
+                        showInLegend: true,
+                        legendMarkerColor: "rgb(81, 205, 160)",
+                        color: "rgb(81, 205, 160)",
                         dataPoints: @Html.Raw(chartModel.MSpecifcAudDataoints),
                     },
                     {
-                         type: "column",
-                         legendText: "Efficient",
-                         indexLabel: "{y}",
-                         indexLabelFontWeight: "bold",
+                        type: "column",
+                        legendText: "Efficient",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
                         name: "Efficient",
-                         showInLegend: true,
+                        showInLegend: true,
                         legendMarkerColor: "#005983",
                         color: "#005983",
                         indexLabelFontColor: "#005983",
                         dataPoints: @Html.Raw(chartModel.MSpecifcEffeAudDataoints),
                     },
-                      {
-                         type: "column",
-                         legendText: "In Efficient",
-                         indexLabel: "{y}",
-                         indexLabelFontWeight: "bold",
-                          name: "In Efficient",
-                         showInLegend: true,
+                    {
+                        type: "column",
+                        legendText: "In Efficient",
+                        indexLabel: "{y}",
+                        indexLabelFontWeight: "bold",
+                        name: "In Efficient",
+                        showInLegend: true,
 
-                          legendMarkerColor: "rgb(74, 172, 197)",
-                          color: "rgb(74, 172, 197)",
-                          indexLabelFontColor: "rgb(74, 172, 197)",
+                        legendMarkerColor: "rgb(74, 172, 197)",
+                        color: "rgb(74, 172, 197)",
+                        indexLabelFontColor: "rgb(74, 172, 197)",
                         dataPoints: @Html.Raw(chartModel.MSpecifcInEffeAudDataoints),
                     }
-               ]
+                ]
             });
-        chart.render();
+            chart.render();
+        }
 
     jQuery('.canvasjs-chart-credit').hide();
 
