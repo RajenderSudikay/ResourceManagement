@@ -36,8 +36,8 @@ namespace ResourceManagement.Models
         public string SelectedColumnIndex { get; set; }
         public string SelectedColumnName { get; set; }
         public string ToolName { get; set; }
-
         public string Uploadedby { get; set; }
+        public bool IsAuditReport { get; set; }
     }
     public class FieldsIndex
     {
@@ -126,7 +126,7 @@ namespace ResourceManagement.Models
 
     public class GraphChartViewModel
     {
-        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }     
+        public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; }
         public string EmployeeImage { get; set; }
         public string Graph4OverallStatus { get; set; }
         public string Graph5OverallStatus { get; set; }
@@ -147,6 +147,9 @@ namespace ResourceManagement.Models
         public string ProjectReportHeight { get; set; }
         public string ProjectComppletionDataPoints { get; set; }
         public string ProjectRemainingDataPoints { get; set; }
+        public string MSpecifcAudDataoints { get; set; }
+        public string MSpecifcEffeAudDataoints { get; set; }
+        public string MSpecifcInEffeAudDataoints { get; set; }
 
 
     }

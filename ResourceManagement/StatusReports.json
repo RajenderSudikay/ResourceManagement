@@ -19,26 +19,17 @@
       "Field5": "Project_Status",
       "Field6": "Project_Closed_Date_Actual",
       "Field7": "CompletedPercentage",
-      "Field8": "RemainingPercentage"     
+      "Field8": "RemainingPercentage"
     }
   },
   {
     "Name": "Template3",
     "fields": {
-      "Field1": "Test_ID",
-      "Field2": "Control_Group_Name",
-      "Field3": "Test_Completed",
-      "Field4": "Test_Due_Date",
-      "Field5": "Test_Completion_Date",
-      "Field6": "Test_Conclusion",
-      "Field7": "Control_Owner",
-      "Field8": "Control_Performer",
-      "Field9": "Test_application",
-      "Field10": "Organisation",
-      "Field11": "Layer",
-      "Field12": "Frequency",
-      "Field13": "Current_step",
-      "Field14": "Comments"
+      "Field1": "Ticket_Number",
+      "Field3": "Ticket_Created_Date",
+      "Field6": "Ticket_Priority",
+      "Field7": "Ticket_Status",
+      "Field8": "Ticket_Closed_Date"
     }
   }
 ]

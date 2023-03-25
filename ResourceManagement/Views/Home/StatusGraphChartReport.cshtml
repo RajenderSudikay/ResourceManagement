@@ -1,8 +1,6 @@
 ﻿@model ResourceManagement.Models.GraphChartModel
 
 <style>
-
-   
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -23,6 +21,7 @@
     var chart4Name = "chart4Container" + i;
     var chart5Name = "chart5Container" + i;
     var chart6Name = "chart6Container" + i;
+    var chart7Name = "chart7Container" + i;  
     i++;
 
     <div class="" style="background-color: white; color: #2167ae;">
@@ -169,6 +168,11 @@
         </div>*@
 
 
+    <div class="@chart7Name chartdiv">
+        <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 215px; display: inline-block; margin-left: 150px; "></div><p class="chartparah3" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "></p>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
 
     <div style="text-align: center; color: white !important; background-color: #2167ae !important; height: 75px; border-radius: 0px; padding-top: 10px;margin-top: 100px">
         <div style=" text-align:center"><b style="font-size: xx-large; color: white !important;">Thank you...!</b></div>
@@ -204,6 +208,10 @@
             <li style="background-color: rgb(0, 128, 128); color: white; font-weight: bold ">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Project Status.png" />
                 <p class="chartshowhide" data-target="@chart6Name">HIDE</p>
+            </li>
+            <li style="background-color: #005983; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/Audit-report.png" />
+                <p class="chartshowhide" data-target="@chart7Name">HIDE</p>
             </li>
 
         </ul>
@@ -605,6 +613,89 @@
         chart.render();*@
 
 
+           var chart = new CanvasJS.Chart("@chart7Name", {
+                animationEnabled: true,
+               theme: "light2",
+               exportEnabled: true,
+               willReadFrequently: true,
+                title: {
+                    text: "Audit Report",
+                    fontColor: "rgb(81, 205, 160)",
+                    fontSize: 15,
+                    padding: 10,
+                    margin: 15,
+                    backgroundColor: "#005983",
+                    cornerRadius: 10,
+                    fontWeight: "bold"
+               },
+               legend: {
+                   horizontalAlign: "right", // left, center ,right
+                   verticalAlign: "center",  // top, center, bottom
+                   margin: 30,
+               },
+                axisX: {
+                    labelTextAlign: "left",
+                    tickLength: 6,
+                    tickThickness: 6,
+                    tickColor: "red",
+                },
+                axisY: {
+                   title: "Test count",
+                    titleMaxWidth: 400,
+                    titleFontWeight: "bold",
+                    gridThickness: 0,
+                    labelTextAlign: "left",
+                    stripLines: [
+                        {
+                            value: 0,
+                            showOnTop: true,
+                            color: "gray",
+                            thickness: 0
+                        }
+                    ]
+                },
+
+                data: [
+                     {
+                         type: "column",
+                         legendText: "Closed",
+                         indexLabel: "{y}",
+                         indexLabelFontWeight: "bold",
+                         indexLabelFontColor: "rgb(81, 205, 160)",
+                         name: "Closed",
+                         showInLegend: true,
+                         legendMarkerColor: "rgb(81, 205, 160)",
+                         color: "rgb(81, 205, 160)",
+                        dataPoints: @Html.Raw(chartModel.MSpecifcAudDataoints),
+                    },
+                    {
+                         type: "column",
+                         legendText: "Efficient",
+                         indexLabel: "{y}",
+                         indexLabelFontWeight: "bold",
+                        name: "Efficient",
+                         showInLegend: true,
+                        legendMarkerColor: "#005983",
+                        color: "#005983",
+                        indexLabelFontColor: "#005983",
+                        dataPoints: @Html.Raw(chartModel.MSpecifcEffeAudDataoints),
+                    },
+                      {
+                         type: "column",
+                         legendText: "In Efficient",
+                         indexLabel: "{y}",
+                         indexLabelFontWeight: "bold",
+                          name: "In Efficient",
+                         showInLegend: true,
+
+                          legendMarkerColor: "rgb(74, 172, 197)",
+                          color: "rgb(74, 172, 197)",
+                          indexLabelFontColor: "rgb(74, 172, 197)",
+                        dataPoints: @Html.Raw(chartModel.MSpecifcInEffeAudDataoints),
+                    }
+               ]
+            });
+        chart.render();
 
     jQuery('.canvasjs-chart-credit').hide();
 

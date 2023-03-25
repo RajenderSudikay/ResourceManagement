@@ -1842,7 +1842,9 @@ namespace ResourceManagement.Controllers
                             break;
 
                         case "Template3":
-                            Template3Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            fileData.IsAuditReport = true;
+                            Template1Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            //Template3Updates(fileData, file, workSheet, noOfRow, indexList, model);
                             break;
                     }
                 }
@@ -2014,7 +2016,7 @@ namespace ResourceManagement.Controllers
                         {
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
                             //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
-                            Ticket_Summary = fileData.ToolName,
+                            //Ticket_Summary = fileData.ToolName,
                             Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             //Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
                             Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
@@ -2042,6 +2044,8 @@ namespace ResourceManagement.Controllers
                             Is_ToDo = IsTODOTicket,
                             EmplyeeID = fileData.EmployeeID,
                             ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                            IsAuditReport = fileData.IsAuditReport,
+                            TicketingToolName = fileData.ToolName,
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         }); ;
                     }
@@ -2603,6 +2607,10 @@ namespace ResourceManagement.Controllers
 
                     var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
 
+                    var MonthWiseAuditTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseInEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
                     var MonthWiseCriticlTotalTickets = 0;
                     var MonthWiseHighOpenTotalTickets = 0;
                     var MonthWiseMediumOpenTotalTickets = 0;
@@ -2628,7 +2636,7 @@ namespace ResourceManagement.Controllers
                             emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
                         }
 
-                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
 
                         var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                         if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
@@ -2739,7 +2747,7 @@ namespace ResourceManagement.Controllers
                         }
 
                         var monthSpecificLosedTicketsCount = 0;
-                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
 
                         if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                         {
@@ -2766,6 +2774,56 @@ namespace ResourceManagement.Controllers
                         if (StatusReportChartModel.ReportType != "Month Report")
                         {
                             ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                        }
+
+
+
+                        //TEMPLATE3 code updates
+                        var AuditReportsForSelectedMonth = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && ticket.IsAuditReport == true).ToList();
+
+
+                        if (AuditReportsForSelectedMonth != null && AuditReportsForSelectedMonth.Count() > 0)
+                        {
+                            var EfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == true).ToList();
+                            var InEfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == false).ToList();
+
+                            MonthWiseAuditTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = AuditReportsForSelectedMonth != null && AuditReportsForSelectedMonth.Count() > 0 ? System.Convert.ToInt32(AuditReportsForSelectedMonth.Count()) : 0
+                            });
+
+                            MonthWiseEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = EfficientClosedTickets != null && EfficientClosedTickets.Count() > 0 ? System.Convert.ToInt32(EfficientClosedTickets.Count()) : 0
+                            });
+
+                            MonthWiseInEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = InEfficientClosedTickets != null && InEfficientClosedTickets.Count() > 0 ? System.Convert.ToInt32(InEfficientClosedTickets.Count()) : 0
+                            });
+                        }
+                        else
+                        {
+                            MonthWiseAuditTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
+
+                            MonthWiseEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
+
+                            MonthWiseInEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
                         }
 
 
@@ -2955,6 +3013,11 @@ namespace ResourceManagement.Controllers
                         model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
                         model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
                     }
+
+                    //TEMPLATE 3 UPDATES
+                    model.MSpecifcAudDataoints = JsonConvert.SerializeObject(MonthWiseAuditTickets);
+                    model.MSpecifcEffeAudDataoints = JsonConvert.SerializeObject(MonthWiseEfficientClosedTickets);
+                    model.MSpecifcInEffeAudDataoints = JsonConvert.SerializeObject(MonthWiseInEfficientClosedTickets);
 
                     graphModel.ViewModel.Add(model);
 

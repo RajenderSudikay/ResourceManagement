@@ -255,6 +255,7 @@
                             <option value="Please Select Report Type">Please Select Report Type</option>
                             <option value="Template1">Incident Report</option>
                             <option value="Template2">Project Report</option>
+                            <option value="Template3">Audit Report</option>
                         </select>
 
                         <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:180px">
@@ -264,6 +265,7 @@
                             <ul>
                                 <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
                                 <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
+                                <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
                             </ul>
                         </div>
                     </div>
@@ -400,7 +402,7 @@
             jQuery('.excel-field-mapping-div').show();
         }
 
-        if (jQuery('#statusreporttype :selected').val() == "Template1") {
+        if (jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") {
             jQuery('.divtoolname').show();
         }
         else {
@@ -677,7 +679,7 @@
             jQuery('.reporttype-invalid-feedback').hide();
         }
 
-        if (jQuery('#statusreporttype :selected').val() == "Template1" && jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
+        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3")&& jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
             jQuery('#statusreportToolName').css("border", "1px solid red");
             jQuery('.client-invalid-toolname').show();
             fileValidated = false;
