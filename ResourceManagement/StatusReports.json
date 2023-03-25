@@ -25,11 +25,8 @@
   {
     "Name": "Template3",
     "fields": {
-      "Field1": "Ticket_Number",
-      "Field3": "Ticket_Created_Date",
-      "Field6": "Ticket_Priority",
-      "Field7": "Ticket_Status",
-      "Field8": "Ticket_Closed_Date"
+      "Field1": "Ticket_Number",    
+      "Field7": "Ticket_Status"    
     }
   }
 ]

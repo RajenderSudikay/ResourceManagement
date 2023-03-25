@@ -176,6 +176,20 @@
                     </div>
                 }
             </div>
+
+            <div class="form-group row">
+                @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+
+                    <div class="form-group col-lg-4" style="margin-left:10px">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Sample Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px " />
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

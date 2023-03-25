@@ -1884,14 +1884,14 @@ namespace ResourceManagement.Controllers
                 int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
                 //int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
-                var Ticket_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index);
+                var Ticket_Created_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index) : 0;
                 //var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
 
                 //var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
-                var Ticket_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index);
+                var Ticket_PriorityIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index) : 0;
 
                 var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
-                var Ticket_Closed_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index);
+                var Ticket_Closed_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index) : 0;
 
                 //var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
                 //var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
@@ -1905,7 +1905,7 @@ namespace ResourceManagement.Controllers
                 {
                     //CHECK IF THE REPORT CONTAINS OLD MONTH DATA ONLY
                     //CHECKING WITH CREATED DATE AND CLOSED DATE VALUES
-                    var createdDateValue = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    var createdDateValue = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
                     if (createdDateValue > currentDateStartDate)
                     {
                         validationErrors = true;
@@ -1914,7 +1914,7 @@ namespace ResourceManagement.Controllers
                         break;
                     }
 
-                    var ClosedDateValue = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    var ClosedDateValue = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
                     if (ClosedDateValue > currentDateStartDate)
                     {
                         validationErrors = true;
@@ -1928,7 +1928,7 @@ namespace ResourceManagement.Controllers
                     {
                         //This logic for report graphs
                         var reportTicketPriority = "";
-                        if (workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null)
+                        if (Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null)
                         {
                             var rowIteratorPriority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString();
                             var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
@@ -1983,7 +1983,7 @@ namespace ResourceManagement.Controllers
                         var createdYear = 0;
                         var createdMonth = 0;
 
-                        if (workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty)
+                        if (Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty)
                         {
                             var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString());
                             var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
@@ -1997,7 +1997,7 @@ namespace ResourceManagement.Controllers
 
                             if (IsClosedTicket)
                             {
-                                if (workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty)
+                                if (Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty)
                                 {
                                     var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString());
                                     ticketAge = System.Convert.ToInt32(GetBusinessDays(ticketDateCreated, ticketDateClosed));
@@ -2017,12 +2017,12 @@ namespace ResourceManagement.Controllers
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
                             //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
                             //Ticket_Summary = fileData.ToolName,
-                            Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Created_Date = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             //Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
-                            Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
+                            Ticket_Priority = Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
                             //Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
                             Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
-                            Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Closed_Date = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
                             //Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
                             //Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
                             Ticket_Raisedby = "DELETE",
@@ -3168,12 +3168,12 @@ namespace ResourceManagement.Controllers
 
                     byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
 
-                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xls";
+                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xlsx";
 
                     sourceFiles.Add(new SourceFile()
                     {
                         FileBytes = byteArray,
-                        Extension = ".xls",
+                        Extension = ".xlsx",
                         Name = excelFileName
                     });
 
@@ -3236,6 +3236,17 @@ namespace ResourceManagement.Controllers
 
             var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Project-Report.xlsx";
             var fileName = "Sample-Project-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+        }
+
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleAuditReport(string GridHtml)
+        {
+            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Audit-Report.xlsx";
+            var fileName = "Sample-Audit-Template.xlsx";
             var mimeType = "application/vnd.ms-excel";
             return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
         }

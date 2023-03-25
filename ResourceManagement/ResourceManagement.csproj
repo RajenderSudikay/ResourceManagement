@@ -412,6 +412,7 @@
     </Content>
     <Content Include="Assets\Reports\Sample-Incident-Report.xlsx" />
     <Content Include="Assets\Reports\Sample-Project-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Audit-Report.xlsx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
