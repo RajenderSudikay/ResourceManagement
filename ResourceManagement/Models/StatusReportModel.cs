@@ -35,6 +35,9 @@ namespace ResourceManagement.Models
         public string FailureMessage { get; set; }
         public string SelectedColumnIndex { get; set; }
         public string SelectedColumnName { get; set; }
+        public string ToolName { get; set; }
+
+        public string Uploadedby { get; set; }
     }
     public class FieldsIndex
     {
@@ -101,6 +104,9 @@ namespace ResourceManagement.Models
 
         [JsonPropertyName("TemplateNumber")]
         public string TemplateNumber { get; set; } = string.Empty;
+
+        [JsonPropertyName("ToolName")]
+        public List<string> ToolName { get; set; } = new List<string>();
     }
 
     public class MonthWiseReportModel

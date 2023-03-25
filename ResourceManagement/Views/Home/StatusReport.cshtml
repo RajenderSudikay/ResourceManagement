@@ -325,7 +325,7 @@
                             }
                             else
                             {
-                                <option value="--Select Client Name--">--Select Client Name--</option>
+                                <option value="--Select Client Name--" selected disabled>--Select Client Name--</option>
                                 <option value="Littelfuse">Littelfuse</option>
                                 <option value="Federal Signal">Federal Signal</option>
                                 <option value="Modine">Modine</option>
@@ -409,6 +409,8 @@
             </div>
 
             <div class="row">
+
+
                 <div class="col-md-6 reporttemplatetyep" style="display: none">
                     <div class="form-group">
                         <label for="uploadreporttype">Report Template Type: <b style="color:red">*</b></label>
@@ -424,6 +426,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 divtoolname">
+                    <div class="form-group">
+                        <label for="statusreportToolName" class="control-label">Tool Name<b style="color:red">*</b></label>
+                        <select id="statusreportToolName" name="statusreportToolName" class="form-control form-select form-select-lg mb-3" multiple>                 
+                            <option value="Halo">Halo</option>
+                            <option value="Ivanti">Ivanti</option>
+                            <option value="Jira">Jira</option>
+                            <option value="LogicGate">LogicGate</option>
+                        </select>
+                        <div class="invalid-feedback client-invalid-toolname" style="color:red; display:none">
+                            Please select Tool Name
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer mt-xl-4">
                 <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view" style="width: 150px; border-radius: 10px; float: right; /* margin-left: 34px !important; */ margin-right: 890px !important; background-color: #005983 !important; position: absolute; "><b>View Uploaded Report</b></button>
@@ -603,6 +620,16 @@
             jQuery('.invalid-feedback-selectEmployeename').hide();
         }
 
+        if (jQuery('#statusreportToolName').val() == "") {
+            jQuery('#statusreportToolName').css("border", "1px solid red");
+            jQuery('.client-invalid-toolname').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#statusreportToolName').css("border", "1px solid green");
+            jQuery('.client-invalid-toolname').hide();
+        }
+
         return formValidated;
     }
 
@@ -617,6 +644,7 @@
                 ReportType: jQuery('#reporttype :selected').val(),
                 EmployeeID: jQuery('#selectEmployeename').val(),
                 EmployeeName: jQuery('#selectEmployeename').text().trim(),
+                ToolName: jQuery('#statusreportToolName').val(),
             };
 
             jQuery.ajax({

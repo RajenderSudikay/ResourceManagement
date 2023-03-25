@@ -1880,19 +1880,19 @@ namespace ResourceManagement.Controllers
                 MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
 
                 int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
-                int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
+                //int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
                 var Ticket_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index);
-                var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
+                //var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
 
-                var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
+                //var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
                 var Ticket_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index);
 
                 var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
                 var Ticket_Closed_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index);
 
-                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
-                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+                //var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+                //var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
 
                 var reportModel = new StatusReport_Template1Model();
 
@@ -2013,16 +2013,18 @@ namespace ResourceManagement.Controllers
                         reportModel.Template1Reports.Add(new monthlyreports_Template1()
                         {
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
-                            Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
+                            //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
+                            Ticket_Summary = fileData.ToolName,
                             Ticket_Created_Date = workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
-                            Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
+                            //Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
                             Ticket_Priority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
-                            Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
+                            //Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
                             Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
                             Ticket_Closed_Date = workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
-                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
-                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
-                            Uploadedby = fileData.EmployeeName,
+                            //Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            //Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            Ticket_Raisedby = "DELETE",
+                            Uploadedby = fileData.Uploadedby,
                             FileNamee = file.FileName,
                             Consultant_Name = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
@@ -2041,7 +2043,7 @@ namespace ResourceManagement.Controllers
                             EmplyeeID = fileData.EmployeeID,
                             ProjectID = System.Convert.ToInt32(fileData.ProjectID),
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
-                        });
+                        }); ;
                     }
                 }
 
@@ -2201,7 +2203,7 @@ namespace ResourceManagement.Controllers
 
                             CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value) : 0,
                             RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value) : 0,
-                            Uploadedby = fileData.EmployeeName,
+                            Uploadedby = fileData.Uploadedby,
                             FileNamee = file.FileName,
                             ConsultantName = fileData.EmployeeName,
                             Uploaded_Month = fileData.Month,
@@ -2526,7 +2528,7 @@ namespace ResourceManagement.Controllers
 
             graphModel.ViewModel = new List<GraphChartViewModel>();
 
-
+    
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
 
@@ -2626,7 +2628,7 @@ namespace ResourceManagement.Controllers
                             emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
                         }
 
-                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName).ToList();
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
 
                         var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
                         if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
@@ -2737,7 +2739,7 @@ namespace ResourceManagement.Controllers
                         }
 
                         var monthSpecificLosedTicketsCount = 0;
-                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName).ToList();
+                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.Ticket_Summary)).ToList();
 
                         if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
                         {
