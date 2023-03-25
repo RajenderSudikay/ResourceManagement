@@ -474,6 +474,11 @@
         jQuery('.reporttype-invalid-feedback').hide();
     });
 
+    $("#statusreportToolName").change(function () {      
+        jQuery('#statusreportToolName').css("border", "1px solid green");
+        jQuery('.client-invalid-toolname').hide();      
+    });
+
 
     jQuery(document).on("change", ".excel-values-mapping", function () {
 
