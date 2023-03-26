@@ -3254,7 +3254,7 @@ namespace ResourceManagement.Controllers
         public ActionResult SampleIncidentReport(string GridHtml)
         {
 
-            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Incident-Report.xlsx";
+            var filePath = @"C:\inetpub\wwwroot\Reports\Sample-Incident-Report.xlsx";
             var fileName = "Sample-Incident-Template.xlsx";
             var mimeType = "application/vnd.ms-excel";
             return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
@@ -3265,7 +3265,7 @@ namespace ResourceManagement.Controllers
         public ActionResult SampleProjectReport(string GridHtml)
         {
 
-            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Project-Report.xlsx";
+            var filePath = @"C:\inetpub\wwwroot\Reports\Sample-Project-Report.xlsx";
             var fileName = "Sample-Project-Template.xlsx";
             var mimeType = "application/vnd.ms-excel";
             return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
@@ -3276,7 +3276,7 @@ namespace ResourceManagement.Controllers
         [ValidateInput(false)]
         public ActionResult SampleAuditReport(string GridHtml)
         {
-            var filePath = @"C:\Projects\ResourceManagement\Assets\Reports\Sample-Audit-Report.xlsx";
+            var filePath = @"C:\inetpub\wwwroot\Reports\Sample-Audit-Report.xlsx";
             var fileName = "Sample-Audit-Template.xlsx";
             var mimeType = "application/vnd.ms-excel";
             return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
