@@ -9,6 +9,7 @@
     body {
         color: #23366f !important;
     }
+
     span.circle {
         background: white;
         border-radius: 50%;
@@ -448,6 +449,8 @@
 
             </div>
             <div class="modal-footer mt-xl-4">
+
+                <button type="submit" class="btn btn-info btn-lg btn-status-report-remainder" style="width: 100px; background-color: #ff3333 !important; border-radius: 10px; ">  <img src="~/Assets/Icons/notification-bell.png" width="18" style="margin-left: -3px" /><b> Remainder</b></button>
                 <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view" style="width: 100px; background-color: #005983 !important; border-radius: 10px; display: none"><b>View Report</b></button>
                 @using (Html.BeginForm("ExportStatusReports", "Home", FormMethod.Post))
                 {
@@ -490,7 +493,7 @@
 
     });
 
-    jQuery('#statusreportToolName').change(function (evt) {      
+    jQuery('#statusreportToolName').change(function (evt) {
         jQuery('#statusreportToolName').css("border", "1px solid green");
         jQuery('.client-invalid-toolname').hide();
 
@@ -729,7 +732,7 @@
                 type: "POST",
                 dataType: "html",
                 data: { StatusReportChartModel: statusChartModel },
-                success: function (data) {                 
+                success: function (data) {
                     $('#chartContainer').html(data);
                 }
             });
@@ -796,5 +799,44 @@
             }
         });
     }
+
+
+    jQuery('.btn-status-report-remainder').click(function () {
+        var formValidated = true;
+        if (jQuery('#reportClient :selected').text() == "--Select Client Name--") {
+            jQuery('#reportClient').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportClient').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportClient').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportClient').hide();
+        }
+
+        if (formValidated == true) {
+
+            var selectedEmployees = $('#selectEmployeename option');
+            var optVal = new Array();
+
+            jQuery.each(selectedEmployees, function (i, val) {
+                optVal.push($(this).val());
+            });
+
+            var statusRemainderModel = {
+                Employees: optVal,
+                ClientName: jQuery('#reportClient :selected').val()
+            };
+
+            jQuery.ajax({
+                url: "/StatusReportRemainder",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportRemainderModel: statusRemainderModel },
+                success: function (data) {
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+    });
 
 </script>

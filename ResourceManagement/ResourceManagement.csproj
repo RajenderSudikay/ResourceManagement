@@ -360,6 +360,7 @@
     <Content Include="Assets\Icons\id-card.png" />
     <Content Include="Assets\Icons\location.png" />
     <Content Include="Assets\Icons\logout.png" />
+    <Content Include="Assets\Icons\notification-bell.png" />
     <Content Include="Assets\Icons\phone-call.png" />
     <Content Include="Assets\Icons\phone.png" />
     <Content Include="Assets\Icons\project-management.png" />
@@ -461,6 +462,8 @@
     <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
     <Content Include="Views\Home\UploadedStatusReportView.cshtml" />
     <Content Include="Views\Home\UploadedStatusExcelReportView.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainder.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -188,4 +188,43 @@ namespace ResourceManagement.Models
         public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
     }
 
+    public class StatusReportRemainderModel
+    {
+        public List<string> Employees { get; set; }
+
+        public string ClientName { get; set; }
+
+    }
+
+    public class StatusReportRemainderViewModel
+    {
+        public string ClientName { get; set; }
+        public List<AMBC_Active_Emp_view> RemainderEmployees { get; set; } = new List<AMBC_Active_Emp_view>();
+
+        public SelectedReportMonthModel RemainderMonthInfo { get; set; }
+
+    }
+
+    public class StatusReport_RemainderEmailSelectedEmpModel
+    {
+        public string selectedemployeeemail { get; set; }
+        public string selectedemployeeemailid { get; set; }
+        public string selectedemployeeempname { get; set; }
+        public string selectedemploymanager { get; set; }
+        public string selectedemploymanageremail { get; set; }
+        public string RemainderMonth { get; set; }
+        public bool SendSingleEmailToAllEmp { get; set; }
+    }
+
+
+    public class StatusReportRemainderEmailModel
+    {
+        public List<StatusReport_RemainderEmailSelectedEmpModel> selctedempmodel { get; set; }
+        public string RemainderMonth { get; set; }
+        public string LogedInEmpId { get; set; }
+        public string LogedInEmpName { get; set; }
+        public string LogedInEmpEmail { get; set; }
+        public bool SendSingleEmailToAllEmp { get; set; }
+    }
+
 }

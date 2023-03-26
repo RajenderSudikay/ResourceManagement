@@ -3073,7 +3073,7 @@ namespace ResourceManagement.Controllers
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
 
                 model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
-                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate);              
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate);
 
                 model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
             }
@@ -3177,7 +3177,7 @@ namespace ResourceManagement.Controllers
         {
             StatusReportChartModel ajaxReportModel = JsonConvert.DeserializeObject<StatusReportChartModel>(GridHtml);
             List<SourceFile> sourceFiles = new List<SourceFile>();
-            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType +"-" + ajaxReportModel.ReportType;
+            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType;
 
             string htmlContent = "";
             var excelFileName = "";
@@ -3294,6 +3294,152 @@ namespace ResourceManagement.Controllers
                 }
             }
             return null;
+        }
+
+
+        public ActionResult StatusReportRemainder(StatusReportRemainderModel StatusReportRemainderModel)
+        {
+            var model = new StatusReportRemainderViewModel();
+            model.ClientName = StatusReportRemainderModel.ClientName;
+
+            var today = DateTime.Today;
+            var monthStart = new DateTime(today.Year, today.Month, 1);
+            var lastMonthStart = monthStart.AddMonths(-1);
+
+            model.RemainderMonthInfo = SelectedMonthRelatedInfo(lastMonthStart);
+
+            foreach (var empID in StatusReportRemainderModel.Employees)
+            {
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == model.RemainderMonthInfo.ShortFormat && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                    if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                    {
+                        continue;
+                    }
+                    var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == model.RemainderMonthInfo.ShortFormat && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                    if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                    {
+                        continue;
+                    }
+
+                    var currentEmpInfo = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == empID && emp.Client == StatusReportRemainderModel.ClientName && emp.Project_Status == "Active").ToList();
+
+                    if (currentEmpInfo != null && currentEmpInfo.Count() > 0)
+                    {
+                        model.RemainderEmployees.Add(currentEmpInfo[0]);
+                    }
+                }
+
+            }
+
+            return PartialView(model);
+        }
+
+
+        public JsonResult SendStatusReportRemainderEmail(StatusReportRemainderEmailModel StatusReportEmpRemainder)
+        {
+            try
+            {
+                if (StatusReportEmpRemainder != null && StatusReportEmpRemainder.selctedempmodel.Count() > 0)
+                {
+                    var remainderMonth = StatusReportEmpRemainder.RemainderMonth;
+
+                    if (StatusReportEmpRemainder.SendSingleEmailToAllEmp == false)
+                    {
+                        foreach (var email in StatusReportEmpRemainder.selctedempmodel)
+                        {
+                            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
+                            {
+                                mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;                               
+
+                                var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", email, ViewData, TempData);
+
+                                mm.Body = emailBody;
+
+                                if (email.selectedemploymanageremail != string.Empty)
+                                {
+                                    mm.CC.Add(email.selectedemploymanageremail);
+                                }
+
+                                if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
+                                {
+                                    mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
+                                }
+
+                                mm.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                                smtp.EnableSsl = true;
+                                NetworkCredential credentials = new NetworkCredential();
+                                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                                smtp.UseDefaultCredentials = true;
+                                smtp.Credentials = credentials;
+                                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                                smtp.Send(mm);
+                            }
+                        }
+                    }
+
+
+                    else
+                    {
+                        var model = new StatusReport_RemainderEmailSelectedEmpModel();
+                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], StatusReportEmpRemainder.selctedempmodel[0].selectedemployeeemail))
+                        {
+                            mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;
+                            int firstSelectedEmp = 0;
+
+                            foreach (var selectedEmp in StatusReportEmpRemainder.selctedempmodel)
+                            {
+                                if (firstSelectedEmp > 0)
+                                {
+                                    mm.To.Add(selectedEmp.selectedemployeeemail);
+                                }
+                                firstSelectedEmp++;
+
+                                mm.CC.Add(selectedEmp.selectedemploymanageremail);
+                            }
+
+                            model.SendSingleEmailToAllEmp = StatusReportEmpRemainder.SendSingleEmailToAllEmp;
+
+                            var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", model, ViewData, TempData);
+
+                            mm.Body = emailBody;
+
+                            if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
+                            {
+                                mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
+                            }
+
+                            mm.IsBodyHtml = true;
+                            SmtpClient smtp = new SmtpClient();
+                            smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                            smtp.EnableSsl = true;
+                            NetworkCredential credentials = new NetworkCredential();
+                            credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                            credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                            smtp.UseDefaultCredentials = true;
+                            smtp.Credentials = credentials;
+                            smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                            smtp.Send(mm);
+                        }
+                    }
+
+                }
+
+                var emailRemainderResponse = new JsonResponseModel();
+
+                emailRemainderResponse.StatusCode = 200;
+                emailRemainderResponse.Message = "Status Report Remainder Email Sent Successfully!";
+                return Json(emailRemainderResponse);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(null);
         }
     }
 }
