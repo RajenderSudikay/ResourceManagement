@@ -2531,8 +2531,6 @@ namespace ResourceManagement.Controllers
             var graphModel = new GraphChartModel();
 
             graphModel.ViewModel = new List<GraphChartViewModel>();
-
-
             var selectedReportedMonthStartDate = new DateTime();
             var requiredReportMonths = new List<MonthWiseReportModel>();
 
@@ -3073,12 +3071,20 @@ namespace ResourceManagement.Controllers
                 var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
                 selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+
+                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate);              
+
+                model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
             }
 
             else
             {
                 var selectedMonth = StatusReportChartModel.Month;
                 var selectedMonthNumbers = selectedMonth.Split('|');
+                int firstMonthFromTheSelection = 0;
+                var reportStartMonth = "";
+
                 foreach (var selectedMonthNumber in selectedMonthNumbers)
                 {
                     if (selectedMonthNumber != string.Empty)
@@ -3088,8 +3094,18 @@ namespace ResourceManagement.Controllers
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
                         var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
                         requiredReportMonths.Add(selectedMonthInfo);
+
+                        if (firstMonthFromTheSelection == 0)
+                        {
+                            reportStartMonth = selectedMonthInfo.Month;
+                        }
+                        requiredReportMonths.Add(selectedMonthInfo);
+                        firstMonthFromTheSelection++;
+
+                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
                     }
                 }
+                model.SelectedReportMonth.ReportStartMonth = reportStartMonth;
             }
 
             using (TimeSheetEntities db = new TimeSheetEntities())
@@ -3101,8 +3117,18 @@ namespace ResourceManagement.Controllers
                     empReportModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
                     empReportModel.EmployeeImage = EmployeeProfileImagePath(empReportModel.AMBC_Active_Emp_view.Employee_ID.ToString());
 
+                    Decimal emplyeeAvailabiliy = 0;
+
                     foreach (var requiredReportMonth in requiredReportMonths)
                     {
+                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+
+                        if (specifMonthAvailablity != null)
+                        {
+                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                            emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                        }
+
                         if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
                             var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
@@ -3133,6 +3159,11 @@ namespace ResourceManagement.Controllers
 
                     }
 
+                    //EMPLOYEE DETAILS
+                    var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+                    Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+                    empReportModel.EmaployeeAvailabity = availabity;
+
                     model.ViewModel.Add(empReportModel);
                 }
             }
@@ -3146,7 +3177,7 @@ namespace ResourceManagement.Controllers
         {
             StatusReportChartModel ajaxReportModel = JsonConvert.DeserializeObject<StatusReportChartModel>(GridHtml);
             List<SourceFile> sourceFiles = new List<SourceFile>();
-            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType + ajaxReportModel.ReportType + "-status report-";
+            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType +"-" + ajaxReportModel.ReportType;
 
             string htmlContent = "";
             var excelFileName = "";
@@ -3168,12 +3199,12 @@ namespace ResourceManagement.Controllers
 
                     byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
 
-                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xlsx";
+                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xls";
 
                     sourceFiles.Add(new SourceFile()
                     {
                         FileBytes = byteArray,
-                        Extension = ".xlsx",
+                        Extension = ".xls",
                         Name = excelFileName
                     });
 

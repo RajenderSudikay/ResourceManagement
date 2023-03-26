@@ -110,7 +110,13 @@
                                                     <h2 style="font-size: xx-large; color: #23366f !important ">
                                                         @reportModel.AMBC_Active_Emp_view.Client_Project_Name
                                                     </h2>
+                                                    <h5 style="color: #23366f !important ">
+                                                        Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                                                    </h5>
 
+                                                    <h5 style="color: #23366f !important; margin-left: 72px !important">
+                                                        Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName</b>
+                                                    </h5>
                                                 </div>
 
                                             </div>
@@ -129,7 +135,11 @@
                                                         <b style="color: #23366f !important ">@reportModel.AMBC_Active_Emp_view.Client_Report_Manager</b>
                                                     </div>
                                                 </div>
-
+                                                <div class="employeeInfo" style="color: white !important;">
+                                                    <div id="circle">
+                                                        <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@reportModel.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 18px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -178,9 +188,11 @@
                                             {
                                                 <tr>
                                                     <td colspan="9">
-                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px"></h2>
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px">No Records available!</h2>
                                                     </td>
 
+                                                </tr>
+                                                <tr>
                                                 </tr>
                                             }
 
@@ -239,6 +251,8 @@
                                                     </td>
 
                                                 </tr>
+                                                <tr>
+                                                </tr>
                                             }
 
                                         </tbody>
@@ -256,8 +270,8 @@
                                                     <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
                                                 }
 
-                                                <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>                                               
-                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>                                           
+                                                <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>
 
                                             </tr>
                                         </thead>
@@ -272,8 +286,8 @@
                                                     {
                                                         <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
                                                     }
-                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>                                                 
-                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>                                                 
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
                                                 </tr>
                                             }
 
@@ -281,9 +295,11 @@
                                             {
                                                 <tr>
                                                     <td colspan="9">
-                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px"></h2>
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px">No Records available!</h2>
                                                     </td>
 
+                                                </tr>
+                                                <tr>
                                                 </tr>
                                             }
 

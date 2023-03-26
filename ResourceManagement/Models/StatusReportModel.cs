@@ -173,6 +173,7 @@ namespace ResourceManagement.Models
         public bool IsExcelReport { get; set; } = false;
         public StatusReportChartModel AjaxModel { get; set; } = new StatusReportChartModel();
         public List<RMA_UploadedStatusReportModel> ViewModel { get; set; } = new List<RMA_UploadedStatusReportModel>();
+        public SelectedReportMonthModel SelectedReportMonth { get; set; }
 
     }
 
@@ -180,6 +181,8 @@ namespace ResourceManagement.Models
     {
         public AMBC_Active_Emp_view AMBC_Active_Emp_view { get; set; } = new AMBC_Active_Emp_view();
         public string EmployeeImage { get; set; }
+
+        public Int32 EmaployeeAvailabity { get; set; }
         public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
         public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
         public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
