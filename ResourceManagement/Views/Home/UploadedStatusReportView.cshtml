@@ -30,7 +30,8 @@
 
     .table-leaveinfo th, td {
         border: 1px solid gray;
-    }
+    }   
+
 </style>
 
 <div id="statusreport" class="carousel slide" data-ride="carousel">
@@ -107,37 +108,37 @@
                                         <div class="banner-content">
                                             <div style="padding-top: 30px;">
                                                 <div>
-                                                    <h2 style="font-size: xx-large; color: #23366f !important ">
+                                                    <h2 style="font-size: xx-large; color: white !important ">
                                                         @reportModel.AMBC_Active_Emp_view.Client_Project_Name
                                                     </h2>
-                                                    <h5 style="color: #23366f !important ">
+                                                    <h5 style="color: white !important ">
                                                         Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
                                                     </h5>
 
-                                                    <h5 style="color: #23366f !important; margin-left: 72px !important">
+                                                    <h5 style="color: white !important; margin-left: 72px !important">
                                                         Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName</b>
                                                     </h5>
                                                 </div>
 
                                             </div>
 
-                                            <hr class="employeeinfohr" style="background-color: red !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+                                            <hr class="employeeinfohr" style="background-color: rgb(81, 205, 160) !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
 
                                             <div class="report-content-resource">
                                                 <br />
-                                                <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="25" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@reportModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
+                                                <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="20" /><div class="empPersonelInfoe"><b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
                                                 <div class="employeeInfo">
-                                                    <img src="~/Assets/Icons/phone-call.png" width="20" /><div class="empPersonelInfoe"><b style="color: #23366f !important ">@reportModel.AMBC_Active_Emp_view.Contact_Number</b></div>
+                                                    <img src="~/Assets/Icons/phone-call.png" width="18" /><div class="empPersonelInfoe"><b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.Contact_Number</b></div>
                                                 </div>
 
                                                 <div class="employeeInfo">
-                                                    <img src="~/Assets/Icons/project-management.png" width="25" /><div class="empPersonelInfoe">
-                                                        <b style="color: #23366f !important ">@reportModel.AMBC_Active_Emp_view.Client_Report_Manager</b>
+                                                    <img src="~/Assets/Icons/project-management.png" width="17" /><div class="empPersonelInfoe">
+                                                        <b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.Client_Report_Manager</b>
                                                     </div>
                                                 </div>
                                                 <div class="employeeInfo" style="color: white !important;">
                                                     <div id="circle">
-                                                        <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@reportModel.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 18px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                                                        <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@reportModel.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 15px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
                                                     </div>
                                                 </div>
 
@@ -150,7 +151,7 @@
                                 {
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
-                                            <tr style="background-color: #005983">
+                                            <tr style="background-color: #660033 ">
                                                 <th class="" scope="col" style="text-align: center; color: white">Tool Name</th>
                                                 @if (!Model.IsExcelReport)
                                                 {
@@ -205,7 +206,7 @@
                                 {
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
-                                            <tr style="background-color: #005983">
+                                            <tr style="background-color: #660033 ">
                                                 @if (!Model.IsExcelReport)
                                                 {
                                                     <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
@@ -263,7 +264,7 @@
                                 {
                                     <table class="table" id="timesheet-table" style="margin-top: 2px">
                                         <thead class="table-bordered">
-                                            <tr style="background-color: #005983">
+                                            <tr style="background-color: #660033 ">
                                                 <th class="" scope="col" style="text-align: center; color: white">Tool Name</th>
                                                 @if (!Model.IsExcelReport)
                                                 {
