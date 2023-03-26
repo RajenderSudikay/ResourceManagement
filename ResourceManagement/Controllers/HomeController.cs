@@ -3250,5 +3250,19 @@ namespace ResourceManagement.Controllers
             var mimeType = "application/vnd.ms-excel";
             return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
         }
+
+        [HttpPost]
+        public JsonResult GetProjectBasedOnEmpId(string empID)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active").ToList();
+                if (employeeInfo != null && employeeInfo.Count() > 0)
+                {
+                    return Json(employeeInfo, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
     }
 }

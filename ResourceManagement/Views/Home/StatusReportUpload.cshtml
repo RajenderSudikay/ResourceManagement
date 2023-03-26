@@ -352,9 +352,24 @@
     if (useRole == "consultant") {
         $("#StatusReportInfo_EmployeeName").prop("disabled", true);
     }
-    else {
+    else {      
         $("#StatusReportInfo_EmployeeName").prop("disabled", false);
     }
+
+    jQuery("#StatusReportInfo_EmployeeName").change(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetProjectBasedOnEmpId",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val() },
+            success: function (data) {
+                jQuery('#statusreportEmpClient').empty();
+                jQuery.each(data, function (i, item) {
+                    jQuery('#statusreportEmpClient').append('<option value="' + item.Project_Code + '">' + item.Client + '</option>');                  
+                });
+            }
+        });
+    });
 
     function ExcelFieldMappingTemplate(fieldName) {
 
@@ -474,9 +489,9 @@
         jQuery('.reporttype-invalid-feedback').hide();
     });
 
-    $("#statusreportToolName").change(function () {      
+    $("#statusreportToolName").change(function () {
         jQuery('#statusreportToolName').css("border", "1px solid green");
-        jQuery('.client-invalid-toolname').hide();      
+        jQuery('.client-invalid-toolname').hide();
     });
 
 
@@ -698,7 +713,7 @@
             jQuery('.reporttype-invalid-feedback').hide();
         }
 
-        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3")&& jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
+        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") && jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
             jQuery('#statusreportToolName').css("border", "1px solid red");
             jQuery('.client-invalid-toolname').show();
             fileValidated = false;
