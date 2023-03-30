@@ -2222,6 +2222,8 @@ namespace ResourceManagement.Controllers
                             Created_Year = createdYear,
                             Closed_Month = closedMonth,
                             Closed_Year = closedYear,
+                            Project_Raisedby = "DELETE DUMMY",
+                            Client_Name = fileData.ClientName,
 
                             //NEED TO DECIDE
                             uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
@@ -3036,7 +3038,9 @@ namespace ResourceManagement.Controllers
                 {
                     label = projectDetailForSelectedMonth.Project_Name,
                     completionPercenatge = projectDetailForSelectedMonth.CompletedPercentage,
-                    remainingPercenatge = projectDetailForSelectedMonth.RemainingPercentage
+                    remainingPercenatge = projectDetailForSelectedMonth.RemainingPercentage,
+                    MonthName = projectDetailForSelectedMonth.Uploaded_Month
+
                 });
             }
         }
@@ -3351,7 +3355,7 @@ namespace ResourceManagement.Controllers
                         {
                             using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
                             {
-                                mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;                               
+                                mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;
 
                                 var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", email, ViewData, TempData);
 

@@ -52,6 +52,7 @@ namespace ResourceManagement.Models
             public string label { get; set; }
             public decimal? completionPercenatge { get; set; }
             public decimal? remainingPercenatge { get; set; }
+            public string MonthName { get; set; }
         }
 
         public class DataPoint
