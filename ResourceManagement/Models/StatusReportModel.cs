@@ -153,8 +153,7 @@ namespace ResourceManagement.Models
         public string MSpecifcAudDataoints { get; set; }
         public string MSpecifcEffeAudDataoints { get; set; }
         public string MSpecifcInEffeAudDataoints { get; set; }
-
-
+        public string ProjectChartsMonthWise { get; set; }
     }
 
     public class SelectedReportMonthModel

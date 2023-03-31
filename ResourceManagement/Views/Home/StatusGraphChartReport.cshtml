@@ -17,6 +17,8 @@
     var chart5Name = "chart5Container" + i;
     var chart6Name = "chart6Container" + i;
     var chart7Name = "chart7Container" + i;
+    var chart8Name = "chart8Container" + i;
+    var chart9Name = "chart9Container" + i;
     i++;
 
     <div class="" style="background-color: white; color: #2167ae;">
@@ -174,6 +176,18 @@
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
 
+    <div class="@chart8Name chartdiv @hideProjectReport">
+        <div id="@chart8Name" class="chartimagediv" style="width: 75%; height: @chartModel.ProjectReportHeight; display: inline-block; margin-left: 100px; "></div>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
+
+    <div class="@chart9Name chartdiv @hideProjectReport">
+        <div id="@chart9Name" class="chartimagediv" style="width: 75%; height: 300px; display: inline-block; margin-left: 100px; "></div>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
+
     var hideAuditReport = "";
     if (Model.IsAuditReportExists == false)
     {
@@ -184,6 +198,7 @@
         <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 230px; display: inline-block; margin-left: 150px; "></div><p class="chartparah7" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "></p>
         <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
     </div>
+
 
 
     <div style="text-align: center; color: white !important; background-color: #005983 !important; height: 75px; border-radius: 0px; padding-top: 10px; margin-top: 100px">
@@ -581,7 +596,16 @@
                     },
                     axisX: {
                         labelFontColor: "#005983",
-                        labelFontSize: 10
+                        labelFontSize: 10,
+                        tickLength: 3,
+                        tickThickness: 3,
+                        tickColor: "red",
+                    },
+
+                    axisY: {
+                        tickLength: 3,
+                        tickThickness: 3,
+                        tickColor: "red",
                     },
 
                     title: {
@@ -623,12 +647,133 @@
                 });
 
             chart.render();
+
+               var chart = new CanvasJS.Chart("@chart8Name",
+                {
+                    animationEnabled: true,
+                    theme: "light2",
+                    exportEnabled: true,
+                    willReadFrequently: true,
+                    axisY: {
+                        /*    title: "percentage",*/
+                        titleFontColor: "#005983",
+                        titleFontSize: 15,
+                        interlacedColor: "rgb(255,250,250)",
+                        gridColor: "#FFBFD5",
+                        gridThickness: 0,
+                        labelTextAlign: "left",
+                        stripLines: [
+                            {
+                                value: 0,
+                                showOnTop: true,
+                                color: "gray",
+                                thickness: 0
+                            }
+                        ]
+                    },
+                    axisX: {
+                        labelFontColor: "#005983",
+                        labelFontSize: 10,
+                        tickLength: 3,
+                        tickThickness: 3,
+                        tickColor: "red",
+                    },
+                    axisY: {
+                        tickLength: 3,
+                        tickThickness: 3,
+                        tickColor: "red",
+                    },
+
+                    title: {
+                        text: "Monyth Wise Project Flow",
+                        fontColor: "white",
+                        fontSize: 15,
+                        padding: 10,
+                        marginBottom: 50,
+                        backgroundColor: "rgb(141,182,0)",
+                        cornerRadius: 10,
+                        fontWeight: "bold"
+                    },
+                    legend: {
+                        horizontalAlign: "right", // left, center ,right
+                        verticalAlign: "center",  // top, center, bottom
+                    },
+                    data:[
+                      @Html.Raw(chartModel.ProjectChartsMonthWise.TrimStart('[').TrimEnd(']'))
+                    ]
+
+                   });
+
+            //alert("data-length");
+            //alert(chart.options.data.length);
+          /*  //https://stackoverflow.com/questions/43600285/hiding-labels-for-canvasjs-chart*/
+
+            for (var i = 0; i < chart.options.data[0].dataPoints.length; i++) {
+                if (chart.options.data[0].dataPoints[i].y === 0)
+                    chart.options.data[0].dataPoints[i].indexLabel = "";
+            }
+
+
+            chart.render();
+
+             var chart = new CanvasJS.Chart("@chart9Name",
+                {
+                    animationEnabled: true,
+                    theme: "light2",
+                    exportEnabled: true,
+                    willReadFrequently: true,
+                    axisY: {
+                        /*    title: "percentage",*/
+                        titleFontColor: "#005983",
+                        titleFontSize: 15,
+                        interlacedColor: "rgb(255,250,250)",
+                        gridColor: "#FFBFD5",
+                        gridThickness: 0,
+                        labelTextAlign: "left",
+                        stripLines: [
+                            {
+                                value: 0,
+                                showOnTop: true,
+                                color: "gray",
+                                thickness: 0
+                            }
+                        ]
+                    },
+                    axisX: {
+                        labelFontColor: "#005983",
+                        labelFontSize: 10,
+                        tickLength: 3,
+                        tickThickness: 3,
+                        tickColor: "red",
+                    },
+
+                    title: {
+                        text: "Monyth Wise Project Flow",
+                        fontColor: "white",
+                        fontSize: 15,
+                        padding: 10,
+                        marginBottom: 50,
+                        backgroundColor: "rgb(141,182,0)",
+                        cornerRadius: 10,
+                        fontWeight: "bold"
+                    },
+                    legend: {
+                        horizontalAlign: "right", // left, center ,right
+                        verticalAlign: "center",  // top, center, bottom
+                    },
+                    data:[
+                      @Html.Raw(chartModel.ProjectChartsMonthWise.TrimStart('[').TrimEnd(']').Replace("stackedBar100", "bar"))
+                    ]
+                });
+
+            chart.render();
+
         }
 
         var hideAuditScripts = "@hideAuditReport";
         if (hideAuditScripts != "hide") {
 
-            var chart = new CanvasJS.Chart("@chart7Name", {
+            var chart = new CanvasJS.Chart("@chart8Name", {
                 animationEnabled: true,
                 theme: "light2",
                 exportEnabled: true,
@@ -644,7 +789,7 @@
                     fontWeight: "bold"
                 },
                 legend: {
-                    horizontalAlign: "right", // left, center ,right
+                    horizontalAlign: "right",
                     verticalAlign: "center",  // top, center, bottom
                     margin: 30,
                 },
@@ -712,6 +857,8 @@
             });
             chart.render();
         }
+
+
 
     jQuery('.canvasjs-chart-credit').hide();
 

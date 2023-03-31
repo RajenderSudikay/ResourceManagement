@@ -53,13 +53,57 @@ namespace ResourceManagement.Models
             public decimal? completionPercenatge { get; set; }
             public decimal? remainingPercenatge { get; set; }
             public string MonthName { get; set; }
+            public System.DateTime? ProjestStartDate { get; set; }
+            public System.DateTime? TargetClosingDate { get; set; }
+            public System.DateTime? ActualClosedDate { get; set; }
+            public bool IsCarryForwardMonth { get; set; } = false;
         }
 
         public class DataPoint
         {
             public string label { get; set; }
-            public decimal? y { get; set; }         
+            public decimal? y { get; set; }
         }
+
+        public class ProjectChartInfo
+        {
+            [DataMember(Name = "indexLabel")]
+            public string indexLabel { get; set; } = "{y}%";
+
+            [DataMember(Name = "indexLabelFontColor")]
+            public string indexLabelFontColor { get; set; } = "white";
+
+            [DataMember(Name = "indexLabelPlacement")]
+            public string indexLabelPlacement { get; set; } = "inside";
+
+            [DataMember(Name = "type")]
+            public string type { get; set; } = "stackedBar100";
+
+            [DataMember(Name = "name")]
+            public string name { get; set; }
+
+            [DataMember(Name = "showInLegend")]
+            public bool showInLegend { get; set; } = true;
+
+            [DataMember(Name = "y")]
+            public decimal? y { get; set; }
+
+            [DataMember(Name = "visible")]
+            public bool visible { get; set; } = true;
+            
+            public System.DateTime? ProjestStartDate { get; set; }
+            public System.DateTime? TargetClosingDate { get; set; }
+            public System.DateTime? ActualClosedDate { get; set; }
+
+            public List<DataPoint> dataPoints = new List<DataPoint>();
+        }
+
+        public class ProjectChartInfoData
+        {
+            public List<ProjectChartInfo> data { get; set; } = new List<ProjectChartInfo>();
+        }
+
+
     }
 
 }
