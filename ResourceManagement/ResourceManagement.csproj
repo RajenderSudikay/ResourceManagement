@@ -342,6 +342,7 @@
     <Content Include="Assets\ClientLogos\Littelfuse.png" />
     <Content Include="Assets\FemaleDefault.png" />
     <Content Include="Assets\Graphs\Audit-report.png" />
+    <Content Include="Assets\Graphs\bar-chart.png" />
     <Content Include="Assets\Graphs\bar-graph.png" />
     <Content Include="Assets\Graphs\Closure-Trend.png" />
     <Content Include="Assets\Graphs\ClosureTrend.png" />

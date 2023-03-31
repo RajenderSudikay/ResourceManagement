@@ -148,6 +148,8 @@ namespace ResourceManagement.Models
         public string ClosedTrend { get; set; }
         public string IncidentsSummary { get; set; }
         public string ProjectReportHeight { get; set; }
+
+        public string ProjectReportbarChartHeight { get; set; }
         public string ProjectComppletionDataPoints { get; set; }
         public string ProjectRemainingDataPoints { get; set; }
         public string MSpecifcAudDataoints { get; set; }

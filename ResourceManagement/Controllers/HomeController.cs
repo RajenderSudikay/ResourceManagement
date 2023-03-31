@@ -2552,7 +2552,7 @@ namespace ResourceManagement.Controllers
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
 
                 var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
-                carryForwardMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-4));
+                //carryForwardMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-4));
 
                 requiredReportMonths.Add(startingMonthForTheReport);
 
@@ -2796,7 +2796,7 @@ namespace ResourceManagement.Controllers
 
                         var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
 
-                        ////In case of Month report for selected month only report will generate
+                        //In case of Month report for selected month only report will generate
                         //if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
                         //{
                         //    ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
@@ -3025,7 +3025,7 @@ namespace ResourceManagement.Controllers
                         {
                             if (ProjectComppletionDataPoints.Where(x => x.label == project.label).FirstOrDefault() == null)
                             {
-                                requiredProjectCount = requiredProjectCount++;
+                                requiredProjectCount++;
                                 ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                 {
                                     label = project.label,
@@ -3042,14 +3042,17 @@ namespace ResourceManagement.Controllers
 
                         if (requiredProjectCount > 2)
                         {
-                            var height = requiredProjectCount * 50;
-                            projectReportHeight = height + "px";
+                            var height = requiredProjectCount * 45;
+                            model.ProjectReportHeight = height + "px";
                         }
 
                         var uniqueProjects = allProjects.Where(x => x.IsCarryForwardMonth == false).Select(x => x.label).Distinct().ToList();
 
                         var projectReportMonths = new List<MonthWiseReportModel>();
-                        projectReportMonths.Add(carryForwardMonthInfo);
+                        if (StatusReportChartModel.ReportType != "Month Report")
+                        {                         
+                            projectReportMonths.Add(carryForwardMonthInfo);
+                        }                    
 
                         //Adding carry forward month to list
                         projectReportMonths.AddRange(requiredReportMonths);
@@ -3061,11 +3064,20 @@ namespace ResourceManagement.Controllers
 
                         var projectsCompletedStatus = new Dictionary<string, decimal?>();
 
-
+                        var firstMonthOfTheReport = 1;
                         foreach (var projectReportMonth in projectReportMonths)
                         {
                             var chartInfo = new ProjectChartInfo();
-                            chartInfo.name = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Pending" : projectReportMonth.Month;
+
+                            if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
+                            {
+                                chartInfo.name = "till " + projectReportMonth.Month;
+                                firstMonthOfTheReport++;
+                            }
+                            else
+                            {
+                                chartInfo.name = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Remaining" : projectReportMonth.Month;
+                            }
 
                             foreach (var uniqueProject in uniqueProjects)
                             {
@@ -3150,15 +3162,15 @@ namespace ResourceManagement.Controllers
 
                         if (uniqueProjects.Count() > 2)
                         {
-                            var height = uniqueProjects.Count() * 50;
-                            projectReportHeight = height + "px";
+                            var height = uniqueProjects.Count() * 100;
+                            model.ProjectReportbarChartHeight = height + "px";
                         }
                     }
 
                     //var chartProjectInfo = new ProjectChartInfoData();
                     //chartProjectInfo.data.AddRange(ProjectsChart);
 
-                    model.ProjectChartsMonthWise = JsonConvert.SerializeObject(ProjectsChart);            
+                    model.ProjectChartsMonthWise = JsonConvert.SerializeObject(ProjectsChart);
                     model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
                     model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
 
