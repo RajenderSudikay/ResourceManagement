@@ -3005,6 +3005,7 @@ namespace ResourceManagement.Controllers
 
 
                     //TEMPLTE 2 UPDATES
+                    var UniqueProjectDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
                     var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
                     var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
 
@@ -3023,18 +3024,24 @@ namespace ResourceManagement.Controllers
                         var requiredProjectCount = 0;
                         foreach (var project in allProjects)
                         {
-                            if (ProjectComppletionDataPoints.Where(x => x.label == project.label).FirstOrDefault() == null)
+                            if (UniqueProjectDataPoints.Where(x => x.label == project.label).FirstOrDefault() == null)
                             {
                                 requiredProjectCount++;
-                                ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                UniqueProjectDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                 {
                                     label = project.label,
                                     y = project.completionPercenatge
                                 });
 
+                                ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = project.ChartLabelWithStartEndDate,
+                                    y = project.completionPercenatge
+                                });
+
                                 ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                 {
-                                    label = project.label,
+                                    label = project.ChartLabelWithStartEndDate,
                                     y = project.remainingPercenatge
                                 });
                             }
@@ -3042,7 +3049,7 @@ namespace ResourceManagement.Controllers
 
                         if (requiredProjectCount > 2)
                         {
-                            var height = requiredProjectCount * 45;
+                            var height = requiredProjectCount * 50;
                             model.ProjectReportHeight = height + "px";
                         }
 
@@ -3050,9 +3057,9 @@ namespace ResourceManagement.Controllers
 
                         var projectReportMonths = new List<MonthWiseReportModel>();
                         if (StatusReportChartModel.ReportType != "Month Report")
-                        {                         
+                        {
                             projectReportMonths.Add(carryForwardMonthInfo);
-                        }                    
+                        }
 
                         //Adding carry forward month to list
                         projectReportMonths.AddRange(requiredReportMonths);
@@ -3115,11 +3122,14 @@ namespace ResourceManagement.Controllers
 
                                     chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                     {
-                                        label = requiredProject.label,
+                                        label = requiredProject.ChartLabelWithStartEndDate,
                                         y = actualCompletedPercenatge
                                     });
 
                                     chartInfo.indexLabel = actualCompletedPercenatge == 0 ? "" : "{y}%";
+                                    chartInfo.ProjestStartDate = requiredProject.ProjestStartDate;
+                                    chartInfo.TargetClosingDate = requiredProject.TargetClosingDate;
+                                    chartInfo.ActualClosedDate = requiredProject.ActualClosedDate;
 
                                 }
                                 else
@@ -3128,7 +3138,7 @@ namespace ResourceManagement.Controllers
                                     {
                                         chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                         {
-                                            label = uniqueProject,
+                                            label = allProjects.Where(x => x.label == uniqueProject).FirstOrDefault().ChartLabelWithStartEndDate,
                                             y = 0
                                         });
 
@@ -3146,7 +3156,7 @@ namespace ResourceManagement.Controllers
 
                                         chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                         {
-                                            label = uniqueProject,
+                                            label = allProjects.Where(x => x.label == uniqueProject).FirstOrDefault().ChartLabelWithStartEndDate,
                                             y = pendingCompletion
                                         });
 
@@ -3191,9 +3201,34 @@ namespace ResourceManagement.Controllers
         {
             foreach (var projectDetailForSelectedMonth in projectDetailsForSelectedMonth)
             {
+                var projectStartMonthYear = "";
+                var projectEndMonthYear = "";
+
+                var requiredProjectStartEndDate = "";
+
+                if (projectDetailForSelectedMonth.Project_Created_Date != DateTime.MinValue)
+                {
+                    projectStartMonthYear = projectDetailForSelectedMonth.Project_Created_Date.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Created_Date.ToString("yyyy");
+                }
+
+                if (projectDetailForSelectedMonth.Project_Closing_Date_Target != DateTime.MinValue)
+                {
+                    projectEndMonthYear = " to " + projectDetailForSelectedMonth.Project_Closing_Date_Target?.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Closing_Date_Target?.ToString("yyyy");
+                }
+
+                if (projectStartMonthYear != "" && projectEndMonthYear != "")
+                {
+                    requiredProjectStartEndDate = " (" + projectStartMonthYear + projectEndMonthYear + ") ";
+                }
+                if (projectStartMonthYear != "" && projectEndMonthYear == "")
+                {
+                    requiredProjectStartEndDate = " (" + projectStartMonthYear + ") ";
+                }
+
                 ProjectReports.Add(new ProjectGraphDataPoint.Reports()
                 {
                     label = projectDetailForSelectedMonth.Project_Name,
+                    ChartLabelWithStartEndDate = projectDetailForSelectedMonth.Project_Name + requiredProjectStartEndDate,
                     completionPercenatge = projectDetailForSelectedMonth.CompletedPercentage,
                     remainingPercenatge = projectDetailForSelectedMonth.RemainingPercentage,
                     MonthName = projectDetailForSelectedMonth.Uploaded_Month,
