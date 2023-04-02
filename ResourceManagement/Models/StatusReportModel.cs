@@ -124,6 +124,7 @@ namespace ResourceManagement.Models
         public bool IsIncidentReportExists { get; set; } = false;
         public bool IsProjectReportExists { get; set; } = false;
         public bool IsAuditReportExists { get; set; } = false;
+
     }
 
 
@@ -156,6 +157,8 @@ namespace ResourceManagement.Models
         public string MSpecifcEffeAudDataoints { get; set; }
         public string MSpecifcInEffeAudDataoints { get; set; }
         public string ProjectChartsMonthWise { get; set; }
+
+        public List<ProjectGraphDataPoint.Reports> FutureProjects { get; set; }
     }
 
     public class SelectedReportMonthModel

@@ -50,6 +50,8 @@ namespace ResourceManagement.Models
         public class Reports
         {
             public string label { get; set; }
+
+            public string Summary { get; set; }
             public string ChartLabelWithStartEndDate { get; set; }
             public decimal? completionPercenatge { get; set; }
             public decimal? remainingPercenatge { get; set; }

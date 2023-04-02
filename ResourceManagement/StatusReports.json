@@ -19,7 +19,8 @@
       "Field5": "Project_Status",
       "Field6": "Project_Closed_Date_Actual",
       "Field7": "CompletedPercentage",
-      "Field8": "RemainingPercentage"
+      "Field8": "RemainingPercentage",
+      "Field9": "Project_Summary"
     }
   },
   {

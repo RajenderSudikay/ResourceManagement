@@ -2102,6 +2102,7 @@ namespace ResourceManagement.Controllers
 
 
                 int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
+                int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
                 var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
                 var Project_Closing_Date_TargetIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closing_Date_Target").FirstOrDefault().Index);
                 var Project_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Priority").FirstOrDefault().Index);
@@ -2203,6 +2204,7 @@ namespace ResourceManagement.Controllers
                             Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() : "",
+                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString() : "",
                             Project_Priority = projectPriority,
                             Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : defaultStatus,
 
@@ -2620,6 +2622,7 @@ namespace ResourceManagement.Controllers
                     var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
 
                     var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
+                    var FutureProjectReports = new List<ProjectGraphDataPoint.Reports>();
 
                     var MonthWiseAuditTickets = new List<Graph1DataPoint.DataPoint>();
                     var MonthWiseEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
@@ -2794,7 +2797,7 @@ namespace ResourceManagement.Controllers
                         }
 
 
-                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
+                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
 
                         //In case of Month report for selected month only report will generate
                         //if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
@@ -3004,7 +3007,14 @@ namespace ResourceManagement.Controllers
                     model.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
 
 
-                    //TEMPLTE 2 UPDATES
+                    //TEMPLTE 2 UPDATES  
+                    var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID).ToList();
+
+                    if (empBasedFutureProjects != null && empBasedFutureProjects.Count() > 0)
+                    {
+                        model.FutureProjects = ProjectReport(FutureProjectReports, empBasedFutureProjects, false);
+                    }
+
                     var UniqueProjectDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
                     var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
                     var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
@@ -3206,7 +3216,7 @@ namespace ResourceManagement.Controllers
             return PartialView(graphModel);
         }
 
-        private static void ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth, bool isCarryForardMonthInfo = false)
+        private static List<ProjectGraphDataPoint.Reports> ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth, bool isCarryForardMonthInfo = false)
         {
             foreach (var projectDetailForSelectedMonth in projectDetailsForSelectedMonth)
             {
@@ -3244,9 +3254,12 @@ namespace ResourceManagement.Controllers
                     ProjestStartDate = projectDetailForSelectedMonth.Project_Created_Date,
                     ActualClosedDate = projectDetailForSelectedMonth.Project_Closed_Date_Actual,
                     TargetClosingDate = projectDetailForSelectedMonth.Project_Closing_Date_Target,
-                    IsCarryForwardMonth = isCarryForardMonthInfo
+                    IsCarryForwardMonth = isCarryForardMonthInfo,
+                    Summary = projectDetailForSelectedMonth.Project_Summary
                 });
             }
+
+            return ProjectReports;
         }
 
         public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime)

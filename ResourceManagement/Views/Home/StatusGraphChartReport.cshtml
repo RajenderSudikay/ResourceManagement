@@ -29,6 +29,15 @@
         color: #18A558 !important;
         margin-bottom: 50px;
     }
+
+    .custom-card {
+        width: 80% !important;
+        color: white !important;
+    }
+
+    .custom-col-sm-6 {
+        margin-top: 15px;
+    }
 </style>
 
 @if (Model == null && Model.ViewModel == null && Model.ViewModel.Count == 0)
@@ -226,6 +235,75 @@
     </div>
 
 
+    var colors = new List<string>();
+    colors.Add("#005983 !important");
+    colors.Add("rgb(74, 172, 197) !important");
+    colors.Add("rgb(81, 205, 160) !important");
+    colors.Add("rgb(76, 156, 160) !important");
+    colors.Add("rgb(0, 128, 128); !important");
+    colors.Add("rgb(223, 121, 112) !important");
+
+    colors.Add("#005983 !important");
+    colors.Add("rgb(74, 172, 197) !important");
+    colors.Add("rgb(81, 205, 160) !important");
+    colors.Add("rgb(76, 156, 160) !important");
+    colors.Add("rgb(0, 128, 128); !important");
+    colors.Add("rgb(223, 121, 112) !important");
+
+    colors.Add("#005983 !important");
+    colors.Add("rgb(74, 172, 197) !important");
+    colors.Add("rgb(81, 205, 160) !important");
+    colors.Add("rgb(76, 156, 160) !important");
+    colors.Add("rgb(0, 128, 128); !important");
+    colors.Add("rgb(223, 121, 112) !important");
+
+    colors.Add("#005983 !important");
+    colors.Add("rgb(74, 172, 197) !important");
+    colors.Add("rgb(81, 205, 160) !important");
+    colors.Add("rgb(76, 156, 160) !important");
+    colors.Add("rgb(0, 128, 128); !important");
+    colors.Add("rgb(223, 121, 112) !important");
+
+
+    if (@chartModel.FutureProjects != null && chartModel.FutureProjects.Count() > 0)
+    {
+        <h2 style="margin-left: 75px !important"><b style="color: rgb(0, 128, 128) !important">Upcoming Projects</b></h2>
+        <hr style="border: 1px solid rgb(177, 3, 50) !important; width: 86% !important" />
+        <br />
+
+        <div class="row">
+
+            @{
+                var projectCount = 0;
+            }
+
+            @foreach (var futureProject in chartModel.FutureProjects)
+            {
+                var marignLeft = "75px !important";
+                if (projectCount % 2 != 0)
+                {
+                    marignLeft = "0px !important";
+                }
+                var bgColor = colors[projectCount];
+
+                var startDate = futureProject.ProjestStartDate != DateTime.MinValue ? futureProject.ProjestStartDate.ToString().Replace("00:00:00", ""): "TBD";
+                var endDate = futureProject.TargetClosingDate != DateTime.MinValue ? futureProject.TargetClosingDate.ToString().Replace("00:00:00", ""): "TBD";
+
+                <div class="col-sm-6 custom-col-sm-6">
+                    <div class="card card-1 custom-card" style="background-color:@bgColor ; margin-left: @marignLeft ">
+                        <div class="card-body" style="width: 80% !important; text-align: center !important">
+                            <h2 class="card-title" style="color: white !important">@futureProject.label</h2>
+                            <p class="card-text" style="color: white !important">@futureProject.Summary</p>
+                            <b style="color: white !important">Start Date: </b><b style="color: white !important; font-size:larger !important">@startDate</b>
+                            <br />
+                            <b style="color: white !important">End Date: </b><b style="color:white !important; font-size: larger !important;">@endDate</b>
+                        </div>
+                    </div>
+                </div>
+                projectCount++;
+            }          
+        </div>
+    }
     var hideAuditReport = "";
     if (Model.IsAuditReportExists == false)
     {
