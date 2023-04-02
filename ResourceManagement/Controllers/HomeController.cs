@@ -3047,9 +3047,15 @@ namespace ResourceManagement.Controllers
                             }
                         }
 
-                        if (requiredProjectCount > 2)
+                        if (requiredProjectCount > 2 && requiredProjectCount <= 5)
                         {
-                            var height = requiredProjectCount * 50;
+                            var height = requiredProjectCount * 45;
+                            model.ProjectReportHeight = height + "px";
+                        }
+
+                        if (requiredProjectCount > 5)
+                        {
+                            var height = requiredProjectCount * 35;
                             model.ProjectReportHeight = height + "px";
                         }
 

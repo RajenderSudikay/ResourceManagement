@@ -573,6 +573,8 @@
 
     jQuery('.btn-download-report').click(function () {
         /*   jQuery('.chartContainer1-table').css("width", "70%");*/
+        jQuery('.project-chart-textarea').css("border", "none");
+        jQuery('.chart-textarea').css("border", "none");
         jQuery('.status-report-view-options').hide();
         jQuery('.canvasjs-chart-toolbar').hide();
         jQuery('.chartbelowhrline').css('margin-left', '0px');
@@ -581,6 +583,7 @@
         jQuery('.chartimagedivmultiple').css('margin-left', '10px');
         jQuery('.chartparah').css('margin-left', '685px');
         jQuery('.chartparah3').css('margin-left', '715px');
+     
         jQuery('.employeeinfohr').css("width", "90%");
 
         window.print();
@@ -593,6 +596,8 @@
         jQuery('.chartparah').css('margin-left', '735px !important');
         jQuery('.chartparah3').css('margin-left', '762px !important');
         jQuery('.employeeinfohr').css("width", "75% !important");
+        jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
+        jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
     });
 
     function ReportFormValidate() {
