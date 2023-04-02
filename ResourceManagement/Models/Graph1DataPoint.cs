@@ -86,11 +86,16 @@ namespace ResourceManagement.Models
             [DataMember(Name = "showInLegend")]
             public bool showInLegend { get; set; } = true;
 
-            [DataMember(Name = "y")]
-            public decimal? y { get; set; }
+            //[DataMember(Name = "y")]
+            //public decimal? y { get; set; }
 
             [DataMember(Name = "visible")]
             public bool visible { get; set; } = true;
+
+
+            [DataMember(Name = "indexLabelFontSize")]
+            public int indexLabelFontSize { get; set; } = 8;
+         
             
             public System.DateTime? ProjestStartDate { get; set; }
             public System.DateTime? TargetClosingDate { get; set; }

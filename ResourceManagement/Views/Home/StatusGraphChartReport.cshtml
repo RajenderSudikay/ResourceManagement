@@ -218,7 +218,7 @@
 
 
     <div class="@chart9Name chartdiv @hideProjectReport">
-        <div id="@chart9Name" class="chartimagediv" style="width: 75%; height: @chartModel.ProjectReportbarChartHeight; display: inline-block; margin-left: 80px; "></div>
+        <div id="@chart9Name" class="chartimagediv" style="width: 75%;height: @chartModel.ProjectReportbarChartHeight ; display: inline-block; margin-left: 80px; "></div>
         <div>
             <textarea rows="3" class="project-chart-textarea"></textarea>
         </div>
@@ -619,6 +619,7 @@
                     theme: "light2",
                     exportEnabled: true,
                     willReadFrequently: true,
+               /*     backgroundColor: "#7EC8E3",*/
                     axisY: {
                         /*    title: "percentage",*/
                         titleFontColor: "#005983",
@@ -687,6 +688,12 @@
                         }
                     ]
                 });
+
+
+            //for (var i = 0; i < chart.options.data[1].dataPoints.length; i++) {
+            //    if (chart.options.data[1].dataPoints[i].y === 0)
+            //        chart.options.data[1].dataPoints[i].indexLabel = " ";
+            //}
 
             chart.render();
 
@@ -772,6 +779,8 @@
                         gridColor: "#FFBFD5",
                         gridThickness: 0,
                         labelTextAlign: "left",
+                        includeZero: true,
+                        labelFontSize: 15,
                         //interlacedColor: "#A0D6B4",
                         //gridColor: "rgba(1,77,101,.1)",
                         stripLines: [
@@ -804,6 +813,8 @@
                     legend: {
                         horizontalAlign: "right", // left, center ,right
                         verticalAlign: "center",  // top, center, bottom
+                        itemclick: toggleDataSeries,
+                        fontSize: 15,
                     },
                     data:[
                       @Html.Raw(chartModel.ProjectChartsMonthWise.TrimStart('[').TrimEnd(']').Replace("stackedBar100", "bar"))
@@ -811,6 +822,31 @@
                 });
 
             chart.render();
+
+            function toolTipFormatter(e) {
+                var str = "";
+                var total = 0;
+                var str3;
+                var str2;
+                for (var i = 0; i < e.entries.length; i++) {
+                    var str1 = "<span style= \"color:" + e.entries[i].dataSeries.color + "\">" + e.entries[i].dataSeries.name + "</span>: <strong>" + e.entries[i].dataPoint.y + "</strong> <br/>";
+                    total = e.entries[i].dataPoint.y + total;
+                    str = str.concat(str1);
+                }
+                str2 = "<strong>" + e.entries[0].dataPoint.label + "</strong> <br/>";
+                str3 = "<span style = \"color:Tomato\">Total: </span><strong>" + total + "</strong><br/>";
+                return (str2.concat(str)).concat(str3);
+            }
+
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                }
+                else {
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
 
         }
 

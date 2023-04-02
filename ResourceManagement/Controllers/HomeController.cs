@@ -3059,7 +3059,10 @@ namespace ResourceManagement.Controllers
                             model.ProjectReportHeight = height + "px";
                         }
 
+                        //IN CASE OF BAR CHART SHOIN THE PROJECTS BASED ON SELECTION
+                        // CARRY FORWARD PROJECTS ARE IGNORED HERE
                         var uniqueProjects = allProjects.Where(x => x.IsCarryForwardMonth == false).Select(x => x.label).Distinct().ToList();
+                        //var uniqueProjects = allProjects.Select(x => x.label).Distinct().ToList();
 
                         var projectReportMonths = new List<MonthWiseReportModel>();
                         if (StatusReportChartModel.ReportType != "Month Report")
