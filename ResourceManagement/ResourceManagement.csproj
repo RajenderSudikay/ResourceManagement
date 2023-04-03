@@ -206,6 +206,24 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="consultantavailiability1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability4.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability5.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability_Final.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -268,10 +286,21 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\Graph1DataPoint.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Models\LeaveOrHolidayModel.cs" />
+    <Compile Include="Models\StatusReportModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Models\ZohoSignInModel.cs" />
+    <Compile Include="monthlyreports_Template1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblambcholiday.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -309,14 +338,33 @@
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\Check-In.png" />
+    <Content Include="Assets\ClientLogos\Federal Signal.png" />
+    <Content Include="Assets\ClientLogos\Littelfuse.png" />
+    <Content Include="Assets\FemaleDefault.png" />
+    <Content Include="Assets\Graphs\Audit-report.png" />
+    <Content Include="Assets\Graphs\bar-chart.png" />
+    <Content Include="Assets\Graphs\bar-graph.png" />
+    <Content Include="Assets\Graphs\Closure-Trend.png" />
+    <Content Include="Assets\Graphs\ClosureTrend.png" />
+    <Content Include="Assets\Graphs\Incident-Summary.png" />
+    <Content Include="Assets\Graphs\Open-Tickets.png" />
+    <Content Include="Assets\Graphs\Project Status.png" />
     <Content Include="Assets\hr.jpg" />
+    <Content Include="Assets\Icons\availability.png" />
+    <Content Include="Assets\Icons\checked.png" />
+    <Content Include="Assets\Icons\email-new.png" />
     <Content Include="Assets\Icons\email.png" />
     <Content Include="Assets\Icons\graphic-designer.png" />
     <Content Include="Assets\Icons\hierarchical-structure.png" />
+    <Content Include="Assets\Icons\icons8-employee-48.png" />
+    <Content Include="Assets\Icons\icons8-xls-50.png" />
     <Content Include="Assets\Icons\id-card.png" />
     <Content Include="Assets\Icons\location.png" />
     <Content Include="Assets\Icons\logout.png" />
+    <Content Include="Assets\Icons\notification-bell.png" />
+    <Content Include="Assets\Icons\phone-call.png" />
     <Content Include="Assets\Icons\phone.png" />
+    <Content Include="Assets\Icons\project-management.png" />
     <Content Include="Assets\Icons\project-status.png" />
     <Content Include="Assets\Icons\project.png" />
     <Content Include="Assets\Icons\supervisor.png" />
@@ -324,6 +372,7 @@
     <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
     <Content Include="Assets\loudspeaker.png" />
+    <Content Include="Assets\MaleDefault.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />
     <Content Include="Assets\PopupIcons\info.svg" />
@@ -334,6 +383,8 @@
     <Content Include="Assets\Rajender_Passport_Photo.jpg" />
     <Content Include="Assets\Report.png" />
     <Content Include="Assets\SignIn.png" />
+    <Content Include="Assets\status-repor-upload.jpg" />
+    <Content Include="Assets\status-report.jpg" />
     <Content Include="Assets\TimeSheet.png" />
     <Content Include="Assets\zurich-logo-ranged-br.png" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -363,6 +414,9 @@
     <Content Include="EmployeeLoginModel.edmx.diagram">
       <DependentUpon>EmployeeLoginModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Assets\Reports\Sample-Incident-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Project-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Audit-Report.xlsx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -404,6 +458,15 @@
     <Content Include="Views\Home\zohosigninreport.cshtml" />
     <Content Include="Views\Home\RemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
+    <Content Include="Views\Home\StatusReportUpload.cshtml" />
+    <Content Include="StatusReports.json" />
+    <Content Include="Views\Home\_ModalAlerts.cshtml" />
+    <Content Include="Views\Home\StatusReport.cshtml" />
+    <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
+    <Content Include="Views\Home\UploadedStatusReportView.cshtml" />
+    <Content Include="Views\Home\UploadedStatusExcelReportView.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainder.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

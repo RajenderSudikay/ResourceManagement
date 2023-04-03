@@ -22,5 +22,7 @@ namespace ResourceManagement
         public string project_staus { get; set; }
         public string project_shift { get; set; }
         public string clientreportmanager { get; set; }
+        public string ActualProjectName { get; set; }
+        public string ProjectRolesResponsibilities { get; set; }
     }
 }

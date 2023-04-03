@@ -1,0 +1,849 @@
+﻿@model ResourceManagement.Models.RMA_StatusReportViewModel
+
+@{
+    ViewBag.Title = "Status Report Page";
+    var imagePath = "";
+}
+
+<style>
+    body {
+        color: #23366f !important;
+    }
+
+    span.circle {
+        background: white;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        color: green;
+        display: inline-block;
+        font-weight: bold;
+        line-height: 40px;
+        margin-right: 5px;
+        text-align: center;
+        width: 160px;
+        height: 160px;
+        font-size: x-large;
+        vertical-align: middle;
+        border: 5px solid green;
+        margin-left: 50px;
+        margin-bottom: -130px;
+    }
+
+    .textstyle {
+        position: absolute;
+        margin-top: 50px;
+        margin-left: -41px;
+        font-size: xxx-large;
+        font-weight: 100
+    }
+
+    .banner-image__circle {
+        display: block !important;
+        width: 350px !important;
+        height: 250px !important;
+        /*   border-radius: 50%;*/
+        overflow: hidden !important;
+        /*     margin-left: 80px;*/
+        background-color: white !important;
+        margin-top: 50px !important;
+        border: 3px solid rgb(81, 205, 160) !important;
+        position: relative;
+        border-top-right-radius: 115px;
+        border-bottom-left-radius: 100px;
+    }
+
+    .banner-img {
+        margin-bottom: 0 !important;
+        margin-left: 65px !important;
+        margin-top: 0px !important;
+        /* border-radius: 20%; */
+        border-radius: 50% !important;
+        border: 10px solid white !important;
+    }
+
+    .banner-decoration {
+        /* position: fixed !important;*/
+        bottom: 0 !important;
+        left: 112px !important;
+        z-index: 10 !important;
+        height: 136px !important;
+    }
+
+
+    .banner-decoration__elements {
+    }
+
+    .banner-decoration__circle {
+        display: block !important;
+        width: 60px !important;
+        height: 60px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        top: 85px !important;
+        background-color: #23366f !important;
+        position: relative;
+        bottom: -147px !important;
+        right: -30px !important;
+        padding: 15px !important;
+        box-sizing: inherit !important;
+        margin-top: -231px;
+        position: relative;
+    }
+
+    .banner-decoration__half-mask {
+        display: block !important;
+        top: 60px !important;
+        left: 80px !important;
+        width: 15px !important;
+        height: 40px !important;
+        overflow: hidden !important;
+        -webkit-transform: rotate(45deg) !important;
+        -ms-transform: rotate(45deg) !important;
+        transform: rotate(45deg) !important;
+        margin-top: -5px !important;
+        position: relative;
+    }
+
+    .banner-decoration__half-mask__circle {
+        display: block !important;
+        width: 42px !important;
+        height: 42px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        background-color: #2167ae !important;
+        margin-bottom: 40px !important;
+        padding: 15px !important;
+    }
+
+    .banner-decoration__mini-circle {
+        display: block !important;
+        top: -41px !important;
+        right: -43px !important;
+        width: 36px !important;
+        height: 36px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        margin-bottom: 0 !important;
+        background-color: #5495cf !important;
+        position: relative;
+    }
+
+    .report-banner {
+        background-color: #005983 !important;
+        height: 250px !important;
+        /*  border: 1px solid #91bfe3 !important*/
+    }
+
+    .banner-empname {
+        text-align: center !important;
+        font-weight: bold !important;
+        color: #23366f !important;
+        font-size: large !important;
+        margin-left: -45px !important
+    }
+
+    .banner-content {
+        margin-left: 430px !important;
+        margin-top: -170px !important
+    }
+
+    #circle {
+        background: rgb(81, 205, 160) !important;
+        border-radius: 50% !important;
+        width: 100px !important;
+        height: 100px !important;
+        margin-left: 340px !important;
+        margin-top: -74px !important;
+        border: 2px solid white !important
+    }
+</style>
+
+
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="padding-left: 69px !important">
+        <h2 class="text-uppercase text-white">Status Report</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID + ".png";
+
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count > 1)
+                                    {
+                                        var clients = new List<string>
+                                            ();
+                                        foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            clients.Add(empProject.Client);
+                                        }
+                                        var empClients = string.Join(", ", clients);
+                                        <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-client emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Client</div>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    @if (Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    {
+                                        var projects = new List<string>
+                                            ();
+                                        foreach (var empProject in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            var sameProjectExists = false;
+
+                                            foreach (var project in projects)
+                                            {
+                                                if (project == empProject.Project_Name)
+                                                {
+                                                    sameProjectExists = true;
+                                                }
+                                            }
+
+                                            if (!sameProjectExists)
+                                            { projects.Add(empProject.Project_Name); }
+
+                                        }
+                                        var empProjects = string.Join(", ", projects);
+                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-project emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Name</div>
+                                    }
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <input type="hidden" class="emprole" value="@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
+
+        }
+
+    </div>
+</nav>
+
+
+<div class="card card-body status-report-view-options" style="border-radius: 10px">
+    <div class="card statusreport-card">
+        <div class="card-body ">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportCategory">Report Category</label>
+                        <select id="reportCategory" name="reportCategory" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                            <option disabled selected>-- Select Category --</option>
+                            <option value="KPAReport">Chart Reports</option>
+                            <option value="UploadedReports">Uploaded Excel Reports</option>
+                        </select>
+                        <div class="invalid-feedback-reportCategory" style="color:red; display:none">
+                            Please Select Category
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportClient">Client</label>
+                        <select id="reportClient" name="reportClient" class="form-control form-select form-select-lg mb-3 date-timesheet">
+                            @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "consultant")
+                            {
+                                foreach (var project in Model.RMA_StatusReportModel.RMA_EmployeeModel.projectInfo)
+                                {
+                                    <option value="@project.Project_Code">@project.Client</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="--Select Client Name--" selected disabled>--Select Client Name--</option>
+                                <option value="Littelfuse">Littelfuse</option>
+                                <option value="Federal Signal">Federal Signal</option>
+                                <option value="Modine">Modine</option>
+                                <option value="AMBC">AMBC</option>
+                            }
+
+                        </select>
+
+                        <div class="invalid-feedback-reportClient" style="color:red; display:none">
+                            Please Select Client
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group selectemp-div">
+                        <label for="reportemployeename">Employee Name<b style="color:red">*</b></label>
+                        @{
+                            var multipleAllow = "";
+                        }
+                        @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role != "consultant")
+                        {
+                            multipleAllow = "multiple";
+                        }
+
+                        <select id="selectEmployeename" name="reportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white" @multipleAllow>
+                            @if (multipleAllow == "")
+                            {
+                                <option disabled selected>-- Select Employee Name --</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback-reportemployeename" style="color:red; display:none">
+                            Please Select Year
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportyear" class="">Year<b style="color:red">*</b></label>
+                        <select id="reportyear" name="reportyear" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected>-- Select Year --</option>
+                            <option value="@System.DateTime.Now.Year.ToString()">@System.DateTime.Now.Year.ToString()</option>
+                            <option value="@System.DateTime.Now.AddYears(-1).Year">@System.DateTime.Now.AddYears(-1).Year</option>
+                        </select>
+                        <div class="invalid-feedback-reportyear" style="color:red; display:none">
+                            Please Select Year
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reporttype" class="leavestartdate">Report Type<b style="color:red">*</b></label>
+                        <select id="reporttype" name="reporttype" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected>-- Select Type --</option>
+                            <option value="Month Report">Month Report</option>
+                            <option value="Quarterly Report">Quarter Report</option>
+                            <option value="Half Year Report">Half Year Report</option>
+                            <option value="Annual Report">Annual Report</option>
+                        </select>
+                        <div class="invalid-feedback-reporttype" style="color:red; display:none">
+                            Please Select Type
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reportmonth" class="leavestartdate">Period<b style="color:red">*</b></label>
+                        <select id="reportmonth" name="reportmonth" class="form-control form-select form-select-lg mb-3">
+                            <option disabled selected>-- Select Month --</option>
+                        </select>
+                        <div class="invalid-feedback-reportmonth" style="color:red; display:none">
+                            Please Select Period
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-md-6 reporttemplatetyep" style="display: none">
+                    <div class="form-group">
+                        <label for="uploadreporttype">Report Template Type: <b style="color:red">*</b></label>
+                        <select id="statusreportupload" name="uploadreporttype" class="form-control form-select form-select-lg mb-3" required aria-describedby="statusreportuploadhelp">
+                            <option value="-- Select Template --" selected disabled>-- Select Template --</option>
+                            <option value="Template1">Incident Report</option>
+                            <option value="Template2">Project Report</option>
+                            <option value="Template3">Test Report</option>
+                        </select>
+                        @*<div id="statusreportuploadhelp" class="form-text" style="color:blueviolet !important"><b>This field is required to download the uploaded reports from database (The one which you uploaded).</b></div>*@
+                        <div class="invalid-feedback-statusreportupload" style="color:red; display:none">
+                            Please Select Template
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 divtoolname">
+                    <div class="form-group">
+                        <label for="statusreportToolName" class="control-label">Tool Name<b style="color:red">*</b></label>
+                        <select id="statusreportToolName" name="statusreportToolName" class="form-control form-select form-select-lg mb-3" multiple>
+                            <option value="Halo">Halo</option>
+                            <option value="Ivanti">Ivanti</option>
+                            <option value="Jira">Jira</option>
+                            <option value="LogicGate">Logic Gate</option>
+                            <option value="Othertool">Other tool</option>
+                            <option value="NA">NA</option>
+                        </select>
+                        <div class="invalid-feedback client-invalid-toolname" style="color:red; display:none">
+                            Please select Tool Name
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer mt-xl-4">
+
+                <button type="submit" class="btn btn-info btn-lg btn-status-report-remainder" style="width: 100px; background-color: #ff3333 !important; border-radius: 10px; ">  <img src="~/Assets/Icons/notification-bell.png" width="18" style="margin-left: -3px" /><b> Remainder</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view" style="width: 100px; background-color: #005983 !important; border-radius: 10px; display: none"><b>View Report</b></button>
+                @using (Html.BeginForm("ExportStatusReports", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+                    <button type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius: 10px; background-color: #388E3C; display: none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel" viewBox="0 0 16 16" style="margin-bottom: -3px">
+                            <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                        </svg><b> Download</b>
+                    </button>
+                }
+                <button type="submit" class="btn btn-info btn-lg btn-status-report-view" style="width: 100px; border-radius: 10px; background-color: #005983 !important;display: none"><b>View Report</b></button>
+                <button type="button" class="btn btn-lg btn-download-report" style="border-radius: 10px; background-color: #b10332 ; display: none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf" viewBox="0 0 16 16" style="margin-bottom: -3px; color: white">
+                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                        <path d="M4.603 12.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.701 19.701 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.716 5.716 0 0 1-.911-.95 11.642 11.642 0 0 0-1.997.406 11.311 11.311 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.27.27 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.647 12.647 0 0 1 1.01-.193 11.666 11.666 0 0 1-.51-.858 20.741 20.741 0 0 1-.5 1.05zm2.446.45c.15.162.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.881 3.881 0 0 0-.612-.053zM8.078 5.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z" />
+                    </svg><b style="color: white"> Download</b>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chartContainer" style="background-color: white;" class="mt-xl-4"></div>
+@{
+    Html.RenderPartial("_ModalAlerts");
+}
+
+<br />
+<br />
+
+<script>
+
+    jQuery('#reportClient').change(function (evt) {
+        jQuery('#selectEmployeename').empty();
+        GetEmployees(jQuery(this).val());
+        jQuery('#reportClient').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportClient').hide();
+
+    });
+
+    jQuery('#statusreportToolName').change(function (evt) {
+        jQuery('#statusreportToolName').css("border", "1px solid green");
+        jQuery('.client-invalid-toolname').hide();
+
+    });
+
+    jQuery('#reportCategory').change(function (evt) {
+        jQuery('#reportCategory').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportCategory').hide();
+
+        if (jQuery('#reportCategory :selected').val() == "UploadedReports") {
+            jQuery('.reporttemplatetyep').css("display", "block");
+            jQuery("#selectEmployeename").attr("multiple", "multiple");
+            //EXCEL RELATED
+            jQuery('.btn-status-uploaded-view').show();
+            jQuery(".btn-status-report-generate").show();
+
+            //PDF RELATED
+            jQuery('.btn-status-report-view').hide();
+            jQuery('.btn-download-report').hide();
+        }
+        else {
+            jQuery("#selectEmployeename").removeAttr("multiple");
+            jQuery('.reporttemplatetyep').css("display", "none");
+            //EXCEL RELATED
+            jQuery('.btn-status-uploaded-view').hide();
+            jQuery(".btn-status-report-generate").hide();
+
+            //PDF RELATED
+            jQuery('.btn-status-report-view').show();
+            jQuery('.btn-download-report').show();
+        }
+    });
+
+
+    jQuery(".btn-status-report-generate").on("click", function () {
+        var statusChartModel = {
+            ClientName: jQuery('#reportClient :selected').text(),
+            /*       ProjectID: jQuery('#reportClient :selected').val(),*/
+            Year: jQuery('#reportyear :selected').val(),
+            Month: jQuery('#reportmonth :selected').val(),
+            ReportType: jQuery('#reporttype :selected').val(),
+            EmployeeID: jQuery('#selectEmployeename').val(),
+            /*   EmployeeName: jQuery('#selectEmployeename :selected').text().trim(),*/
+            TemplateType: jQuery('#statusreportupload :selected').text().trim(),
+            TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+            ToolName: jQuery('#statusreportToolName').val(),
+        };
+
+        var GridHtml = JSON.stringify(statusChartModel).toString();
+        $("input[name='GridHtml']").val(GridHtml);
+
+    });
+
+    jQuery('#reportyear').change(function (evt) {
+        jQuery("#reporttype").prop("selectedIndex", 0);
+        jQuery("#reportmonth").prop("selectedIndex", 0);
+        jQuery('#reportyear').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportyear').hide();
+
+        //INSTEAD OF MAKING AJAX CALL MAKING EMPTY FIRST THEN ADDING DEFAULT SELECT OPTION TO DROPDOWN
+        jQuery('#reportmonth').empty();
+        $('#reportmonth').append('<option disabled selected>-- Select Month--</option>');
+
+    });
+
+    jQuery('#reportmonth').change(function (evt) {
+        jQuery('#reportmonth').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reportmonth').hide();
+
+    });
+
+    jQuery('#statusreportupload').change(function (evt) {
+        jQuery('#statusreportupload').css("border", "1px solid green");
+        jQuery('.invalid-feedback-statusreportupload').hide();
+
+    });
+
+    jQuery('.btn-download-report').click(function () {
+        /*   jQuery('.chartContainer1-table').css("width", "70%");*/
+        jQuery('.project-chart-textarea').css("border", "none");
+        jQuery('.chart-textarea').css("border", "none");
+        jQuery('.status-report-view-options').hide();
+        jQuery('.canvasjs-chart-toolbar').hide();
+        jQuery('.chartbelowhrline').css('margin-left', '0px');
+        jQuery('.sticky-container').hide();
+        jQuery('.chartimagediv').css('margin-left', '100px');
+        jQuery('.chartimagedivmultiple').css('margin-left', '10px');
+        jQuery('.chartparah').css('margin-left', '685px');
+        jQuery('.chartparah3').css('margin-left', '715px');
+
+        jQuery('.employeeinfohr').css("width", "90%");
+
+        window.print();
+        jQuery('.status-report-view-options').show();
+        jQuery('.canvasjs-chart-toolbar').show();
+        /*   jQuery('.chartContainer1-table').css("width", "60%");*/
+        jQuery('.chartbelowhrline').css('margin-left', '-70px');
+        jQuery('.canvasjs-chart-toolbar').hide();
+        jQuery('.sticky-container').show();
+        jQuery('.chartparah').css('margin-left', '735px !important');
+        jQuery('.chartparah3').css('margin-left', '762px !important');
+        jQuery('.employeeinfohr').css("width", "75% !important");
+        jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
+        jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
+    });
+
+    function ReportFormValidate() {
+        var formValidated = true;
+        if (jQuery('#reportyear :selected').text() == "-- Select Year --") {
+            jQuery('#reportyear').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportyear').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportyear').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportyear').hide();
+        }
+
+        if (jQuery('#reportmonth :selected').text() == "-- Select Month --") {
+            jQuery('#reportmonth').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportmonth').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportmonth').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportmonth').hide();
+        }
+
+        if (jQuery('#reporttype :selected').text() == "-- Select Type --") {
+            jQuery('#reporttype').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reporttype').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reporttype').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reporttype').hide();
+        }
+
+        if (jQuery('#reportCategory :selected').text() == "-- Select Category --") {
+            jQuery('#reportCategory').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportCategory').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportCategory').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportCategory').hide();
+        }
+
+        if (jQuery('#reportClient :selected').text() == "--Select Client Name--") {
+            jQuery('#reportClient').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportClient').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportClient').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportClient').hide();
+        }
+
+        if (jQuery('#selectEmployeename').val() == "") {
+            jQuery('#selectEmployeename').css("border", "1px solid red");
+            jQuery('.invalid-feedback-selectEmployeename').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#selectEmployeename').css("border", "1px solid green");
+            jQuery('.invalid-feedback-selectEmployeename').hide();
+        }
+
+        if (jQuery('#statusreportToolName').val() == "") {
+            jQuery('#statusreportToolName').css("border", "1px solid red");
+            jQuery('.client-invalid-toolname').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#statusreportToolName').css("border", "1px solid green");
+            jQuery('.client-invalid-toolname').hide();
+        }
+
+        return formValidated;
+    }
+
+    jQuery(".btn-status-report-view").click(function () {
+        var formValidated = ReportFormValidate();
+        if (formValidated == true) {
+            var statusChartModel = {
+                ClientName: jQuery('#reportClient :selected').text(),
+                ProjectID: jQuery('#reportClient :selected').val(),
+                Year: jQuery('#reportyear :selected').val(),
+                Month: jQuery('#reportmonth :selected').val(),
+                ReportType: jQuery('#reporttype :selected').val(),
+                EmployeeID: jQuery('#selectEmployeename').val(),
+                EmployeeName: jQuery('#selectEmployeename').text().trim(),
+                ToolName: jQuery('#statusreportToolName').val(),
+            };
+
+            jQuery.ajax({
+                url: "/StatusGraphChartReport",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportChartModel: statusChartModel },
+                success: function (data) {
+                    jQuery('.btn-download-report').show();
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
+    jQuery(".btn-status-uploaded-view").click(function () {
+        var formValidated = ReportFormValidate();
+
+        if (jQuery('#statusreportupload :selected').text() == "-- Select Template --") {
+            jQuery('#statusreportupload').css("border", "1px solid red");
+            jQuery('.invalid-feedback-statusreportupload').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#statusreportupload').css("border", "1px solid green");
+            jQuery('.invalid-feedback-statusreportupload').hide();
+        }
+
+        if (formValidated == true) {
+            var statusChartModel = {
+                ClientName: jQuery('#reportClient :selected').text(),
+                ProjectID: jQuery('#reportClient :selected').val(),
+                Year: jQuery('#reportyear :selected').val(),
+                Month: jQuery('#reportmonth :selected').val(),
+                ReportType: jQuery('#reporttype :selected').val(),
+                EmployeeID: jQuery('#selectEmployeename').val(),
+                EmployeeName: jQuery('#selectEmployeename').text().trim(),
+                TemplateType: jQuery('#statusreportupload :selected').text().trim(),
+                TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+                ToolName: jQuery('#statusreportToolName').val(),
+            };
+
+            jQuery.ajax({
+                url: "/UploadedStatusReportView",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportChartModel: statusChartModel },
+                success: function (data) {
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
+    $("#reporttype").on("change", function () {
+        jQuery('#reporttype').css("border", "1px solid green");
+        jQuery('.invalid-feedback-reporttype').hide();
+
+        jQuery.ajax({
+            url: "/GetMonthsBasedOnYear",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ year: jQuery('#reportyear :selected').val(), reportType: jQuery('#reporttype :selected').val() }),
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                $('#reportmonth').empty();
+                $('#reportmonth').append('<option disabled selected>-- Select Month --</option>');
+                jQuery.each(obj, function (i, item) {
+                    $('#reportmonth').append('<option value="' + item.Key + '">' + item.Value + '</option>');
+                });
+            }
+        });
+    });
+
+    GetEmployees();
+    function GetEmployees(type) {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+
+                if (type != undefined && type != "") {
+                    obj = obj.filter(v => v.Client === type);
+                }
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                var useRole = jQuery('.emprole').val();
+
+                if (type == undefined || type == "") {
+                    var empId = jQuery('.agent-navdrop-empid').text();
+                    $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+                }
+
+                if (useRole == "consultant") {
+                    $("#selectEmployeename").prop("disabled", true);
+                }
+                else {
+                    $("#selectEmployeename").prop("disabled", false);
+                }
+            }
+        });
+    }
+
+
+    jQuery('.btn-status-report-remainder').click(function () {
+        var formValidated = true;
+        if (jQuery('#reportClient :selected').text() == "--Select Client Name--") {
+            jQuery('#reportClient').css("border", "1px solid red");
+            jQuery('.invalid-feedback-reportClient').show();
+            formValidated = false;
+        }
+        else {
+            jQuery('#reportClient').css("border", "1px solid green");
+            jQuery('.invalid-feedback-reportClient').hide();
+        }
+
+        if (formValidated == true) {
+
+            var selectedEmployees = $('#selectEmployeename option');
+            var optVal = new Array();
+
+            jQuery.each(selectedEmployees, function (i, val) {
+                optVal.push($(this).val());
+            });
+
+            var statusRemainderModel = {
+                Employees: optVal,
+                ClientName: jQuery('#reportClient :selected').val()
+            };
+
+            jQuery.ajax({
+                url: "/StatusReportRemainder",
+                type: "POST",
+                dataType: "html",
+                data: { StatusReportRemainderModel: statusRemainderModel },
+                success: function (data) {
+                    $('#chartContainer').html(data);
+                }
+            });
+        }
+    });
+
+</script>

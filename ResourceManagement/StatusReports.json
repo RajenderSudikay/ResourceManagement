@@ -1,0 +1,33 @@
+[
+  {
+    "Name": "Template1",
+    "fields": {
+      "Field1": "Ticket_Number",
+      "Field3": "Ticket_Created_Date",
+      "Field6": "Ticket_Priority",
+      "Field7": "Ticket_Status",
+      "Field8": "Ticket_Closed_Date"
+    }
+  },
+  {
+    "Name": "Template2",
+    "fields": {
+      "Field1": "Project_Name",
+      "Field2": "Project_Created_Date",
+      "Field3": "Project_Closing_Date_Target",
+      "Field4": "Project_Priority",
+      "Field5": "Project_Status",
+      "Field6": "Project_Closed_Date_Actual",
+      "Field7": "CompletedPercentage",
+      "Field8": "RemainingPercentage",
+      "Field9": "Project_Summary"
+    }
+  },
+  {
+    "Name": "Template3",
+    "fields": {
+      "Field1": "Ticket_Number",    
+      "Field7": "Ticket_Status"    
+    }
+  }
+]

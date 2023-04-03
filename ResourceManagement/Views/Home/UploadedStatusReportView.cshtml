@@ -1,0 +1,346 @@
+﻿@model ResourceManagement.Models.RMA_UploadedStatusReportViewModel
+
+@{
+    ViewBag.Title = "Status Report Uploaded View Page";
+}
+
+<style>
+    .headerrow {
+        border: 0px !important;
+        padding: 2px !important;
+        background-color: LightGray;
+    }
+
+    .headertd {
+        font-size: small;
+        border-right: 1px solid lightgray !important;
+    }
+
+    .center {
+        margin-top: 3px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 6px;
+        background-color: LightGray;
+    }
+
+    #timesheet-table th, td {
+        border: 1px solid gray;
+    }
+
+    .table-leaveinfo th, td {
+        border: 1px solid gray;
+    }   
+
+</style>
+
+<div id="statusreport" class="carousel slide" data-ride="carousel">
+
+    <!-- Indicators -->
+    @{
+        int Indicatori = 0;
+    }
+    <ol class="carousel-indicators">
+        @foreach (var employeeReport in Model.ViewModel)
+        {
+            var isactiveclass = Indicatori == 0 ? "active" : "";
+            Indicatori++;
+
+            <li data-target="#statusreport" data-slide-to="@Indicatori" class="@isactiveclass"></li>
+        }
+    </ol>
+    <!-- The slideshow -->
+    <div class="carousel-inner">
+        @{
+            int i = 0;
+        }
+
+        @if (Model != null && Model.ViewModel != null && Model.ViewModel.Count > 0)
+        {
+            foreach (var reportModel in Model.ViewModel)
+            {
+                var isactiveclass = i == 0 ? "active" : "";
+                i++;
+
+                <div class="carousel-item @isactiveclass">
+                    <div class="card card-body" style="border-radius: 10px">
+                        <div class="card status-report-card">
+                            <div class="card-body ">
+
+                                <br />
+                                <img src="~/Assets/AMBC_Logo.png" alt="Header Logo" style="margin-left: 20px !important;  height: 70px !important; margin-top: -10px !important;width: 200px !important" />
+                                @{
+                                    var clientLogo = "";
+                                    if (reportModel.AMBC_Active_Emp_view.Client != "AMBC")
+                                    {
+                                        clientLogo = "/Assets/ClientLogos/" + reportModel.AMBC_Active_Emp_view.Client + ".png";
+                                    }
+                                }
+                                @if (clientLogo != "")
+                                {
+                                    <img src='@clientLogo' style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
+                                }
+
+                                <br />
+
+                                <div class="report-banner">
+                                    <div class="banner-wrapper">
+                                        <div class="banner-media">
+                                            <div class="banner-image__circle">
+                                                <figure>
+                                                    <img src="@reportModel.EmployeeImage" class="banner-img" width="170" height="170" />
+                                                </figure>
+                                                <p class="banner-empname">@reportModel.AMBC_Active_Emp_view.Employee_Name</p>
+                                            </div>
+
+                                            <div class="banner-decoration">
+                                                @*<div class="banner-decoration__elements">*@
+                                                <span class="banner-decoration__circle"></span>
+                                                <span class="banner-decoration__half-mask">
+                                                    <span class="banner-decoration__half-mask__circle bg-height">
+                                                    </span>
+                                                </span>
+                                                <span class="banner-decoration__mini-circle bg-height"></span>
+                                                @*</div>*@
+                                            </div>
+                                        </div>
+
+                                        <div class="banner-content">
+                                            <div style="padding-top: 30px;">
+                                                <div>
+                                                    <h2 style="font-size: xx-large; color: white !important ">
+                                                        @reportModel.AMBC_Active_Emp_view.Client_Project_Name
+                                                    </h2>
+                                                    <h5 style="color: white !important ">
+                                                        Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                                                    </h5>
+
+                                                    <h5 style="color: white !important; margin-left: 72px !important">
+                                                        Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName</b>
+                                                    </h5>
+                                                </div>
+
+                                            </div>
+
+                                            <hr class="employeeinfohr" style="background-color: rgb(81, 205, 160) !important; height: 2px !important; width: 75% !important; margin-left: 0px !important; margin-top: 15px !important;" />
+
+                                            <div class="report-content-resource">
+                                                <br />
+                                                <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="20" /><div class="empPersonelInfoe"><b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
+                                                <div class="employeeInfo">
+                                                    <img src="~/Assets/Icons/phone-call.png" width="18" /><div class="empPersonelInfoe"><b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.Contact_Number</b></div>
+                                                </div>
+
+                                                <div class="employeeInfo">
+                                                    <img src="~/Assets/Icons/project-management.png" width="17" /><div class="empPersonelInfoe">
+                                                        <b style="color: white !important ">@reportModel.AMBC_Active_Emp_view.Client_Report_Manager</b>
+                                                    </div>
+                                                </div>
+                                                <div class="employeeInfo" style="color: white !important;">
+                                                    <div id="circle">
+                                                        <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@reportModel.EmaployeeAvailabity %</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 15px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (Model.AjaxModel.TemplateNumber == "Template1")
+                                {
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #660033 ">
+                                                <th class="" scope="col" style="text-align: center; color: white">Tool Name</th>
+                                                @if (!Model.IsExcelReport)
+                                                {
+                                                    <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
+                                                }
+
+                                                <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Created_Date</th>
+                                                <th class="" scope="col" style=" text-align: center; color: white">Priority</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Closed_Date</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @foreach (var report in reportModel.Template1Reports)
+                                            {
+                                                <tr style="background-color: #fff" class="time">
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.TicketingToolName</td>
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                                                    <td scope="row" style="text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
+                                                </tr>
+                                            }
+
+                                            @if (reportModel.Template1Reports.Count == 0)
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px">No Records available!</h2>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                }
+
+                                @if (Model.AjaxModel.TemplateNumber == "Template2")
+                                {
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #660033 ">
+                                                @if (!Model.IsExcelReport)
+                                                {
+                                                    <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
+                                                }
+                                                <th class="" scope="col" style="text-align: center; color: white ">Project Name</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Created Date</th>
+                                                <th class="" scope="col" style=" text-align: center; color: white">Closing Date Target</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Priority</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Closed Date Actual</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Completed %</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Remaining %</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @foreach (var report in reportModel.Template2Reports)
+                                            {
+                                                <tr style="background-color: #fff" class="time">
+
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style=" vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Status</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
+                                                    <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
+                                                    <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.RemainingPercentage</td>
+                                                </tr>
+                                            }
+
+                                            @if (reportModel.Template2Reports.Count == 0)
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px">No Records available!</h2>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                }
+
+                                @if (Model.AjaxModel.TemplateNumber == "Template3")
+                                {
+                                    <table class="table" id="timesheet-table" style="margin-top: 2px">
+                                        <thead class="table-bordered">
+                                            <tr style="background-color: #660033 ">
+                                                <th class="" scope="col" style="text-align: center; color: white">Tool Name</th>
+                                                @if (!Model.IsExcelReport)
+                                                {
+                                                    <th class="" scope="col" style="text-align: center; color: white">Report Month</th>
+                                                }
+
+                                                <th class="" scope="col" style="text-align: center; color: white">Ticket Number</th>
+                                                <th class="" scope="col" style="text-align: center; color: white">Status</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="timesheet-table-grid">
+
+                                            @foreach (var report in reportModel.Template1Reports)
+                                            {
+                                                <tr style="background-color: #fff" class="time">
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.TicketingToolName</td>
+                                                    @if (!Model.IsExcelReport)
+                                                    {
+                                                        <td scope="row" style="vertical-align:middle; text-align: center">@report.Uploaded_Month</td>
+                                                    }
+                                                    <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                                                    <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                                                </tr>
+                                            }
+
+                                            @if (reportModel.Template1Reports.Count == 0)
+                                            {
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <h2 style="MARGIN-LEFT: 40px; padding-top: 15px">No Records available!</h2>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                }
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+
+
+        <a class="carousel-control-prev" href="#statusreport" data-slide="prev" style="display: none; margin-left: 20px; padding-top: 400px ">
+            @*<span class="carousel-control-prev-icon" style="background-color: gray; margin-left: -164px; height: 40px;"></span>*@
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" style="color: #2167ae; height: 40px; margin-left: -165px; width: 50px ">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+
+        </a>
+        <a class="carousel-control-next" href="#statusreport" data-slide="next" style="display: none; margin-right: 20px; padding-top: 400px ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16" style="color: #2167ae; height: 40px; margin-right: -164px; width:50px">
+                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+            </svg>
+        </a>
+
+        @if (Model.ViewModel != null && Model.ViewModel.Count > 1)
+        {
+            <script>
+                jQuery('.carousel-control-prev').show();
+                jQuery('.carousel-control-next').show();
+            </script>
+        }
+
+    </div>
+</div>
