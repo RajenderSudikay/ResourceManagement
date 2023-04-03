@@ -286,8 +286,8 @@
                 }
                 var bgColor = colors[projectCount];
 
-                var startDate = futureProject.ProjestStartDate != DateTime.MinValue ? futureProject.ProjestStartDate.ToString().Replace("00:00:00", ""): "TBD";
-                var endDate = futureProject.TargetClosingDate != DateTime.MinValue ? futureProject.TargetClosingDate.ToString().Replace("00:00:00", ""): "TBD";
+                var startDate = futureProject.ProjestStartDate != DateTime.MinValue ? futureProject.ProjestStartDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "") : "TBD";
+                var endDate = futureProject.TargetClosingDate != DateTime.MinValue ? futureProject.TargetClosingDate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "") : "TBD";
 
                 <div class="col-sm-6 custom-col-sm-6">
                     <div class="card card-1 custom-card" style="background-color:@bgColor ; margin-left: @marignLeft ">
@@ -879,7 +879,7 @@
                     },
 
                     title: {
-                        text: "Monthly Project Progress",
+                        text: "Monthly Project Progress as of (@Model.SelectedReportMonth.MonthName-@Model.SelectedReportMonth.year)",
                         fontColor: "white",
                         fontSize: 15,
                         padding: 10,
