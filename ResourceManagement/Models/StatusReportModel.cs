@@ -107,6 +107,9 @@ namespace ResourceManagement.Models
 
         [JsonPropertyName("ToolName")]
         public List<string> ToolName { get; set; } = new List<string>();
+
+        [JsonPropertyName("IsDelete")]
+        public bool IsDelete { get; set; } = false;
     }
 
     public class MonthWiseReportModel
