@@ -3353,19 +3353,36 @@ namespace ResourceManagement.Controllers
                         if (StatusReportChartModel.TemplateNumber == "Template1")
                         {
                             var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+
+                            if (StatusReportChartModel.IsDelete && selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                db.monthlyreports_Template1.RemoveRange(selectedMonthTickets);
+                                db.SaveChanges();
+                                selectedMonthTickets = null;
+                            }
+
                             if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
                             {
                                 empReportModel.Template1Reports.AddRange(selectedMonthTickets);
                             }
                         }
+
                         //TEMPLATE2 code updates
                         if (StatusReportChartModel.TemplateNumber == "Template2")
                         {
                             var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.Is_Cancelled == false && project.EmplyeeID == empID).ToList();
+                            if (StatusReportChartModel.IsDelete && monthProjectReport != null && monthProjectReport.Count > 0)
+                            {
+                                db.monthlyreports_Template2.RemoveRange(monthProjectReport);
+                                db.SaveChanges();
+                                monthProjectReport = null;
+                            }
+
                             if (monthProjectReport != null && monthProjectReport.Count > 0)
                             {
                                 empReportModel.Template2Reports.AddRange(monthProjectReport);
                             }
+
                         }
 
                         //TEMPLATE3 code updates

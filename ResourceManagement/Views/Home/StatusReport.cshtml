@@ -451,7 +451,7 @@
 
             </div>
             <div class="modal-footer mt-xl-4">
-
+                <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view delete-reports" style="width: 100px; background-color: rgb(177, 3, 50) !important; border-radius: 10px; display: none ">  <img src="~/Assets/Icons/x-button.png" width="18" style="margin-left: -3px" /><b> Delete</b></button>
                 <button type="submit" class="btn btn-info btn-lg btn-status-report-remainder" style="width: 100px; background-color: #ff3333 !important; border-radius: 10px; ">  <img src="~/Assets/Icons/notification-bell.png" width="18" style="margin-left: -3px" /><b> Remainder</b></button>
                 <button type="submit" class="btn btn-info btn-lg btn-status-uploaded-view" style="width: 100px; background-color: #005983 !important; border-radius: 10px; display: none"><b>View Report</b></button>
                 @using (Html.BeginForm("ExportStatusReports", "Home", FormMethod.Post))
@@ -486,6 +486,9 @@
 <br />
 
 <script>
+
+    //BY DEFAULT Showing EMployee as Dropdown
+    jQuery("#selectEmployeename").removeAttr("multiple");
 
     jQuery('#reportClient').change(function (evt) {
         jQuery('#selectEmployeename').empty();
@@ -720,6 +723,11 @@
             jQuery('.invalid-feedback-statusreportupload').hide();
         }
 
+        var isDeleteAction = false;
+        if (jQuery(this).hasClass('delete-reports')) {
+            isDeleteAction = true;
+        }
+
         if (formValidated == true) {
             var statusChartModel = {
                 ClientName: jQuery('#reportClient :selected').text(),
@@ -732,6 +740,7 @@
                 TemplateType: jQuery('#statusreportupload :selected').text().trim(),
                 TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
                 ToolName: jQuery('#statusreportToolName').val(),
+                IsDelete: isDeleteAction
             };
 
             jQuery.ajax({
