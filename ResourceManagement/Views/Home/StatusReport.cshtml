@@ -910,4 +910,16 @@
         }
     });
 
+    jQuery(document).on("click", ".chartshowhide", function () {
+        var className = jQuery(this).attr('data-target');
+        if (jQuery('.' + className).css('display') == 'none') {
+            jQuery('.' + className).show();
+            $(this).text("HIDE");
+        }
+        else {
+            jQuery('.' + className).hide();
+            jQuery(this).text("SHOW");
+        }
+    });
+
 </script>

@@ -301,7 +301,7 @@
                     </div>
                 </div>
                 projectCount++;
-            }          
+            }
         </div>
     }
     var hideAuditReport = "";
@@ -988,7 +988,7 @@
                     },
                     {
                         type: "column",
-                        legendText: "Efficient",
+                        legendText: "Effective",
                         indexLabel: "{y}",
                         indexLabelFontWeight: "bold",
                         name: "Efficient",
@@ -1000,7 +1000,7 @@
                     },
                     {
                         type: "column",
-                        legendText: "In Efficient",
+                        legendText: "In Effective",
                         indexLabel: "{y}",
                         indexLabelFontWeight: "bold",
                         name: "In Efficient",
@@ -1023,20 +1023,6 @@
     //Hidden download graph options by default
     jQuery('.canvasjs-chart-toolbar').hide();
     jQuery('.page-name-title').text(jQuery('.page-name-title-updated').text());
-
-    jQuery(document).ready(function () {
-        jQuery(document).on("click", ".chartshowhide", function () {
-            var className = jQuery(this).attr('data-target');
-            if (jQuery('.'+className).css('display') == 'none') {
-                jQuery('.' + className).show();
-                $(this).text("HIDE");
-            }
-            else {
-                jQuery('.' + className).hide();
-                jQuery(this).text("SHOW");
-            }
-        });
-    });
 
     </script>
 
