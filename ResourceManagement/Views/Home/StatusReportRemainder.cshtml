@@ -3,12 +3,13 @@
 
 @if (Model != null)
 {
-    <div class="remainder-report-month" style="display:none">@Model.RemainderMonthInfo.ShortFormat</div>
+    @*<div class="remainder-report-month" style="display:none">@Model.RemainderMonthInfo.Month</div>*@
     <div>
         <table class="table table-bordered table-timesheet-remainder">
             <thead style="background-color: #005983">
                 <tr>
                     <th scope="col" style="width:95px; color: white">Select Employee</th>
+                    <th scope="col" style="color: white">Month</th>
                     <th scope="col" style="color: white">Employee ID</th>
                     <th scope="col" style="color: white">Employee Name</th>
                     <th scope="col" style="color: white">Email ID</th>
@@ -22,15 +23,16 @@
                     <tr>
                         <td style="padding-left:20px">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" value="@remainderEmp.AMBC_Mail_Address.Trim()">
+                                <input type="checkbox" class="form-check-input" value="@remainderEmp.RemainderEmployee.AMBC_Mail_Address.Trim()">
                             </div>
-                            <div class="remainder-report-manager" style="display:none">@remainderEmp.AMBC_Project_Manager</div>
-                            <div class="remainder-report-manager-emial" style="display:none">@remainderEmp.AMBC_PM_Mail_Address</div>
+                            <div class="remainder-report-manager" style="display:none">@remainderEmp.RemainderEmployee.AMBC_Project_Manager</div>
+                            <div class="remainder-report-manager-emial" style="display:none">@remainderEmp.RemainderEmployee.AMBC_PM_Mail_Address</div>
 
                         </td>
-                        <td class="remainder-emp-id">@remainderEmp.Employee_ID</td>
-                        <td class="remainer-emp-name">@remainderEmp.Employee_Name.Trim()</td>
-                        <td class="remainer-emp-email">@remainderEmp.AMBC_Mail_Address</td>
+                        <td class="remainder-report-month">@remainderEmp.RemainderMonthInfo.Month</td>
+                        <td class="remainder-emp-id">@remainderEmp.RemainderEmployee.Employee_ID</td>
+                        <td class="remainer-emp-name">@remainderEmp.RemainderEmployee.Employee_Name.Trim()</td>
+                        <td class="remainer-emp-email">@remainderEmp.RemainderEmployee.AMBC_Mail_Address</td>
                     </tr>
                 }
 
@@ -38,7 +40,8 @@
         </table>
     </div>
 
-    <div style="color: #2167ae; margin-left: 45px; margin-bottom: 25px;">
+    //FOR THE TIME BEING COMMENTED THE LOGIC
+    <div style="color: #2167ae; margin-left: 45px; margin-bottom: 25px; display: none">
         <input type="checkbox" class="send-single-email-all-emp" style="margin-bottom: -22px; position: absolute; margin-top: 36px; margin-left: -7px; " value="Send Remainder for all the selected consultants in single email"><label style="padding-left: 10px;margin-top: 20px; padding-top: 15px;">Send Remainder for all the selected consultants in single/group email</label>
         <br />
         <br />
@@ -74,7 +77,7 @@
                 selectedemployeeempname: currentRow.find('.remainer-emp-name').text(),
                 selectedemploymanager: currentRow.find('.remainder-report-manager').text(),
                 selectedemploymanageremail: currentRow.find('.remainder-report-manager-emial').text(),
-                RemainderMonth: jQuery('.remainder-report-month').text(),
+                RemainderMonth: currentRow.find('.remainder-report-month').text(),
                 SendSingleEmailToAllEmp: jQuery('.send-single-email-all-emp').is(':checked')
             };
 

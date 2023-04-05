@@ -3540,35 +3540,64 @@ namespace ResourceManagement.Controllers
             var model = new StatusReportRemainderViewModel();
             model.ClientName = StatusReportRemainderModel.ClientName;
 
-            var today = DateTime.Today;
-            var monthStart = new DateTime(today.Year, today.Month, 1);
-            var lastMonthStart = monthStart.AddMonths(-1);
+            var selectedReportedMonthStartDate = new DateTime();
+            var requiredReportMonths = new List<MonthWiseReportModel>();
 
-            model.RemainderMonthInfo = SelectedMonthRelatedInfo(lastMonthStart);
-
-            foreach (var empID in StatusReportRemainderModel.Employees)
+            if (StatusReportRemainderModel.ReportType == "Month Report")
             {
-                using (TimeSheetEntities db = new TimeSheetEntities())
+                var selectedMonth = StatusReportRemainderModel.Period;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(System.Convert.ToInt32(StatusReportRemainderModel.Year), selectedMonthNumber, 1);
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+            }
+            else
+            {
+                var selectedMonth = StatusReportRemainderModel.Period;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
                 {
-                    var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == model.RemainderMonthInfo.ShortFormat && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
-                    if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                    if (selectedMonthNumber != string.Empty)
                     {
-                        continue;
-                    }
-                    var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == model.RemainderMonthInfo.ShortFormat && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
-                    if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
-                    {
-                        continue;
-                    }
-
-                    var currentEmpInfo = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == empID && emp.Client == StatusReportRemainderModel.ClientName && emp.Project_Status == "Active").ToList();
-
-                    if (currentEmpInfo != null && currentEmpInfo.Count() > 0)
-                    {
-                        model.RemainderEmployees.Add(currentEmpInfo[0]);
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(System.Convert.ToInt32(StatusReportRemainderModel.Year), selectedMonthNum, 1);
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        requiredReportMonths.Add(selectedMonthInfo);
                     }
                 }
+            }
 
+            foreach (var requiredReportMonth in requiredReportMonths)
+            {
+                var remainderEmplyees = new List<StatusReportRemainderEmpModel>();
+
+                foreach (var empID in StatusReportRemainderModel.Employees)
+                {
+                    var remainderEmpInfo = new StatusReportRemainderEmpModel();
+                    using (TimeSheetEntities db = new TimeSheetEntities())
+                    {
+                        var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+
+                        var currentEmpInfo = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == empID && emp.Client == StatusReportRemainderModel.ClientName && emp.Project_Status == "Active").ToList();
+
+                        if (currentEmpInfo != null && currentEmpInfo.Count() > 0)
+                        {
+                            remainderEmpInfo.RemainderMonthInfo = requiredReportMonth;
+                            remainderEmpInfo.RemainderEmployee = currentEmpInfo[0];
+                        }
+                    }
+
+                    model.RemainderEmployees.Add(remainderEmpInfo);
+                }
             }
 
             return PartialView(model);
@@ -3589,7 +3618,7 @@ namespace ResourceManagement.Controllers
                         {
                             using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
                             {
-                                mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;
+                                mm.Subject = "REMINDER: Dashboard Report for the month - " + email.RemainderMonth;
 
                                 var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", email, ViewData, TempData);
 
@@ -3620,50 +3649,49 @@ namespace ResourceManagement.Controllers
                         }
                     }
 
+                    //else
+                    //{
+                    //    var model = new StatusReport_RemainderEmailSelectedEmpModel();
+                    //    using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], StatusReportEmpRemainder.selctedempmodel[0].selectedemployeeemail))
+                    //    {
+                    //        mm.Subject = "REMINDER: Dashboard Report for the month - " + remainderMonth;
+                    //        int firstSelectedEmp = 0;
 
-                    else
-                    {
-                        var model = new StatusReport_RemainderEmailSelectedEmpModel();
-                        using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], StatusReportEmpRemainder.selctedempmodel[0].selectedemployeeemail))
-                        {
-                            mm.Subject = "REMINDER: Status Report for the month - " + remainderMonth;
-                            int firstSelectedEmp = 0;
+                    //        foreach (var selectedEmp in StatusReportEmpRemainder.selctedempmodel)
+                    //        {
+                    //            if (firstSelectedEmp > 0)
+                    //            {
+                    //                mm.To.Add(selectedEmp.selectedemployeeemail);
+                    //            }
+                    //            firstSelectedEmp++;
 
-                            foreach (var selectedEmp in StatusReportEmpRemainder.selctedempmodel)
-                            {
-                                if (firstSelectedEmp > 0)
-                                {
-                                    mm.To.Add(selectedEmp.selectedemployeeemail);
-                                }
-                                firstSelectedEmp++;
+                    //            mm.CC.Add(selectedEmp.selectedemploymanageremail);
+                    //        }
 
-                                mm.CC.Add(selectedEmp.selectedemploymanageremail);
-                            }
+                    //        model.SendSingleEmailToAllEmp = StatusReportEmpRemainder.SendSingleEmailToAllEmp;
 
-                            model.SendSingleEmailToAllEmp = StatusReportEmpRemainder.SendSingleEmailToAllEmp;
+                    //        var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", model, ViewData, TempData);
 
-                            var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", model, ViewData, TempData);
+                    //        mm.Body = emailBody;
 
-                            mm.Body = emailBody;
+                    //        if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
+                    //        {
+                    //            mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
+                    //        }
 
-                            if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
-                            {
-                                mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
-                            }
-
-                            mm.IsBodyHtml = true;
-                            SmtpClient smtp = new SmtpClient();
-                            smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
-                            smtp.EnableSsl = true;
-                            NetworkCredential credentials = new NetworkCredential();
-                            credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
-                            credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
-                            smtp.UseDefaultCredentials = true;
-                            smtp.Credentials = credentials;
-                            smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
-                            smtp.Send(mm);
-                        }
-                    }
+                    //        mm.IsBodyHtml = true;
+                    //        SmtpClient smtp = new SmtpClient();
+                    //        smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                    //        smtp.EnableSsl = true;
+                    //        NetworkCredential credentials = new NetworkCredential();
+                    //        credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                    //        credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                    //        smtp.UseDefaultCredentials = true;
+                    //        smtp.Credentials = credentials;
+                    //        smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                    //        smtp.Send(mm);
+                    //    }
+                    //}
 
                 }
 

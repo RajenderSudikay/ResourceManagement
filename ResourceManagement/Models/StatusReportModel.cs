@@ -201,16 +201,26 @@ namespace ResourceManagement.Models
 
         public string ClientName { get; set; }
 
+        public string Year { get; set; }
+        public string ReportType { get; set; }
+        public string Period { get; set; }
+
     }
 
     public class StatusReportRemainderViewModel
     {
         public string ClientName { get; set; }
-        public List<AMBC_Active_Emp_view> RemainderEmployees { get; set; } = new List<AMBC_Active_Emp_view>();
-
-        public SelectedReportMonthModel RemainderMonthInfo { get; set; }
+        public List<StatusReportRemainderEmpModel> RemainderEmployees { get; set; } = new List<StatusReportRemainderEmpModel>();      
 
     }
+
+    public class StatusReportRemainderEmpModel
+    {
+        public AMBC_Active_Emp_view RemainderEmployee { get; set; } = new AMBC_Active_Emp_view();
+        public MonthWiseReportModel RemainderMonthInfo { get; set; }
+    }
+
+
 
     public class StatusReport_RemainderEmailSelectedEmpModel
     {
@@ -227,6 +237,7 @@ namespace ResourceManagement.Models
     public class StatusReportRemainderEmailModel
     {
         public List<StatusReport_RemainderEmailSelectedEmpModel> selctedempmodel { get; set; }
+
         public string RemainderMonth { get; set; }
         public string LogedInEmpId { get; set; }
         public string LogedInEmpName { get; set; }
