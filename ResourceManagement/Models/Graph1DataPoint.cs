@@ -12,6 +12,18 @@ namespace ResourceManagement.Models
             public double y { get; set; }
         }
 
+        public class AvailabilityDataPoint
+        {
+            public string label { get; set; }
+            public double y { get; set; }
+
+            public string markerColor { get; set; }
+            public string indexLabelFontColor { get; set; }
+
+
+
+        }
+
         public class MonthWiseDataPoint
         {
             public string Priority { get; set; }
@@ -97,8 +109,8 @@ namespace ResourceManagement.Models
 
             [DataMember(Name = "indexLabelFontSize")]
             public int indexLabelFontSize { get; set; } = 8;
-         
-            
+
+
             public System.DateTime? ProjestStartDate { get; set; }
             public System.DateTime? TargetClosingDate { get; set; }
             public System.DateTime? ActualClosedDate { get; set; }

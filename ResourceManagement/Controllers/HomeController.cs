@@ -2628,6 +2628,8 @@ namespace ResourceManagement.Controllers
                     var MonthWiseEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
                     var MonthWiseInEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
 
+                    var MonthWiseAttedenceFlowTillDate = new List<Graph1DataPoint.AvailabilityDataPoint>();
+
                     var MonthWiseCriticlTotalTickets = 0;
                     var MonthWiseHighOpenTotalTickets = 0;
                     var MonthWiseMediumOpenTotalTickets = 0;
@@ -2652,7 +2654,27 @@ namespace ResourceManagement.Controllers
                         if (specifMonthAvailablity != null)
                         {
                             var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
-                            emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+
+                            var reqConsultantAvailabity = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                            emplyeeAvailabiliy += reqConsultantAvailabity;
+
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = System.Convert.ToDouble(reqConsultantAvailabity),
+                                label = requiredReportMonth.Month,
+                                markerColor = "rgb(81, 205, 160)",
+                                indexLabelFontColor = "rgb(81, 205, 160)"
+                            });
+                        }
+                        else
+                        {
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = 0,
+                                label = requiredReportMonth.Month,
+                                markerColor = "rgb(81, 205, 160)",
+                                indexLabelFontColor = "rgb(81, 205, 160)"
+                            });
                         }
 
                         var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
@@ -3006,6 +3028,61 @@ namespace ResourceManagement.Controllers
                     //GRAPH5
                     model.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
 
+                    //Past and Future Attednce Flow     
+
+                    var totalMonthsAttedenceCaptured = requiredReportMonths.Count();
+                    var lastMonthAttedenceCaptured = requiredReportMonths[totalMonthsAttedenceCaptured - 1];
+                    var lastMonthNumberVal = lastMonthAttedenceCaptured.MonthNumber.ToString();
+
+                    var lastMonthNum = System.Convert.ToInt32(lastMonthNumberVal);
+                    var nextThreeMonthsForAttedence = new List<MonthWiseReportModel>();
+                    var funtureMonthNumber = lastMonthNum;
+
+                    var futureMonthCount = 0;
+                    if (lastMonthNum != 12)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            funtureMonthNumber = funtureMonthNumber + 1;
+                            futureMonthCount++;
+                            if (funtureMonthNumber <= 12 && futureMonthCount <= 3)
+                            {
+                                var futureMonth = new DateTime(StatusReportChartModel.Year, funtureMonthNumber, 1);
+                                nextThreeMonthsForAttedence.Add(ReportGetMonthInfo(futureMonth));
+                            }
+                        }
+
+                    }
+
+                    foreach (var futureMonth in nextThreeMonthsForAttedence)
+                    {
+                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == futureMonth.Month).FirstOrDefault();
+
+                        if (specifMonthAvailablity != null)
+                        {
+                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                            var futureMonthAvailability = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = System.Convert.ToDouble(futureMonthAvailability),
+                                label = futureMonth.Month,
+                                markerColor = "orange",
+                                indexLabelFontColor = "orange"
+                            });
+                        }
+                        else
+                        {
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = 0,
+                                label = futureMonth.Month,
+                                markerColor = "orange",
+                                indexLabelFontColor = "orange"
+                            });
+                        }
+                    }
+
+                    model.PastAttedenceFlowTillDate = JsonConvert.SerializeObject(MonthWiseAttedenceFlowTillDate);
 
                     //TEMPLTE 2 UPDATES  
                     var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID).ToList();

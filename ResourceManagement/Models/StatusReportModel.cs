@@ -161,6 +161,8 @@ namespace ResourceManagement.Models
         public string MSpecifcInEffeAudDataoints { get; set; }
         public string ProjectChartsMonthWise { get; set; }
 
+        public string PastAttedenceFlowTillDate { get; set; }
+
         public List<ProjectGraphDataPoint.Reports> FutureProjects { get; set; }
     }
 

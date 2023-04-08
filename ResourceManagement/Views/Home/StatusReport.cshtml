@@ -41,7 +41,7 @@
     .banner-image__circle {
         display: block !important;
         width: 350px !important;
-        height: 250px !important;
+        height: 275px !important;
         /*   border-radius: 50%;*/
         overflow: hidden !important;
         /*     margin-left: 80px;*/
@@ -80,11 +80,11 @@
         height: 60px !important;
         overflow: hidden !important;
         border-radius: 50% !important;
-        top: 85px !important;
+        top: 70px !important;
         background-color: #23366f !important;
         position: relative;
         bottom: -147px !important;
-        right: -30px !important;
+        right: -35px !important;
         padding: 15px !important;
         box-sizing: inherit !important;
         margin-top: -231px;
@@ -93,15 +93,15 @@
 
     .banner-decoration__half-mask {
         display: block !important;
-        top: 60px !important;
-        left: 80px !important;
+        top: 33px !important;
+        left: 90px !important;
         width: 15px !important;
         height: 40px !important;
         overflow: hidden !important;
         -webkit-transform: rotate(45deg) !important;
         -ms-transform: rotate(45deg) !important;
         transform: rotate(45deg) !important;
-        margin-top: -5px !important;
+        margin-top: 3px !important;
         position: relative;
     }
 
@@ -118,8 +118,8 @@
 
     .banner-decoration__mini-circle {
         display: block !important;
-        top: -41px !important;
-        right: -43px !important;
+        top: -65px !important;
+        right: -45px !important;
         width: 36px !important;
         height: 36px !important;
         overflow: hidden !important;
@@ -131,16 +131,17 @@
 
     .report-banner {
         background-color: #005983 !important;
-        height: 250px !important;
+        height: 275px !important;
         /*  border: 1px solid #91bfe3 !important*/
     }
 
     .banner-empname {
         text-align: center !important;
         font-weight: bold !important;
-        color: #23366f !important;
+        color: indigo !important;
         font-size: large !important;
-        margin-left: -45px !important
+        margin-left: -45px !important;
+        margin-top: -2px !important;
     }
 
     .banner-content {
@@ -153,10 +154,10 @@
         border-radius: 50% !important;
         width: 100px !important;
         height: 100px !important;
-        margin-left: 340px !important;
+        margin-left: 430px !important;
         margin-top: -74px !important;
         border: 2px solid white !important
-    }
+    }  
 </style>
 
 
@@ -599,6 +600,7 @@
 
     jQuery('.btn-download-report').click(function () {
         /*   jQuery('.chartContainer1-table').css("width", "70%");*/
+        jQuery('#circle').css("margin-left", "430px !important");
         jQuery('.project-chart-textarea').css("border", "none");
         jQuery('.chart-textarea').css("border", "none");
         jQuery('.status-report-view-options').hide();
@@ -608,11 +610,14 @@
         jQuery('.chartimagediv').css('margin-left', '100px');
         jQuery('.chartimagedivmultiple').css('margin-left', '10px');
         jQuery('.chartparah').css('margin-left', '685px');
-        jQuery('.chartparah3').css('margin-left', '715px');
-
-        jQuery('.employeeinfohr').css("width", "90%");
+        jQuery('.chartparah3').css('margin-left', '715px');       
+        jQuery('.employeeinfohr').css("width", "98%");
 
         window.print();
+        jQuery(".chart-textarea").css('border', '');
+        jQuery('#circle').css("margin-left", "470px !important");
+        jQuery('.employeeinfohr').css('width', '90%');      
+        jQuery('.project-chart-textarea').css('border', '');
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
         /*   jQuery('.chartContainer1-table').css("width", "60%");*/
@@ -621,9 +626,9 @@
         jQuery('.sticky-container').show();
         jQuery('.chartparah').css('margin-left', '735px !important');
         jQuery('.chartparah3').css('margin-left', '762px !important');
-        jQuery('.employeeinfohr').css("width", "75% !important");
+       
         jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
-        jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
+        jQuery('.chart-textarea').css("border", "1px solid #0095a8 !important");
     });
 
     function ReportFormValidate() {
@@ -915,10 +920,12 @@
         if (jQuery('.' + className).css('display') == 'none') {
             jQuery('.' + className).show();
             $(this).text("HIDE");
+            $('.emp-banner-info-div').show();
         }
         else {
             jQuery('.' + className).hide();
             jQuery(this).text("SHOW");
+            $('.emp-banner-info-div').hide();
         }
     });
 
