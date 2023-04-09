@@ -284,6 +284,17 @@
                         </div>
                     </div>
 
+                    <div class="form-group row div-statusreportcategory" style="display:none">
+                        <label for="reportcategory" class="control-label col-md-2">Report Category: <b style="color:red">*</b></label>
+                        <select id="reportcategory" name="reportcategory" class="form-control col-md-3" required>
+                            <option value="newrunningprojects">New/Running Projects</option>
+                            <option value="regularprojects">Regular Project Activities</option>
+                        </select>
+                        <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:180px">
+                            Please select Report Category
+                        </div>
+                    </div>
+
                     <div class="form-group row divtoolname" style="display: none">
                         <label for="statusreportToolName" class="control-label col-md-2">Tool Name<b style="color:red">*</b></label>
                         <select id="statusreportToolName" name="statusreportToolName" class="form-control col-md-3">
@@ -354,7 +365,7 @@
     if (useRole == "consultant") {
         $("#StatusReportInfo_EmployeeName").prop("disabled", true);
     }
-    else {      
+    else {
         $("#StatusReportInfo_EmployeeName").prop("disabled", false);
     }
 
@@ -367,7 +378,7 @@
             success: function (data) {
                 jQuery('#statusreportEmpClient').empty();
                 jQuery.each(data, function (i, item) {
-                    jQuery('#statusreportEmpClient').append('<option value="' + item.Project_Code + '">' + item.Client + '</option>');                  
+                    jQuery('#statusreportEmpClient').append('<option value="' + item.Project_Code + '">' + item.Client + '</option>');
                 });
             }
         });
@@ -433,11 +444,24 @@
             jQuery('.excel-field-mapping-div').show();
         }
 
+        jQuery('#reportcategory :selected').val('');
+
         if (jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") {
             jQuery('.divtoolname').show();
+            jQuery('.incident-option').show();
+            jQuery('.project-option').hide();
         }
         else {
             jQuery('.divtoolname').hide();
+            jQuery('.incident-option').hide();
+            jQuery('.project-option').show();
+        }
+      
+        if (jQuery('#statusreporttype :selected').val() == "Template2") {          
+            jQuery('.div-statusreportcategory').show();
+        }
+        else {
+            jQuery('.div-statusreportcategory').hide();
         }
 
         jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
@@ -800,6 +824,7 @@
             fileData.append('ValuesMappingJson', fieldValuesMappingJson);
             fileData.append('ToolName', jQuery('#statusreportToolName :selected').val().trim());
             fileData.append('Uploadedby', jQuery('.agent-full-name').text());
+            fileData.append('ProjectCategory', jQuery('#reportcategory :selected').val());
             jQuery.ajax({
                 type: "POST",
                 url: "/StatusReportsUploadAjax",

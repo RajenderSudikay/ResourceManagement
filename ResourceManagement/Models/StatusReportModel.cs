@@ -38,6 +38,7 @@ namespace ResourceManagement.Models
         public string ToolName { get; set; }
         public string Uploadedby { get; set; }
         public bool IsAuditReport { get; set; }
+        public string ProjectCategory { get; set; }
     }
     public class FieldsIndex
     {
@@ -127,6 +128,7 @@ namespace ResourceManagement.Models
         public bool IsIncidentReportExists { get; set; } = false;
         public bool IsProjectReportExists { get; set; } = false;
         public bool IsAuditReportExists { get; set; } = false;
+        public bool IsRegularProjectReportExists { get; set; } = false;
 
     }
 
@@ -160,6 +162,8 @@ namespace ResourceManagement.Models
         public string MSpecifcEffeAudDataoints { get; set; }
         public string MSpecifcInEffeAudDataoints { get; set; }
         public string ProjectChartsMonthWise { get; set; }
+        public string RegularProjectChartsMonthWise { get; set; }
+        public string RegularProjectHeight { get; set; }
 
         public string PastAttedenceFlowTillDate { get; set; }
 
@@ -212,7 +216,7 @@ namespace ResourceManagement.Models
     public class StatusReportRemainderViewModel
     {
         public string ClientName { get; set; }
-        public List<StatusReportRemainderEmpModel> RemainderEmployees { get; set; } = new List<StatusReportRemainderEmpModel>();      
+        public List<StatusReportRemainderEmpModel> RemainderEmployees { get; set; } = new List<StatusReportRemainderEmpModel>();
 
     }
 

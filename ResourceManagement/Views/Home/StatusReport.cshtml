@@ -157,7 +157,7 @@
         margin-left: 430px !important;
         margin-top: -74px !important;
         border: 2px solid white !important
-    }  
+    }
 </style>
 
 
@@ -610,13 +610,13 @@
         jQuery('.chartimagediv').css('margin-left', '100px');
         jQuery('.chartimagedivmultiple').css('margin-left', '10px');
         jQuery('.chartparah').css('margin-left', '685px');
-        jQuery('.chartparah3').css('margin-left', '715px');       
+        jQuery('.chartparah3').css('margin-left', '715px');
         jQuery('.employeeinfohr').css("width", "98%");
 
         window.print();
         jQuery(".chart-textarea").css('border', '');
         jQuery('#circle').css("margin-left", "470px !important");
-        jQuery('.employeeinfohr').css('width', '90%');      
+        jQuery('.employeeinfohr').css('width', '90%');
         jQuery('.project-chart-textarea').css('border', '');
         jQuery('.status-report-view-options').show();
         jQuery('.canvasjs-chart-toolbar').show();
@@ -626,7 +626,7 @@
         jQuery('.sticky-container').show();
         jQuery('.chartparah').css('margin-left', '735px !important');
         jQuery('.chartparah3').css('margin-left', '762px !important');
-       
+
         jQuery('.project-chart-textarea').css("border", "1px solid #0095a8 !important");
         jQuery('.chart-textarea').css("border", "1px solid #0095a8 !important");
     });
@@ -920,12 +920,16 @@
         if (jQuery('.' + className).css('display') == 'none') {
             jQuery('.' + className).show();
             $(this).text("HIDE");
-            $('.emp-banner-info-div').show();
+            if (className == "chart10Container1") {
+                $('.emp-banner-info-div').show();
+            }
         }
         else {
             jQuery('.' + className).hide();
             jQuery(this).text("SHOW");
-            $('.emp-banner-info-div').hide();
+            if (className == "chart10Container1") {
+                $('.emp-banner-info-div').hide();
+            }
         }
     });
 

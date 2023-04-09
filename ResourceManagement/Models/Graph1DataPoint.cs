@@ -72,6 +72,7 @@ namespace ResourceManagement.Models
             public System.DateTime? TargetClosingDate { get; set; }
             public System.DateTime? ActualClosedDate { get; set; }
             public bool IsCarryForwardMonth { get; set; } = false;
+            public string ProjectCategory { get; set; }
         }
 
         public class DataPoint

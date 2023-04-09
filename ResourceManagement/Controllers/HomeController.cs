@@ -2100,7 +2100,6 @@ namespace ResourceManagement.Controllers
                 var MappingValuesList = new List<FieldsIndex>();
                 MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
 
-
                 int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
                 int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
                 var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
@@ -2207,6 +2206,7 @@ namespace ResourceManagement.Controllers
                             Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString() : "",
                             Project_Priority = projectPriority,
                             Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : defaultStatus,
+                            Project_Category = fileData.ProjectCategory,
 
                             CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value) : 0,
                             RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value) : 0,
@@ -2624,6 +2624,9 @@ namespace ResourceManagement.Controllers
                     var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
                     var FutureProjectReports = new List<ProjectGraphDataPoint.Reports>();
 
+                    var RegularProjectReports = new List<ProjectGraphDataPoint.Reports>();
+
+
                     var MonthWiseAuditTickets = new List<Graph1DataPoint.DataPoint>();
                     var MonthWiseEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
                     var MonthWiseInEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
@@ -2810,7 +2813,7 @@ namespace ResourceManagement.Controllers
                         //TEMPLATE2 code updates
                         if (firstMonthFromrequiredReportMonths == 0)
                         {
-                            var projectDetailsForCarryForwardMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == carryForwardMonthInfo.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
+                            var projectDetailsForCarryForwardMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == carryForwardMonthInfo.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
 
                             if (projectDetailsForCarryForwardMonth != null && projectDetailsForCarryForwardMonth.Count() > 0)
                             {
@@ -2819,7 +2822,7 @@ namespace ResourceManagement.Controllers
                         }
 
 
-                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName).ToList();
+                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
 
                         //In case of Month report for selected month only report will generate
                         //if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
@@ -2831,6 +2834,8 @@ namespace ResourceManagement.Controllers
                         ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
                         //}
 
+                        var runningProjectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category == "regularprojects").ToList();
+                        ProjectReport(RegularProjectReports, runningProjectDetailsForSelectedMonth);
 
                         firstMonthFromrequiredReportMonths++;
 
@@ -3085,7 +3090,7 @@ namespace ResourceManagement.Controllers
                     model.PastAttedenceFlowTillDate = JsonConvert.SerializeObject(MonthWiseAttedenceFlowTillDate);
 
                     //TEMPLTE 2 UPDATES  
-                    var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID).ToList();
+                    var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID && project.Project_Category != "regularprojects").ToList();
 
                     if (empBasedFutureProjects != null && empBasedFutureProjects.Count() > 0)
                     {
@@ -3171,7 +3176,6 @@ namespace ResourceManagement.Controllers
                         foreach (var projectReportMonth in projectReportMonths)
                         {
                             var chartInfo = new ProjectChartInfo();
-
                             if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
                             {
                                 chartInfo.name = "till " + projectReportMonth.Month;
@@ -3271,7 +3275,94 @@ namespace ResourceManagement.Controllers
                             var height = uniqueProjects.Count() * 100;
                             model.ProjectReportbarChartHeight = height + "px";
                         }
+                        else
+                        {
+                            var height = uniqueProjects.Count() * 300;
+                            model.ProjectReportbarChartHeight = height + "px";
+                        }
                     }
+
+                    var RegularProjectChart = new List<ProjectChartInfo>();
+
+                    var regularUniqueProjects = RegularProjectReports.Select(x => x.label.Trim()).Distinct().ToList();
+
+                    if (regularUniqueProjects.Count > 0)
+                    {
+                        model.RegularProjectHeight = System.Convert.ToString(regularUniqueProjects.Count * 70);
+                    }
+
+                    if (RegularProjectReports != null && RegularProjectReports.Count > 0)
+                    {
+                        graphModel.IsRegularProjectReportExists = true;
+                        var projectReportMonths = new List<MonthWiseReportModel>();
+
+                        //if (StatusReportChartModel.ReportType != "Month Report")
+                        //{
+                        //    projectReportMonths.Add(carryForwardMonthInfo);
+                        //}
+
+                        ////Adding carry forward month to list
+                        projectReportMonths.AddRange(requiredReportMonths);
+
+                        //var dummyMonthToCalculatePendingPercenatge = new MonthWiseReportModel();
+                        //dummyMonthToCalculatePendingPercenatge.Month = "pending-month";
+
+                        //projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
+
+                        var firstMonthOfTheReport = 1;
+
+                        foreach (var regularProject in regularUniqueProjects)
+                        {
+                            var runningProjcetChartInfo = new ProjectChartInfo();
+
+                            foreach (var projectReportMonth in projectReportMonths)
+                            {
+                                var monthName = "";
+                                if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
+                                {
+                                    monthName = "till " + projectReportMonth.Month;
+                                    firstMonthOfTheReport++;
+                                    continue;
+                                }
+                                else
+                                {
+                                    monthName = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Remaining" : projectReportMonth.Month;
+                                }
+
+                                var requiredRunningProject = RegularProjectReports.Where(x => x.label == regularProject && x.MonthName == projectReportMonth.Month).FirstOrDefault();
+
+                                if (requiredRunningProject != null)
+                                {
+                                    runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                    {
+                                        label = monthName,
+                                        y = requiredRunningProject.completionPercenatge
+                                    });
+
+                                    runningProjcetChartInfo.indexLabel = "";
+                                    runningProjcetChartInfo.ProjestStartDate = requiredRunningProject.ProjestStartDate;
+                                    runningProjcetChartInfo.TargetClosingDate = requiredRunningProject.TargetClosingDate;
+                                    runningProjcetChartInfo.ActualClosedDate = requiredRunningProject.ActualClosedDate;
+                                    runningProjcetChartInfo.name = requiredRunningProject.label;
+
+
+                                }
+                                else
+                                {
+                                    runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                    {
+                                        label = monthName,
+                                        y = 0
+                                    });
+
+                                    runningProjcetChartInfo.name = regularProject;
+                                }
+                            }
+
+                            RegularProjectChart.Add(runningProjcetChartInfo);
+                        }
+                    }
+
 
                     //var chartProjectInfo = new ProjectChartInfoData();
                     //chartProjectInfo.data.AddRange(ProjectsChart);
@@ -3279,6 +3370,8 @@ namespace ResourceManagement.Controllers
                     model.ProjectChartsMonthWise = JsonConvert.SerializeObject(ProjectsChart);
                     model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
                     model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
+
+                    model.RegularProjectChartsMonthWise = JsonConvert.SerializeObject(RegularProjectChart);
 
                     //TEMPLATE 3 UPDATES
                     model.MSpecifcAudDataoints = JsonConvert.SerializeObject(MonthWiseAuditTickets);
@@ -3332,7 +3425,8 @@ namespace ResourceManagement.Controllers
                     ActualClosedDate = projectDetailForSelectedMonth.Project_Closed_Date_Actual,
                     TargetClosingDate = projectDetailForSelectedMonth.Project_Closing_Date_Target,
                     IsCarryForwardMonth = isCarryForardMonthInfo,
-                    Summary = projectDetailForSelectedMonth.Project_Summary
+                    Summary = projectDetailForSelectedMonth.Project_Summary,
+                    ProjectCategory = projectDetailForSelectedMonth.Project_Category
                 });
             }
 
