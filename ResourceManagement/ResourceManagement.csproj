@@ -345,10 +345,11 @@
     <Content Include="Assets\Graphs\Audit-report.png" />
     <Content Include="Assets\Graphs\bar-chart.png" />
     <Content Include="Assets\Graphs\bar-graph.png" />
+    <Content Include="Assets\Graphs\category-based.png" />
     <Content Include="Assets\Graphs\Closure-Trend.png" />
     <Content Include="Assets\Graphs\ClosureTrend.png" />
     <Content Include="Assets\Graphs\Incident-Summary.png" />
-    <Content Include="Assets\Graphs\Open-Tickets.png" />
+    <Content Include="Assets\Graphs\open-tickets-new.png" />
     <Content Include="Assets\Graphs\Project Status.png" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\availability.png" />

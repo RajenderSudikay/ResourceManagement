@@ -510,17 +510,6 @@
         jQuery('#reportCategory').css("border", "1px solid green");
         jQuery('.invalid-feedback-reportCategory').hide();
 
-        if (jQuery('#reportCategory :selected').val() == "UploadedReports") {
-            jQuery('.reporttemplatetyep').css("display", "block");
-            jQuery("#selectEmployeename").attr("multiple", "multiple");
-            //EXCEL RELATED
-            jQuery('.btn-status-uploaded-view').show();
-            jQuery(".btn-status-report-generate").show();
-
-            //PDF RELATED
-            jQuery('.btn-status-report-view').hide();
-            jQuery('.btn-download-report').hide();
-        }
 
         if (jQuery('#reportCategory :selected').val() == "RemainderReport") {
             jQuery('.reporttemplatetyep').css("display", "block");
@@ -540,6 +529,37 @@
             jQuery('.reporttemplatetyep').hide();
             jQuery('.divtoolname').hide();
         }
+        else {
+            jQuery('.btn-status-report-remainder').hide();
+
+            //EXCEL RELATED
+            jQuery('.btn-status-uploaded-view').show();
+            jQuery(".btn-status-report-generate").show();
+
+            //PDF RELATED
+            jQuery('.btn-status-report-view').show();
+            jQuery('.btn-download-report').show();
+
+            //Fileds hide
+            jQuery('.selectemp-div-parent').show();
+            jQuery('.reporttemplatetyep').show();
+            jQuery('.divtoolname').show();
+        }
+
+
+        if (jQuery('#reportCategory :selected').val() == "UploadedReports") {
+            jQuery('.reporttemplatetyep').css("display", "block");
+            jQuery("#selectEmployeename").attr("multiple", "multiple");
+            //EXCEL RELATED
+            jQuery('.btn-status-uploaded-view').show();
+            jQuery(".btn-status-report-generate").show();
+
+            //PDF RELATED
+            jQuery('.btn-status-report-view').hide();
+            jQuery('.btn-download-report').hide();
+        }
+
+        
 
         if (jQuery('#reportCategory :selected').val() == "KPAReport") {
             jQuery("#selectEmployeename").removeAttr("multiple");
@@ -922,6 +942,15 @@
             $(this).text("HIDE");
             if (className == "chart10Container1") {
                 $('.emp-banner-info-div').show();
+                $('.report-banner').height(0);
+                $('.banner-image__circle').height(0);
+                $('.report-banner').attr('style', 'height: 275px !important');
+                $('.banner-image__circle').attr('style', 'height: 275px !important');
+                $('.banner-role').attr('style', 'padding-top: 10px !important');
+                //$('.report-banner').height(275px !important);
+                //$('.banner-image__circle').height(275px !important)
+                //$('.report-banner').css('height', '275px !important');
+                //$('.banner-image__circle').css('height', '275px !important');
             }
         }
         else {
@@ -929,6 +958,15 @@
             jQuery(this).text("SHOW");
             if (className == "chart10Container1") {
                 $('.emp-banner-info-div').hide();
+                $('.report-banner').height(0);
+                $('.banner-image__circle').height(0);
+                $('.report-banner').attr('style', 'height: 250px !important');
+                $('.banner-image__circle').attr('style', 'height: 250px !important');
+                $('.banner-role').attr('style', 'padding-top: 30px !important');
+                //$('.report-banner').height(250px !important);
+                //$('.banner-image__circle').height(250px !important 
+                //$('.report-banner').css('height', '250px !important');
+                //$('.banner-image__circle').css('height', '250px !important');                
             }
         }
     });

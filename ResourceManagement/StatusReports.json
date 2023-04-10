@@ -7,7 +7,7 @@
       "Field6": "Ticket_Priority",
       "Field7": "Ticket_Status",
       "Field8": "Ticket_Closed_Date",
-      "Field10": "Project_Category"
+      "Field10": "Ticket_Category"     
     }
   },
   {

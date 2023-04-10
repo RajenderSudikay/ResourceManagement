@@ -129,6 +129,7 @@ namespace ResourceManagement.Models
         public bool IsProjectReportExists { get; set; } = false;
         public bool IsAuditReportExists { get; set; } = false;
         public bool IsRegularProjectReportExists { get; set; } = false;
+        public bool IsCategoryBasedIncidentsExists { get; set; } = false;
 
     }
 
@@ -166,6 +167,8 @@ namespace ResourceManagement.Models
         public string RegularProjectHeight { get; set; }
 
         public string PastAttedenceFlowTillDate { get; set; }
+
+        public string CategoryWiseIncidents { get; set; }
 
         public List<ProjectGraphDataPoint.Reports> FutureProjects { get; set; }
     }

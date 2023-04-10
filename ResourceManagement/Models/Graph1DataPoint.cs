@@ -123,7 +123,7 @@ namespace ResourceManagement.Models
         {
             public List<ProjectChartInfo> data { get; set; } = new List<ProjectChartInfo>();
         }
-
+        
 
     }
 
