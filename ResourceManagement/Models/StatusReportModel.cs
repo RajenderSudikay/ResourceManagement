@@ -119,6 +119,10 @@ namespace ResourceManagement.Models
         public Nullable<int> MonthNumber { get; set; } = 0;
         public Nullable<int> Year { get; set; } = 0;
 
+        public DateTime StartDateOfTheMonth { get; set; }
+
+        public DateTime EndDateOfTheMonth { get; set; }
+
     }
 
     public class GraphChartModel
@@ -130,6 +134,7 @@ namespace ResourceManagement.Models
         public bool IsAuditReportExists { get; set; } = false;
         public bool IsRegularProjectReportExists { get; set; } = false;
         public bool IsCategoryBasedIncidentsExists { get; set; } = false;
+        public List<tblambcholiday> HolidayList { get; set; } = new List<tblambcholiday>();
 
     }
 

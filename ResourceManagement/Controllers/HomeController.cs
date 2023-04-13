@@ -2403,11 +2403,25 @@ namespace ResourceManagement.Controllers
         public static MonthWiseReportModel ReportGetMonthInfo(DateTime selectedDate)
         {
             DateTime date = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+            DateTime lastDay = new DateTime();
+
+            if (selectedDate.Month != 12)
+            {
+                 lastDay = new DateTime(selectedDate.Year, selectedDate.Month + 1, 1).AddDays(-1);
+            }
+            else
+            {
+                 lastDay = new DateTime(selectedDate.Year + 1, 1, 1).AddDays(-1);
+
+            }
+           
             var monthInfo = new MonthWiseReportModel()
             {
                 Month = date.ToString("MMM") + "-" + selectedDate.Year,
                 Year = date.Year,
-                MonthNumber = date.Month
+                MonthNumber = date.Month,
+                StartDateOfTheMonth = selectedDate,
+                EndDateOfTheMonth = lastDay
             };
 
             return monthInfo;
@@ -2552,15 +2566,15 @@ namespace ResourceManagement.Controllers
 
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
-                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
+                //requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
 
-                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
+                //var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
                 //carryForwardMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-4));
 
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2));
+
                 requiredReportMonths.Add(startingMonthForTheReport);
-
                 graphModel.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
-
                 requiredReportMonths.Reverse();
             }
 
@@ -2663,7 +2677,23 @@ namespace ResourceManagement.Controllers
                             var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
 
                             var reqConsultantAvailabity = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
-                            emplyeeAvailabiliy += reqConsultantAvailabity;
+
+                            if (StatusReportChartModel.ReportType == "Monthe Report")
+                            {
+                                if (StatusReportChartModel.Month == (requiredReportMonth.Month + "&" + requiredReportMonth.MonthNumber))
+                                {
+                                    emplyeeAvailabiliy += reqConsultantAvailabity;
+                                }
+                            }
+                            else
+                            {
+                                var selectiedPeriod = StatusReportChartModel.Month.TrimEnd('|').Split('|').Last();
+                                if (selectiedPeriod != null && selectiedPeriod == (requiredReportMonth.Month + "&" + requiredReportMonth.MonthNumber))
+                                {
+                                    emplyeeAvailabiliy += reqConsultantAvailabity;
+                                }
+                            }
+
 
                             MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
                             {
@@ -2976,11 +3006,12 @@ namespace ResourceManagement.Controllers
 
 
                     //EMPLOYEE DETAILS
-                    var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+                    //var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
 
-                    Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+                    //Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+                    // model.EmaployeeAvailabity = availabity
 
-                    model.EmaployeeAvailabity = availabity;
+                    model.EmaployeeAvailabity = System.Convert.ToInt32(emplyeeAvailabiliy);
 
                     //GRAPH1
                     var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
@@ -3042,7 +3073,7 @@ namespace ResourceManagement.Controllers
                     //GRAPH5
                     model.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
 
-                    //Past and Future Attednce Flow     
+                    //******************* Past and Future Attednce Flow      ***********************//
 
                     var totalMonthsAttedenceCaptured = requiredReportMonths.Count();
                     var lastMonthAttedenceCaptured = requiredReportMonths[totalMonthsAttedenceCaptured - 1];
@@ -3055,7 +3086,8 @@ namespace ResourceManagement.Controllers
                     var futureMonthCount = 0;
                     if (lastMonthNum != 12)
                     {
-                        for (int i = 0; i < 3; i++)
+                        //Considering only one future month hence changes i < 3 to i < 1
+                        for (int i = 0; i < 1; i++)
                         {
                             funtureMonthNumber = funtureMonthNumber + 1;
                             futureMonthCount++;
@@ -3070,30 +3102,36 @@ namespace ResourceManagement.Controllers
 
                     foreach (var futureMonth in nextThreeMonthsForAttedence)
                     {
-                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == futureMonth.Month).FirstOrDefault();
+                        var locationSpecifcHolidays = db.tblambcholidays.Where(holiday => holiday.holiday_date >= futureMonth.StartDateOfTheMonth && holiday.holiday_date <= futureMonth.EndDateOfTheMonth && holiday.region == model.AMBC_Active_Emp_view.Location).ToList();
 
-                        if (specifMonthAvailablity != null)
+                        if(locationSpecifcHolidays != null)
                         {
-                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
-                            var futureMonthAvailability = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
-                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
-                            {
-                                y = System.Convert.ToDouble(futureMonthAvailability),
-                                label = futureMonth.Month,
-                                markerColor = "orange",
-                                indexLabelFontColor = "orange"
-                            });
+                            graphModel.HolidayList = locationSpecifcHolidays;
                         }
-                        else
-                        {
-                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
-                            {
-                                y = 0,
-                                label = futureMonth.Month,
-                                markerColor = "orange",
-                                indexLabelFontColor = "orange"
-                            });
-                        }
+                        //var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == futureMonth.Month).FirstOrDefault();
+
+                        //if (specifMonthAvailablity != null)
+                        //{
+                        //    var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                        //    var futureMonthAvailability = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                        //    MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                        //    {
+                        //        y = System.Convert.ToDouble(futureMonthAvailability),
+                        //        label = futureMonth.Month,
+                        //        markerColor = "orange",
+                        //        indexLabelFontColor = "orange"
+                        //    });
+                        //}
+                        //else
+                        //{
+                        //    MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                        //    {
+                        //        y = 0,
+                        //        label = futureMonth.Month,
+                        //        markerColor = "orange",
+                        //        indexLabelFontColor = "orange"
+                        //    });
+                        //}
                     }
 
                     model.PastAttedenceFlowTillDate = JsonConvert.SerializeObject(MonthWiseAttedenceFlowTillDate);

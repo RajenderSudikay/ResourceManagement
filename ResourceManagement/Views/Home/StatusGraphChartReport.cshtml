@@ -166,14 +166,34 @@
 
                         <div class="employeeInfo" style="color: white !important;">
                             <div id="circle">
-                                <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@chartModel.EmaployeeAvailabity%</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 15px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
+                                <p style="text-align: center !important; position: absolute !important; margin-left: 18px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@chartModel.EmaployeeAvailabity%</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 15px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
                             </div>
                         </div>
+
+                        @if (Model.HolidayList != null && Model.HolidayList.Count() > 0)
+                        {
+                            var holidays = "";
+                            foreach (var holiday in Model.HolidayList)
+                            {
+                                ////+ ", " + holiday.holiday_date?.Year +
+                                holidays += holiday.holiday_date?.Day + ", " + holiday.holiday_date?.ToString("MMM") + "<br>";
+                            }
+
+
+
+                            <div class="employeeInfo" style="color: white !important;">
+                                <div id="circle-vacation">
+                                    <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 10px !important; font-size: small !important; color: #23366f !important; "><b style="color: white !important ">@Html.Raw(@holidays)</b><div style=" margin-top: 60px !important; position: absolute !important; margin-left: 22px !important; color: #23366f !important; font-size: x-small; }"><b style="color: white !important ">@Html.Raw("Upcoming <br> <div style='font-size: x-small !important;     margin-left: 5px;'> Holidays</div>")</b></div></p>
+                                </div>
+                            </div>
+
+                        }
+
 
                     </div>
                     @*style="margin-left: -50px; margin-top: -104px;"*@
                     <div class="@chart10Name chartdiv " style="margin-left: -50px; margin-top: -104px;">
-                        <div id="@chart10Name" class="chartimagediv-banner" style="width: 65%;height: 130px; display: inline-block; "></div>
+                        <div id="@chart10Name" class="chartimagediv-banner" style="width: 45%;height: 130px; display: inline-block; "></div>
                         @*<div>
                                 <textarea rows="3" class="project-chart-textarea"></textarea>
                             </div>*@
@@ -593,8 +613,8 @@
                         fontWeight: "bold"
                     },
                     legend: {
-                        horizontalAlign: "right", // left, center ,right
-                        verticalAlign: "center",  // top, center, bottom
+                        horizontalAlign: "bottom", // left, center ,right
+                        verticalAlign: "bottom",  // top, center, bottom
                         itemclick: toggleDataSeries,
                         fontSize: 12,
                         margin: 30
