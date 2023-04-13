@@ -223,12 +223,12 @@
         hideCategoryBasedReport = "hide";
     }
 
-<div class="@chart12Name chartdiv @hideCategoryBasedReport">
-    <div id="@chart12Name" class="chartimagediv" style="width: 85%;height: 250px ; display: inline-block; margin-left: 80px; "></div>
-    <div>
-        <textarea rows="3" class="project-chart-textarea"></textarea>
-    </div>  
-</div>
+    <div class="@chart12Name chartdiv @hideCategoryBasedReport">
+        <div id="@chart12Name" class="chartimagediv" style="width: 85%;height: 250px ; display: inline-block; margin-left: 80px; "></div>
+        <div>
+            <textarea rows="3" class="project-chart-textarea"></textarea>
+        </div>
+    </div>
 
     @*<div class="@chart2Name chartdiv @hideIncidentReport">
             <div id="@chart2Name" class="chartimagediv" style="height: 230px; width: 60%; display: inline-block; margin-left: 150px;"></div><p class="chartparah" style="position: absolute; margin-left: 735px; margin-top: -65px; color: #3b5998 !important; font-size: medium; font-family: cursive; font-size: larger ">
@@ -258,6 +258,18 @@
             </div>
         </div>
     </div>
+
+    var hideAuditReport = "";
+    if (Model.IsAuditReportExists == false)
+    {
+        hideAuditReport = "hide";
+    }
+
+    <div class="@chart7Name chartdiv @hideAuditReport">
+        <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 235px; display: inline-block; margin-left: 150px; "></div><p class="chartparah7" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "><textarea rows="3" class="chart-textarea" style="margin-left: -15px !important"></textarea></p>
+        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
+    </div>
+
 
     var hideProjectReport = "";
     if (Model.IsProjectReportExists == false)
@@ -379,16 +391,6 @@
             }
         </div>
     }
-    var hideAuditReport = "";
-    if (Model.IsAuditReportExists == false)
-    {
-        hideAuditReport = "hide";
-    }
-
-    <div class="@chart7Name chartdiv @hideAuditReport">
-        <div id="@chart7Name" class="chartimagediv" style="width: 60%; height: 235px; display: inline-block; margin-left: 150px; "></div><p class="chartparah7" style="position: absolute; margin-left: 762px; margin-top: -51px; color: #005983 !important; font-size: medium; font-family: cursive; font-size: larger "><textarea rows="3" class="chart-textarea" style="margin-left: -15px !important"></textarea></p>
-        <div class="hrlineDiv"><h2 class="chartbelowhrline" style="margin-left: -70px !important; margin-top: -15px !important;"><b style="color: rgb(0, 128, 128) !important"></b></h2></div>
-    </div>
 
 
 
@@ -411,9 +413,9 @@
                 <p class="chartshowhide" data-target="@chart12Name">HIDE</p>
             </li>
             @*<li style="background-color: #3b5998; color: white; font-weight: bold " class="@hideIncidentReport">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
-            <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
-        </li>*@
+                    <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
+                    <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
+                </li>*@
             <li style="background-color: #005983; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/open-tickets-new.png" />
                 <p class="chartshowhide" data-target="@chart3Name">HIDE</p>

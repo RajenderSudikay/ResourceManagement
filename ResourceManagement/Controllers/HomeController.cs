@@ -1886,7 +1886,7 @@ namespace ResourceManagement.Controllers
                 //int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
 
                 var Ticket_Created_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index) : 0;
-                var Ticket_CategoryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index);
+                var Ticket_CategoryIndex = fileData.IsAuditReport == false ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index) : 0;
 
                 //var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
                 var Ticket_PriorityIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index) : 0;
@@ -2019,7 +2019,7 @@ namespace ResourceManagement.Controllers
                             //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
                             //Ticket_Summary = fileData.ToolName,
                             Ticket_Created_Date = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
-                            Ticket_Category = workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
+                            Ticket_Category = fileData.IsAuditReport == false && Ticket_CategoryIndex != 0 && workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
                             Ticket_Priority = Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
                             //Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
                             Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
@@ -2208,9 +2208,9 @@ namespace ResourceManagement.Controllers
                             Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : defaultStatus,
                             Project_Category = fileData.ProjectCategory,
 
-                            CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value.ToString().Replace("%","").Trim()) : 0,
+                            CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
                             RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
-                            
+
                             Uploadedby = fileData.Uploadedby,
                             FileNamee = file.FileName,
                             ConsultantName = fileData.EmployeeName,
@@ -3318,28 +3318,15 @@ namespace ResourceManagement.Controllers
 
                         //projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
 
-                        var firstMonthOfTheReport = 1;
+                        projectReportMonths.Reverse();
 
                         foreach (var regularProject in regularUniqueProjects)
                         {
                             var runningProjcetChartInfo = new ProjectChartInfo();
-
                             foreach (var projectReportMonth in projectReportMonths)
                             {
-                                var monthName = "";
-                                if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
-                                {
-                                    monthName = "till " + projectReportMonth.Month;
-                                    firstMonthOfTheReport++;
-                                    continue;
-                                }
-                                else
-                                {
-                                    monthName = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Remaining" : projectReportMonth.Month;
-                                }
-
-                                var requiredRunningProject = RegularProjectReports.Where(x => x.label == regularProject && x.MonthName == projectReportMonth.Month).FirstOrDefault();
-
+                                var monthName = projectReportMonth.Month;
+                                var requiredRunningProject = RegularProjectReports.Where(x => x.label.Trim() == regularProject.Trim() && x.MonthName == projectReportMonth.Month).FirstOrDefault();
                                 if (requiredRunningProject != null)
                                 {
                                     runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
@@ -3347,15 +3334,8 @@ namespace ResourceManagement.Controllers
                                         label = monthName,
                                         y = requiredRunningProject.completionPercenatge
                                     });
-
-                                    runningProjcetChartInfo.indexLabel = "";
-                                    runningProjcetChartInfo.ProjestStartDate = requiredRunningProject.ProjestStartDate;
-                                    runningProjcetChartInfo.TargetClosingDate = requiredRunningProject.TargetClosingDate;
-                                    runningProjcetChartInfo.ActualClosedDate = requiredRunningProject.ActualClosedDate;
-                                    runningProjcetChartInfo.name = requiredRunningProject.label;
-
-
                                 }
+
                                 else
                                 {
                                     runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
@@ -3364,9 +3344,15 @@ namespace ResourceManagement.Controllers
                                         y = 0
                                     });
 
-                                    runningProjcetChartInfo.name = regularProject;
+                                    //runningProjcetChartInfo.name = regularProject;
                                 }
                             }
+
+                            runningProjcetChartInfo.indexLabel = "";
+                            //runningProjcetChartInfo.ProjestStartDate = requiredRunningProject.ProjestStartDate;
+                            //runningProjcetChartInfo.TargetClosingDate = requiredRunningProject.TargetClosingDate;
+                            //runningProjcetChartInfo.ActualClosedDate = requiredRunningProject.ActualClosedDate;
+                            runningProjcetChartInfo.name = regularProject;
 
                             RegularProjectChart.Add(runningProjcetChartInfo);
                         }
@@ -3410,11 +3396,14 @@ namespace ResourceManagement.Controllers
                                 }
                             }
 
+                            var categoryMonths = requiredReportMonths;
+                            categoryMonths.Reverse();
+
                             foreach (var requiredStatus in requiredStatuses)
                             {
                                 var categoryChartInfo = new ProjectChartInfo();
 
-                                foreach (var requiredReportMonth in requiredReportMonths)
+                                foreach (var requiredReportMonth in categoryMonths)
                                 {
                                     IEnumerable<monthlyreports_Template1> maonthWiseCategoryTickets = null;
                                     if (requiredStatus.Key.Contains("Newly Raised"))
@@ -3776,13 +3765,38 @@ namespace ResourceManagement.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetProjectBasedOnEmpId(string empID)
+        public JsonResult GetProjectBasedOnEmpId(string empID, string ClientName)
         {
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active").ToList();
+                var employeeInfo = new List<AMBC_Active_Emp_view>();
+                if (string.IsNullOrEmpty(ClientName))
+                {
+                    employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active").ToList();
+                }
+                else
+                {
+                    employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active" && a.Client == ClientName).ToList();
+                }
+
                 if (employeeInfo != null && employeeInfo.Count() > 0)
                 {
+                    return Json(employeeInfo, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public JsonResult UpdateRolesAndResposibilties(string empID, string ClientName, string Roles)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active" && a.Client == ClientName).FirstOrDefault();
+                if (employeeInfo != null)
+                {
+                    employeeInfo.Roles_Responsibilities = Roles;
+                    db.SaveChanges();
                     return Json(employeeInfo, JsonRequestBehavior.AllowGet);
                 }
             }

@@ -366,6 +366,7 @@
     <Content Include="Assets\Icons\notification-bell.png" />
     <Content Include="Assets\Icons\phone-call.png" />
     <Content Include="Assets\Icons\phone.png" />
+    <Content Include="Assets\Icons\plus.png" />
     <Content Include="Assets\Icons\project-management.png" />
     <Content Include="Assets\Icons\project-status.png" />
     <Content Include="Assets\Icons\project.png" />

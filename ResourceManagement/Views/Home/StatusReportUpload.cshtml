@@ -134,6 +134,7 @@
             </div>
 
             <input type="hidden" class="emprole" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
+            <input type="hidden" class="emproles" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities" />
 
         }
 
@@ -327,7 +328,6 @@
                         </div>
                     </div>
 
-
                     <br />
                     <br />
                     <hr />
@@ -339,6 +339,66 @@
                     </div>
 
                 </form>
+            </div>
+
+
+            <div class="activity-details" style="display: none">
+                <h4 style="font-size: 1.5rem; text-align: center; background-color: rgb(74, 172, 197); padding: 15px; border-radius: 10px; color: white; ">Add/Update Activity Details</h4>
+                <br />
+
+                <h2 class="roles-success-fail-msg">
+                </h2>
+                <br />
+                <div id="textboxDiv">
+
+                    @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'> Role </a>*@
+
+                    <button type="submit" id="Add" value=" ROLE " class="btn btn-success btn-lg add-roles" style="border-radius: 10px; margin-bottom: 10px">
+                        <img src="~/Assets/Icons/plus.png" width="20" /><b> Activity </b>
+                    </button>
+
+                    @{
+                        var empRoles = Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities;
+                    }
+
+                    @if (!string.IsNullOrEmpty(empRoles))
+                    {
+                        var roles = empRoles.Split('|');
+
+                        foreach (var role in roles)
+                        {
+                            var empRole = @role.Trim().TrimStart().TrimEnd();
+
+                            //if (empRole != "")
+                            //{
+                            <div class='div-parent-textarea'>
+                                <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                                @empRole
+                                </textarea>
+                                <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                            </div>
+                            //}
+
+                        }
+                    }
+                    else
+                    {
+                        <div class='div-parent-textarea'>
+                            <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                            </textarea>
+                            @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'></a>*@
+                            <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+            <div class="form-group" style="border-radius: 10px; margin-top: 25px; display: none">
+                <div class="">
+                    <input type="submit" id="Add" value="Upload Activities" class="btn btn-info btn-lg btn-activity-details" style="border-radius: 10px" />
+                </div>
             </div>
         </div>
 
@@ -358,6 +418,19 @@
 
 <script>
 
+    jQuery(document).on("click", ".add-roles", function () {
+        $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'></textarea><a class='glyphicon glyphicon-remove remove-roles' href='javascript: void (0)' style='margin-left:10px'></a></div>");
+    });
+
+    jQuery(document).on("click", ".remove-roles", function () {
+        var removalTextParentArea = jQuery(this).closest('.div-parent-textarea');
+        var removalTextArea = removalTextParentArea.find('.activity-details-textarea');
+        var removalPlusIcon = removalTextParentArea.find('.add-roles');
+        jQuery(this).remove();
+        removalTextArea.remove();
+        removalPlusIcon.remove();
+    });
+
     var useRole = jQuery('.emprole').val();
     var empId = jQuery('.agent-navdrop-empid').text();
     $('#StatusReportInfo_EmployeeName  option[value=' + empId + ']').attr("selected", "selected");
@@ -370,6 +443,7 @@
     }
 
     jQuery("#StatusReportInfo_EmployeeName").change(function () {
+        $("#textboxDiv").empty();
         jQuery.ajax({
             type: "POST",
             url: "/GetProjectBasedOnEmpId",
@@ -380,9 +454,72 @@
                 jQuery.each(data, function (i, item) {
                     jQuery('#statusreportEmpClient').append('<option value="' + item.Project_Code + '">' + item.Client + '</option>');
                 });
+
+                if (data.length > 0) {
+                    var roles = data[0].Roles_Responsibilities;
+                    EmpRolesAndResponsibilties(roles);
+                }
             }
         });
     });
+
+    jQuery("#statusreportEmpClient").change(function () {
+        $("#textboxDiv").empty();
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetProjectBasedOnEmpId",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "ClientName": jQuery('#statusreportEmpClient :selected').text() },
+            success: function (data) {
+                if (data.length == 1) {
+                    var roles = data[0].Roles_Responsibilities;
+                    EmpRolesAndResponsibilties(roles);
+                }
+            }
+        });
+    });
+
+    jQuery(document).on("click", ".btn-activity-details", function () {
+        var activities = jQuery('.activity-details-textarea');
+
+        var uploadActilityList = "";
+
+        if (activities.length > 0) {
+            jQuery.each(activities, function (i, item) {
+                if (item.value.trim() != "") {
+                    var requiredValue = item.value.trim().trimStart().trimEnd();
+                    uploadActilityList += requiredValue + " | ";
+                }
+            });
+        }
+
+        uploadActilityList = uploadActilityList.trimEnd('|');
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/UpdateRolesAndResposibilties",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "ClientName": jQuery('#statusreportEmpClient :selected').text(), "Roles": uploadActilityList },
+            success: function (data) {
+                if (data.length == 1) {
+                    jQuery('.roles-success-fail-msg').text('Roles and Responsibilities updated successfully!')
+                }
+                else {
+                    jQuery('.roles-success-fail-msg').text('Roles and Responsibilities not updated!')
+                }
+            }
+        });
+    });
+
+    function EmpRolesAndResponsibilties(roles) {
+        var rolesResponsibilties = roles.split('|');
+
+        jQuery.each(rolesResponsibilties, function (i, item) {
+            $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>" + item + "</textarea><a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a></div>");
+        });
+
+        jQuery('.emproles').val(roles);
+    }
 
     function ExcelFieldMappingTemplate(fieldName) {
 
@@ -456,8 +593,8 @@
             jQuery('.incident-option').hide();
             jQuery('.project-option').show();
         }
-      
-        if (jQuery('#statusreporttype :selected').val() == "Template2") {          
+
+        if (jQuery('#statusreporttype :selected').val() == "Template2") {
             jQuery('.div-statusreportcategory').show();
         }
         else {
