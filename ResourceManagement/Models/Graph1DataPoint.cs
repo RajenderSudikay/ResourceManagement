@@ -79,6 +79,8 @@ namespace ResourceManagement.Models
         {
             public string label { get; set; }
             public decimal? y { get; set; }
+
+            public string color { get; set; }
         }
 
         public class ProjectChartInfo
@@ -110,6 +112,9 @@ namespace ResourceManagement.Models
 
             [DataMember(Name = "indexLabelFontSize")]
             public int indexLabelFontSize { get; set; } = 8;
+
+            [DataMember(Name = "legendMarkerColor")]
+            public string legendMarkerColor { get; set; }
 
 
             public System.DateTime? ProjestStartDate { get; set; }

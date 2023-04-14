@@ -2407,14 +2407,14 @@ namespace ResourceManagement.Controllers
 
             if (selectedDate.Month != 12)
             {
-                 lastDay = new DateTime(selectedDate.Year, selectedDate.Month + 1, 1).AddDays(-1);
+                lastDay = new DateTime(selectedDate.Year, selectedDate.Month + 1, 1).AddDays(-1);
             }
             else
             {
-                 lastDay = new DateTime(selectedDate.Year + 1, 1, 1).AddDays(-1);
+                lastDay = new DateTime(selectedDate.Year + 1, 1, 1).AddDays(-1);
 
             }
-           
+
             var monthInfo = new MonthWiseReportModel()
             {
                 Month = date.ToString("MMM") + "-" + selectedDate.Year,
@@ -3104,7 +3104,7 @@ namespace ResourceManagement.Controllers
                     {
                         var locationSpecifcHolidays = db.tblambcholidays.Where(holiday => holiday.holiday_date >= futureMonth.StartDateOfTheMonth && holiday.holiday_date <= futureMonth.EndDateOfTheMonth && holiday.region == model.AMBC_Active_Emp_view.Location).ToList();
 
-                        if(locationSpecifcHolidays != null)
+                        if (locationSpecifcHolidays != null)
                         {
                             graphModel.HolidayList = locationSpecifcHolidays;
                         }
@@ -3420,17 +3420,26 @@ namespace ResourceManagement.Controllers
                         {
                             graphModel.IsCategoryBasedIncidentsExists = true;
 
-                            var chartStatus = new List<string>();
-                            chartStatus.Add("Newly Raised");
+                            var chartStatus = new List<string>();         
+                            var colors = ResourceManagement.Helpers.ColorCodes.Colors();
+
+                            chartStatus.Add("Newly Raised");                         
                             chartStatus.Add("Closed");
 
-                            var requiredStatuses = new Dictionary<string, string>();
+                            var requiredStatuses = new List<CategoryModel>();
 
+                            int colrIndex = 1;
                             foreach (var uniqueCategorie in uniqueCategories)
                             {
                                 foreach (var status in chartStatus)
-                                {
-                                    requiredStatuses.Add(uniqueCategorie + " - " + status, uniqueCategorie);
+                                {                                   
+                                    requiredStatuses.Add(new CategoryModel(){
+                                        CategoryName = uniqueCategorie,
+                                        StausName = uniqueCategorie + " - " + status,
+                                        ColorCode = colors[colrIndex],
+                                    });
+
+                                    colrIndex = colrIndex + 1;
                                 }
                             }
 
@@ -3444,13 +3453,13 @@ namespace ResourceManagement.Controllers
                                 foreach (var requiredReportMonth in categoryMonths)
                                 {
                                     IEnumerable<monthlyreports_Template1> maonthWiseCategoryTickets = null;
-                                    if (requiredStatus.Key.Contains("Newly Raised"))
+                                    if (requiredStatus.StausName.Contains("Newly Raised"))
                                     {
-                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.Value && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Newly_created == true);
+                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.CategoryName && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Newly_created == true);
                                     }
-                                    if (requiredStatus.Key.Contains("Closed"))
+                                    if (requiredStatus.StausName.Contains("Closed"))
                                     {
-                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.Value && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Closed == true);
+                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.CategoryName && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Closed == true);
                                     }
 
 
@@ -3459,25 +3468,27 @@ namespace ResourceManagement.Controllers
                                         categoryChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                         {
                                             label = requiredReportMonth.Month,
-                                            y = maonthWiseCategoryTickets.Count()
+                                            y = maonthWiseCategoryTickets.Count(),
+                                            color = requiredStatus.ColorCode
                                         });
 
                                         categoryChartInfo.indexLabel = "{y}";
-                                        categoryChartInfo.name = requiredStatus.Key;
+                                        categoryChartInfo.name = requiredStatus.StausName;
                                         categoryChartInfo.indexLabelFontSize = 11;
-
-
+                                        categoryChartInfo.legendMarkerColor = requiredStatus.ColorCode;
                                     }
                                     else
                                     {
                                         categoryChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                         {
                                             label = requiredReportMonth.Month,
-                                            y = 0
+                                            y = 0,
+                                            color = requiredStatus.ColorCode
                                         });
                                         categoryChartInfo.indexLabel = "{y}";
-                                        categoryChartInfo.name = requiredStatus.Key;
+                                        categoryChartInfo.name = requiredStatus.StausName;
                                         categoryChartInfo.indexLabelFontSize = 11;
+                                        categoryChartInfo.legendMarkerColor = requiredStatus.ColorCode;
                                     }
                                 }
 

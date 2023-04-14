@@ -259,4 +259,12 @@ namespace ResourceManagement.Models
         public bool SendSingleEmailToAllEmp { get; set; }
     }
 
+    public class CategoryModel
+    {    
+
+        public string StausName { get; set; }
+        public string CategoryName { get; set; }
+        public string ColorCode { get; set; }
+    }
+
 }

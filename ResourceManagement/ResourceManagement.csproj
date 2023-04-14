@@ -283,6 +283,7 @@
     <Compile Include="halfday_leave_view.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ColorCodes.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
