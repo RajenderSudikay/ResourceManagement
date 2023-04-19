@@ -182,7 +182,7 @@
 
 
                             <div class="employeeInfo" style="color: white !important;">
-                                <div id="circle-vacation">
+                                <div id="circle-vacation" class="circle-vacation">
                                     <p style="text-align: center !important; position: absolute !important; margin-left: 25px !important; margin-top: 10px !important; font-size: small !important; color: #23366f !important; "><b style="color: white !important ">@Html.Raw(@holidays)</b><div style=" margin-top: 60px !important; position: absolute !important; margin-left: 22px !important; color: #23366f !important; font-size: x-small; }"><b style="color: white !important ">@Html.Raw("Upcoming <br> <div style='font-size: x-small !important;color: white !important; margin-left: 5px;'> Holidays</div>")</b></div></p>
                                 </div>
                             </div>
@@ -420,6 +420,10 @@
 
     <div class="sticky-container">
         <ul class="sticky">
+            <li style="background-color: black; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/upcoming-holidays.png" />
+                <p class="chartshowhide" data-target="circle-vacation">HIDE</p>
+            </li>
             <li style="background-color: rgb(177, 3, 50); color: white; font-weight: bold ">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/attendence-chart.png" />
                 <p class="chartshowhide" data-target="@chart10Name">HIDE</p>
@@ -433,9 +437,9 @@
                 <p class="chartshowhide" data-target="@chart12Name">HIDE</p>
             </li>
             @*<li style="background-color: #3b5998; color: white; font-weight: bold " class="@hideIncidentReport">
-                    <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
-                    <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
-                </li>*@
+            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
+            <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
+        </li>*@
             <li style="background-color: #005983; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/open-tickets-new.png" />
                 <p class="chartshowhide" data-target="@chart3Name">HIDE</p>
