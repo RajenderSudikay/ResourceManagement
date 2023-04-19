@@ -512,13 +512,15 @@
     });
 
     function EmpRolesAndResponsibilties(roles) {
-        var rolesResponsibilties = roles.split('|');
+        if (roles != null && roles != undefined && roles != "") {
+            var rolesResponsibilties = roles.split('|');
 
-        jQuery.each(rolesResponsibilties, function (i, item) {
-            $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>" + item + "</textarea><a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a></div>");
-        });
+            jQuery.each(rolesResponsibilties, function (i, item) {
+                $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>" + item + "</textarea><a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a></div>");
+            });
 
-        jQuery('.emproles').val(roles);
+            jQuery('.emproles').val(roles);
+        }
     }
 
     function ExcelFieldMappingTemplate(fieldName) {

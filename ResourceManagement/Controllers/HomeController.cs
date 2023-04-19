@@ -1906,7 +1906,7 @@ namespace ResourceManagement.Controllers
                 {
                     //CHECK IF THE REPORT CONTAINS OLD MONTH DATA ONLY
                     //CHECKING WITH CREATED DATE AND CLOSED DATE VALUES
-                    var createdDateValue = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    var createdDateValue = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
                     if (createdDateValue > currentDateStartDate)
                     {
                         validationErrors = true;
@@ -1915,7 +1915,7 @@ namespace ResourceManagement.Controllers
                         break;
                     }
 
-                    var ClosedDateValue = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    var ClosedDateValue = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
                     if (ClosedDateValue > currentDateStartDate)
                     {
                         validationErrors = true;
@@ -1984,7 +1984,7 @@ namespace ResourceManagement.Controllers
                         var createdYear = 0;
                         var createdMonth = 0;
 
-                        if (Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty)
+                        if (Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()))
                         {
                             var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString());
                             var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
@@ -1998,7 +1998,7 @@ namespace ResourceManagement.Controllers
 
                             if (IsClosedTicket)
                             {
-                                if (Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty)
+                                if (Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()))
                                 {
                                     var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString());
                                     ticketAge = System.Convert.ToInt32(GetBusinessDays(ticketDateCreated, ticketDateClosed));
@@ -2018,12 +2018,12 @@ namespace ResourceManagement.Controllers
                             Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
                             //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
                             //Ticket_Summary = fileData.ToolName,
-                            Ticket_Created_Date = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Created_Date = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
                             Ticket_Category = fileData.IsAuditReport == false && Ticket_CategoryIndex != 0 && workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
                             Ticket_Priority = Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
                             //Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
                             Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
-                            Ticket_Closed_Date = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Closed_Date = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
                             //Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
                             //Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
                             Ticket_Raisedby = "DELETE",
@@ -2182,7 +2182,7 @@ namespace ResourceManagement.Controllers
                         var createdYear = 0;
                         var createdMonth = 0;
 
-                        if (workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString() != string.Empty)
+                        if (workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()))
                         {
                             var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString());
                             var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
@@ -2190,7 +2190,7 @@ namespace ResourceManagement.Controllers
                             createdMonth = ticketDateCreated.Month;
                         }
 
-                        if (workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString() != string.Empty)
+                        if (workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()))
                         {
                             var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString());
                             closedYear = ticketDateClosed.Year;
@@ -2202,10 +2202,10 @@ namespace ResourceManagement.Controllers
                             Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
                             Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() : "",
-                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString() : "",
+                            Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString().Trim() : "",
+                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString().Trim() : "",
                             Project_Priority = projectPriority,
-                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString() : defaultStatus,
+                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString().Trim() : defaultStatus,
                             Project_Category = fileData.ProjectCategory,
 
                             CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
@@ -3273,7 +3273,7 @@ namespace ResourceManagement.Controllers
                                         y = actualCompletedPercenatge
                                     });
 
-                                    chartInfo.indexLabel = actualCompletedPercenatge == 0 ? "" : "{y}%";
+                                    chartInfo.indexLabel = "{y}%";
                                     chartInfo.ProjestStartDate = requiredProject.ProjestStartDate;
                                     chartInfo.TargetClosingDate = requiredProject.TargetClosingDate;
                                     chartInfo.ActualClosedDate = requiredProject.ActualClosedDate;
@@ -3289,7 +3289,7 @@ namespace ResourceManagement.Controllers
                                             y = 0
                                         });
 
-                                        chartInfo.indexLabel = "";
+                                        chartInfo.indexLabel = "{y}%";
 
                                         if (!projectsCompletedStatus.ContainsKey(uniqueProject))
                                         {
@@ -3307,7 +3307,7 @@ namespace ResourceManagement.Controllers
                                             y = pendingCompletion
                                         });
 
-                                        chartInfo.indexLabel = pendingCompletion == 0 ? "" : "{y}%";
+                                        chartInfo.indexLabel = "{y}%";
                                     }
 
                                 }
@@ -3420,10 +3420,10 @@ namespace ResourceManagement.Controllers
                         {
                             graphModel.IsCategoryBasedIncidentsExists = true;
 
-                            var chartStatus = new List<string>();         
+                            var chartStatus = new List<string>();
                             var colors = ResourceManagement.Helpers.ColorCodes.Colors();
 
-                            chartStatus.Add("Newly Raised");                         
+                            chartStatus.Add("Newly Raised");
                             chartStatus.Add("Closed");
 
                             var requiredStatuses = new List<CategoryModel>();
@@ -3432,8 +3432,9 @@ namespace ResourceManagement.Controllers
                             foreach (var uniqueCategorie in uniqueCategories)
                             {
                                 foreach (var status in chartStatus)
-                                {                                   
-                                    requiredStatuses.Add(new CategoryModel(){
+                                {
+                                    requiredStatuses.Add(new CategoryModel()
+                                    {
                                         CategoryName = uniqueCategorie,
                                         StausName = uniqueCategorie + " - " + status,
                                         ColorCode = colors[colrIndex],
