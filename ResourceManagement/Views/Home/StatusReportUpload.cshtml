@@ -605,7 +605,7 @@
         }
 
         jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Monthky report will be generated.</h2>");
+        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Monthly report will be generated.</h2>");
         $('#modal-warning-message-popup').modal('show');
 
         jQuery.getJSON("StatusReports.json", function (data) {
@@ -1020,7 +1020,7 @@
 
             if (responseSuccess == "true") {
                 jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                jQuery('.database-response').html("<h2>Thank you for submitting the report. You are report details saved successfylly!</h2>");
+                jQuery('.database-response').html("<h2>Thank you for submitting the report. You are report details saved successfully!</h2>");
                 jQuery('.message-success-popup').modal('show');
             }
             else {
