@@ -365,7 +365,7 @@
                         @{
                             var multipleAllow = "";
                         }
-                        @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role != "consultant")
+                        @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
                         {
                             multipleAllow = "multiple";
                         }
@@ -864,7 +864,7 @@
                     $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
                 }
 
-                if (useRole == "consultant") {
+                if (useRole != "administrator") {
                     $("#selectEmployeename").prop("disabled", true);
                 }
                 else {
