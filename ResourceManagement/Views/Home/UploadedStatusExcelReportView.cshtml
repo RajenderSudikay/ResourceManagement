@@ -57,6 +57,7 @@
                             <th class="" scope="col" style=" text-align: center; color: white">Priority</th>
                             <th class="" scope="col" style="text-align: center; color: white">Status</th>
                             <th class="" scope="col" style="text-align: center; color: white">Closed_Date</th>
+                            <th class="" scope="col" style="text-align: center; color: white">Ticket Category</th>
 
                         </tr>
                     </thead>
@@ -65,13 +66,14 @@
 
                         @foreach (var report in reportModel.Template1Reports)
                         {
-                            <tr style="background-color: #fff" class="time">
-                                <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
-                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
-                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
-                                <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
-                                <td scope="row" style="text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
-                            </tr>
+                        <tr style="background-color: #fff" class="time">
+                            <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Number</td>
+                            <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Created_Date.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Priority.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style=" vertical-align: middle; text-align: center">@report.Ticket_Status</td>
+                            <td scope="row" style="text-align: center">@report.Ticket_Closed_Date.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style=" vertical-align:middle; text-align: center">@report.Ticket_Category</td>
+                        </tr>
                         }
 
                         @if (reportModel.Template1Reports.Count == 0)
@@ -102,6 +104,7 @@
                             <th class="" scope="col" style="text-align: center; color: white">Closed Date Actual</th>
                             <th class="" scope="col" style="text-align: center; color: white">Completed %</th>
                             <th class="" scope="col" style="text-align: center; color: white">Remaining %</th>
+                            <th class="" scope="col" style="text-align: center; color: white ">Project Summary</th>
 
                         </tr>
                     </thead>
@@ -110,17 +113,18 @@
 
                         @foreach (var report in reportModel.Template2Reports)
                         {
-                            <tr style="background-color: #fff" class="time">
+                        <tr style="background-color: #fff" class="time">
 
-                                <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Status</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
-                                <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
-                                <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.RemainingPercentage</td>
-                            </tr>
+                            <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@report.Project_Name</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Created_Date.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closing_Date_Target.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Priority</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Status</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.Project_Closed_Date_Actual.ToString().Replace("00:00:00", "")</td>
+                            <td scope="row" style="max-width: 70px; vertical-align: middle; text-align: center">@report.CompletedPercentage</td>
+                            <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.RemainingPercentage</td>
+                            <td scope="row" style="max-width: 70px; text-align: center; vertical-align: middle">@report.Project_Summary</td>
+                        </tr>
                         }
 
                         @if (reportModel.Template2Reports.Count == 0)
