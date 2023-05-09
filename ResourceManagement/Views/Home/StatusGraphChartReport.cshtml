@@ -132,8 +132,9 @@
                 <div class="banner-content">
                     <div style="padding-top: 10px !important" class="banner-role">
                         <div>
+
                             <h2 style="font-size: xx-large; color: white !important ">
-                                @chartModel.AMBC_Active_Emp_view.Client - @chartModel.AMBC_Active_Emp_view.Client_Project_Name
+                                <span style="font-size: smaller; font-style: italic; color: white !important ">@chartModel.AMBC_Active_Emp_view.Client</span>  - @chartModel.AMBC_Active_Emp_view.Client_Project_Name
                             </h2>
                             <h5 style="color: white !important ">
                                 Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
@@ -164,7 +165,7 @@
                             </div>
                         </div>
 
-                        <div class="employeeInfo" style="color: white !important;">
+                        <div class="employeeInfo emp-attendence" style="color: white !important;">
                             <div id="circle">
                                 <p style="text-align: center !important; position: absolute !important; margin-left: 18px !important; margin-top: 20px !important; font-size: x-large !important; color: #23366f !important; "><b style="color: #23366f !important ">@chartModel.EmaployeeAvailabity%</b><div style="margin-top: 60px !important; position: absolute !important; margin-left: 15px !important; color: #23366f !important "><b style="color: #23366f !important ">Attendence</b></div></p>
                             </div>
@@ -420,6 +421,11 @@
 
     <div class="sticky-container">
         <ul class="sticky">
+
+            <li style="background-color: rgb(81, 205, 160) !important; color: white !important; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/attedence.png" />
+                <p class="chartshowhide" data-target="emp-attendence">HIDE</p>
+            </li>
             <li style="background-color: cadetblue; color: white; font-weight: bold ">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/company-logo.png" />
                 <p class="chartshowhide" data-target="client-logo">HIDE</p>
@@ -441,9 +447,9 @@
                 <p class="chartshowhide" data-target="@chart12Name">HIDE</p>
             </li>
             @*<li style="background-color: #3b5998; color: white; font-weight: bold " class="@hideIncidentReport">
-            <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
-            <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
-        </li>*@
+                    <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/ClosureTrend.png" />
+                    <p class="chartshowhide" data-target="@chart2Name">HIDE</p>
+                </li>*@
             <li style="background-color: #005983; color: white; font-weight: bold " class="@hideIncidentReport">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/open-tickets-new.png" />
                 <p class="chartshowhide" data-target="@chart3Name">HIDE</p>

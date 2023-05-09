@@ -569,7 +569,7 @@
             jQuery('.btn-download-report').hide();
         }
 
-        
+
 
         if (jQuery('#reportCategory :selected').val() == "KPAReport") {
             jQuery("#selectEmployeename").removeAttr("multiple");
@@ -644,7 +644,7 @@
         jQuery('.employeeinfohr').css("width", "98%");
         jQuery('#chart12Container1').css('margin-left', '0px');
 
-        window.print();      
+        window.print();
         jQuery('#chart12Container1').css('margin-left', '80px');
         jQuery(".chart-textarea").css('border', '');
         jQuery('#circle').css("margin-left", "470px !important");
@@ -949,36 +949,49 @@
 
     jQuery(document).on("click", ".chartshowhide", function () {
         var className = jQuery(this).attr('data-target');
-        if (jQuery('.' + className).css('display') == 'none') {
-            jQuery('.' + className).show();
-            $(this).text("HIDE");
-            if (className == "chart10Container1") {
-                $('.emp-banner-info-div').show();
-                $('.report-banner').height(0);
-                $('.banner-image__circle').height(0);
-                $('.report-banner').attr('style', 'height: 275px !important');
-                $('.banner-image__circle').attr('style', 'height: 275px !important');
-                $('.banner-role').attr('style', 'padding-top: 10px !important');
-                //$('.report-banner').height(275px !important);
-                //$('.banner-image__circle').height(275px !important)
-                //$('.report-banner').css('height', '275px !important');
-                //$('.banner-image__circle').css('height', '275px !important');
+
+        if (className == "emp-attendence") {
+            if (jQuery(".emp-attendence").css('visibility') === 'hidden') {
+                jQuery('.' + className).css("visibility", "visible");
+                jQuery(this).text("HIDE");
+            }
+            else {
+                jQuery('.' + className).css("visibility", "hidden");
+                jQuery(this).text("SHOW");
             }
         }
         else {
-            jQuery('.' + className).hide();
-            jQuery(this).text("SHOW");
-            if (className == "chart10Container1") {
-                $('.emp-banner-info-div').hide();
-                $('.report-banner').height(0);
-                $('.banner-image__circle').height(0);
-                $('.report-banner').attr('style', 'height: 250px !important');
-                $('.banner-image__circle').attr('style', 'height: 250px !important');
-                $('.banner-role').attr('style', 'padding-top: 30px !important');
-                //$('.report-banner').height(250px !important);
-                //$('.banner-image__circle').height(250px !important 
-                //$('.report-banner').css('height', '250px !important');
-                //$('.banner-image__circle').css('height', '250px !important');                
+            if (jQuery('.' + className).css('display') == 'none') {
+                jQuery('.' + className).show();
+                $(this).text("HIDE");
+                if (className == "chart10Container1") {
+                    $('.emp-banner-info-div').show();
+                    $('.report-banner').height(0);
+                    $('.banner-image__circle').height(0);
+                    $('.report-banner').attr('style', 'height: 275px !important');
+                    $('.banner-image__circle').attr('style', 'height: 275px !important');
+                    $('.banner-role').attr('style', 'padding-top: 10px !important');
+                    //$('.report-banner').height(275px !important);
+                    //$('.banner-image__circle').height(275px !important)
+                    //$('.report-banner').css('height', '275px !important');
+                    //$('.banner-image__circle').css('height', '275px !important');
+                }
+            }
+            else {
+                jQuery('.' + className).hide();
+                jQuery(this).text("SHOW");
+                if (className == "chart10Container1") {
+                    $('.emp-banner-info-div').hide();
+                    $('.report-banner').height(0);
+                    $('.banner-image__circle').height(0);
+                    $('.report-banner').attr('style', 'height: 250px !important');
+                    $('.banner-image__circle').attr('style', 'height: 250px !important');
+                    $('.banner-role').attr('style', 'padding-top: 30px !important');
+                    //$('.report-banner').height(250px !important);
+                    //$('.banner-image__circle').height(250px !important
+                    //$('.report-banner').css('height', '250px !important');
+                    //$('.banner-image__circle').css('height', '250px !important');
+                }
             }
         }
     });

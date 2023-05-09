@@ -342,6 +342,7 @@
     <Content Include="Assets\ClientLogos\Federal Signal.png" />
     <Content Include="Assets\ClientLogos\Littelfuse.png" />
     <Content Include="Assets\FemaleDefault.png" />
+    <Content Include="Assets\Graphs\attedence.png" />
     <Content Include="Assets\Graphs\attendence-chart.png" />
     <Content Include="Assets\Graphs\Audit-report.png" />
     <Content Include="Assets\Graphs\bar-chart.png" />
