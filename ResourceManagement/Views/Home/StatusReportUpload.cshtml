@@ -226,7 +226,7 @@
                     <div class="form-group row">
                         <label for="StatusReportInfo.EmployeeName" class="control-label col-md-2">Employee Name: <b style="color:red">*</b></label>
                         @Html.DropDownListFor(m => m.StatusReportInfo.EmployeeName, Model.StatusReportInfo.EmployeeList, "Please select employee", new { required = "required", @class = "form-control col-md-3", @style = "background-color: white" })
-                        <div class="invalid-feedback employee-invalid-feedback">
+                        <div class="invalid-feedback employee-invalid-feedback" style="padding-left:180px">
                             Please select employee
                         </div>
                     </div>
@@ -433,10 +433,11 @@
 
     var useRole = jQuery('.emprole').val();
     var empId = jQuery('.agent-navdrop-empid').text();
-    $('#StatusReportInfo_EmployeeName  option[value=' + empId + ']').attr("selected", "selected");
+   
 
-    if (useRole == "consultant") {
+    if (useRole != "administrator") {
         $("#StatusReportInfo_EmployeeName").prop("disabled", true);
+        $('#StatusReportInfo_EmployeeName  option[value=' + empId + ']').attr("selected", "selected");
     }
     else {
         $("#StatusReportInfo_EmployeeName").prop("disabled", false);
@@ -856,6 +857,17 @@
         else {
             jQuery('.reportupload-div').css("border", "1px solid green");
             jQuery('.reportupload-invalid-feedback').hide();
+        }
+
+
+        if (jQuery('#StatusReportInfo_EmployeeName :selected').text() == "Please select employee") {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid red");
+            jQuery('.employee-invalid-feedback').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid green");
+            jQuery('.employee-invalid-feedback').hide();
         }
 
         if (jQuery('#StatusReportInfo_Month :selected').text() == "Please select month") {
