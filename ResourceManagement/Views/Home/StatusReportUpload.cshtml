@@ -433,7 +433,7 @@
 
     var useRole = jQuery('.emprole').val();
     var empId = jQuery('.agent-navdrop-empid').text();
-   
+
 
     if (useRole != "administrator") {
         $("#StatusReportInfo_EmployeeName").prop("disabled", true);
@@ -988,7 +988,7 @@
                     if (data.Response.StatusCode == 200) {
                         jQuery('.status-report-card').empty();
                         fileData = new FormData();
-                        window.location.href = "/statusreportupload?success=true";
+                        window.location.href = "/statusreportupload?success=true&selectedemp=" + empName.trim() + "";
                     }
                     else {
                         jQuery('.status-report-card').empty();
@@ -1017,10 +1017,18 @@
     jQuery(document).ready(function () {
         if (window.location.href.toString().toLowerCase().indexOf("?success") > -1) {
             var responseSuccess = getUrlVars()["success"];
+            var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);
 
             if (responseSuccess == "true") {
                 jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-                jQuery('.database-response').html("<h2>Thank you for submitting the report. You are report details saved successfully!</h2>");
+
+                if (useRole == "administrator") {
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2>");
+                }
+                else {
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2>");
+                }
+               
                 jQuery('.message-success-popup').modal('show');
             }
             else {
