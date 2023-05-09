@@ -82,7 +82,7 @@
         }
         @if (clientLogo != "")
         {
-            <img src='@clientLogo' style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
+            <img src='@clientLogo' class="client-logo" style="float: right !important; margin-right: 20px !important; height: 70px !important; margin-top: -10px !important; width: 200px !important" />
         }
 
         <br />
@@ -133,7 +133,7 @@
                     <div style="padding-top: 10px !important" class="banner-role">
                         <div>
                             <h2 style="font-size: xx-large; color: white !important ">
-                                @chartModel.AMBC_Active_Emp_view.Client_Project_Name
+                                @chartModel.AMBC_Active_Emp_view.Client - @chartModel.AMBC_Active_Emp_view.Client_Project_Name
                             </h2>
                             <h5 style="color: white !important ">
                                 Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
@@ -420,6 +420,10 @@
 
     <div class="sticky-container">
         <ul class="sticky">
+            <li style="background-color: cadetblue; color: white; font-weight: bold ">
+                <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/company-logo.png" />
+                <p class="chartshowhide" data-target="client-logo">HIDE</p>
+            </li>
             <li style="background-color: black; color: white; font-weight: bold ">
                 <img style="width:45px !important; height: 40px !important" title="" alt="" src="~/Assets/Graphs/upcoming-holidays.png" />
                 <p class="chartshowhide" data-target="circle-vacation">HIDE</p>

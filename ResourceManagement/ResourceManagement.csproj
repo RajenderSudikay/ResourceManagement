@@ -349,6 +349,7 @@
     <Content Include="Assets\Graphs\category-based.png" />
     <Content Include="Assets\Graphs\Closure-Trend.png" />
     <Content Include="Assets\Graphs\ClosureTrend.png" />
+    <Content Include="Assets\Graphs\company-logo.png" />
     <Content Include="Assets\Graphs\Incident-Summary.png" />
     <Content Include="Assets\Graphs\open-tickets-new.png" />
     <Content Include="Assets\Graphs\Project Status.png" />
