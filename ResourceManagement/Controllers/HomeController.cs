@@ -3431,16 +3431,19 @@ namespace ResourceManagement.Controllers
                             int colrIndex = 1;
                             foreach (var uniqueCategorie in uniqueCategories)
                             {
-                                foreach (var status in chartStatus)
+                                if (!string.IsNullOrEmpty(uniqueCategorie))
                                 {
-                                    requiredStatuses.Add(new CategoryModel()
+                                    foreach (var status in chartStatus)
                                     {
-                                        CategoryName = uniqueCategorie,
-                                        StausName = uniqueCategorie + " - " + status,
-                                        ColorCode = colors[colrIndex],
-                                    });
+                                        requiredStatuses.Add(new CategoryModel()
+                                        {
+                                            CategoryName = uniqueCategorie,
+                                            StausName = uniqueCategorie + " - " + status,
+                                            ColorCode = colors[colrIndex],
+                                        });
 
-                                    colrIndex = colrIndex + 1;
+                                        colrIndex = colrIndex + 1;
+                                    }
                                 }
                             }
 
