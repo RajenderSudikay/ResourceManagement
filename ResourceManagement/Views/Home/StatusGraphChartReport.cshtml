@@ -136,9 +136,19 @@
                             <h2 style="font-size: xx-large; color: white !important ">
                                 <span style="font-size: smaller; font-style: italic; color: white !important ">@chartModel.AMBC_Active_Emp_view.Client</span>  - @chartModel.AMBC_Active_Emp_view.Client_Project_Name
                             </h2>
-                            <h5 style="color: white !important ">
-                                Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
-                            </h5>
+
+                            @if (@Model.SelectedReportMonth.QuarterName == "")
+                            {
+                                <h5 style="color: white !important ">
+                                    Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.MonthName @Model.SelectedReportMonth.MonthEndDate@Model.SelectedReportMonth.Suffix, @Model.SelectedReportMonth.year</b>
+                                </h5>
+                            }
+                            else
+                            {
+                                <h5 style="color: white !important ">
+                                    Project Status Report as of: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.QuarterName, @Model.SelectedReportMonth.year</b>
+                                </h5>
+                            }
 
                             <h5 style="color: white !important; margin-left: 72px !important">
                                 Report Period: <b style="font-size: initial; color: floralwhite !important; margin-left: 5px !important">  @Model.SelectedReportMonth.ReportStartMonth to @Model.SelectedReportMonth.MonthName-@Model.SelectedReportMonth.year</b>
@@ -492,7 +502,7 @@
                 exportEnabled: true,
                 willReadFrequently: true,
                 title: {
-                    text: "Monthly Report",
+                    text: "Monthly Status",
                     fontColor: "white",
                     fontSize: 15,
                     padding: 10,

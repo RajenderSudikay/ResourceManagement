@@ -2613,6 +2613,8 @@ namespace ResourceManagement.Controllers
                     }
                 }
                 graphModel.SelectedReportMonth.ReportStartMonth = reportStartMonth;
+                //TODO
+                graphModel.SelectedReportMonth.QuarterName = "Q1";
             }
 
             var graph1Reports = new List<Root>();
