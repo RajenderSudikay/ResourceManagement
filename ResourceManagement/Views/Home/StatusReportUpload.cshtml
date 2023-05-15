@@ -647,6 +647,19 @@
         }
     });
 
+    jQuery(document).on("change", "#StatusReportInfo_EmployeeName", function () {
+        if (jQuery('#StatusReportInfo_EmployeeName :selected').text() == "Please select employee") {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid red");
+            jQuery('.employee-invalid-feedback').show();
+        }
+        else {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid green");
+            jQuery('.employee-invalid-feedback').hide();
+        }
+    });
+
+    
+
     $("#reportupload").change(function () {
         jQuery('.div-statusreporttype').show();
         jQuery('.reportupload-div').css("border", "1px solid green");
@@ -986,9 +999,12 @@
                 data: fileData,
                 success: function (data) {
                     if (data.Response.StatusCode == 200) {
-                        jQuery('.status-report-card').empty();
+                        var clientName = jQuery('#statusreportEmpClient :selected').text();
+                        var toolName = jQuery('#statusreportToolName :selected').val();
+
+                        jQuery('.status-report-card').empty();    
                         fileData = new FormData();
-                        window.location.href = "/statusreportupload?success=true&selectedemp=" + empName.trim() + "";
+                        window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
                     }
                     else {
                         jQuery('.status-report-card').empty();
@@ -1018,17 +1034,22 @@
         if (window.location.href.toString().toLowerCase().indexOf("?success") > -1) {
             var responseSuccess = getUrlVars()["success"];
             var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);
+            var selectedEmpID = decodeURIComponent(getUrlVars()["empID"]);
+            var reportMonth = decodeURIComponent(getUrlVars()["month"]);
+            var templateType = decodeURIComponent(getUrlVars()["templatetype"]);
+            var clientName = decodeURIComponent(getUrlVars()["clientName"]);
+            var toolName = decodeURIComponent(getUrlVars()["toolName"]);
 
             if (responseSuccess == "true") {
                 jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
 
                 if (useRole == "administrator") {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2>");
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
                 }
                 else {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2>");
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
                 }
-               
+
                 jQuery('.message-success-popup').modal('show');
             }
             else {
