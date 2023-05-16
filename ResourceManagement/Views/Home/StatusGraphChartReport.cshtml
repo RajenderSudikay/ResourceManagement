@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="banner-content">
-                    <div style="padding-top: 10px !important" class="banner-role">
+                    <div style="padding-top: 10px !important; margin-left: -50px !important" class="banner-role">
                         <div>
 
                             <h2 style="font-size: xx-large; color: white !important ">
@@ -1151,6 +1151,11 @@
                         interlacedColor: "rgb(255,250,250)",
                         gridColor: "#FFBFD5",
                         gridThickness: 0,
+                        tickLength: 0,
+                        lineThickness: 0,
+                        labelFormatter: function () {
+                            return " ";
+                        },
                         labelTextAlign: "left",
                         includeZero: true,
                         labelFontSize: 15,
@@ -1205,8 +1210,8 @@
                 exportEnabled: true,
                 willReadFrequently: true,
                 title: {
-                    text: "Audit Report",
-                    fontColor: "rgb(81, 205, 160)",
+                    text: "Monthly Audit Status",
+                    fontColor: "white",
                     fontSize: 15,
                     padding: 10,
                     margin: 15,
