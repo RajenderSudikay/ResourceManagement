@@ -320,9 +320,23 @@
                         <label for="reportCategory">Report Category</label>
                         <select id="reportCategory" name="reportCategory" class="form-control form-select form-select-lg mb-3 date-timesheet">
                             <option disabled selected>-- Select Category --</option>
-                            <option value="KPAReport">Chart Reports</option>
+
+                            @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
+                            {
+                                <option value="KPAReport">Status Report</option>
+                            }
+                            else
+                            {
+                                <option value="KPAReport">My Status Report</option>
+                            }
+
                             <option value="UploadedReports">Uploaded Excel Reports</option>
-                            <option value="RemainderReport">Remainder Report</option>
+
+                            @if (@Model.RMA_StatusReportModel.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
+                            {
+                                <option value="RemainderReport">Remainder Report</option>
+                            }
+
                         </select>
                         <div class="invalid-feedback-reportCategory" style="color:red; display:none">
                             Please Select Category
@@ -1009,7 +1023,7 @@
 
     jQuery(document).ready(function () {
         if (window.location.href.toString().toLowerCase().indexOf("?viewreport=true") > -1) {
-            
+
             var empID = decodeURIComponent(getUrlVars()["empID"]);
             var period = decodeURIComponent(getUrlVars()["reportMonth"]);
             var clientName = decodeURIComponent(getUrlVars()["clientName"]);
@@ -1036,18 +1050,18 @@
             });
 
             jQuery('#reportCategory  option[value=KPAReport]').attr("selected", "selected");
-            jQuery('#reportClient  option[value=' + clientName + ']').attr("selected", "selected");    
+            jQuery('#reportClient  option[value=' + clientName + ']').attr("selected", "selected");
             jQuery('#statusreportToolName  option[value=' + toolName + ']').attr("selected", "selected");
 
             setTimeout(function () {
                 jQuery("#reportmonth option").each(function () {
-                if (jQuery(this).text() == period) {
-                    jQuery(this).attr('selected', 'selected');
-                    jQuery('#selectEmployeename  option[value=' + empID + ']').attr("selected", "selected");
-                    jQuery('.btn-status-report-view').show();
-                    jQuery(".btn-status-report-view").click();
-                }
-            });
+                    if (jQuery(this).text() == period) {
+                        jQuery(this).attr('selected', 'selected');
+                        jQuery('#selectEmployeename  option[value=' + empID + ']').attr("selected", "selected");
+                        jQuery('.btn-status-report-view').show();
+                        jQuery(".btn-status-report-view").click();
+                    }
+                });
 
             }, 1500);
 
