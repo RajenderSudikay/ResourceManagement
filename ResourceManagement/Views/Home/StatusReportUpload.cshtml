@@ -605,8 +605,10 @@
         }
 
         jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Monthly report will be generated.</h2>");
+        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Status report will be generated.</h2>");
         $('#modal-warning-message-popup').modal('show');
+
+        var selectedReportJsonFields = new Array();
 
         jQuery.getJSON("StatusReports.json", function (data) {
             var selectedTemplateJson = data.filter(v => v.Name === selectedTemplate)[0].fields;
@@ -614,6 +616,7 @@
                 var dynamicTemplate = ExcelFieldMappingTemplate(val);
                 var newRow = jQuery(dynamicTemplate);
                 jQuery(".dynamic-field-binding").append(jQuery(newRow));
+                selectedReportJsonFields.push(val);
             });
         });
 
@@ -634,6 +637,24 @@
 
             }
         });
+
+
+        setTimeout(function () {
+            jQuery.each(selectedReportJsonFields, function (i, item) {
+                var fieldId = item;
+
+                if (fieldId == "Ticket_Status" || fieldId == "Ticket_Priority" || fieldId == "Project_Priority" || fieldId == "Project_Status") {
+                    //DO NOTHING
+                }
+                else {
+                    $('#' + fieldId + ' option:contains(' + fieldId + ')').attr('selected', 'selected');
+                }
+            });
+
+            jQuery('.btn-upload-report').click();
+
+        }, 2000);
+
     });
 
     jQuery(document).on("change", "#StatusReportInfo_Month", function () {
@@ -658,7 +679,7 @@
         }
     });
 
-    
+
 
     $("#reportupload").change(function () {
         jQuery('.div-statusreporttype').show();
@@ -1002,7 +1023,7 @@
                         var clientName = jQuery('#statusreportEmpClient :selected').text();
                         var toolName = jQuery('#statusreportToolName :selected').val();
 
-                        jQuery('.status-report-card').empty();    
+                        jQuery('.status-report-card').empty();
                         fileData = new FormData();
                         window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
                     }
