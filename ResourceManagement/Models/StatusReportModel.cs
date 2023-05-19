@@ -187,6 +187,7 @@ namespace ResourceManagement.Models
         public string ShortFormat { get; set; }
         public string ReportStartMonth { get; set; }
         public string QuarterName { get; set; } = "";
+        public string ReportType { get; set; } = "";
 
     }
 

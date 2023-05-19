@@ -2562,7 +2562,7 @@ namespace ResourceManagement.Controllers
                 var selectedMonth = StatusReportChartModel.Month;
                 var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
                 selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
-                graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
 
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
@@ -2576,6 +2576,10 @@ namespace ResourceManagement.Controllers
                 requiredReportMonths.Add(startingMonthForTheReport);
                 graphModel.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
                 requiredReportMonths.Reverse();
+
+                graphModel.SelectedReportMonth.ReportType = StatusReportChartModel.ReportType;
+                graphModel.SelectedReportMonth.QuarterName = graphModel.SelectedReportMonth.MonthName;
+
             }
 
             else
@@ -2585,14 +2589,17 @@ namespace ResourceManagement.Controllers
                 int firstMonthFromTheSelection = 0;
                 var reportStartMonth = "";
 
+                var selectedMonthNumberCount = 0;
+
                 foreach (var selectedMonthNumber in selectedMonthNumbers)
                 {
                     if (selectedMonthNumber != string.Empty)
                     {
+                        selectedMonthNumberCount++;
                         var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
                         selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
 
-                        graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                        graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
 
                         var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
                         if (firstMonthFromTheSelection == 0)
@@ -2613,8 +2620,43 @@ namespace ResourceManagement.Controllers
                     }
                 }
                 graphModel.SelectedReportMonth.ReportStartMonth = reportStartMonth;
-                //TODO
-                graphModel.SelectedReportMonth.QuarterName = "Q1";
+
+                var SelectedreportStartMonth = graphModel.SelectedReportMonth.ReportStartMonth.Split('-')[0];
+
+                if (selectedMonthNumberCount == 3)
+                {
+                    switch (SelectedreportStartMonth)
+                    {
+                        case "Jan":
+                            graphModel.SelectedReportMonth.QuarterName = "Q1";
+                            break;
+                        case "Apr":
+                            graphModel.SelectedReportMonth.QuarterName = "Q2";
+                            break;
+                        case "Jul":
+                            graphModel.SelectedReportMonth.QuarterName = "Q3";
+                            break;
+                        case "Oct":
+                            graphModel.SelectedReportMonth.QuarterName = "Q4";
+                            break;
+                    }
+                   
+                }
+
+                if (selectedMonthNumberCount == 6 && SelectedreportStartMonth == "Jan")
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Q1 & Q2";
+                }
+
+                if (selectedMonthNumberCount == 6 && SelectedreportStartMonth == "Jul")
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Q3 & Q4";
+                }
+
+                if (selectedMonthNumberCount == 12)
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Annual Report";
+                }              
             }
 
             var graph1Reports = new List<Root>();
@@ -3561,14 +3603,15 @@ namespace ResourceManagement.Controllers
             return ProjectReports;
         }
 
-        public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime)
+        public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime, StatusReportChartModel StatusReportChartModel)
         {
             return new SelectedReportMonthModel()
             {
                 MonthEndDate = System.DateTime.DaysInMonth(inputDateTime.Year, inputDateTime.Month).ToString(),
                 MonthName = inputDateTime.ToString("MMM"),
                 year = inputDateTime.Year.ToString(),
-                ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString()
+                ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString(),
+                ReportType = StatusReportChartModel.ReportType
             };
         }
 
@@ -3592,7 +3635,7 @@ namespace ResourceManagement.Controllers
                 selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
                 requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
 
-                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
                 var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate);
 
                 model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
@@ -3622,7 +3665,7 @@ namespace ResourceManagement.Controllers
                         requiredReportMonths.Add(selectedMonthInfo);
                         firstMonthFromTheSelection++;
 
-                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate);
+                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
                     }
                 }
                 model.SelectedReportMonth.ReportStartMonth = reportStartMonth;
