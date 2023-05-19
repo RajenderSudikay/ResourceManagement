@@ -513,6 +513,8 @@
 
 <script>
 
+    var loggedInUserRole = jQuery('.emprole').val();
+
     //BY DEFAULT Showing EMployee as Dropdown
     jQuery("#selectEmployeename").removeAttr("multiple");
 
@@ -782,6 +784,34 @@
         }
     });
 
+    jQuery(".delete-alert-yes").click(function () {
+
+        var statusChartModel = {
+            ClientName: jQuery('#reportClient :selected').text(),
+            ProjectID: jQuery('#reportClient :selected').val(),
+            Year: jQuery('#reportyear :selected').val(),
+            Month: jQuery('#reportmonth :selected').val(),
+            ReportType: jQuery('#reporttype :selected').val(),
+            EmployeeID: jQuery('#selectEmployeename').val(),
+            EmployeeName: jQuery('#selectEmployeename').text().trim(),
+            TemplateType: jQuery('#statusreportupload :selected').text().trim(),
+            TemplateNumber: jQuery('#statusreportupload :selected').val().trim(),
+            ToolName: jQuery('#statusreportToolName').val(),
+            IsDelete: true
+        };
+
+        jQuery.ajax({
+            url: "/UploadedStatusReportView",
+            type: "POST",
+            dataType: "html",
+            data: { StatusReportChartModel: statusChartModel },
+            success: function (data) {
+                $('#chartContainer').html(data);
+                jQuery('#modal-delete-alert').modal('hide');
+            }
+        });       
+    });
+
     jQuery(".btn-status-uploaded-view").click(function () {
         var formValidated = ReportFormValidate();
 
@@ -798,9 +828,21 @@
         var isDeleteAction = false;
         if (jQuery(this).hasClass('delete-reports')) {
             isDeleteAction = true;
+
+            jQuery('.modal-delete-body-title').html("Hey " + jQuery('.agent-full-name').text())
+
+
+            if (loggedInUserRole != "administrator") {
+                jQuery('.delete-message-popup').html("<h2>Are you sure you want to delete the records?</h2>");
+            }
+            else {
+                jQuery('.delete-message-popup').html("<h2>Are you sure you want to delete the records for <b>" + jQuery("#selectEmployeename :selected").text() +"</b>?</h2>");
+            }
+          
+            jQuery('#modal-delete-alert').modal('show');
         }
 
-        if (formValidated == true) {
+        if (formValidated == true && isDeleteAction == false) {
             var statusChartModel = {
                 ClientName: jQuery('#reportClient :selected').text(),
                 ProjectID: jQuery('#reportClient :selected').val(),
