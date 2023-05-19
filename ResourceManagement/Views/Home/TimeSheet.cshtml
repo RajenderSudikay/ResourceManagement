@@ -281,7 +281,7 @@
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #005983">
                 <h5 class="modal-title" id="exampleModalLabel"><b style="color: #fff; font-size:large">Time Sheet Form</b></h5>
                 <button type="button" class="close timesheet-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -815,9 +815,7 @@
     </div>
 </div>
 
-<script>
-
-    
+<script>   
 
     jQuery(".btn-select-week").click(function () {
         jQuery('.add-task-button-above').show();
@@ -1322,7 +1320,7 @@
 
                 //Highlte weekstart date in date picker
                 var minDateToHighlate = moment(new Date(minDate)).toDate();
-                minDateToHighlate = new Date(minDateToHighlate.addDays(-1));
+                minDateToHighlate = new Date(minDateToHighlate);
                 minDateToHighlate = moment(minDateToHighlate).format("YYYY-MM-DD");
 
                 jQuery('#timeSheetdate').val(minDateToHighlate);

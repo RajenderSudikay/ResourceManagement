@@ -646,6 +646,13 @@
 
     jQuery('.btn-download-report').click(function () {
         /*   jQuery('.chartContainer1-table').css("width", "70%");*/
+
+        
+        //jQuery('.chart-textarea').css('resize', 'none !important');
+
+        jQuery('.chart-textarea').attr('style', 'resize: none !important');
+
+      
         jQuery('#circle').css("margin-left", "430px !important");
         jQuery('.project-chart-textarea').css("border", "none");
         jQuery('.chart-textarea').css("border", "none");
@@ -661,6 +668,7 @@
         jQuery('#chart12Container1').css('margin-left', '0px');
 
         window.print();
+        jQuery('.chart-textarea').attr('style', 'resize: auto !important');
         jQuery('#chart12Container1').css('margin-left', '80px');
         jQuery(".chart-textarea").css('border', '');
         jQuery('#circle').css("margin-left", "470px !important");
