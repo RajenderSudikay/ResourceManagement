@@ -195,7 +195,7 @@
     </div>
 </div>
 
-<div>
+<div class="add-task-button-above">
     <div class="row mt-xl-4">
         <div class="col-md-3">
             <button type="button" class="btn openmodel btn-lg add-task-details" data-target="#exampleModalLong" style="background-color: rgb(81, 205, 160); border-radius:15px ">
@@ -251,7 +251,17 @@
 
 <!-- Button trigger modal -->
 
-<div class="col-lg-offset-0" style="float:right;">
+<div style="display: none" class="add-task-button-below">
+    <div class="row mt-xl-4">
+        <div class="col-md-3">
+            <button type="button" class="btn openmodel btn-lg add-task-details" data-target="#exampleModalLong" style="background-color: rgb(81, 205, 160); border-radius:15px ">
+                <b>Click here to add day wise task details</b>
+            </button>&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-offset-0 submit-timesheet-btn-div" style="float:right;">
     <button type="button" class="btn btn-info btn-lg timesheet-submit" style="border-radius:15px">
         <b>Submit Time Sheet</b>
     </button>
@@ -807,6 +817,14 @@
 
 <script>
 
+    
+
+    jQuery(".btn-select-week").click(function () {
+        jQuery('.add-task-button-above').show();
+        jQuery('.add-task-button-below').hide();
+        jQuery('.submit-timesheet-btn-div').css("margin-top", "0px");
+    });
+
 
     // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
     jQuery('#timeSheetEmpClient').change(function (evt) {
@@ -1285,6 +1303,14 @@
                     jQuery('#collapseExample').removeClass('show');
                     jQuery('#collapseExample').removeClass('in');
                     jQuery('.btn-select-week').show();
+                    jQuery('.add-task-button-above').hide();
+                    jQuery('.add-task-button-below').show();
+                    jQuery('.submit-timesheet-btn-div').css("margin-top", "-30px");
+                }
+                else {
+                    jQuery('.add-task-button-above').show();
+                    jQuery('.add-task-button-below').hide();
+                    jQuery('.submit-timesheet-btn-div').css("margin-top", "0px");
                 }
 
                 var maxDate = jQuery('#timeSheetEndWeekdate').val();
