@@ -141,59 +141,7 @@
     </div>
 </nav>
 
-<div class="card card-body" style="border-radius: 10px">
-    <div class="card status-report-card">
-        <div class="card-body ">
 
-            <p style="color: #005983"><b>NOTE:</b> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
-
-            <h2 style="color: #005983; font-family: Calibri; font-style: italic; text-decoration-line: underline ">Download Sample Templates using below links</h2>
-            <br />
-
-            <div class="form-group row">
-
-                @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
-                {
-
-                    <input type="hidden" name="GridHtml" />
-
-                    <div class="form-group col-lg-4" style="margin-left:10px">
-                        <div class="btn-group">
-                            <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px" />
-                        </div>
-                    </div>
-                }
-            </div>
-            <div class="form-group row">
-                @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
-                {
-
-                    <input type="hidden" name="GridHtml" />
-
-                    <div class="form-group col-lg-4" style="margin-left:10px">
-                        <div class="btn-group">
-                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px " />
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <div class="form-group row">
-                @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
-                {
-
-                    <input type="hidden" name="GridHtml" />
-
-                    <div class="form-group col-lg-4" style="margin-left:10px">
-                        <div class="btn-group">
-                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px " />
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
 
 <br />
 
@@ -219,7 +167,6 @@
                     <br />
 
                 }
-
 
                 <form class="needs-validation" novalidate>
 
@@ -255,7 +202,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="StatusReportInfo.ExcelPath" class="control-label col-md-2">Upload Report: <b style="color:red">*</b></label>
+                        <label for="StatusReportInfo.ExcelPath" class="control-label col-md-2">Upload file: <b style="color:red">*</b></label>
                         <div class="form-control col-md-3 reportupload-div">
                             <input type="file" name="ExcelFile" id="reportupload" required />
                         </div>
@@ -334,7 +281,8 @@
 
                     <div class="form-group row modal-footer" style="border-radius: 10px">
                         <div class="col-md-offset-2 col-md-10 ">
-                            <input type="submit" value="Upload Report" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px" />
+                            <input value="Download Templates" class="btn btn-lg btn-download-template" style="border-radius: 10px; background-color: yellow; font-weight: bold;" />
+                            <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; " />
                         </div>
                     </div>
 
@@ -413,10 +361,91 @@
 }
 
 
+<div class="modal" tabindex="-1" role="dialog" id="modal-sample-template">
+    <div class="modal-dialog modal-lg" role="document" style="padding-top:0px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00344d">
+                <svg enable-background="new 0 0 30 30" height="30px" style="background-color: white" id="Layer_1" version="1.1" viewBox="0 0 30 30" width="30px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path clip-rule="evenodd" d="M28.705,7.506l-5.461-6.333l-1.08-1.254H9.262   c-1.732,0-3.133,1.403-3.133,3.136V7.04h1.942L8.07,3.818c0.002-0.975,0.786-1.764,1.758-1.764l11.034-0.01v5.228   c0.002,1.947,1.575,3.523,3.524,3.523h3.819l-0.188,15.081c-0.003,0.97-0.79,1.753-1.759,1.761l-16.57-0.008   c-0.887,0-1.601-0.87-1.605-1.942v-1.277H6.138v1.904c0,1.912,1.282,3.468,2.856,3.468l17.831-0.004   c1.732,0,3.137-1.41,3.137-3.139V8.966L28.705,7.506" fill="#434440" fill-rule="evenodd" /><path d="M20.223,25.382H0V6.068h20.223V25.382 M1.943,23.438h16.333V8.012H1.943" fill="#08743B" /><polyline fill="#08743B" points="15.73,20.822 12.325,20.822 10.001,17.538 7.561,20.822 4.14,20.822 8.384,15.486 4.957,10.817    8.412,10.817 10.016,13.355 11.726,10.817 15.242,10.817 11.649,15.486 15.73,20.822  " /></g></svg>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-sample-title" style="text-align: center; color: #2167ae"></h2>
+                <div class="sample-template-data">
+
+                    <div class="card card-body" style="border-radius: 10px">
+                        <div class="card status-report-card">
+                            <div class="card-body ">
+
+                                <p style="color: #005983"><b>NOTE:</b> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+
+                                <h2 style="color: #005983; font-family: Calibri; font-style: italic; text-decoration-line: underline ">Download Sample Templates using below links</h2>
+                                <br />
+
+                                <div class="form-group row">
+
+                                    @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="form-group row">
+                                    @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px " />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="form-group row">
+                                    @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px " />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="model-footerbtn-custom">
+                <button type="button" class="btn btn-lg btn-close" data-dismiss="modal" style="border-radius: 10px; color: white; width: 100px; background-color: rgb(177, 3, 50) !important"><b>Close</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br />
 <br />
 
 <script>
+
+    jQuery(document).on("click", ".btn-close", function () {
+        jQuery('#modal-sample-template').hide();
+    });
+
+    jQuery(document).on("click", ".btn-download-template", function () {
+        jQuery('#modal-sample-template').show();
+    });
 
     jQuery(document).on("click", ".add-roles", function () {
         $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'></textarea><a class='glyphicon glyphicon-remove remove-roles' href='javascript: void (0)' style='margin-left:10px'></a></div>");
