@@ -1,0 +1,342 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "TimeSheet Page";
+    var imagePath = "";
+}
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="padding-left: 69px !important">
+        <h2 class="text-uppercase text-white">Leave Management System</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.AMBC_Active_Emp_view.Employee_ID + ".png";
+
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    @if (Model.projectInfo.Count() > 1)
+                                    {
+                                        var clients = new List<string>();
+                                        foreach (var empProject in Model.projectInfo)
+                                        {
+                                            clients.Add(empProject.Client);
+                                        }
+                                        var empClients = string.Join(", ", clients);
+                                        <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-client emp-data-nav">@Model.AMBC_Active_Emp_view.Client</div>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    @if (Model.projectInfo.Count() > 1)
+                                    {
+                                        var projects = new List<string>();
+                                        foreach (var empProject in Model.projectInfo)
+                                        {
+                                            var sameProjectExists = false;
+
+                                            foreach (var project in projects)
+                                            {
+                                                if (project == empProject.Project_Name)
+                                                {
+                                                    sameProjectExists = true;
+                                                }
+                                            }
+
+                                            if (!sameProjectExists)
+                                            { projects.Add(empProject.Project_Name); }
+
+                                        }
+                                        var empProjects = string.Join(", ", projects);
+                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-project emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Name</div>
+                                    }
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <input type="hidden" class="emproleleaveapply" value="@Model.AMBC_Active_Emp_view.Access_Role" />
+
+        }
+
+    </div>
+</nav>
+
+<br />
+<br />
+@if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
+{
+    <div class="card card-body" style="border-radius: 10px">
+        <div class="card timesheet-card">
+            <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
+            <hr />
+            <div class="card-body ">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group selectemp-div">
+                            <label for="leavereportemployeename">Employee Name<b style="color:red">*</b></label>
+                            <select id="selectReportEmployeename" name="leavereportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                                <option value="Select Employee" selected disabled>Select Employee</option>
+                                <option value="All Employees">All Employees</option>
+                            </select>
+                            <div class="invalid-feedback-report-employee" style="display:none; color: red">
+                                Please Select Employee
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="leavereportstartdate" class="leavestartdate">Start Date<b style="color:red">*</b></label>
+                            <input type="date" class="form-control" id="leavereportstartdate" required>
+                            <div class="invalid-feedback-report-leavedate" style="color:red; display:none">
+                                Please Start Date
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 leave-enddate-div">
+                        <div class="form-group">
+                            <label for="leavereportenddate">End Date<b style="color:red">*</b></label>
+                            <input type="date" class="form-control" id="leavereportenddate" required>
+                            <div class="invalid-feedback-report-enddate" style="display:none; color: red">
+                                Please Select End Date
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer mt-xl-4">
+
+                    @using (Html.BeginForm("ExportLeaveReport", "Home", FormMethod.Post))
+                    {
+
+                        <input type="hidden" name="GridHtml" />
+                        <button type="submit" class="btn btn-lg text-white btn-leave-report-excel-generate" value="Leave Report" style="border-radius: 10px; background-color: #388E3C; display:none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel" viewBox="0 0 16 16" style="margin-bottom: -3px">
+                                <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                            </svg><b> Download Leave Report</b>
+                        </button>
+                    }
+
+                    <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width:200px; border-radius:10px"><b>View Leave Info</b></button>
+                </div>
+
+                <br />
+                <hr />
+
+                <div class="leave-info-container"></div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script>
+
+    jQuery(".btn-leave-report-excel-generate").on("click", function () {
+        var leaveReportsInputs = {
+            //Value which is selected in page Employee Name dropdown
+            SelectedEmpId: jQuery('#selectReportEmployeename :selected').val(),
+            StartDate: moment(jQuery('#leavereportstartdate').val()).format("YYYY-MM-DD"),
+            EndDate: jQuery('#leavereportenddate').val() != null && jQuery('#leavereportenddate').val() != "" ? moment(jQuery('#leavereportenddate').val()).format("YYYY-MM-DD") : null
+        }
+
+        var GridHtml = JSON.stringify(leaveReportsInputs).toString();
+        $("input[name='GridHtml']").val(GridHtml);
+    });
+
+
+    jQuery('#leavereportstartdate').change(function () {
+        $('#leavereportstartdate').css("border", "1px solid green");
+        $('.invalid-feedback-report-leavedate').hide();
+    });
+
+    jQuery('#leavereportenddate').change(function () {
+        $('#leavereportenddate').css("border", "1px solid green");
+        $('.invalid-feedback-report-enddate').hide();
+    });
+
+    jQuery("#selectReportEmployeename").on("change", function () {
+        jQuery('.invalid-feedback-report-employee').hide();
+        jQuery('#selectReportEmployeename').css("border", "1px solid green");
+    });
+
+    jQuery(".btn-leave-report").click(function () {
+        if (jQuery('#leavereportstartdate').val() == "") {
+            jQuery('.invalid-feedback-report-leavedate').show();
+            jQuery('#leavereportstartdate').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-leavedate').hide();
+            jQuery('#leavereportstartdate').css("border", "1px solid green");
+        }
+
+        if (jQuery('#leavereportenddate').val() == "") {
+            jQuery('.invalid-feedback-report-enddate').show();
+            jQuery('#leavereportenddate').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-enddate').hide();
+            jQuery('#leavereportenddate').css("border", "1px solid green");
+        }
+
+        if (jQuery('#selectReportEmployeename :selected').val() == "Select Employee") {
+            jQuery('.invalid-feedback-report-employee').show();
+            jQuery('#selectReportEmployeename').css("border", "1px solid red");
+        }
+        else {
+            jQuery('.invalid-feedback-report-employee').hide();
+            jQuery('#selectReportEmployeename').css("border", "1px solid green");
+        }
+
+        if (jQuery('#leavereportstartdate').val() == "" || jQuery('#leavereportenddate').val() == "" || jQuery('#selectReportEmployeename :selected').val() == "Select Employee") {
+            return false;
+        }
+
+        var leaveReportsInputs = {
+            //Value which is selected in page Employee Name dropdown
+            SelectedEmpId: jQuery('#selectReportEmployeename :selected').val(),
+            StartDate: moment(jQuery('#leavereportstartdate').val()).format("YYYY-MM-DD"),
+            EndDate: jQuery('#leavereportenddate').val() != null && jQuery('#leavereportenddate').val() != "" ? moment(jQuery('#leavereportenddate').val()).format("YYYY-MM-DD") : null
+        }
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetLeaveInfo",
+            data: JSON.stringify({ leaveReportModel: leaveReportsInputs }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('.leave-info-container').html(data);
+                jQuery('.btn-leave-report-excel-generate').show();
+            }
+        });
+
+    });
+
+    jQuery('#leaveenddate').change(function () {
+        $('#leaveenddate').css("border", "1px solid green");
+        $('.invalid-feedback-enddate').hide();
+    });
+
+    jQuery('#leavestartdate').change(function () {
+        $('#leavestartdate').css("border", "1px solid green");
+        $('.invalid-feedback-leavedate').hide();
+    });
+
+    GetEmployees();
+
+    function GetEmployees() {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                jQuery.each(obj, function (i, item) {
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                var useRole = jQuery('.emproleleaveapply').val();
+
+                var empId = jQuery('.agent-navdrop-empid').text();
+                $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+
+                if (useRole == "consultant") {
+                    $("#selectEmployeename").prop("disabled", true);
+                }
+                else {
+                    $("#selectEmployeename").prop("disabled", false);
+                }
+            }
+        });
+    }
+
+
+</script>

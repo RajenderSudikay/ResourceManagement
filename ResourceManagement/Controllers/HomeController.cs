@@ -1287,6 +1287,12 @@ namespace ResourceManagement.Controllers
             return View(employeeModel);
         }
 
+        public ActionResult LeaveReport()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
 
         public DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
         {
@@ -1719,6 +1725,16 @@ namespace ResourceManagement.Controllers
             {
                 return Json(ClientBasedemployeeModel);
             }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ExportLeaveReport(string GridHtml)
+        {
+            RMA_LeaveModel leaveReportModel = JsonConvert.DeserializeObject<RMA_LeaveModel>(GridHtml);
+            var reportHtml = GetLeaveInfo(leaveReportModel);
+            var fileName = "Leave Report ";
+            return File(Encoding.ASCII.GetBytes(reportHtml.Data.ToString()), "application/vnd.ms-excel", fileName + ".xls");
         }
 
         public JsonResult GetLeaveInfo(RMA_LeaveModel leaveReportModel)
@@ -2640,7 +2656,7 @@ namespace ResourceManagement.Controllers
                             graphModel.SelectedReportMonth.QuarterName = "Q4";
                             break;
                     }
-                   
+
                 }
 
                 if (selectedMonthNumberCount == 6 && SelectedreportStartMonth == "Jan")
@@ -2656,7 +2672,7 @@ namespace ResourceManagement.Controllers
                 if (selectedMonthNumberCount == 12)
                 {
                     graphModel.SelectedReportMonth.QuarterName = "Annual Report";
-                }              
+                }
             }
 
             var graph1Reports = new List<Root>();

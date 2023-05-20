@@ -5,11 +5,14 @@
 {
     <div>
         <table class="table table-bordered table-timesheet-remainder" style="width: 60% !important">
-            <thead style="background-color: #0095a8">
+            <thead style="background-color: #0095a8 !important">
                 <tr>
-                    <th scope="col" style="text-align:center;"><b>Employee ID</b></th>
-                    <th scope="col" style="text-align: center;"><b>Leave Date</b></th>
-                    <th scope="col" style="text-align: center;"><b>Submitted By</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Employee ID</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Employee Name</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Date</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Submitted By</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Type</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Category</b></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,8 +25,15 @@
                         var leaveDisplayDate = leaveOriginalDate[1] + "-" + leaveOriginalDate[0] + "-" + leaveOriginalDate[2];
                         <tr>
                             <td style="text-align:center">@leave.employee_id</td>
+                            <td style="text-align:center">@leave.employee_id</td>
                             <td style="text-align:center">@leaveDisplayDate</td>
                             <td style="text-align:center">@leave.submittedby</td>
+                            <td style="text-align:center">@leave.leavesource</td>
+
+                            @{
+                                var category = leave.leavecategory == null || leave.leavecategory == "NULL" ? "" : leave.leavecategory;
+                            }
+                            <td style="text-align:center">@category</td>
                         </tr>
                     }
                 }
