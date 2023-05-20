@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ResourceManagement.Controllers
 {
+    using Microsoft.Ajax.Utilities;
     using Models;
     using OfficeOpenXml;
     using SelectPdf;
@@ -727,7 +728,8 @@ namespace ResourceManagement.Controllers
                                 var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                                 {
                                     LeaveDate = empHolidayInf.taskdate.ToString(),
-                                    LeaveType = empHolidayInf.comments
+                                    LeaveType = empHolidayInf.comments,
+                                    LeaveDateTime = empHolidayInf.taskdate
 
                                 };
 
@@ -748,11 +750,40 @@ namespace ResourceManagement.Controllers
                                 var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                                 {
                                     LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
-                                    LeaveType = empHalfDayHolidayInf.Leave_Type
+                                    LeaveType = empHalfDayHolidayInf.Leave_Type,
+                                    LeaveDateTime = empHalfDayHolidayInf.Leave_Date
 
                                 };
                                 reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
                             }
+                        }
+
+
+                        var empAppliedLeavePostTimeSheetSubmissions = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && (a.timespent > 0 || a.overtime > 0)).ToList();
+
+                        if (empAppliedLeavePostTimeSheetSubmissions != null)
+                        {
+                            foreach (var empAppliedLeavePostTimeSheetSubmission in empAppliedLeavePostTimeSheetSubmissions)
+                            {
+                                var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == empAppliedLeavePostTimeSheetSubmission.employeeid && leave.leavedate == empAppliedLeavePostTimeSheetSubmission.taskdate).FirstOrDefault();
+
+                                if(isEmpAppliedLeaveonDateModel != null)
+                                {
+                                    var isLeaveExistsInTheList = reportModel.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDateTime == isEmpAppliedLeaveonDateModel.leavedate).FirstOrDefault();
+                                    
+                                    if(isLeaveExistsInTheList == null)
+                                    {
+                                        var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                        {
+                                            LeaveDate = isEmpAppliedLeaveonDateModel.leavedate.ToString(),
+                                            LeaveType = isEmpAppliedLeaveonDateModel.leavesource,
+                                            LeaveDateTime = isEmpAppliedLeaveonDateModel.leavedate
+                                        };
+                                        reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                                    }                               
+                                }                             
+                            }
+
                         }
 
                         //Passing Inputs to view
@@ -942,7 +973,8 @@ namespace ResourceManagement.Controllers
                         var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                         {
                             LeaveDate = empHolidayInf.taskdate.ToString(),
-                            LeaveType = empHolidayInf.comments
+                            LeaveType = empHolidayInf.comments,
+                            LeaveDateTime = empHolidayInf.taskdate
 
                         };
 
@@ -963,11 +995,39 @@ namespace ResourceManagement.Controllers
                         var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                         {
                             LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
-                            LeaveType = empHalfDayHolidayInf.Leave_Type
+                            LeaveType = empHalfDayHolidayInf.Leave_Type,
+                            LeaveDateTime = empHalfDayHolidayInf.Leave_Date
 
                         };
                         reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
                     }
+                }
+
+                var empAppliedLeavePostTimeSheetSubmissions = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && (a.timespent > 0 || a.overtime > 0)).ToList();
+
+                if (empAppliedLeavePostTimeSheetSubmissions != null)
+                {
+                    foreach (var empAppliedLeavePostTimeSheetSubmission in empAppliedLeavePostTimeSheetSubmissions)
+                    {
+                        var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == empAppliedLeavePostTimeSheetSubmission.employeeid && leave.leavedate == empAppliedLeavePostTimeSheetSubmission.taskdate).FirstOrDefault();
+
+                        if (isEmpAppliedLeaveonDateModel != null)
+                        {
+                            var isLeaveExistsInTheList = reportModel.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDateTime == isEmpAppliedLeaveonDateModel.leavedate).FirstOrDefault();
+
+                            if (isLeaveExistsInTheList == null)
+                            {
+                                var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                {
+                                    LeaveDate = isEmpAppliedLeaveonDateModel.leavedate.ToString(),
+                                    LeaveType = isEmpAppliedLeaveonDateModel.leavesource,
+                                    LeaveDateTime = isEmpAppliedLeaveonDateModel.leavedate
+                                };
+                                reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                            }
+                        }
+                    }
+
                 }
 
                 //Passing Inputs to view

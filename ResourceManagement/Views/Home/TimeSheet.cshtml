@@ -863,12 +863,18 @@
     var timeSheetWeeklyHours = new Array();
     var empInputDates = new Array();
 
-    function TimeSheetTemplate(rowDisable, uniqueID) {
+    function TimeSheetTemplate(rowDisable, uniqueID, TimeSheetTemplate) {
         var isEntryDisbaled = "";
         if (rowDisable != undefined && rowDisable == true) {
             isEntryDisbaled = "row-disabled";
         }
-        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + uniqueID + '"><td class="timesheet-edit-delete" style="width: 80px;vertical-align: middle;"></td>'
+
+        var isEntryHighlate = "";
+        if (TimeSheetTemplate != undefined && TimeSheetTemplate == true) {
+            isEntryHighlate = "row-highlate";
+        }
+
+        return '<tr class="user-added-timesheet ' + isEntryDisbaled + ' ' + isEntryHighlate + ' ' + uniqueID + '"><td class="timesheet-edit-delete" style="width: 80px;vertical-align: middle;"></td>'
             + '<td class="timesheet-date" style="width: 80px;vertical-align: middle;"></td>'
             + '<td class="timesheet-category" style="width: 90px;vertical-align: middle;"></td>'
             + '<td class="timesheet-incidentnum" style="width: 130px;vertical-align: middle;"></td>'
@@ -1612,10 +1618,14 @@
                 if (model.uniquekey.indexOf(value) != -1) {
 
                     var isLeaveOrHoliday = false;
-
+                    var isAppliedLeavePostTimeSheetSubmission = false;
                     jQuery.each(empLeaveAndHolidays, function (i, item) {
                         if (item.LeaveOrHolidayDate == model.taskdate) {
                             isLeaveOrHoliday = true;
+                        }
+
+                        if (item.LeaveOrHolidayDate == model.taskdate && (model.timespent > 0 || model.overtime > 0)) {
+                            isAppliedLeavePostTimeSheetSubmission = true;
                         }
                     });
 
@@ -1624,7 +1634,12 @@
                         isrowDisabled = true;
                     }
 
-                    var dynamicTemplate = TimeSheetTemplate(isrowDisabled, model.uniquekey);
+                    var isrowDisabledAndHighlate = false;
+                    if (isLeaveOrHoliday != undefined && isAppliedLeavePostTimeSheetSubmission == true) {
+                        isrowDisabledAndHighlate = true;
+                    }
+
+                    var dynamicTemplate = TimeSheetTemplate(isrowDisabled, model.uniquekey, isrowDisabledAndHighlate);
                     var newRow = jQuery(dynamicTemplate);
 
                     var displayDate = model.taskdate.split('-');

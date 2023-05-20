@@ -20,8 +20,8 @@ namespace ResourceManagement.Models
         public class ReportLeaveOrHolidayInfo
         {
             public string LeaveDate { get; set; }
-
             public string LeaveType { get; set; }
+            public DateTime? LeaveDateTime { get; set; }
         }
 
         public class LeaveInfoModel
