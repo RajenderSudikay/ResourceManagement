@@ -11,6 +11,7 @@ namespace ResourceManagement.Controllers
     using SelectPdf;
     using System;
     using System.Configuration;
+    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -1161,6 +1162,169 @@ namespace ResourceManagement.Controllers
             return PartialView(timeSheetRemainder);
         }
 
+        public JsonResult RunSchedularJob()
+        {
+            var response = new JsonResponseModel();
+            try
+            {
+                RemainderJobSchedular();
+                response.Message = "Job executed succesfully";
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.InnerException.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        public void RemainderJobSchedular()
+        {
+            var clientNames = new List<string>();
+            clientNames.Add("Littelfuse");
+            clientNames.Add("Federal Signal");
+            clientNames.Add("Modine");
+            clientNames.Add("AMBC");
+
+            var lastweekDay = DateTime.Today.AddDays(-7);
+            int weekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(lastweekDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+
+            DateTime Firstday = lastweekDay.AddDays(-(int)lastweekDay.DayOfWeek).AddDays(1);
+            DateTime Endaday = Firstday.AddDays(4);
+
+            var currentMonth = FirstDayOfMonth();
+            var currentMonthSf = MonthShortFormat(currentMonth);
+            var formattedCurrentMonth = FormatDate(currentMonth.ToString());
+
+            var lastMonth = FirstDayOfLastMonth();
+            var lastMonthSf = MonthShortFormat(lastMonth);
+            var formattedLastMonth = FormatDate(lastMonth.ToString());
+
+            var timeSheetnotSubmittedEmpList = new List<AMBC_Active_Emp_view>();
+            var statusReportnotSubmittedEmpList = new List<AMBC_Active_Emp_view>();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                foreach (var client in clientNames)
+                {
+                    var projectSpecificEmployees = db.AMBC_Active_Emp_view.Where(emp => emp.Client == client).ToList();
+                    foreach (var projectSpecificEmployee in projectSpecificEmployees)
+                    {
+                        var isEmployeeSubmittedTimeSheet = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == client && a.employeeid == projectSpecificEmployee.Employee_ID).FirstOrDefault();
+
+                        if (isEmployeeSubmittedTimeSheet == null)
+                        {
+                            timeSheetnotSubmittedEmpList.Add(projectSpecificEmployee);
+                        }
+
+                        var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+
+                        statusReportnotSubmittedEmpList.Add(projectSpecificEmployee);
+                    }
+                }
+            }
+
+            var remainderModel = new JobRemainderModel();
+            remainderModel.EndDate = FormatDate(Endaday.ToString());
+            remainderModel.StartDate = FormatDate(Firstday.ToString());
+            remainderModel.CurrentMonth = formattedCurrentMonth;
+            remainderModel.CurrentMonthDate = currentMonth;
+            remainderModel.StartDateTime = Firstday;
+            remainderModel.EndDateTime = Endaday;
+            remainderModel.CurrentMonthShortFormat = currentMonthSf;
+            remainderModel.PreviousMonthShortFormat = lastMonthSf;
+
+            remainderModel.RemainderType = "TimeSheet";
+            SchedularJobRemainderEmail(timeSheetnotSubmittedEmpList, remainderModel);
+
+            remainderModel.RemainderType = "StatusReport";
+            SchedularJobRemainderEmail(statusReportnotSubmittedEmpList, remainderModel);
+        }
+
+        public string FormatDate(string Date)
+        {
+            var actualDate = Date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim();
+            if (actualDate.Contains('-'))
+            {
+                return actualDate.Split('-')[1] + "-" + actualDate.Split('-')[0] + "-" + actualDate.Split('-')[2];
+            }
+            if (actualDate.Contains('/'))
+            {
+                return actualDate.Split('/')[1] + "-" + actualDate.Split('/')[0] + "-" + actualDate.Split('/')[2];
+            }
+
+            return actualDate;
+        }
+
+        public void SchedularJobRemainderEmail(List<AMBC_Active_Emp_view> employees, JobRemainderModel remainderModel)
+        {
+            try
+            {
+                foreach (var emp in employees)
+                {
+                    if (emp.Employee_ID != "C4046")
+                    {
+                        continue;
+                    }
+                    using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], emp.AMBC_Mail_Address))
+                    {
+                        if (remainderModel.RemainderType == "TimeSheet")
+                        {
+                            mm.Subject = "REMINDER: TimeSheet for the week - " + remainderModel.StartDate + " to " + remainderModel.EndDate;
+
+                            var renainderEmailModel = new RMA_RemainderEmailSelectedEmpModel();
+                            renainderEmailModel.selectedemployeeempname = emp.Employee_Name;
+                            renainderEmailModel.selectedweekstartdate = remainderModel.StartDate;
+                            renainderEmailModel.selectedweekenddate = remainderModel.EndDate;
+
+                            var emailBody = RenderPartialToString(this, "RemainderEmail", renainderEmailModel, ViewData, TempData);
+                            mm.Body = emailBody;
+                        }
+
+                        if (remainderModel.RemainderType == "StatusReport")
+                        {
+                            mm.Subject = "REMINDER: Dashboard Report for the month - " + remainderModel.PreviousMonthShortFormat;
+                            var remainderStatusEmailModel = new StatusReport_RemainderEmailSelectedEmpModel();
+                            remainderStatusEmailModel.SendSingleEmailToAllEmp = false;
+                            remainderStatusEmailModel.selectedemployeeempname = emp.Employee_Name;
+                            remainderStatusEmailModel.RemainderMonth = remainderModel.PreviousMonthShortFormat;
+
+                            var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", remainderStatusEmailModel, ViewData, TempData);
+
+                            mm.Body = emailBody;
+                        }
+
+                        //TODO
+                        mm.CC.Add("ravikumarm@ambconline.com");
+
+                        mm.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                        smtp.EnableSsl = true;
+                        NetworkCredential credentials = new NetworkCredential();
+                        credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                        credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                        smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = credentials;
+                        smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                        smtp.Send(mm);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
         public JsonResult SendRemainderEmail(RMA_TimeSheetRemainderEmail timesheetEmpRemainder)
         {
@@ -1887,6 +2051,13 @@ namespace ResourceManagement.Controllers
         {
             var date = DateTime.Now;
             return new DateTime(date.Year, date.Month, 1);
+        }
+
+        public static DateTime FirstDayOfLastMonth()
+        {
+            var today = DateTime.Today;
+            var month = new DateTime(today.Year, today.Month, 1);
+            return month.AddMonths(-1);
         }
 
 
@@ -3629,6 +3800,11 @@ namespace ResourceManagement.Controllers
                 ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString(),
                 ReportType = StatusReportChartModel.ReportType
             };
+        }
+
+        public string MonthShortFormat(DateTime datetime)
+        {
+            return datetime.ToString("MMM") + "-" + datetime.Year.ToString();
         }
 
         public ActionResult UploadedStatusReportView(StatusReportChartModel StatusReportChartModel)

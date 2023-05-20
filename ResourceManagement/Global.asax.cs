@@ -1,4 +1,5 @@
 ﻿using ResourceManagement.Entity_Framework;
+using ResourceManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,6 +23,8 @@ namespace ResourceManagement
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //SqlDependency.Start(ConfigurationManager.ConnectionStrings["TimesheetDBEntities"].ToString());
             //SqlDependency.Start(ConfigurationManager.ConnectionStrings["TimeSheetEntities"].ToString());
+
+            JobScheduler.Start();
         }
     }
 }
