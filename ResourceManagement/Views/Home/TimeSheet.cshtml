@@ -279,10 +279,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="margin-top: 100px; margin-left: 380px">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #005983">
-                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #fff; font-size:large">Time Sheet Form</b></h5>
+            <div class="modal-header" style="background-color: #005983; ">
+                <h5 class="modal-title" id="exampleModalLabel"><b style="color: #fff; font-size: large; margin-left: 240px">Time Sheet Form</b></h5>
                 <button type="button" class="close timesheet-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -815,7 +815,7 @@
     </div>
 </div>
 
-<script>   
+<script>
 
     jQuery(".btn-select-week").click(function () {
         jQuery('.add-task-button-above').show();
@@ -932,8 +932,22 @@
 
         //BASED ON TODAY DATE RESTRCTING WEK START DATE NOT TO ALLOW CURRENT WEEK DATES TO SUBMIT THE REPORTS
         var todayDate = new Date();
-        var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
-        var maxWeekStartDate = moment(startOfWeek).format("YYYY-MM-DD");
+        const weekdayNumber = moment(todayDate);
+        const dow = weekdayNumber.day();
+
+        var currentTime = moment().format("HH:mm");
+        currentTime = currentTime.split(':')[0];
+
+        //If Friday 5 PM allowing user to enter timesheet
+        var maxWeekStartDate = "";
+        if (dow >= 5 && currentTime >= 17) {
+            maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
+        }
+        else {
+            var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
+            maxWeekStartDate = moment(startOfWeek).format("YYYY-MM-DD");
+        }
+
         jQuery('.date-timesheet').attr("max", maxWeekStartDate);
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
@@ -1323,7 +1337,7 @@
                 minDateToHighlate = new Date(minDateToHighlate);
                 minDateToHighlate = moment(minDateToHighlate).format("YYYY-MM-DD");
 
-                jQuery('#timeSheetdate').val(minDateToHighlate);             
+                jQuery('#timeSheetdate').val(minDateToHighlate);
 
                 var weekNum = moment(minDate).week();
                 jQuery('#weekNumber').val(weekNum);
@@ -1469,6 +1483,8 @@
     }
 
     jQuery(".timesheet-addreport").click(function () {
+
+        jQuery('#timeSheetdate').trigger('change');
 
         //BELOW CODE ADDED JUST TO HANLDE DATE
         //BASED ON WEEK START DATE FIRST DAY OF THE WEEK IS SELECTED AS TASK DATE IN CALENDER
