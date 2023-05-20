@@ -281,7 +281,7 @@
 
                     <div class="form-group row modal-footer" style="border-radius: 10px">
                         <div class="col-md-offset-2 col-md-10 ">
-                            <input value="Download Templates" class="btn btn-lg btn-download-template" style="border-radius: 10px; background-color: yellow; font-weight: bold;" />
+                            <input value="Download Templates" class="btn btn-lg btn-download-template" style="border-radius: 10px; background-color: yellow; font-weight: bold; color: #005983" />
                             <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; " />
                         </div>
                     </div>
@@ -861,11 +861,11 @@
                         if (fieldId == "Ticket_Status" || fieldId == "Project_Status") {
                             //FieldInputSources.push("Newly Raised");
                             //FieldInputSources.push("Open");
-                            FieldInputSources.push({ "Closed": "Please select all  <b> ' CLOSED ' </b>  related status for which no action required from your end!" });
-                            FieldInputSources.push({ "TODO": "Please select all <b> ' TO DO ' </b> related status for which not decided when to start work!" });
-                            FieldInputSources.push({ "Cancelled": "Please select all <b> ' CANCELLED ' </b> related which can be ignored or no further action needed on them!" });
+                            FieldInputSources.push({ "Closed": "<span style='color:red'>Please select all applicable  <b> ' CLOSED ' </b>  related status for which no action required from your end!<span>" });
+                            FieldInputSources.push({ "TODO": "<span style='color:red'>Please select all applicable <b> ' TO DO ' </b> related status for which not decided when to start work!<span>" });
+                            FieldInputSources.push({ "Cancelled": "<span style='color:red'>Please select all applicable <b> ' CANCELLED ' </b> related which can be ignored or no further action needed on them!<span>" });
 
-                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>");
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>");                          
                             multipleSelect = "multiple";
                         }
 
@@ -876,6 +876,9 @@
                             FieldInputSources.push({ "Low": "" });
 
                             mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
+                            mappingColumn.append("<br>")
+
+                            mappingColumn.append("<label><p><b style='color: green'>Example:  </b><b style='color:rgb(192, 80, 78)'> 1= Critical    </b> <b style='color: 'rgb(155, 187, 88)'>2= High    </b><b style='color:#005983'>3= Medium    </b><b style='color: rgb(74, 172, 197)'>4= Low    </b></p></label>");
                         }
 
                         jQuery.each(FieldInputSources, function (i, source) {
