@@ -307,7 +307,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="timeSheetCategory">Category<b style="color:red">*</b></label>
-                                <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3" required>
+                                <select id="timeSheetCategory" name="categories" class="form-control form-select form-select-lg mb-3" required multiple>
                                     <option value="" disabled selected>Select Category</option>
                                     <option value="Development">Development</option>
                                     <option value="Customer Request">Customer Request</option>
@@ -356,7 +356,7 @@
                                     <option value="Others">Others</option>
                                 </select>
 
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback invalid-category-msg" style="display:none">
                                     Please select Category
                                 </div>
                             </div>
@@ -821,6 +821,11 @@
         jQuery('.add-task-button-above').show();
         jQuery('.add-task-button-below').hide();
         jQuery('.submit-timesheet-btn-div').css("margin-top", "0px");
+    });
+
+    jQuery("#timeSheetCategory").change(function (evt) {
+        jQuery('#timeSheetCategory').css("border", "1px green solid");
+        jQuery('.invalid-category-msg').hide();
     });
 
 
@@ -1595,6 +1600,17 @@
             }
         }
 
+        if (jQuery('#timeSheetCategory').val() == "") {
+            jQuery('#timeSheetCategory').css("border", "1px red solid");
+            jQuery('.invalid-category-msg').show();
+            isModalValidated = false;
+            return false;
+        }
+        else {
+            jQuery('#timeSheetCategory').css("border", "1px green solid");
+            jQuery('.invalid-category-msg').hide();
+        }
+
         if (jQuery('#timeSheetTimeSpent').val() == "") {
             jQuery('#timeSheetTimeSpent').focus();
             jQuery('.timeSpenterror-msg').show();
@@ -1610,8 +1626,11 @@
             isModalValidated = false;
             return false;
         }
+       
 
         if (isModalValidated) {
+
+            var selectedCategories = jQuery('#timeSheetCategory').val().join(' | ');
             var pushModel = {
                 weekstartdate: jQuery('#timeSheetStartWeekdate').val(),
                 weekenddate: jQuery('#timeSheetEndWeekdate').val(),
@@ -1625,7 +1644,7 @@
                 projectname: jQuery('.agent-navdrop-project').text(),
                 projstatus: jQuery('.agent-navdrop-prostatus').text(),
                 taskdate: jQuery('#timeSheetdate').val(),
-                category: $('#timeSheetCategory :selected').text(),
+                category: selectedCategories,
                 incidentnumber: jQuery('#timeSheetIncNumber').val(),
                 taskdetails: jQuery('#timeSheetIncDesc').val(),
                 requester: jQuery('#timeSheetRequester').val(),
@@ -1720,7 +1739,6 @@
                         displayClosedDate = model.closeddate.split('-');
                         displayClosedDate = displayClosedDate[2] + "-" + displayClosedDate[1] + "-" + displayClosedDate[0];
                     }
-
 
                     jQuery(newRow).find('.timesheet-edit-delete').html(editImg);
                     jQuery(newRow).find('.timesheet-date').html(newDate);
@@ -1918,7 +1936,15 @@
                 jQuery('.timesheet-addreport').attr('data-uniqueid', selectedUniqueItemKey);
 
                 jQuery('#timeSheetdate').val(item.taskdate);
-                $("#timeSheetCategory").val(item.category).attr("selected", "selected");
+
+                var options = item.category.split('|');
+
+                const selectedOptions = [];
+                jQuery.each(options, function (i, option) {
+                    selectedOptions.push(option.trim())
+                });
+
+                jQuery('#timeSheetCategory').val(selectedOptions);
 
                 jQuery('#timeSheetIncNumber').val(item.incidentnumber);
                 jQuery('#timeSheetIncDesc').val(item.taskdetails);
