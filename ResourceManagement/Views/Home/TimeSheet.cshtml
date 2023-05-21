@@ -449,7 +449,7 @@
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent<b style="color:red">*</b></label>
                                 <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69">
-                                <small id="timespenthelp" class="form-text text-muted" style="color:darkblue !important"></small>
+                                <small id="timespenthelp" class="form-text text-muted" style="color: darkblue !important; font-weight: bold"></small>
                                 <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 16
                                 </div>
@@ -459,7 +459,7 @@
                             <div class="form-group">
                                 <label for="timeSheetOverTime">Over Time</label>
                                 <input type="number" class="form-control" id="timeSheetOverTime" data-time-data-uniqueid="" aria-describedby="overtimehelp" placeholder="Over Time" disabled>
-                                <small id="overtimehelp" class="form-text text-muted" style="color: darkblue !important">If time spent hours > 8 then remaining hours will be considered as overtime.</small>
+                                <small id="overtimehelp" class="form-text text-muted" style="color: darkblue !important; font-weight: bold">If time spent hours > 8 then remaining hours will be considered as overtime.</small>
                             </div>
                         </div>
                     </div>
@@ -957,6 +957,7 @@
         jQuery('.date-timesheet').attr("max", maxWeekStartDate);
 
         jQuery('#timeSheetTimeSpent').focusout(function (element) {
+
             jQuery(".timeSpenterror-msg").css("display", "none");
             jQuery('#timeSheetOverTime').val('0');
             var maxHoursValue = jQuery('#timeSheetTimeSpent').attr("max");
@@ -1029,10 +1030,10 @@
 
                                 var actualOverTimeHoyrs = currentTaskEnteredHours - actualInHoursFortheCurrentRecord;
                                 jQuery('#timeSheetOverTime').val(actualOverTimeHoyrs);
-                            }                            
+                            }
                         }
 
-                          //8 hours max over time handled
+                        //8 hours max over time handled
                         if (totalHoursAdded > 4 && maxHoursValue == 8 && maxValidayionMessageShown == false) {
 
                             oldrecordHours = totalHoursAdded - currentTaskEnteredHours;
@@ -1530,11 +1531,6 @@
 
         jQuery('#timeSheetdate').trigger('change');
 
-        if (jQuery('#timeSheetTimeSpent').val() == "") {
-            isModalValidated = false;
-            return false;
-        }
-
         //BELOW CODE ADDED JUST TO HANLDE DATE
         //BASED ON WEEK START DATE FIRST DAY OF THE WEEK IS SELECTED AS TASK DATE IN CALENDER
         //THIS SOLUTION HAD SOME ISSUE
@@ -1599,7 +1595,21 @@
             }
         }
 
-        var abc = 0;
+        if (jQuery('#timeSheetTimeSpent').val() == "") {
+            jQuery('#timeSheetTimeSpent').focus();
+            jQuery('.timeSpenterror-msg').show();
+            jQuery('.timeSpenterror-msg').val("Please eneter time spent hours!");
+            isModalValidated = false;
+            return false;
+        }
+
+        if (jQuery('#timeSheetTimeSpent').val() == 0 && jQuery('#timeSheetOverTime').val() == 0) {
+            jQuery('#timeSheetTimeSpent').focus();
+            jQuery('.timeSpenterror-msg').show();
+            jQuery('.timeSpenterror-msg').val("Please eneter time spent hours!");
+            isModalValidated = false;
+            return false;
+        }
 
         if (isModalValidated) {
             var pushModel = {
