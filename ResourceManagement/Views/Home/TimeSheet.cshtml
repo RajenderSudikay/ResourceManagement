@@ -448,7 +448,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="timeSheetTimeSpent">Time Spent<b style="color:red">*</b></label>
-                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" min="1" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69" required>
+                                <input type="number" class="form-control" id="timeSheetTimeSpent" data-time-data-uniqueid="" placeholder="Time Spent" max="16" aria-describedby="timespenthelp" onkeydown="return event.keyCode !== 69">
                                 <small id="timespenthelp" class="form-text text-muted" style="color:darkblue !important"></small>
                                 <div class="invalid-feedback timeSpenterror-msg">
                                     Please enter Time spent hours between 1 to 16
@@ -962,6 +962,8 @@
             var maxHoursValue = jQuery('#timeSheetTimeSpent').attr("max");
             var totalHoursAdded = parseInt(jQuery('#timeSheetTimeSpent').val());
 
+            var currentTaskEnteredHours = parseInt(jQuery('#timeSheetTimeSpent').val());
+
             if (totalHoursAdded > 8 && totalHoursAdded <= 16 && maxHoursValue != 8) {
                 var overTimeHours = totalHoursAdded - 8;
                 jQuery('#timeSheetOverTime').val(overTimeHours);
@@ -994,22 +996,58 @@
                         if (totalHoursAdded > 16 && maxHoursValue != 8) {
                             jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 16 hours for the selected date: " + selectedDate);
                             jQuery('#timeSheetTimeSpent').val('');
+                            jQuery('#timeSheetOverTime').val('');
                             maxValidayionMessageShown = true;
                             jQuery(".timeSpenterror-msg").css("display", "block");
                             jQuery(".timeSpenterror-msg").addClass('invalid');
                             /*jQuery("#timeSheetTimeSpent").focus();*/
                         }
 
-
-
                         //For half day leave case
                         if (totalHoursAdded > 8 && maxHoursValue == 8) {
                             jQuery('.timeSpenterror-msg').text("You cannot selelct time spent hours more than 8 hours for the selected date: " + selectedDate);
                             jQuery('#timeSheetTimeSpent').val('');
+                            jQuery('#timeSheetOverTime').val('');
                             maxValidayionMessageShown = true;
                             jQuery(".timeSpenterror-msg").css("display", "block");
                             jQuery(".timeSpenterror-msg").addClass('invalid');
                             /*  jQuery("#timeSheetTimeSpent").focus();*/
+                        }
+
+                        //16 hours max over time handled
+                        if (totalHoursAdded > 8 && maxHoursValue != 8 && maxValidayionMessageShown == false) {
+
+                            oldrecordHours = totalHoursAdded - currentTaskEnteredHours;
+
+                            if (oldrecordHours > 8) {
+                                jQuery('#timeSheetTimeSpent').val('0');
+                                jQuery('#timeSheetOverTime').val(currentTaskEnteredHours);
+                            }
+                            else {
+                                var actualInHoursFortheCurrentRecord = 8 - oldrecordHours;
+                                jQuery('#timeSheetTimeSpent').val(actualInHoursFortheCurrentRecord);
+
+                                var actualOverTimeHoyrs = currentTaskEnteredHours - actualInHoursFortheCurrentRecord;
+                                jQuery('#timeSheetOverTime').val(actualOverTimeHoyrs);
+                            }                            
+                        }
+
+                          //8 hours max over time handled
+                        if (totalHoursAdded > 4 && maxHoursValue == 8 && maxValidayionMessageShown == false) {
+
+                            oldrecordHours = totalHoursAdded - currentTaskEnteredHours;
+
+                            if (oldrecordHours > 4) {
+                                jQuery('#timeSheetTimeSpent').val('0');
+                                jQuery('#timeSheetOverTime').val(currentTaskEnteredHours);
+                            }
+                            else {
+                                var actualInHoursFortheCurrentRecord = 4 - oldrecordHours;
+                                jQuery('#timeSheetTimeSpent').val(actualInHoursFortheCurrentRecord);
+
+                                var actualOverTimeHoyrs = currentTaskEnteredHours - actualInHoursFortheCurrentRecord;
+                                jQuery('#timeSheetOverTime').val(actualOverTimeHoyrs);
+                            }
                         }
 
                         if (maxValidayionMessageShown == false) {
@@ -1491,6 +1529,11 @@
     jQuery(".timesheet-addreport").click(function () {
 
         jQuery('#timeSheetdate').trigger('change');
+
+        if (jQuery('#timeSheetTimeSpent').val() == "") {
+            isModalValidated = false;
+            return false;
+        }
 
         //BELOW CODE ADDED JUST TO HANLDE DATE
         //BASED ON WEEK START DATE FIRST DAY OF THE WEEK IS SELECTED AS TASK DATE IN CALENDER
