@@ -1983,7 +1983,8 @@ namespace ResourceManagement.Controllers
 
                     if (leaveModel.leaveDetails != null && leaveModel.leaveDetails.Count > 0)
                     {
-                        leaveModel.leaveDetails.OrderBy(x => x.leavedate);
+                        var leavesBasedOnEmpId = leaveModel.leaveDetails.OrderBy(x => x.employee_id).ToList();
+                        leaveModel.leaveDetails = leavesBasedOnEmpId;
                         leaveModel.jsonResponse.StatusCode = 200;
                         leaveModel.jsonResponse.Message = "Leave Details Found for the selected inputs";
                     }

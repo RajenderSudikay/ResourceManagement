@@ -7,19 +7,19 @@
         <table class="table table-bordered table-timesheet-remainder" style="width: 60% !important">
             <thead style="background-color: #0095a8 !important">
                 <tr>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Employee ID</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Employee Name</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Date</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Submitted By</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Type</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important"><b>Leave Category</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Employee ID</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Employee Name</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Date</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Submitted By</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Type</b></th>
+                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Category</b></th>
                 </tr>
             </thead>
             <tbody>
 
                 @if (Model.jsonResponse.StatusCode == 200)
                 {
-                    foreach (var leave in Model.leaveDetails.OrderBy(x => x.leavedate))
+                    foreach (var leave in Model.leaveDetails)
                     {
                         var leaveOriginalDate = @leave.leavedate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim().Replace("/", "-").Split('-');
                         var leaveDisplayDate = leaveOriginalDate[1] + "-" + leaveOriginalDate[0] + "-" + leaveOriginalDate[2];
