@@ -1951,5 +1951,38 @@
         jQuery('#modal-delete-alert').modal('hide');
     });
 
+
+
+
+
+    var optVal = new Array();
+    optVal.push(jQuery('.agent-navdrop-empid').text());
+
+    var statusRemainderModel = {
+        Employees: optVal,
+        ClientName: jQuery('.agent-navdrop-client').text(),
+        Year: moment().subtract(1, 'months').startOf('month').format('YYYY'),
+        ReportType: "Month Report",
+        Period: moment().subtract(1, 'months').startOf('month').format('MMM-YYYY') + "&" + moment().subtract(1, 'months').startOf('month').format('MM')
+    };
+
+    jQuery.ajax({
+        url: "/ISStatusReportSubmitted",
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ StatusReportRemainderModel: statusRemainderModel }),
+        success: function (data) {
+            if (data != null && data.StatusCode == "404") {
+                jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text());
+                var bodyMessage = "<h2>Looks like you might not submitted <b>STATUS REPORT</b> for  " + moment().subtract(1, 'months').startOf('month').format('MMM-YYYY') + ". Please submit today ASAP without fail.</h2><br><br>";
+
+                var statusreportuploadurl = window.location.origin + "/statusreportupload";
+                bodyMessage += "<h5>clcik <a href=" + statusreportuploadurl + ">HERE</a></b> to submit status report.<h5>"
+                jQuery('.warning-message-popup').html(bodyMessage);
+                jQuery('#modal-warning-message-popup').modal('show');
+            }
+        }
+    });
+
 </script>
 

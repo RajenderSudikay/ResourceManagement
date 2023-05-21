@@ -767,11 +767,11 @@ namespace ResourceManagement.Controllers
                             {
                                 var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == empAppliedLeavePostTimeSheetSubmission.employeeid && leave.leavedate == empAppliedLeavePostTimeSheetSubmission.taskdate).FirstOrDefault();
 
-                                if(isEmpAppliedLeaveonDateModel != null)
+                                if (isEmpAppliedLeaveonDateModel != null)
                                 {
                                     var isLeaveExistsInTheList = reportModel.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDateTime == isEmpAppliedLeaveonDateModel.leavedate).FirstOrDefault();
-                                    
-                                    if(isLeaveExistsInTheList == null)
+
+                                    if (isLeaveExistsInTheList == null)
                                     {
                                         var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                                         {
@@ -780,8 +780,8 @@ namespace ResourceManagement.Controllers
                                             LeaveDateTime = isEmpAppliedLeaveonDateModel.leavedate
                                         };
                                         reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
-                                    }                               
-                                }                             
+                                    }
+                                }
                             }
 
                         }
@@ -4153,10 +4153,51 @@ namespace ResourceManagement.Controllers
             return null;
         }
 
+        public JsonResult ISStatusReportSubmitted(StatusReportRemainderModel StatusReportRemainderModel)
+        {
+            var response = new JsonResponseModel();
+            var model = new StatusReportRemainderViewModel();
+            var clients = new List<string>();
+            if (StatusReportRemainderModel.ClientName.Contains(","))
+            {
+                var empClients = StatusReportRemainderModel.ClientName.Split(',').Reverse();
+                clients.AddRange(empClients);
+            }
+            else
+            {
+                clients.Add(StatusReportRemainderModel.ClientName);
+            }
+
+            foreach (var client in clients)
+            {
+                StatusReportRemainderModel.ClientName = client.TrimStart().TrimEnd();
+                StatusReportRemainderDetails(StatusReportRemainderModel, model);
+                if (model.RemainderEmployees != null && model.RemainderEmployees.Count > 0)
+                {
+                    response.StatusCode = 404;
+                    break;
+                }
+            }
+
+            if (response.StatusCode == 404)
+            {
+                response.Message = "Status Report not submitted for the selected period!";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null);
+        }
+
 
         public ActionResult StatusReportRemainder(StatusReportRemainderModel StatusReportRemainderModel)
         {
             var model = new StatusReportRemainderViewModel();
+            StatusReportRemainderDetails(StatusReportRemainderModel, model);
+            return PartialView(model);
+        }
+
+        private static StatusReportRemainderViewModel StatusReportRemainderDetails(StatusReportRemainderModel StatusReportRemainderModel, StatusReportRemainderViewModel model)
+        {
             model.ClientName = StatusReportRemainderModel.ClientName;
 
             var selectedReportedMonthStartDate = new DateTime();
@@ -4219,9 +4260,8 @@ namespace ResourceManagement.Controllers
                 }
             }
 
-            return PartialView(model);
+            return model;
         }
-
 
         public JsonResult SendStatusReportRemainderEmail(StatusReportRemainderEmailModel StatusReportEmpRemainder)
         {
