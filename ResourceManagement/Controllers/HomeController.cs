@@ -1332,7 +1332,7 @@ namespace ResourceManagement.Controllers
             {
                 foreach (var emp in employees)
                 {
-                    if (emp.Employee_ID != "C4046")
+                    if (emp.Employee_ID != "C4046" || emp.Employee_ID != "1245" || emp.Employee_ID != "1075")
                     {
                         continue;
                     }
@@ -1364,8 +1364,11 @@ namespace ResourceManagement.Controllers
                             mm.Body = emailBody;
                         }
 
-                        //TODO
-                        mm.CC.Add("ravikumarm@ambconline.com");
+                        //TODO                     
+                        if (!string.IsNullOrEmpty(emp.AMBC_PM_Mail_Address))
+                        {
+                            mm.CC.Add(emp.AMBC_PM_Mail_Address);
+                        }
 
                         mm.IsBodyHtml = true;
                         SmtpClient smtp = new SmtpClient();
