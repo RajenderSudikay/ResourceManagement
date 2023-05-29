@@ -1,6 +1,6 @@
 body {
     /*  font-family: "Lato", sans-serif;*/
-    background-color: #DDE4E3;
+    background-color: #edf1f9;
     /* padding-top:50px;*/
 }
 
@@ -96,7 +96,7 @@ body {
 
 .time-header {
     height: 40px;
-    background-color: #337ab7;
+    background-color: #005983;
     border: 5px solid lightsteelblue;
     color: white;
     font-size: small;
@@ -326,12 +326,12 @@ body {
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
     border-top: 1px solid #cccccc;
     display: none;
-    background: #ffffff;
+    background: #edf1f9;
     position: absolute;
     padding: 20px;
     width: 850px;
     right: 0;
-    top: 97px;
+    top: 89px;
     font-size: 14px;
     border-radius: 10px;
 }
@@ -1076,8 +1076,6 @@ input[type=number] {
     margin-left: 75px !important;
 }
 
-.row-highlate{
+.row-highlate {
     background-color: yellow !important;
 }
-
-

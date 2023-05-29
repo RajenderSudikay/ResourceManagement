@@ -492,6 +492,7 @@
     <Content Include="Views\Home\StatusReportRemainder.cshtml" />
     <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveReport.cshtml" />
+    <Content Include="Views\Home\_MenuNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

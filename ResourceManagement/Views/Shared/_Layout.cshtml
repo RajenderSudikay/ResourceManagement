@@ -24,6 +24,56 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <link href="~/Content/main.css" rel="stylesheet" />
     <script src="~/Scripts/moment.js"></script>
+
+    <style>
+        .navbar-fixed-top {
+            width: 99.225vw;
+            position: relative;
+            margin-left: -49.59vw;
+            left: 50%;
+            margin-top: -50px;
+        }
+
+        .custom-container-fullwidth {
+            width: 95%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .nav-logo {
+            border-bottom-right-radius: 35px;
+            margin-top: -0.25vw;
+            position: relative;
+            margin-left: -0.59vw;
+            margin-bottom: -0.3vw;
+        }
+
+        .custom-button {
+            background-color: #00344d;
+            border-radius: 15px;
+            color: white;
+            height: 40px;
+            border: 1px solid yellow;
+        }
+
+            .custom-button:hover {
+                background-color: rgb(74, 172, 197);
+                color: white;
+            }
+
+        .footer {
+         
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: red;
+            color: white;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,8 +82,7 @@
             <span class="spinner"></span>
         </div>
     </div>
-
-    <div class="container">
+    <div class="custom-container-fullwidth">
         @RenderBody()
     </div>
 
@@ -41,5 +90,8 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/main.js"></script>
+    <div style="background-color: rebeccapurple">
+    </div>
+
 </body>
 </html>
