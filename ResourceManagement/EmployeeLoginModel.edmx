@@ -4,966 +4,966 @@
 	<edmx:Runtime>
 		<!-- SSDL content -->
 		<edmx:StorageModels>
-			<Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-				<!--Errors Found During Generation:
+		<Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.ambctaskcapture' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="ambctaskcapture">
-					<Key>
-
-						<PropertyRef Name="uniquekey" />
-					</Key>
-					<Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="weekno" Type="int" />
-					<Property Name="weekstartdate" Type="date" />
-					<Property Name="weekenddate" Type="date" />
-					<Property Name="employeeid" Type="varchar" MaxLength="50" />
-					<Property Name="employeename" Type="varchar" MaxLength="250" />
-					<Property Name="empdesignation" Type="varchar" MaxLength="250" />
-					<Property Name="empmanager" Type="varchar" MaxLength="250" />
-					<Property Name="empcontactnumber" Type="varchar" MaxLength="50" />
-					<Property Name="clientname" Type="varchar" MaxLength="50" />
-					<Property Name="projectname" Type="varchar" MaxLength="50" />
-					<Property Name="projstatus" Type="varchar" MaxLength="50" />
-					<Property Name="taskdate" Type="date" />
-					<Property Name="category" Type="varchar" MaxLength="50" />
-					<Property Name="incidentnumber" Type="varchar" MaxLength="1500" />
-					<Property Name="taskdetails" Type="varchar" MaxLength="1500" />
-					<Property Name="requester" Type="varchar" MaxLength="250" />
-					<Property Name="callpriority" Type="varchar" MaxLength="50" />
-					<Property Name="callstatus" Type="varchar" MaxLength="50" />
-					<Property Name="closeddate" Type="date" />
-					<Property Name="timespent" Type="int" />
-					<Property Name="comments" Type="varchar" MaxLength="500" />
-					<Property Name="submittedsystem" Type="varchar" MaxLength="250" />
-					<Property Name="currentyear" Type="int" />
-					<Property Name="shiftdetails" Type="varchar" MaxLength="50" />
-					<Property Name="submittedtime" Type="datetime" />
-					<Property Name="uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
-					<Property Name="overtime" Type="int" />
-					<Property Name="recorduniqueid" Type="varchar" MaxLength="1500" />
-					<Property Name="weekendworkstatus" Type="bit" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="ambctaskcapture">
+          <Key>
+            
+            <PropertyRef Name="uniquekey" />
+          </Key>
+          <Property Name="tslogno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="weekno" Type="int" />
+          <Property Name="weekstartdate" Type="date" />
+          <Property Name="weekenddate" Type="date" />
+          <Property Name="employeeid" Type="varchar" MaxLength="50" />
+          <Property Name="employeename" Type="varchar" MaxLength="250" />
+          <Property Name="empdesignation" Type="varchar" MaxLength="250" />
+          <Property Name="empmanager" Type="varchar" MaxLength="250" />
+          <Property Name="empcontactnumber" Type="varchar" MaxLength="50" />
+          <Property Name="clientname" Type="varchar" MaxLength="50" />
+          <Property Name="projectname" Type="varchar" MaxLength="50" />
+          <Property Name="projstatus" Type="varchar" MaxLength="50" />
+          <Property Name="taskdate" Type="date" />
+          <Property Name="category" Type="varchar" MaxLength="1500" />
+          <Property Name="incidentnumber" Type="varchar" MaxLength="1500" />
+          <Property Name="taskdetails" Type="varchar" MaxLength="1500" />
+          <Property Name="requester" Type="varchar" MaxLength="250" />
+          <Property Name="callpriority" Type="varchar" MaxLength="50" />
+          <Property Name="callstatus" Type="varchar" MaxLength="50" />
+          <Property Name="closeddate" Type="date" />
+          <Property Name="timespent" Type="int" />
+          <Property Name="comments" Type="varchar" MaxLength="500" />
+          <Property Name="submittedsystem" Type="varchar" MaxLength="250" />
+          <Property Name="currentyear" Type="int" />
+          <Property Name="shiftdetails" Type="varchar" MaxLength="50" />
+          <Property Name="submittedtime" Type="datetime" />
+          <Property Name="uniquekey" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="overtime" Type="int" />
+          <Property Name="recorduniqueid" Type="varchar" MaxLength="1500" />
+          <Property Name="weekendworkstatus" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="Category">
-					<Key>
-						<PropertyRef Name="Id" />
-						<PropertyRef Name="category" />
-					</Key>
-					<Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="category" Type="nvarchar" MaxLength="255" Nullable="false" />
-					<Property Name="categoryType" Type="nvarchar" MaxLength="50" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="category" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="categoryType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="CategoryList">
-					<Key>
-						<PropertyRef Name="CategoryListItem" />
-						<PropertyRef Name="CategoryTypeID" />
-					</Key>
-					<Property Name="CategoryListItem" Type="nvarchar" MaxLength="50" Nullable="false" />
-					<Property Name="CategoryTypeID" Type="int" Nullable="false" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="CategoryList">
+          <Key>
+            <PropertyRef Name="CategoryListItem" />
+            <PropertyRef Name="CategoryTypeID" />
+          </Key>
+          <Property Name="CategoryListItem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="CategoryType">
-					<Key>
-						<PropertyRef Name="CategoryTypeID" />
-						<PropertyRef Name="CategoryType" />
-					</Key>
-					<Property Name="CategoryTypeID" Type="int" Nullable="false" />
-					<Property Name="CategoryType" Type="nvarchar" MaxLength="50" Nullable="false" />
-				</EntityType>
-				<EntityType Name="con_leaveupdate">
-					<Key>
-						<PropertyRef Name="leaveuniqkey" />
-					</Key>
-					<Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="leavedate" Type="date" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="leave_reason" Type="varchar" MaxLength="255" />
-					<Property Name="submittedby" Type="varchar" MaxLength="100" />
-					<Property Name="leavesource" Type="varchar" MaxLength="50" />
-					<Property Name="leaveuniqkey" Type="varchar" MaxLength="200" Nullable="false" />
-					<Property Name="leavecategory" Type="varchar" MaxLength="250" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="CategoryType">
+          <Key>
+            <PropertyRef Name="CategoryTypeID" />
+            <PropertyRef Name="CategoryType" />
+          </Key>
+          <Property Name="CategoryTypeID" Type="int" Nullable="false" />
+          <Property Name="CategoryType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="con_leaveupdate">
+          <Key>
+            <PropertyRef Name="leaveuniqkey" />
+          </Key>
+          <Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="leavedate" Type="date" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="leave_reason" Type="varchar" MaxLength="255" />
+          <Property Name="submittedby" Type="varchar" MaxLength="100" />
+          <Property Name="leavesource" Type="varchar" MaxLength="50" />
+          <Property Name="leaveuniqkey" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="leavecategory" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_12072021' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="con_leaveupdate_12072021">
-					<Key>
-						<PropertyRef Name="leaveno" />
-						<PropertyRef Name="leaveuniqkey" />
-					</Key>
-					<Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="leavedate" Type="date" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="leave_reason" Type="varchar" MaxLength="255" />
-					<Property Name="submittedby" Type="varchar" MaxLength="100" />
-					<Property Name="leavesource" Type="varchar" MaxLength="50" />
-					<Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="con_leaveupdate_12072021">
+          <Key>
+            <PropertyRef Name="leaveno" />
+            <PropertyRef Name="leaveuniqkey" />
+          </Key>
+          <Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="leavedate" Type="date" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="leave_reason" Type="varchar" MaxLength="255" />
+          <Property Name="submittedby" Type="varchar" MaxLength="100" />
+          <Property Name="leavesource" Type="varchar" MaxLength="50" />
+          <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_20220517' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="con_leaveupdate_20220517">
-					<Key>
-						<PropertyRef Name="leaveno" />
-						<PropertyRef Name="leaveuniqkey" />
-					</Key>
-					<Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="leavedate" Type="date" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="leave_reason" Type="varchar" MaxLength="255" />
-					<Property Name="submittedby" Type="varchar" MaxLength="100" />
-					<Property Name="leavesource" Type="varchar" MaxLength="50" />
-					<Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="con_leaveupdate_20220517">
+          <Key>
+            <PropertyRef Name="leaveno" />
+            <PropertyRef Name="leaveuniqkey" />
+          </Key>
+          <Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="leavedate" Type="date" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="leave_reason" Type="varchar" MaxLength="255" />
+          <Property Name="submittedby" Type="varchar" MaxLength="100" />
+          <Property Name="leavesource" Type="varchar" MaxLength="50" />
+          <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="con_leaveupdate20220510">
-					<Key>
-						<PropertyRef Name="leaveno" />
-						<PropertyRef Name="leaveuniqkey" />
-					</Key>
-					<Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="leavedate" Type="date" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="leave_reason" Type="varchar" MaxLength="255" />
-					<Property Name="submittedby" Type="varchar" MaxLength="100" />
-					<Property Name="leavesource" Type="varchar" MaxLength="50" />
-					<Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
-				</EntityType>
-				<EntityType Name="desk_att_taskcapture">
-					<Key>
-						<PropertyRef Name="weeknoempid" />
-					</Key>
-					<Property Name="timesheetno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="weekno" Type="int" />
-					<Property Name="weekstartdate" Type="date" />
-					<Property Name="weekenddate" Type="date" />
-					<Property Name="employeeid" Type="varchar" MaxLength="50" />
-					<Property Name="employeename" Type="varchar" MaxLength="255" />
-					<Property Name="employeedesignation" Type="varchar" MaxLength="50" />
-					<Property Name="employeemailid" Type="varchar" MaxLength="150" />
-					<Property Name="employeereportingmgr" Type="varchar" MaxLength="150" />
-					<Property Name="employeecontactno" Type="varchar" MaxLength="20" />
-					<Property Name="employeeassignclientname" Type="varchar" MaxLength="50" />
-					<Property Name="employeeprojectname" Type="varchar" MaxLength="150" />
-					<Property Name="project_status" Type="varchar" MaxLength="50" />
-					<Property Name="day1" Type="int" />
-					<Property Name="day2" Type="int" />
-					<Property Name="day3" Type="int" />
-					<Property Name="day4" Type="int" />
-					<Property Name="day5" Type="int" />
-					<Property Name="day6" Type="int" />
-					<Property Name="day7" Type="int" />
-					<Property Name="totalhrsworked" Type="int" />
-					<Property Name="worksts1" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory1" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone1" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts2" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory2" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone2" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts3" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory3" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone3" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts4" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory4" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone4" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts5" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory5" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone5" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts6" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory6" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone6" Type="varchar" MaxLength="1500" />
-					<Property Name="worksts7" Type="varchar" MaxLength="100" />
-					<Property Name="taskcategory7" Type="varchar" MaxLength="255" />
-					<Property Name="tasksdone7" Type="varchar" MaxLength="1500" />
-					<Property Name="submittedsysname" Type="varchar" MaxLength="100" />
-					<Property Name="currentyear" Type="int" />
-					<Property Name="shiftdetail" Type="varchar" MaxLength="20" />
-					<Property Name="remarks1" Type="varchar" MaxLength="1000" />
-					<Property Name="remarks2" Type="varchar" MaxLength="1000" />
-					<Property Name="weeknoempid" Type="varchar" MaxLength="224" StoreGeneratedPattern="Computed" Nullable="false" />
-				</EntityType>
-				<EntityType Name="emp_info">
-					<Key>
-						<PropertyRef Name="employee_id" />
-					</Key>
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_desg" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mailid" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="employee_report_manager" Type="varchar" MaxLength="50" />
-					<Property Name="employee_sys_hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_sys_macno" Type="varchar" MaxLength="255" />
-					<Property Name="employee_sys_usrname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="CategoryTypeID" Type="int" />
-					<Property Name="ambc_manager" Type="varchar" MaxLength="250" />
-					<Property Name="ambc_manager_mailid" Type="varchar" MaxLength="250" />
-					<Property Name="emp_joindate" Type="date" />
-				</EntityType>
-				<EntityType Name="emp_info_log">
-					<Key>
-						<PropertyRef Name="employee_id" />
-					</Key>
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_desg" Type="varchar" MaxLength="255" />
-					<Property Name="employee_mailid" Type="varchar" MaxLength="255" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" />
-					<Property Name="employee_report_manager" Type="varchar" MaxLength="20" />
-					<Property Name="employee_sys_hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_sys_macno" Type="varchar" MaxLength="255" />
-					<Property Name="employee_sys_usrname" Type="varchar" MaxLength="255" Nullable="false" />
-				</EntityType>
-				<EntityType Name="emp_project">
-					<Key>
-						<PropertyRef Name="uniqprojno" />
-					</Key>
-					<Property Name="uniqprojno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="proj_name" Type="varchar" MaxLength="255" />
-					<Property Name="proj_client" Type="varchar" MaxLength="255" />
-					<Property Name="assign_emp_id" Type="varchar" MaxLength="50" />
-					<Property Name="assign_emp_name" Type="varchar" MaxLength="255" />
-					<Property Name="project_staus" Type="varchar" MaxLength="15" />
-					<Property Name="project_shift" Type="varchar" MaxLength="15" />
-					<Property Name="clientreportmanager" Type="varchar" MaxLength="250" />
-					<Property Name="ActualProjectName" Type="varchar" MaxLength="1500" />
-					<Property Name="ProjectRolesResponsibilities" Type="varchar" MaxLength="2500" />
-				</EntityType>
-				<EntityType Name="emp_project_log">
-					<Key>
-						<PropertyRef Name="uniqprojno" />
-					</Key>
-					<Property Name="uniqprojno" Type="int" Nullable="false" />
-					<Property Name="proj_name" Type="varchar" MaxLength="255" />
-					<Property Name="proj_client" Type="varchar" MaxLength="255" />
-					<Property Name="assign_emp_id" Type="varchar" MaxLength="50" />
-					<Property Name="assign_emp_name" Type="varchar" MaxLength="255" />
-					<Property Name="project_staus" Type="varchar" MaxLength="15" />
-					<Property Name="project_shift" Type="varchar" MaxLength="15" />
-				</EntityType>
-				<EntityType Name="emplogin">
-					<Key>
-						<PropertyRef Name="usrnmconcat" />
-					</Key>
-					<Property Name="att_username" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="att_password" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="att_email" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="att_role" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="usrnmconcat" Type="varchar" MaxLength="560" StoreGeneratedPattern="Computed" Nullable="false" />
-					<Property Name="region" Type="varchar" MaxLength="150" />
-					<Property Name="emp_status" Type="bit" Nullable="false" />
-					<Property Name="empimgpath" Type="varchar" MaxLength="250" />
-				</EntityType>
-				<EntityType Name="emplogin_log">
-					<Key>
-						<PropertyRef Name="usrnmconcat" />
-					</Key>
-					<Property Name="att_username" Type="varchar" MaxLength="255" />
-					<Property Name="att_password" Type="varchar" MaxLength="255" />
-					<Property Name="att_email" Type="varchar" MaxLength="255" />
-					<Property Name="att_role" Type="varchar" MaxLength="50" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="usrnmconcat" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="region" Type="varchar" MaxLength="50" />
-					<Property Name="emp_status" Type="bit" />
-				</EntityType>
-				<EntityType Name="Error_Log">
-					<Key>
-						<PropertyRef Name="ErrorId" />
-					</Key>
-					<Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="EmpCode" Type="varchar" MaxLength="50" />
-					<Property Name="EmpName" Type="varchar" MaxLength="250" />
-					<Property Name="ErrorTime" Type="datetime" />
-					<Property Name="ErrorMsg" Type="varchar(max)" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="con_leaveupdate20220510">
+          <Key>
+            <PropertyRef Name="leaveno" />
+            <PropertyRef Name="leaveuniqkey" />
+          </Key>
+          <Property Name="leaveno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="leavedate" Type="date" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="leave_reason" Type="varchar" MaxLength="255" />
+          <Property Name="submittedby" Type="varchar" MaxLength="100" />
+          <Property Name="leavesource" Type="varchar" MaxLength="50" />
+          <Property Name="leaveuniqkey" Type="varchar" MaxLength="90" Nullable="false" />
+        </EntityType>
+        <EntityType Name="desk_att_taskcapture">
+          <Key>
+            <PropertyRef Name="weeknoempid" />
+          </Key>
+          <Property Name="timesheetno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="weekno" Type="int" />
+          <Property Name="weekstartdate" Type="date" />
+          <Property Name="weekenddate" Type="date" />
+          <Property Name="employeeid" Type="varchar" MaxLength="50" />
+          <Property Name="employeename" Type="varchar" MaxLength="255" />
+          <Property Name="employeedesignation" Type="varchar" MaxLength="50" />
+          <Property Name="employeemailid" Type="varchar" MaxLength="150" />
+          <Property Name="employeereportingmgr" Type="varchar" MaxLength="150" />
+          <Property Name="employeecontactno" Type="varchar" MaxLength="20" />
+          <Property Name="employeeassignclientname" Type="varchar" MaxLength="50" />
+          <Property Name="employeeprojectname" Type="varchar" MaxLength="150" />
+          <Property Name="project_status" Type="varchar" MaxLength="50" />
+          <Property Name="day1" Type="int" />
+          <Property Name="day2" Type="int" />
+          <Property Name="day3" Type="int" />
+          <Property Name="day4" Type="int" />
+          <Property Name="day5" Type="int" />
+          <Property Name="day6" Type="int" />
+          <Property Name="day7" Type="int" />
+          <Property Name="totalhrsworked" Type="int" />
+          <Property Name="worksts1" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory1" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone1" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts2" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory2" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone2" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts3" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory3" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone3" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts4" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory4" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone4" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts5" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory5" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone5" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts6" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory6" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone6" Type="varchar" MaxLength="1500" />
+          <Property Name="worksts7" Type="varchar" MaxLength="100" />
+          <Property Name="taskcategory7" Type="varchar" MaxLength="255" />
+          <Property Name="tasksdone7" Type="varchar" MaxLength="1500" />
+          <Property Name="submittedsysname" Type="varchar" MaxLength="100" />
+          <Property Name="currentyear" Type="int" />
+          <Property Name="shiftdetail" Type="varchar" MaxLength="20" />
+          <Property Name="remarks1" Type="varchar" MaxLength="1000" />
+          <Property Name="remarks2" Type="varchar" MaxLength="1000" />
+          <Property Name="weeknoempid" Type="varchar" MaxLength="224" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="emp_info">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_desg" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mailid" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="employee_report_manager" Type="varchar" MaxLength="50" />
+          <Property Name="employee_sys_hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_sys_macno" Type="varchar" MaxLength="255" />
+          <Property Name="employee_sys_usrname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CategoryTypeID" Type="int" />
+          <Property Name="ambc_manager" Type="varchar" MaxLength="250" />
+          <Property Name="ambc_manager_mailid" Type="varchar" MaxLength="250" />
+          <Property Name="emp_joindate" Type="date" />
+        </EntityType>
+        <EntityType Name="emp_info_log">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_desg" Type="varchar" MaxLength="255" />
+          <Property Name="employee_mailid" Type="varchar" MaxLength="255" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" />
+          <Property Name="employee_report_manager" Type="varchar" MaxLength="20" />
+          <Property Name="employee_sys_hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_sys_macno" Type="varchar" MaxLength="255" />
+          <Property Name="employee_sys_usrname" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="emp_project">
+          <Key>
+            <PropertyRef Name="uniqprojno" />
+          </Key>
+          <Property Name="uniqprojno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="proj_name" Type="varchar" MaxLength="255" />
+          <Property Name="proj_client" Type="varchar" MaxLength="255" />
+          <Property Name="assign_emp_id" Type="varchar" MaxLength="50" />
+          <Property Name="assign_emp_name" Type="varchar" MaxLength="255" />
+          <Property Name="project_staus" Type="varchar" MaxLength="15" />
+          <Property Name="project_shift" Type="varchar" MaxLength="15" />
+          <Property Name="clientreportmanager" Type="varchar" MaxLength="250" />
+          <Property Name="ActualProjectName" Type="varchar" MaxLength="1500" />
+          <Property Name="ProjectRolesResponsibilities" Type="varchar" MaxLength="2500" />
+        </EntityType>
+        <EntityType Name="emp_project_log">
+          <Key>
+            <PropertyRef Name="uniqprojno" />
+          </Key>
+          <Property Name="uniqprojno" Type="int" Nullable="false" />
+          <Property Name="proj_name" Type="varchar" MaxLength="255" />
+          <Property Name="proj_client" Type="varchar" MaxLength="255" />
+          <Property Name="assign_emp_id" Type="varchar" MaxLength="50" />
+          <Property Name="assign_emp_name" Type="varchar" MaxLength="255" />
+          <Property Name="project_staus" Type="varchar" MaxLength="15" />
+          <Property Name="project_shift" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="emplogin">
+          <Key>
+            <PropertyRef Name="usrnmconcat" />
+          </Key>
+          <Property Name="att_username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="att_password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="att_email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="att_role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="usrnmconcat" Type="varchar" MaxLength="560" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="region" Type="varchar" MaxLength="150" />
+          <Property Name="emp_status" Type="bit" Nullable="false" />
+          <Property Name="empimgpath" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="emplogin_log">
+          <Key>
+            <PropertyRef Name="usrnmconcat" />
+          </Key>
+          <Property Name="att_username" Type="varchar" MaxLength="255" />
+          <Property Name="att_password" Type="varchar" MaxLength="255" />
+          <Property Name="att_email" Type="varchar" MaxLength="255" />
+          <Property Name="att_role" Type="varchar" MaxLength="50" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="usrnmconcat" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="region" Type="varchar" MaxLength="50" />
+          <Property Name="emp_status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Error_Log">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpCode" Type="varchar" MaxLength="50" />
+          <Property Name="EmpName" Type="varchar" MaxLength="250" />
+          <Property Name="ErrorTime" Type="datetime" />
+          <Property Name="ErrorMsg" Type="varchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="monthlyreports_Template1">
-					<Key>
-						<PropertyRef Name="Ticket_Created_Date" />
-						<PropertyRef Name="Ticket_Number" />
-						<PropertyRef Name="Ticket_Raisedby" />
-						<PropertyRef Name="Ticket_Priority" />
-						<PropertyRef Name="Ticket_Status" />
-						<PropertyRef Name="Consultant_Name" />
-						<PropertyRef Name="Uniquekey" />
-					</Key>
-					<Property Name="Ticket_Number" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Ticket_Summary" Type="varchar" MaxLength="1500" />
-					<Property Name="Ticket_Created_Date" Type="date" Nullable="false" />
-					<Property Name="Ticket_Category" Type="varchar" MaxLength="1500" />
-					<Property Name="Ticket_Raisedby" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Ticket_Priority" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Ticket_Status" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Ticket_Closed_Date" Type="date" />
-					<Property Name="Organisation" Type="varchar" MaxLength="1500" />
-					<Property Name="Comments" Type="varchar" MaxLength="1500" />
-					<Property Name="Consultant_Name" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploaded_Month" Type="varchar" MaxLength="1500" />
-					<Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
-					<Property Name="FileNamee" Type="varchar" MaxLength="1500" />
-					<Property Name="Is_Newly_created" Type="bit" />
-					<Property Name="Is_Open" Type="bit" />
-					<Property Name="Is_Closed" Type="bit" />
-					<Property Name="Ticket_Age" Type="int" />
-					<Property Name="ReportPriority" Type="varchar" MaxLength="1500" />
-					<Property Name="Client_Name" Type="varchar" MaxLength="1500" />
-					<Property Name="Created_Year" Type="int" />
-					<Property Name="Created_Month" Type="int" />
-					<Property Name="Closed_Year" Type="int" />
-					<Property Name="Closed_Month" Type="int" />
-					<Property Name="Is_ToDo" Type="bit" />
-					<Property Name="Is_Cancelled" Type="bit" />
-					<Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
-					<Property Name="ProjectID" Type="int" />
-					<Property Name="IsAuditReport" Type="bit" />
-					<Property Name="TicketingToolName" Type="varchar" MaxLength="1500" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="monthlyreports_Template1">
+          <Key>
+            <PropertyRef Name="Ticket_Created_Date" />
+            <PropertyRef Name="Ticket_Number" />
+            <PropertyRef Name="Ticket_Raisedby" />
+            <PropertyRef Name="Ticket_Priority" />
+            <PropertyRef Name="Ticket_Status" />
+            <PropertyRef Name="Consultant_Name" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Ticket_Number" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Ticket_Summary" Type="varchar" MaxLength="1500" />
+          <Property Name="Ticket_Created_Date" Type="date" Nullable="false" />
+          <Property Name="Ticket_Category" Type="varchar" MaxLength="1500" />
+          <Property Name="Ticket_Raisedby" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Ticket_Priority" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Ticket_Status" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Ticket_Closed_Date" Type="date" />
+          <Property Name="Organisation" Type="varchar" MaxLength="1500" />
+          <Property Name="Comments" Type="varchar" MaxLength="1500" />
+          <Property Name="Consultant_Name" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploaded_Month" Type="varchar" MaxLength="1500" />
+          <Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
+          <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Is_Newly_created" Type="bit" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Ticket_Age" Type="int" />
+          <Property Name="ReportPriority" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
+          <Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="IsAuditReport" Type="bit" />
+          <Property Name="TicketingToolName" Type="varchar" MaxLength="1500" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="monthlyreports_Template2">
-					<Key>
-						<PropertyRef Name="Project_Created_Date" />
-						<PropertyRef Name="Project_Raisedby" />
-						<PropertyRef Name="Project_Priority" />
-						<PropertyRef Name="Project_Status" />
-						<PropertyRef Name="ConsultantName" />
-						<PropertyRef Name="uniquekey" />
-					</Key>
-					<Property Name="Project_Name" Type="varchar" MaxLength="1500" />
-					<Property Name="Project_Summary" Type="varchar" MaxLength="1500" />
-					<Property Name="Project_Created_Date" Type="date" Nullable="false" />
-					<Property Name="Project_Closing_Date_Target" Type="date" />
-					<Property Name="Project_Category" Type="varchar" MaxLength="1500" />
-					<Property Name="Project_Raisedby" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Project_Priority" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Project_Status" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Project_Closed_Date_Actual" Type="date" />
-					<Property Name="Organisation" Type="varchar" MaxLength="1500" />
-					<Property Name="Comments" Type="varchar" MaxLength="1500" />
-					<Property Name="ConsultantName" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploaded_Month" Type="varchar" MaxLength="1500" />
-					<Property Name="uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
-					<Property Name="FileNamee" Type="varchar" MaxLength="1500" />
-					<Property Name="Client_Name" Type="varchar" MaxLength="1500" />
-					<Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
-					<Property Name="ProjectID" Type="int" />
-					<Property Name="CompletedPercentage" Type="decimal" Precision="5" Scale="2" />
-					<Property Name="RemainingPercentage" Type="decimal" Precision="5" Scale="2" />
-					<Property Name="Is_Open" Type="bit" />
-					<Property Name="Is_Closed" Type="bit" />
-					<Property Name="Is_ToDo" Type="bit" />
-					<Property Name="Is_Cancelled" Type="bit" />
-					<Property Name="Created_Year" Type="int" />
-					<Property Name="Created_Month" Type="int" />
-					<Property Name="Closed_Year" Type="int" />
-					<Property Name="Closed_Month" Type="int" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="monthlyreports_Template2">
+          <Key>
+            <PropertyRef Name="Project_Created_Date" />
+            <PropertyRef Name="Project_Raisedby" />
+            <PropertyRef Name="Project_Priority" />
+            <PropertyRef Name="Project_Status" />
+            <PropertyRef Name="ConsultantName" />
+            <PropertyRef Name="uniquekey" />
+          </Key>
+          <Property Name="Project_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Project_Summary" Type="varchar" MaxLength="1500" />
+          <Property Name="Project_Created_Date" Type="date" Nullable="false" />
+          <Property Name="Project_Closing_Date_Target" Type="date" />
+          <Property Name="Project_Category" Type="varchar" MaxLength="1500" />
+          <Property Name="Project_Raisedby" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Project_Priority" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Project_Status" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Project_Closed_Date_Actual" Type="date" />
+          <Property Name="Organisation" Type="varchar" MaxLength="1500" />
+          <Property Name="Comments" Type="varchar" MaxLength="1500" />
+          <Property Name="ConsultantName" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploaded_Month" Type="varchar" MaxLength="1500" />
+          <Property Name="uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
+          <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="CompletedPercentage" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="RemainingPercentage" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="monthlyreports_Template3">
-
-					<Key>
-						<PropertyRef Name="Control_Owner" />
-						<PropertyRef Name="Consultantname" />
-						<PropertyRef Name="Uniquekey" />
-					</Key>
-					<Property Name="Test_ID" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Control_Group_Name" Type="varchar" MaxLength="1500" />
-					<Property Name="Test_Completed" Type="varchar" MaxLength="1500" />
-					<Property Name="Test_Due_Date" Type="date" />
-					<Property Name="Test_Completion_Date" Type="date" />
-					<Property Name="Test_Conclusion" Type="varchar" MaxLength="1500" />
-					<Property Name="Control_Owner" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Control_Performer" Type="varchar" MaxLength="1500" />
-					<Property Name="Test_application" Type="varchar" MaxLength="1500" />
-					<Property Name="Organisation" Type="varchar" MaxLength="1500" />
-					<Property Name="Layer" Type="varchar" MaxLength="1500" />
-					<Property Name="Frequency" Type="varchar" MaxLength="1500" />
-					<Property Name="Current_step" Type="varchar" MaxLength="1500" />
-					<Property Name="Comments" Type="varchar" MaxLength="1500" />
-					<Property Name="Consultantname" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploadedmonth" Type="varchar" MaxLength="1500" />
-					<Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
-					<Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
-					<Property Name="FileNamee" Type="varchar" MaxLength="1500" />
-					<Property Name="Client_Name" Type="varchar" MaxLength="1500" />
-					<Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
-					<Property Name="ProjectID" Type="int" />
-					<Property Name="Is_Open" Type="bit" />
-					<Property Name="Is_Closed" Type="bit" />
-					<Property Name="Is_ToDo" Type="bit" />
-					<Property Name="Is_Cancelled" Type="bit" />
-					<Property Name="Created_Year" Type="int" />
-					<Property Name="Created_Month" Type="int" />
-					<Property Name="Closed_Year" Type="int" />
-					<Property Name="Closed_Month" Type="int" />
-				</EntityType>
-				<EntityType Name="tbl_ambclogininformation">
-					<Key>
-						<PropertyRef Name="Concat_loginstring" />
-					</Key>
-					<Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" StoreGeneratedPattern="Computed" />
-					<Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Login_date" Type="date" Nullable="false" />
-					<Property Name="Signin_Time" Type="datetime" Nullable="false" />
-					<Property Name="Signout_Time" Type="datetime" />
-					<Property Name="Working_Hours" Type="varchar" MaxLength="12" StoreGeneratedPattern="Computed" />
-					<Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Concat_loginstring" Type="varchar" MaxLength="335" StoreGeneratedPattern="Computed" Nullable="false" />
-					<Property Name="IsSignOutBySystem" Type="bit" />
-					<Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
-				</EntityType>
-				<EntityType Name="tbl_LoginInformation">
-					<Key>
-						<PropertyRef Name="Concat_loginstring" />
-					</Key>
-					<Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" StoreGeneratedPattern="Computed" />
-					<Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Login_date" Type="date" Nullable="false" />
-					<Property Name="Signin_Time" Type="datetime" Nullable="false" />
-					<Property Name="Signout_Time" Type="datetime" />
-					<Property Name="Working_Hours" Type="nvarchar" MaxLength="255" />
-					<Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Concat_loginstring" Type="varchar" MaxLength="295" StoreGeneratedPattern="Computed" Nullable="false" />
-					<Property Name="IsSignOutBySystem" Type="bit" />
-					<Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="monthlyreports_Template3">
+          
+          <Key>
+            <PropertyRef Name="Control_Owner" />
+            <PropertyRef Name="Consultantname" />
+            <PropertyRef Name="Uniquekey" />
+          </Key>
+          <Property Name="Test_ID" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Control_Group_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Test_Completed" Type="varchar" MaxLength="1500" />
+          <Property Name="Test_Due_Date" Type="date" />
+          <Property Name="Test_Completion_Date" Type="date" />
+          <Property Name="Test_Conclusion" Type="varchar" MaxLength="1500" />
+          <Property Name="Control_Owner" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Control_Performer" Type="varchar" MaxLength="1500" />
+          <Property Name="Test_application" Type="varchar" MaxLength="1500" />
+          <Property Name="Organisation" Type="varchar" MaxLength="1500" />
+          <Property Name="Layer" Type="varchar" MaxLength="1500" />
+          <Property Name="Frequency" Type="varchar" MaxLength="1500" />
+          <Property Name="Current_step" Type="varchar" MaxLength="1500" />
+          <Property Name="Comments" Type="varchar" MaxLength="1500" />
+          <Property Name="Consultantname" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploadedmonth" Type="varchar" MaxLength="1500" />
+          <Property Name="Uniquekey" Type="varchar" MaxLength="1500" Nullable="false" />
+          <Property Name="Uploadedby" Type="varchar" MaxLength="1500" />
+          <Property Name="FileNamee" Type="varchar" MaxLength="1500" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="1500" />
+          <Property Name="EmplyeeID" Type="varchar" MaxLength="1500" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="Is_Open" Type="bit" />
+          <Property Name="Is_Closed" Type="bit" />
+          <Property Name="Is_ToDo" Type="bit" />
+          <Property Name="Is_Cancelled" Type="bit" />
+          <Property Name="Created_Year" Type="int" />
+          <Property Name="Created_Month" Type="int" />
+          <Property Name="Closed_Year" Type="int" />
+          <Property Name="Closed_Month" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_ambclogininformation">
+          <Key>
+            <PropertyRef Name="Concat_loginstring" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" StoreGeneratedPattern="Computed" />
+          <Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login_date" Type="date" Nullable="false" />
+          <Property Name="Signin_Time" Type="datetime" Nullable="false" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="varchar" MaxLength="12" StoreGeneratedPattern="Computed" />
+          <Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Concat_loginstring" Type="varchar" MaxLength="335" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="IsSignOutBySystem" Type="bit" />
+          <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tbl_LoginInformation">
+          <Key>
+            <PropertyRef Name="Concat_loginstring" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" StoreGeneratedPattern="Computed" />
+          <Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login_date" Type="date" Nullable="false" />
+          <Property Name="Signin_Time" Type="datetime" Nullable="false" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="nvarchar" MaxLength="255" />
+          <Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Concat_loginstring" Type="varchar" MaxLength="295" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="IsSignOutBySystem" Type="bit" />
+          <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.tbl_LoginInformation_bkp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="tbl_LoginInformation_bkp">
-					<Key>
-						<PropertyRef Name="login_id" />
-						<PropertyRef Name="Employee_Code" />
-						<PropertyRef Name="Employee_Name" />
-						<PropertyRef Name="Employee_Designation" />
-						<PropertyRef Name="Employee_Shift" />
-						<PropertyRef Name="Login_date" />
-						<PropertyRef Name="Signin_Time" />
-						<PropertyRef Name="Employee_Hostname" />
-						<PropertyRef Name="Employee_IP" />
-						<PropertyRef Name="Concat_loginstring" />
-					</Key>
-					<Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" />
-					<Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Login_date" Type="date" Nullable="false" />
-					<Property Name="Signin_Time" Type="datetime" Nullable="false" />
-					<Property Name="Signout_Time" Type="datetime" />
-					<Property Name="Working_Hours" Type="time" Precision="7" />
-					<Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Concat_loginstring" Type="varchar" MaxLength="80" Nullable="false" />
-				</EntityType>
-				<EntityType Name="tblambcholiday">
-					<Key>
-						<PropertyRef Name="holidayno" />
-					</Key>
-					<Property Name="holidayno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="holiday_date" Type="date" />
-					<Property Name="holiday_name" Type="varchar" MaxLength="255" />
-					<Property Name="region" Type="varchar" MaxLength="100" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="tbl_LoginInformation_bkp">
+          <Key>
+            <PropertyRef Name="login_id" />
+            <PropertyRef Name="Employee_Code" />
+            <PropertyRef Name="Employee_Name" />
+            <PropertyRef Name="Employee_Designation" />
+            <PropertyRef Name="Employee_Shift" />
+            <PropertyRef Name="Login_date" />
+            <PropertyRef Name="Signin_Time" />
+            <PropertyRef Name="Employee_Hostname" />
+            <PropertyRef Name="Employee_IP" />
+            <PropertyRef Name="Concat_loginstring" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMBCLogin_id" Type="varchar" MaxLength="45" />
+          <Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login_date" Type="date" Nullable="false" />
+          <Property Name="Signin_Time" Type="datetime" Nullable="false" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="time" Precision="7" />
+          <Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Concat_loginstring" Type="varchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblambcholiday">
+          <Key>
+            <PropertyRef Name="holidayno" />
+          </Key>
+          <Property Name="holidayno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="holiday_date" Type="date" />
+          <Property Name="holiday_name" Type="varchar" MaxLength="255" />
+          <Property Name="region" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.tblambcholiday_06May2022' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="tblambcholiday_06May2022">
-					<Key>
-						<PropertyRef Name="holidayno" />
-					</Key>
-					<Property Name="holidayno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="holiday_date" Type="date" />
-					<Property Name="holiday_name" Type="varchar" MaxLength="255" />
-					<Property Name="region" Type="varchar" MaxLength="100" />
-				</EntityType>
-				<EntityType Name="tblambcholidaylog">
-					<Key>
-						<PropertyRef Name="empidhldydt" />
-					</Key>
-					<Property Name="ambcholidaylog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="holiday_date" Type="date" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="employee_hostname" Type="varchar" MaxLength="255" />
-					<Property Name="emp_avl_sts" Type="varchar" MaxLength="50" />
-					<Property Name="backup_resource" Type="varchar" MaxLength="255" />
-					<Property Name="empcontact_no" Type="varchar" MaxLength="50" />
-					<Property Name="empidhldydt" Type="varchar" MaxLength="90" StoreGeneratedPattern="Computed" Nullable="false" />
-				</EntityType>
-				<EntityType Name="tbld_ambclogininformation">
-					<Key>
-						<PropertyRef Name="Concat_loginstring" />
-					</Key>
-					<Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Login_date" Type="date" Nullable="false" />
-					<Property Name="Signin_Time" Type="datetime" Nullable="false" />
-					<Property Name="Signout_Time" Type="datetime" />
-					<Property Name="Working_Hours" Type="int" />
-					<Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Concat_loginstring" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="IsSignOutBySystem" Type="bit" />
-					<Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
-				</EntityType>
-				<EntityType Name="timesheet_submission_log">
-					<Key>
-						<PropertyRef Name="submissionid" />
-					</Key>
-					<Property Name="submissionid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-					<Property Name="weekno" Type="int" />
-					<Property Name="curryear" Type="int" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" />
-					<Property Name="employee_id" Type="varchar" MaxLength="50" />
-					<Property Name="submitted_client" Type="varchar" MaxLength="255" />
-					<Property Name="submitted_project" Type="varchar" MaxLength="255" />
-					<Property Name="submitted_time" Type="datetime" />
-					<Property Name="submitted_ipaddress" Type="varchar" MaxLength="255" />
-					<Property Name="submitted_hostname" Type="varchar" MaxLength="255" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="tblambcholiday_06May2022">
+          <Key>
+            <PropertyRef Name="holidayno" />
+          </Key>
+          <Property Name="holidayno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="holiday_date" Type="date" />
+          <Property Name="holiday_name" Type="varchar" MaxLength="255" />
+          <Property Name="region" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblambcholidaylog">
+          <Key>
+            <PropertyRef Name="empidhldydt" />
+          </Key>
+          <Property Name="ambcholidaylog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="holiday_date" Type="date" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="employee_hostname" Type="varchar" MaxLength="255" />
+          <Property Name="emp_avl_sts" Type="varchar" MaxLength="50" />
+          <Property Name="backup_resource" Type="varchar" MaxLength="255" />
+          <Property Name="empcontact_no" Type="varchar" MaxLength="50" />
+          <Property Name="empidhldydt" Type="varchar" MaxLength="90" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbld_ambclogininformation">
+          <Key>
+            <PropertyRef Name="Concat_loginstring" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_Shift" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login_date" Type="date" Nullable="false" />
+          <Property Name="Signin_Time" Type="datetime" Nullable="false" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="int" />
+          <Property Name="Employee_Hostname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Concat_loginstring" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsSignOutBySystem" Type="bit" />
+          <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="timesheet_submission_log">
+          <Key>
+            <PropertyRef Name="submissionid" />
+          </Key>
+          <Property Name="submissionid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="weekno" Type="int" />
+          <Property Name="curryear" Type="int" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="submitted_client" Type="varchar" MaxLength="255" />
+          <Property Name="submitted_project" Type="varchar" MaxLength="255" />
+          <Property Name="submitted_time" Type="datetime" />
+          <Property Name="submitted_ipaddress" Type="varchar" MaxLength="255" />
+          <Property Name="submitted_hostname" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="AMBC_Active_Emp">
-					<Key>
-						<PropertyRef Name="employee_id" />
-						<PropertyRef Name="employee_name" />
-						<PropertyRef Name="employee_mobile" />
-						<PropertyRef Name="emp_status" />
-					</Key>
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="proj_client" Type="varchar" MaxLength="255" />
-					<Property Name="project_shift" Type="varchar" MaxLength="15" />
-					<Property Name="emp_status" Type="bit" Nullable="false" />
-					<Property Name="region" Type="varchar" MaxLength="150" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="AMBC_Active_Emp">
+          <Key>
+            <PropertyRef Name="employee_id" />
+            <PropertyRef Name="employee_name" />
+            <PropertyRef Name="employee_mobile" />
+            <PropertyRef Name="emp_status" />
+          </Key>
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="proj_client" Type="varchar" MaxLength="255" />
+          <Property Name="project_shift" Type="varchar" MaxLength="15" />
+          <Property Name="emp_status" Type="bit" Nullable="false" />
+          <Property Name="region" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="AMBC_Active_Emp_view">
-					<Key>
-						<PropertyRef Name="Employee ID" />
-						<PropertyRef Name="Employee Name" />
-						<PropertyRef Name="Contact Number" />
-						<PropertyRef Name="Designation" />
-						<PropertyRef Name="Employee Status" />
-						<PropertyRef Name="AMBC Mail Address" />
-						<PropertyRef Name="Access Role" />
-						<PropertyRef Name="Project Code" />
-					</Key>
-					<Property Name="Employee ID" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="Employee Name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Contact Number" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="Designation" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Client Report Manager" Type="varchar" MaxLength="250" />
-					<Property Name="Client" Type="varchar" MaxLength="255" />
-					<Property Name="Shift" Type="varchar" MaxLength="15" />
-					<Property Name="Project Name" Type="varchar" MaxLength="255" />
-					<Property Name="Project Status" Type="varchar" MaxLength="15" />
-					<Property Name="Employee Status" Type="bit" Nullable="false" />
-					<Property Name="Location" Type="varchar" MaxLength="150" />
-					<Property Name="AMBC Mail Address" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Access Role" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="AMBC Project Manager" Type="varchar" MaxLength="250" />
-					<Property Name="AMBC PM Mail Address" Type="varchar" MaxLength="250" />
-					<Property Name="Employee Joining Day" Type="date" />
-					<Property Name="Employee Image Path" Type="varchar" MaxLength="250" />
-					<Property Name="Project Code" Type="int" Nullable="false" />
-					<Property Name="Client Project Name" Type="varchar" MaxLength="1500" />
-					<Property Name="Roles Responsibilities" Type="varchar" MaxLength="2500" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="AMBC_Active_Emp_view">
+          <Key>
+            <PropertyRef Name="Employee ID" />
+            <PropertyRef Name="Employee Name" />
+            <PropertyRef Name="Contact Number" />
+            <PropertyRef Name="Designation" />
+            <PropertyRef Name="Employee Status" />
+            <PropertyRef Name="AMBC Mail Address" />
+            <PropertyRef Name="Access Role" />
+            <PropertyRef Name="Project Code" />
+          </Key>
+          <Property Name="Employee ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Employee Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Contact Number" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Designation" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Client Report Manager" Type="varchar" MaxLength="250" />
+          <Property Name="Client" Type="varchar" MaxLength="255" />
+          <Property Name="Shift" Type="varchar" MaxLength="15" />
+          <Property Name="Project Name" Type="varchar" MaxLength="255" />
+          <Property Name="Project Status" Type="varchar" MaxLength="15" />
+          <Property Name="Employee Status" Type="bit" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="150" />
+          <Property Name="AMBC Mail Address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Access Role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AMBC Project Manager" Type="varchar" MaxLength="250" />
+          <Property Name="AMBC PM Mail Address" Type="varchar" MaxLength="250" />
+          <Property Name="Employee Joining Day" Type="date" />
+          <Property Name="Employee Image Path" Type="varchar" MaxLength="250" />
+          <Property Name="Project Code" Type="int" Nullable="false" />
+          <Property Name="Client Project Name" Type="varchar" MaxLength="1500" />
+          <Property Name="Roles Responsibilities" Type="varchar" MaxLength="2500" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.ambclogin_leave_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="ambclogin_leave_view">
-					<Key>
-						<PropertyRef Name="Employee Code" />
-						<PropertyRef Name="Sign In Date" />
-					</Key>
-					<Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Sign In Date" Type="date" Nullable="false" />
-					<Property Name="Leave Date" Type="date" />
-					<Property Name="Leave Type" Type="varchar" MaxLength="250" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="ambclogin_leave_view">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Sign In Date" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Sign In Date" Type="date" Nullable="false" />
+          <Property Name="Leave Date" Type="date" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability_Final' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability_Final">
-					<Key>
-						<PropertyRef Name="Employee Code" />
-						<PropertyRef Name="Month_Year" />
-						<PropertyRef Name="ConslAvl" />
-					</Key>
-					<Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="Consultant_WorkedDays" Type="numeric" Precision="38" Scale="1" />
-					<Property Name="Monthly_WorkingDays" Type="int" />
-					<Property Name="ConslAvl" Type="varchar" MaxLength="42" Nullable="false" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability_Final">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_Year" />
+            <PropertyRef Name="ConslAvl" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Consultant_WorkedDays" Type="numeric" Precision="38" Scale="1" />
+          <Property Name="Monthly_WorkingDays" Type="int" />
+          <Property Name="ConslAvl" Type="varchar" MaxLength="42" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability1">
-					<Key>
-						<PropertyRef Name="Employee Code" />
-						<PropertyRef Name="Month_year" />
-					</Key>
-					<Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Month1" Type="char" MaxLength="3" />
-					<Property Name="year1" Type="int" />
-					<Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="TXNCount" Type="int" />
-					<Property Name="Leave Type" Type="varchar" MaxLength="250" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability1">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month1" Type="char" MaxLength="3" />
+          <Property Name="year1" Type="int" />
+          <Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="TXNCount" Type="int" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability2">
-					<Key>
-						<PropertyRef Name="Employee Code" />
-						<PropertyRef Name="Month_year" />
-					</Key>
-					<Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="Leave Type" Type="varchar" MaxLength="250" />
-					<Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
-					<Property Name="TXNCount" Type="int" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability2">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Month_year" />
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+          <Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability3' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability3">
-					<Key>
-						<PropertyRef Name="employee code" />
-						<PropertyRef Name="Month_Year" />
-					</Key>
-					<Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="Leave Type" Type="varchar" MaxLength="250" />
-					<Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
-					<Property Name="TXNCount" Type="int" />
-					<Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
-					<Property Name="FinalValue" Type="numeric" Precision="13" Scale="1" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability3">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="250" />
+          <Property Name="LeaveTypeValue" Type="numeric" Precision="2" Scale="1" />
+          <Property Name="TXNCount" Type="int" />
+          <Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
+          <Property Name="FinalValue" Type="numeric" Precision="13" Scale="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability4' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability4">
-					<Key>
-						<PropertyRef Name="employee code" />
-						<PropertyRef Name="Month_Year" />
-					</Key>
-					<Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
-					<Property Name="DaysCount" Type="numeric" Precision="38" Scale="1" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability4">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="Month_Year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Month_Year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="FinalLeaveType" Type="varchar" MaxLength="250" />
+          <Property Name="DaysCount" Type="numeric" Precision="38" Scale="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.consultantavailiability5' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="consultantavailiability5">
-					<Key>
-						<PropertyRef Name="employee code" />
-						<PropertyRef Name="month_year" />
-					</Key>
-					<Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="month_year" Type="varchar" MaxLength="16" Nullable="false" />
-					<Property Name="finalleavetype" Type="varchar" MaxLength="250" />
-					<Property Name="Working Days" Type="numeric" Precision="38" Scale="1" />
-					<Property Name="WorkDays" Type="int" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="consultantavailiability5">
+          <Key>
+            <PropertyRef Name="employee code" />
+            <PropertyRef Name="month_year" />
+          </Key>
+          <Property Name="employee code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="month_year" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="finalleavetype" Type="varchar" MaxLength="250" />
+          <Property Name="Working Days" Type="numeric" Precision="38" Scale="1" />
+          <Property Name="WorkDays" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.halfday_leave_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="halfday_leave_view">
-					<Key>
-						<PropertyRef Name="Employee Code" />
-						<PropertyRef Name="Sign In Date" />
-
-					</Key>
-					<Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="Sign In Date" Type="date" Nullable="false" />
-					<Property Name="Leave Date" Type="date" />
-					<Property Name="Leave Type" Type="varchar" MaxLength="14" Nullable="false" />
-				</EntityType>
-				<!--Errors Found During Generation:
+        <EntityType Name="halfday_leave_view">
+          <Key>
+            <PropertyRef Name="Employee Code" />
+            <PropertyRef Name="Sign In Date" />
+            
+          </Key>
+          <Property Name="Employee Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Sign In Date" Type="date" Nullable="false" />
+          <Property Name="Leave Date" Type="date" />
+          <Property Name="Leave Type" Type="varchar" MaxLength="14" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-				<EntityType Name="today_att">
-					<Key>
-						<PropertyRef Name="employee_id" />
-						<PropertyRef Name="employee_name" />
-						<PropertyRef Name="employee_mobile" />
-						<PropertyRef Name="emp_status" />
-					</Key>
-					<Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
-					<Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
-					<Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
-					<Property Name="proj_client" Type="varchar" MaxLength="255" />
-					<Property Name="project_shift" Type="varchar" MaxLength="15" />
-					<Property Name="emp_status" Type="bit" Nullable="false" />
-					<Property Name="region" Type="varchar" MaxLength="150" />
-					<Property Name="Login_date" Type="date" />
-					<Property Name="Signin_Time" Type="datetime" />
-					<Property Name="Signout_Time" Type="datetime" />
-					<Property Name="Working_Hours" Type="varchar" MaxLength="12" />
-					<Property Name="Employee_IP" Type="varchar" MaxLength="255" />
-				</EntityType>
-				<EntityContainer Name="TimesheetDBModelStoreContainer">
-					<EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emp_info" EntityType="Self.emp_info" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emp_info_log" EntityType="Self.emp_info_log" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emp_project" EntityType="Self.emp_project" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emp_project_log" EntityType="Self.emp_project_log" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emplogin" EntityType="Self.emplogin" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="emplogin_log" EntityType="Self.emplogin_log" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="Error_Log" EntityType="Self.Error_Log" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="tbl_ambclogininformation" EntityType="Self.tbl_ambclogininformation" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="tbl_LoginInformation" EntityType="Self.tbl_LoginInformation" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="tblambcholiday" EntityType="Self.tblambcholiday" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-					<EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
-					<EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[Category].[Id] AS [Id],
-							[Category].[category] AS [category],
-							[Category].[categoryType] AS [categoryType]
-							FROM [dbo].[Category] AS [Category]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="CategoryList" EntityType="Self.CategoryList" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[CategoryList].[CategoryListItem] AS [CategoryListItem],
-							[CategoryList].[CategoryTypeID] AS [CategoryTypeID]
-							FROM [dbo].[CategoryList] AS [CategoryList]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="CategoryType" EntityType="Self.CategoryType" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[CategoryType].[CategoryTypeID] AS [CategoryTypeID],
-							[CategoryType].[CategoryType] AS [CategoryType]
-							FROM [dbo].[CategoryType] AS [CategoryType]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="con_leaveupdate_12072021" EntityType="Self.con_leaveupdate_12072021" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[con_leaveupdate_12072021].[leaveno] AS [leaveno],
-							[con_leaveupdate_12072021].[leavedate] AS [leavedate],
-							[con_leaveupdate_12072021].[employee_id] AS [employee_id],
-							[con_leaveupdate_12072021].[leave_reason] AS [leave_reason],
-							[con_leaveupdate_12072021].[submittedby] AS [submittedby],
-							[con_leaveupdate_12072021].[leavesource] AS [leavesource],
-							[con_leaveupdate_12072021].[leaveuniqkey] AS [leaveuniqkey]
-							FROM [dbo].[con_leaveupdate_12072021] AS [con_leaveupdate_12072021]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="con_leaveupdate_20220517" EntityType="Self.con_leaveupdate_20220517" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[con_leaveupdate_20220517].[leaveno] AS [leaveno],
-							[con_leaveupdate_20220517].[leavedate] AS [leavedate],
-							[con_leaveupdate_20220517].[employee_id] AS [employee_id],
-							[con_leaveupdate_20220517].[leave_reason] AS [leave_reason],
-							[con_leaveupdate_20220517].[submittedby] AS [submittedby],
-							[con_leaveupdate_20220517].[leavesource] AS [leavesource],
-							[con_leaveupdate_20220517].[leaveuniqkey] AS [leaveuniqkey]
-							FROM [dbo].[con_leaveupdate_20220517] AS [con_leaveupdate_20220517]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="con_leaveupdate20220510" EntityType="Self.con_leaveupdate20220510" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[con_leaveupdate20220510].[leaveno] AS [leaveno],
-							[con_leaveupdate20220510].[leavedate] AS [leavedate],
-							[con_leaveupdate20220510].[employee_id] AS [employee_id],
-							[con_leaveupdate20220510].[leave_reason] AS [leave_reason],
-							[con_leaveupdate20220510].[submittedby] AS [submittedby],
-							[con_leaveupdate20220510].[leavesource] AS [leavesource],
-							[con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
-							FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
-					<EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" Schema="dbo" />
-					<EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
-					<EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[tbl_LoginInformation_bkp].[login_id] AS [login_id],
-							[tbl_LoginInformation_bkp].[AMBCLogin_id] AS [AMBCLogin_id],
-							[tbl_LoginInformation_bkp].[Employee_Code] AS [Employee_Code],
-							[tbl_LoginInformation_bkp].[Employee_Name] AS [Employee_Name],
-							[tbl_LoginInformation_bkp].[Employee_Designation] AS [Employee_Designation],
-							[tbl_LoginInformation_bkp].[Employee_Shift] AS [Employee_Shift],
-							[tbl_LoginInformation_bkp].[Login_date] AS [Login_date],
-							[tbl_LoginInformation_bkp].[Signin_Time] AS [Signin_Time],
-							[tbl_LoginInformation_bkp].[Signout_Time] AS [Signout_Time],
-							[tbl_LoginInformation_bkp].[Working_Hours] AS [Working_Hours],
-							[tbl_LoginInformation_bkp].[Employee_Hostname] AS [Employee_Hostname],
-							[tbl_LoginInformation_bkp].[Employee_IP] AS [Employee_IP],
-							[tbl_LoginInformation_bkp].[Concat_loginstring] AS [Concat_loginstring]
-							FROM [dbo].[tbl_LoginInformation_bkp] AS [tbl_LoginInformation_bkp]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="tblambcholiday_06May2022" EntityType="Self.tblambcholiday_06May2022" store:Type="Tables" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[tblambcholiday_06May2022].[holidayno] AS [holidayno],
-							[tblambcholiday_06May2022].[holiday_date] AS [holiday_date],
-							[tblambcholiday_06May2022].[holiday_name] AS [holiday_name],
-							[tblambcholiday_06May2022].[region] AS [region]
-							FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[AMBC_Active_Emp].[employee_id] AS [employee_id],
-							[AMBC_Active_Emp].[employee_name] AS [employee_name],
-							[AMBC_Active_Emp].[employee_mobile] AS [employee_mobile],
-							[AMBC_Active_Emp].[proj_client] AS [proj_client],
-							[AMBC_Active_Emp].[project_shift] AS [project_shift],
-							[AMBC_Active_Emp].[emp_status] AS [emp_status],
-							[AMBC_Active_Emp].[region] AS [region]
-							FROM [dbo].[AMBC_Active_Emp] AS [AMBC_Active_Emp]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" store:Type="Views" Schema="dbo" />
-					<EntitySet Name="ambclogin_leave_view" EntityType="Self.ambclogin_leave_view" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[ambclogin_leave_view].[Employee Code] AS [Employee Code],
-							[ambclogin_leave_view].[Sign In Date] AS [Sign In Date],
-							[ambclogin_leave_view].[Leave Date] AS [Leave Date],
-							[ambclogin_leave_view].[Leave Type] AS [Leave Type]
-							FROM [dbo].[ambclogin_leave_view] AS [ambclogin_leave_view]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability_Final" EntityType="Self.consultantavailiability_Final" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability_Final].[Employee Code] AS [Employee Code],
-							[consultantavailiability_Final].[Month_Year] AS [Month_Year],
-							[consultantavailiability_Final].[Consultant_WorkedDays] AS [Consultant_WorkedDays],
-							[consultantavailiability_Final].[Monthly_WorkingDays] AS [Monthly_WorkingDays],
-							[consultantavailiability_Final].[ConslAvl] AS [ConslAvl]
-							FROM [dbo].[consultantavailiability_Final] AS [consultantavailiability_Final]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability1" EntityType="Self.consultantavailiability1" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability1].[Employee Code] AS [Employee Code],
-							[consultantavailiability1].[Month1] AS [Month1],
-							[consultantavailiability1].[year1] AS [year1],
-							[consultantavailiability1].[Month_year] AS [Month_year],
-							[consultantavailiability1].[TXNCount] AS [TXNCount],
-							[consultantavailiability1].[Leave Type] AS [Leave Type]
-							FROM [dbo].[consultantavailiability1] AS [consultantavailiability1]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability2" EntityType="Self.consultantavailiability2" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability2].[Employee Code] AS [Employee Code],
-							[consultantavailiability2].[Month_year] AS [Month_year],
-							[consultantavailiability2].[Leave Type] AS [Leave Type],
-							[consultantavailiability2].[LeaveTypeValue] AS [LeaveTypeValue],
-							[consultantavailiability2].[TXNCount] AS [TXNCount]
-							FROM [dbo].[consultantavailiability2] AS [consultantavailiability2]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability3" EntityType="Self.consultantavailiability3" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability3].[employee code] AS [employee code],
-							[consultantavailiability3].[Month_Year] AS [Month_Year],
-							[consultantavailiability3].[Leave Type] AS [Leave Type],
-							[consultantavailiability3].[LeaveTypeValue] AS [LeaveTypeValue],
-							[consultantavailiability3].[TXNCount] AS [TXNCount],
-							[consultantavailiability3].[FinalLeaveType] AS [FinalLeaveType],
-							[consultantavailiability3].[FinalValue] AS [FinalValue]
-							FROM [dbo].[consultantavailiability3] AS [consultantavailiability3]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability4" EntityType="Self.consultantavailiability4" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability4].[employee code] AS [employee code],
-							[consultantavailiability4].[Month_Year] AS [Month_Year],
-							[consultantavailiability4].[FinalLeaveType] AS [FinalLeaveType],
-							[consultantavailiability4].[DaysCount] AS [DaysCount]
-							FROM [dbo].[consultantavailiability4] AS [consultantavailiability4]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="consultantavailiability5" EntityType="Self.consultantavailiability5" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[consultantavailiability5].[employee code] AS [employee code],
-							[consultantavailiability5].[month_year] AS [month_year],
-							[consultantavailiability5].[finalleavetype] AS [finalleavetype],
-							[consultantavailiability5].[Working Days] AS [Working Days],
-							[consultantavailiability5].[WorkDays] AS [WorkDays]
-							FROM [dbo].[consultantavailiability5] AS [consultantavailiability5]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="halfday_leave_view" EntityType="Self.halfday_leave_view" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[halfday_leave_view].[Employee Code] AS [Employee Code],
-							[halfday_leave_view].[Sign In Date] AS [Sign In Date],
-							[halfday_leave_view].[Leave Date] AS [Leave Date],
-							[halfday_leave_view].[Leave Type] AS [Leave Type]
-							FROM [dbo].[halfday_leave_view] AS [halfday_leave_view]
-						</DefiningQuery>
-					</EntitySet>
-					<EntitySet Name="today_att" EntityType="Self.today_att" store:Type="Views" store:Schema="dbo">
-						<DefiningQuery>
-							SELECT
-							[today_att].[employee_id] AS [employee_id],
-							[today_att].[employee_name] AS [employee_name],
-							[today_att].[employee_mobile] AS [employee_mobile],
-							[today_att].[proj_client] AS [proj_client],
-							[today_att].[project_shift] AS [project_shift],
-							[today_att].[emp_status] AS [emp_status],
-							[today_att].[region] AS [region],
-							[today_att].[Login_date] AS [Login_date],
-							[today_att].[Signin_Time] AS [Signin_Time],
-							[today_att].[Signout_Time] AS [Signout_Time],
-							[today_att].[Working_Hours] AS [Working_Hours],
-							[today_att].[Employee_IP] AS [Employee_IP]
-							FROM [dbo].[today_att] AS [today_att]
-						</DefiningQuery>
-					</EntitySet>
-				</EntityContainer>
-			</Schema>
-		</edmx:StorageModels>
+        <EntityType Name="today_att">
+          <Key>
+            <PropertyRef Name="employee_id" />
+            <PropertyRef Name="employee_name" />
+            <PropertyRef Name="employee_mobile" />
+            <PropertyRef Name="emp_status" />
+          </Key>
+          <Property Name="employee_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="employee_mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="proj_client" Type="varchar" MaxLength="255" />
+          <Property Name="project_shift" Type="varchar" MaxLength="15" />
+          <Property Name="emp_status" Type="bit" Nullable="false" />
+          <Property Name="region" Type="varchar" MaxLength="150" />
+          <Property Name="Login_date" Type="date" />
+          <Property Name="Signin_Time" Type="datetime" />
+          <Property Name="Signout_Time" Type="datetime" />
+          <Property Name="Working_Hours" Type="varchar" MaxLength="12" />
+          <Property Name="Employee_IP" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityContainer Name="TimesheetDBModelStoreContainer">
+          <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emp_info" EntityType="Self.emp_info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emp_info_log" EntityType="Self.emp_info_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emp_project" EntityType="Self.emp_project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emp_project_log" EntityType="Self.emp_project_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emplogin" EntityType="Self.emplogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="emplogin_log" EntityType="Self.emplogin_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Error_Log" EntityType="Self.Error_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ambclogininformation" EntityType="Self.tbl_ambclogininformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_LoginInformation" EntityType="Self.tbl_LoginInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblambcholiday" EntityType="Self.tblambcholiday" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [Category].[Id] AS [Id], 
+    [Category].[category] AS [category], 
+    [Category].[categoryType] AS [categoryType]
+    FROM [dbo].[Category] AS [Category]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CategoryList" EntityType="Self.CategoryList" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [CategoryList].[CategoryListItem] AS [CategoryListItem], 
+    [CategoryList].[CategoryTypeID] AS [CategoryTypeID]
+    FROM [dbo].[CategoryList] AS [CategoryList]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CategoryType" EntityType="Self.CategoryType" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [CategoryType].[CategoryTypeID] AS [CategoryTypeID], 
+    [CategoryType].[CategoryType] AS [CategoryType]
+    FROM [dbo].[CategoryType] AS [CategoryType]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="con_leaveupdate_12072021" EntityType="Self.con_leaveupdate_12072021" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [con_leaveupdate_12072021].[leaveno] AS [leaveno], 
+    [con_leaveupdate_12072021].[leavedate] AS [leavedate], 
+    [con_leaveupdate_12072021].[employee_id] AS [employee_id], 
+    [con_leaveupdate_12072021].[leave_reason] AS [leave_reason], 
+    [con_leaveupdate_12072021].[submittedby] AS [submittedby], 
+    [con_leaveupdate_12072021].[leavesource] AS [leavesource], 
+    [con_leaveupdate_12072021].[leaveuniqkey] AS [leaveuniqkey]
+    FROM [dbo].[con_leaveupdate_12072021] AS [con_leaveupdate_12072021]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="con_leaveupdate_20220517" EntityType="Self.con_leaveupdate_20220517" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [con_leaveupdate_20220517].[leaveno] AS [leaveno], 
+    [con_leaveupdate_20220517].[leavedate] AS [leavedate], 
+    [con_leaveupdate_20220517].[employee_id] AS [employee_id], 
+    [con_leaveupdate_20220517].[leave_reason] AS [leave_reason], 
+    [con_leaveupdate_20220517].[submittedby] AS [submittedby], 
+    [con_leaveupdate_20220517].[leavesource] AS [leavesource], 
+    [con_leaveupdate_20220517].[leaveuniqkey] AS [leaveuniqkey]
+    FROM [dbo].[con_leaveupdate_20220517] AS [con_leaveupdate_20220517]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="con_leaveupdate20220510" EntityType="Self.con_leaveupdate20220510" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [con_leaveupdate20220510].[leaveno] AS [leaveno], 
+    [con_leaveupdate20220510].[leavedate] AS [leavedate], 
+    [con_leaveupdate20220510].[employee_id] AS [employee_id], 
+    [con_leaveupdate20220510].[leave_reason] AS [leave_reason], 
+    [con_leaveupdate20220510].[submittedby] AS [submittedby], 
+    [con_leaveupdate20220510].[leavesource] AS [leavesource], 
+    [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
+    FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [tbl_LoginInformation_bkp].[login_id] AS [login_id], 
+    [tbl_LoginInformation_bkp].[AMBCLogin_id] AS [AMBCLogin_id], 
+    [tbl_LoginInformation_bkp].[Employee_Code] AS [Employee_Code], 
+    [tbl_LoginInformation_bkp].[Employee_Name] AS [Employee_Name], 
+    [tbl_LoginInformation_bkp].[Employee_Designation] AS [Employee_Designation], 
+    [tbl_LoginInformation_bkp].[Employee_Shift] AS [Employee_Shift], 
+    [tbl_LoginInformation_bkp].[Login_date] AS [Login_date], 
+    [tbl_LoginInformation_bkp].[Signin_Time] AS [Signin_Time], 
+    [tbl_LoginInformation_bkp].[Signout_Time] AS [Signout_Time], 
+    [tbl_LoginInformation_bkp].[Working_Hours] AS [Working_Hours], 
+    [tbl_LoginInformation_bkp].[Employee_Hostname] AS [Employee_Hostname], 
+    [tbl_LoginInformation_bkp].[Employee_IP] AS [Employee_IP], 
+    [tbl_LoginInformation_bkp].[Concat_loginstring] AS [Concat_loginstring]
+    FROM [dbo].[tbl_LoginInformation_bkp] AS [tbl_LoginInformation_bkp]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblambcholiday_06May2022" EntityType="Self.tblambcholiday_06May2022" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [tblambcholiday_06May2022].[holidayno] AS [holidayno], 
+    [tblambcholiday_06May2022].[holiday_date] AS [holiday_date], 
+    [tblambcholiday_06May2022].[holiday_name] AS [holiday_name], 
+    [tblambcholiday_06May2022].[region] AS [region]
+    FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [AMBC_Active_Emp].[employee_id] AS [employee_id], 
+    [AMBC_Active_Emp].[employee_name] AS [employee_name], 
+    [AMBC_Active_Emp].[employee_mobile] AS [employee_mobile], 
+    [AMBC_Active_Emp].[proj_client] AS [proj_client], 
+    [AMBC_Active_Emp].[project_shift] AS [project_shift], 
+    [AMBC_Active_Emp].[emp_status] AS [emp_status], 
+    [AMBC_Active_Emp].[region] AS [region]
+    FROM [dbo].[AMBC_Active_Emp] AS [AMBC_Active_Emp]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" store:Type="Views" Schema="dbo" />
+          <EntitySet Name="ambclogin_leave_view" EntityType="Self.ambclogin_leave_view" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [ambclogin_leave_view].[Employee Code] AS [Employee Code], 
+    [ambclogin_leave_view].[Sign In Date] AS [Sign In Date], 
+    [ambclogin_leave_view].[Leave Date] AS [Leave Date], 
+    [ambclogin_leave_view].[Leave Type] AS [Leave Type]
+    FROM [dbo].[ambclogin_leave_view] AS [ambclogin_leave_view]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability_Final" EntityType="Self.consultantavailiability_Final" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability_Final].[Employee Code] AS [Employee Code], 
+    [consultantavailiability_Final].[Month_Year] AS [Month_Year], 
+    [consultantavailiability_Final].[Consultant_WorkedDays] AS [Consultant_WorkedDays], 
+    [consultantavailiability_Final].[Monthly_WorkingDays] AS [Monthly_WorkingDays], 
+    [consultantavailiability_Final].[ConslAvl] AS [ConslAvl]
+    FROM [dbo].[consultantavailiability_Final] AS [consultantavailiability_Final]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability1" EntityType="Self.consultantavailiability1" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability1].[Employee Code] AS [Employee Code], 
+    [consultantavailiability1].[Month1] AS [Month1], 
+    [consultantavailiability1].[year1] AS [year1], 
+    [consultantavailiability1].[Month_year] AS [Month_year], 
+    [consultantavailiability1].[TXNCount] AS [TXNCount], 
+    [consultantavailiability1].[Leave Type] AS [Leave Type]
+    FROM [dbo].[consultantavailiability1] AS [consultantavailiability1]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability2" EntityType="Self.consultantavailiability2" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability2].[Employee Code] AS [Employee Code], 
+    [consultantavailiability2].[Month_year] AS [Month_year], 
+    [consultantavailiability2].[Leave Type] AS [Leave Type], 
+    [consultantavailiability2].[LeaveTypeValue] AS [LeaveTypeValue], 
+    [consultantavailiability2].[TXNCount] AS [TXNCount]
+    FROM [dbo].[consultantavailiability2] AS [consultantavailiability2]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability3" EntityType="Self.consultantavailiability3" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability3].[employee code] AS [employee code], 
+    [consultantavailiability3].[Month_Year] AS [Month_Year], 
+    [consultantavailiability3].[Leave Type] AS [Leave Type], 
+    [consultantavailiability3].[LeaveTypeValue] AS [LeaveTypeValue], 
+    [consultantavailiability3].[TXNCount] AS [TXNCount], 
+    [consultantavailiability3].[FinalLeaveType] AS [FinalLeaveType], 
+    [consultantavailiability3].[FinalValue] AS [FinalValue]
+    FROM [dbo].[consultantavailiability3] AS [consultantavailiability3]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability4" EntityType="Self.consultantavailiability4" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability4].[employee code] AS [employee code], 
+    [consultantavailiability4].[Month_Year] AS [Month_Year], 
+    [consultantavailiability4].[FinalLeaveType] AS [FinalLeaveType], 
+    [consultantavailiability4].[DaysCount] AS [DaysCount]
+    FROM [dbo].[consultantavailiability4] AS [consultantavailiability4]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="consultantavailiability5" EntityType="Self.consultantavailiability5" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [consultantavailiability5].[employee code] AS [employee code], 
+    [consultantavailiability5].[month_year] AS [month_year], 
+    [consultantavailiability5].[finalleavetype] AS [finalleavetype], 
+    [consultantavailiability5].[Working Days] AS [Working Days], 
+    [consultantavailiability5].[WorkDays] AS [WorkDays]
+    FROM [dbo].[consultantavailiability5] AS [consultantavailiability5]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="halfday_leave_view" EntityType="Self.halfday_leave_view" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [halfday_leave_view].[Employee Code] AS [Employee Code], 
+    [halfday_leave_view].[Sign In Date] AS [Sign In Date], 
+    [halfday_leave_view].[Leave Date] AS [Leave Date], 
+    [halfday_leave_view].[Leave Type] AS [Leave Type]
+    FROM [dbo].[halfday_leave_view] AS [halfday_leave_view]
+	</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="today_att" EntityType="Self.today_att" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>
+			SELECT 
+    [today_att].[employee_id] AS [employee_id], 
+    [today_att].[employee_name] AS [employee_name], 
+    [today_att].[employee_mobile] AS [employee_mobile], 
+    [today_att].[proj_client] AS [proj_client], 
+    [today_att].[project_shift] AS [project_shift], 
+    [today_att].[emp_status] AS [emp_status], 
+    [today_att].[region] AS [region], 
+    [today_att].[Login_date] AS [Login_date], 
+    [today_att].[Signin_Time] AS [Signin_Time], 
+    [today_att].[Signout_Time] AS [Signout_Time], 
+    [today_att].[Working_Hours] AS [Working_Hours], 
+    [today_att].[Employee_IP] AS [Employee_IP]
+    FROM [dbo].[today_att] AS [today_att]
+	</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+	  </edmx:StorageModels>
 		<!-- CSDL content -->
 		<edmx:ConceptualModels>
 			<Schema Namespace="TimesheetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -994,7 +994,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
 					<Property Name="projectname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="projstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="taskdate" Type="DateTime" Precision="0" />
-					<Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+					<Property Name="category" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
 					<Property Name="incidentnumber" Type="String" MaxLength="1500" Unicode="false" FixedLength="false" />
 					<Property Name="taskdetails" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
 					<Property Name="requester" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
