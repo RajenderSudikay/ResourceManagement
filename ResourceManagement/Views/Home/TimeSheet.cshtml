@@ -118,10 +118,10 @@
 
 <!-- Button trigger modal -->
 
-<div style="display: none" class="add-task-button-below custom-button">
+<div style="display: none" class="add-task-button-below">
     <div class="row mt-xl-4">
         <div class="col-md-3">
-            <button type="button" class="btn openmodel btn-lg add-task-details" data-target="#exampleModalLong">
+            <button type="button" class="btn openmodel btn-lg add-task-details custom-button" data-target="#exampleModalLong">
                 <b>Click here to add day wise task details</b>
             </button>&nbsp;&nbsp;
         </div>
@@ -129,7 +129,7 @@
 </div>
 
 <div class="col-lg-offset-0 submit-timesheet-btn-div" style="float:right;">
-    <button type="button" class="btn btn-info btn-lg timesheet-submit custom-button">
+    <button type="button" class="btn btn-info btn-lg timesheet-submit custom-button-submit">
         <b>Submit Time Sheet</b>
     </button>
 </div>
@@ -1234,7 +1234,7 @@
                     jQuery('.btn-select-week').show();
                     jQuery('.add-task-button-above').hide();
                     jQuery('.add-task-button-below').show();
-                    jQuery('.submit-timesheet-btn-div').css("margin-top", "-30px");
+                    jQuery('.submit-timesheet-btn-div').css("margin-top", "-36px");
                 }
                 else {
                     jQuery('.add-task-button-above').show();
