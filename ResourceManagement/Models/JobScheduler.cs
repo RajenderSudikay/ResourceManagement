@@ -17,7 +17,7 @@ namespace ResourceManagement.Models
 
             ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("trigger1", "group1")
-            .WithCronSchedule("0 0 17 ? * MON,TUE,WED,THU,FRI *")
+            .WithCronSchedule("0 0 17 ? * MON,TUE *")
             .StartAt(DateTime.UtcNow)
             .WithPriority(1)
             .Build();

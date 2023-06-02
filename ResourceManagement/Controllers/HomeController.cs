@@ -1332,7 +1332,7 @@ namespace ResourceManagement.Controllers
             {
                 foreach (var emp in employees)
                 {
-                    if (emp.Employee_ID != "C4046" || emp.Employee_ID != "1245" || emp.Employee_ID != "1075")
+                    if ((remainderModel.RemainderType == "StatusReport" && emp.Client == "AMBC") || emp.Employee_Name == "seema")
                     {
                         continue;
                     }
@@ -1577,6 +1577,7 @@ namespace ResourceManagement.Controllers
                                     contextModelList.Add(new con_leaveupdate()
                                     {
                                         employee_id = leaveModel.SelectedEmpId,
+                                        employee_name = leaveModel.SelectedEmpName,
                                         leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
                                         leavesource = leaveModel.LeaveType,
                                         leavecategory = leaveModel.LeaveCategory,
