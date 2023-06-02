@@ -32,5 +32,8 @@ namespace ResourceManagement
         public string Employee_Image_Path { get; set; }
         public int Project_Code { get; set; }
         public string Access_Role { get; set; }
+        public string Client_Project_Name { get; set; }
+        public string Roles_Responsibilities { get; set; }
+        public string Client_MailAddress { get; set; }
     }
 }

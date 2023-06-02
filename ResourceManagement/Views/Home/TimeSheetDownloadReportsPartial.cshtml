@@ -50,6 +50,10 @@
         .partialview-reports {
             font-family: Calibri;
         }
+
+        .row-highlate {
+            background-color: yellow !important;
+        }
     </style>
 
 
@@ -176,6 +180,15 @@
                                                 continue;
                                             }
 
+                                            var currentTaskDate = task.taskdate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim();
+                                            var isAppliedLeavePostSubmission = employeeReport.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDate.Contains(currentTaskDate)).FirstOrDefault();
+
+                                            var rowhighlate = "";
+                                            if (isAppliedLeavePostSubmission != null)
+                                            {
+                                                rowhighlate = "row-highlate";
+                                            }
+
                                             var date = System.Convert.ToDateTime(task.taskdate.ToString());
                                             string dayName = date.ToString("dddd");
 
@@ -222,7 +235,7 @@
                                                     break;
                                             }
 
-                                            <tr style="background-color: #fff">
+                                            <tr style="background-color: #fff" class="@rowhighlate">
 
                                                 @{
 
@@ -291,7 +304,7 @@
 
                                     @if (employeeReport.timeSheetLeaveOrHolidayInfo != null && employeeReport.timeSheetLeaveOrHolidayInfo.Count > 0)
                                     {
-                                        foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo)
+                                        foreach (var leaveReport in employeeReport.timeSheetLeaveOrHolidayInfo.OrderBy(x => x.LeaveDateTime))
                                         {
                                             var leaveDisplayDate = "";
 

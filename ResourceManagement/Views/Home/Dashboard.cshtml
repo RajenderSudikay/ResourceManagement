@@ -189,7 +189,7 @@
 
                     </div>
                     <div class="modal-footer header-nav-modalfooter">
-                        <a href="/timesheet" class="btn btn-info" style="width: 100px; border-radius: 10px;"><b>Enter Timesheet</b></a>
+                        <a href="/timesheet" target="_self" class="btn btn-info" style="width: 100px; border-radius: 10px;"><b>Enter Timesheet</b></a>
                     </div>
                 </div>
             </div>
@@ -204,12 +204,59 @@
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
-                            <a href="/applyleave" class="btn btn-info" style="width:100px; border-radius:10px"><b>Apply Leave</b></a>
+                            <a href="/applyleave" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Apply Leave</b></a>
                         </div>
                     </div>
 
                 </div>
             }
+        </div>
+
+
+        <div class="row mt-xl-4">
+            @if (Model.AMBC_Active_Emp_view.Access_Role == "administrator")
+            {
+                <div class="col-sm ">
+                    <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                        <img src="~/Assets/Leave.jpeg" class="card-img-top custom-card-img-top" alt="..." height="120">
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/leavereport" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Leave Report</b></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+            <div class="col-sm ">
+                <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                    <img src="~/Assets/status-repor-upload.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
+                        <a href="/StatusReportUpload" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Report Upload</b></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm ">
+                <div class="card dashboard-zoom" style="width: 18rem; height: 285px">
+                    <img src="~/Assets/status-report.jpg" class="card-img-top custom-card-img-top" alt="..." height="120">
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <div class="modal-footer header-nav-modalfooter">
+                        <a href="/StatusReport" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Chart Reports</b></a>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -226,7 +273,7 @@
 
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
-                            <a href="/timesheetreports" class="btn btn-info" style="width:100px; border-radius:10px"><b>Timesheet Report</b></a>
+                            <a href="/timesheetreports" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Timesheet Report</b></a>
                         </div>
                     </div>
 
@@ -243,7 +290,7 @@
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
                             @*<a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In Adjust</b></a>*@
-                            <a href="/zohosigninupdate" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In Adjust</b></a>
+                            <a href="/zohosigninupdate" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In Adjust</b></a>
                         </div>
                     </div>
 
@@ -259,7 +306,7 @@
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
-                            <a href="#" class="btn btn-info" style="width:100px; border-radius:10px"><b>Appraisal</b></a>
+                            <a href="#" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Appraisal</b></a>
                         </div>
                     </div>
                 </div>
@@ -290,7 +337,7 @@
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
-                            <a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In day wise</b></a>
+                            <a href="/checkinadjust" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>Check-In day wise</b></a>
                         </div>
                     </div>
 
@@ -303,7 +350,7 @@
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                         <div class="modal-footer header-nav-modalfooter">
-                            <a href="/checkinadjust" target="_blank" class="btn btn-info" style="width:100px; border-radius:10px"><b>HR</b></a>
+                            <a href="/checkinadjust" target="_self" class="btn btn-info" style="width:100px; border-radius:10px"><b>HR</b></a>
                         </div>
                     </div>
 

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e976b7fef5774267b2e709fa704a2ac9" Name="Diagram1" ZoomLevel="39">
+      <Diagram DiagramId="e976b7fef5774267b2e709fa704a2ac9" Name="Diagram1" ZoomLevel="38">
         <!--<EntityTypeShape EntityType="TimesheetDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />-->
         <EntityTypeShape EntityType="TimesheetDBModel.ambctaskcapture" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TimesheetDBModel.con_leaveupdate" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -36,6 +36,15 @@
         <EntityTypeShape EntityType="TimesheetDBModel.tbld_ambclogininformation" Width="1.5" PointX="15.375" PointY="16.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.ambclogin_leave_view" Width="1.5" PointX="5.375" PointY="15.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.halfday_leave_view" Width="1.5" PointX="15.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template1" Width="1.5" PointX="7.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template2" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.monthlyreports_Template3" Width="1.5" PointX="17.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability_Final" Width="1.5" PointX="11.75" PointY="17.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability1" Width="1.5" PointX="17.75" PointY="16.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability2" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability3" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability4" Width="1.5" PointX="2.75" PointY="19.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.consultantavailiability5" Width="1.5" PointX="19.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

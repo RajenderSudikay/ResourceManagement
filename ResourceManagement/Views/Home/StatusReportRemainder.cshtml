@@ -1,0 +1,115 @@
+﻿@model ResourceManagement.Models.StatusReportRemainderViewModel
+
+
+@if (Model != null)
+{
+    @*<div class="remainder-report-month" style="display:none">@Model.RemainderMonthInfo.Month</div>*@
+    <div>
+        <table class="table table-bordered table-timesheet-remainder">
+            <thead style="background-color: #005983">
+                <tr>
+                    <th scope="col" style="width:95px; color: white">Select Employee</th>
+                    <th scope="col" style="color: white">Month</th>
+                    <th scope="col" style="color: white">Employee ID</th>
+                    <th scope="col" style="color: white">Employee Name</th>
+                    <th scope="col" style="color: white">Email ID</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var remainderEmp in Model.RemainderEmployees)
+                {
+                    <tr>
+                        <td style="padding-left:20px">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" value="@remainderEmp.RemainderEmployee.AMBC_Mail_Address.Trim()">
+                            </div>
+                            <div class="remainder-report-manager" style="display:none">@remainderEmp.RemainderEmployee.AMBC_Project_Manager</div>
+                            <div class="remainder-report-manager-emial" style="display:none">@remainderEmp.RemainderEmployee.AMBC_PM_Mail_Address</div>
+
+                        </td>
+                        <td class="remainder-report-month">@remainderEmp.RemainderMonthInfo.Month</td>
+                        <td class="remainder-emp-id">@remainderEmp.RemainderEmployee.Employee_ID</td>
+                        <td class="remainer-emp-name">@remainderEmp.RemainderEmployee.Employee_Name.Trim()</td>
+                        <td class="remainer-emp-email">@remainderEmp.RemainderEmployee.AMBC_Mail_Address</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    //FOR THE TIME BEING COMMENTED THE LOGIC
+    <div style="color: #2167ae; margin-left: 45px; margin-bottom: 25px; display: none">
+        <input type="checkbox" class="send-single-email-all-emp" style="margin-bottom: -22px; position: absolute; margin-top: 36px; margin-left: -7px; " value="Send Remainder for all the selected consultants in single email"><label style="padding-left: 10px;margin-top: 20px; padding-top: 15px;">Send Remainder for all the selected consultants in single/group email</label>
+        <br />
+        <br />
+        <label><b>NOTE: By deault seperate emails will be sent to all the selected consultants</b></label>
+    </div>
+
+
+    <div class="email-remainder-response" style="display: none; text-align: center; vertical-align: middle; color: green;">
+
+    </div>
+    <div class="modal-footer" style="background-color: #005983">
+        <button type="button" class="btn btn-warning btn-lg btn-reminder-email" style="border-radius:10px"><b>Send Remainder</b></button>
+    </div>
+
+}
+
+
+<script>
+
+    var empRemainderList = new Array();
+
+    //Final submit post confirmation
+    jQuery(".btn-reminder-email").click(function () {
+        empRemainderList = new Array();
+
+        jQuery('.form-check-input:checked').each(function () {
+            console.log(this.value);
+            var currentRow = $(this).closest("tr");
+
+            var selectedEmployeeModel = {
+                selectedemployeeemail: this.value,
+                selectedemployeeemailid: currentRow.find('.remainder-emp-id').text(),
+                selectedemployeeempname: currentRow.find('.remainer-emp-name').text(),
+                selectedemploymanager: currentRow.find('.remainder-report-manager').text(),
+                selectedemploymanageremail: currentRow.find('.remainder-report-manager-emial').text(),
+                RemainderMonth: currentRow.find('.remainder-report-month').text(),
+                SendSingleEmailToAllEmp: jQuery('.send-single-email-all-emp').is(':checked')
+            };
+
+            empRemainderList.push(selectedEmployeeModel);
+        });
+
+        var statuReportEmpRemainderModel = {
+            selctedempmodel: empRemainderList,
+            RemainderMonth: jQuery('.remainder-report-month').text(),
+            LogedInEmpId: jQuery('.agent-navdrop-empid').text(),
+            LogedInEmpName: jQuery('.agent-full-name').text(),
+            LogedInEmpEmail: jQuery('.agent-navdrop-empemail').text(),
+            SendSingleEmailToAllEmp: jQuery('.send-single-email-all-emp').is(':checked')
+        };
+
+        jQuery('.email-remainder-response').html('');
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/SendStatusReportRemainderEmail",
+            data: JSON.stringify({ StatusReportEmpRemainder: statuReportEmpRemainderModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.StatusCode == 200) {
+                    jQuery('.email-remainder-response').html('<br><h2>Remainder Email Sent Successfully for all the selected Employees.</h2><br><br><br>');
+                    jQuery('.email-remainder-response').show();
+                    jQuery('#timesheetremainder').modal('show');
+                }
+            }
+        });
+    });
+</script>
+
+
+

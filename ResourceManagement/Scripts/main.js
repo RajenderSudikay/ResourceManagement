@@ -80,4 +80,13 @@ jQuery(document).ready(function () {
             HideFlyout();
         }
     });
+
+
+    jQuery(document).ajaxSend(function () {
+        jQuery("#overlay").fadeIn(300);
+    });
+
+    jQuery(document).ajaxComplete(function (event, request, set) {
+        jQuery("#overlay").fadeOut(300);
+    });
 });

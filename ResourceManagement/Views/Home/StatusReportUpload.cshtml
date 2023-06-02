@@ -1,0 +1,1122 @@
+﻿@model ResourceManagement.Models.RMA_StatusReportModel
+
+@{
+    ViewBag.Title = "Status Report Page";
+    var imagePath = "";
+}
+
+<nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="time-headertitle" style="padding-left: 69px !important">
+        <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Status Report</h2>
+
+    </div>
+
+    <div class="col-lg-offset-3">
+        @if (Model != null)
+        {
+            imagePath = "/Assets/EmployeeImagesPNG/" + @Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID + ".png";
+
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</p>
+                    </div>
+
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+
+                            </div>
+
+                            <div class="agent-fullname">
+                                <b>@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    {
+                                        var clients = new List<string>();
+                                        foreach (var empProject in Model.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            clients.Add(empProject.Client);
+                                        }
+                                        var empClients = string.Join(", ", clients);
+                                        <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-client emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client</div>
+                                    }
+
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                    {
+                                        var projects = new List<string>();
+                                        foreach (var empProject in Model.RMA_EmployeeModel.projectInfo)
+                                        {
+                                            var sameProjectExists = false;
+
+                                            foreach (var project in projects)
+                                            {
+                                                if (project == empProject.Project_Name)
+                                                {
+                                                    sameProjectExists = true;
+                                                }
+                                            }
+
+                                            if (!sameProjectExists)
+                                            { projects.Add(empProject.Project_Name); }
+
+                                        }
+                                        var empProjects = string.Join(", ", projects);
+                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="agent-navdrop-project emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Name</div>
+                                    }
+
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <input type="hidden" class="emprole" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
+            <input type="hidden" class="emproles" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities" />
+
+        }
+
+    </div>
+</nav>
+
+
+
+<br />
+
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card status-report-card">
+        <div class="card-body ">
+
+            <div class="">
+                <h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @if (Model != null && Model.StatusReportInfo.SuccessMessage != "")
+                {
+                    <h2 class="text-success">@Model.StatusReportInfo.SuccessMessage</h2>
+                    <br />
+                }
+
+                @if (Model != null && Model.StatusReportInfo.FailureMessage != "")
+                {
+                    <h2 class="text-danger">@Model.StatusReportInfo.FailureMessage</h2>
+                    <br />
+
+                }
+
+                <form class="needs-validation" novalidate>
+
+                    <div class="form-group row">
+                        <label for="StatusReportInfo.EmployeeName" class="control-label col-md-2">Employee Name: <b style="color:red">*</b></label>
+                        @Html.DropDownListFor(m => m.StatusReportInfo.EmployeeName, Model.StatusReportInfo.EmployeeList, "Please select employee", new { required = "required", @class = "form-control col-md-3", @style = "background-color: white" })
+                        <div class="invalid-feedback employee-invalid-feedback" style="padding-left:180px">
+                            Please select employee
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="statusreportEmpClient" class="control-label col-md-2">Client<b style="color:red">*</b></label>
+                        <select id="statusreportEmpClient" name="statusreportEmpClient" class="form-control col-md-3">
+                            @foreach (var project in Model.RMA_EmployeeModel.projectInfo)
+                            {
+                                <option value="@project.Project_Code">@project.Client</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback client-invalid-feedback">
+                            Please select Client
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="StatusReportInfo.MonthList" class="control-label col-md-2">Select Month: <b style="color:red">*</b></label>
+                        @Html.DropDownListFor(m => m.StatusReportInfo.Month, Model.StatusReportInfo.MonthList, "Please select month", new { required = "required", @class = "form-control col-md-3" })
+                        <div class="invalid-feedback month-invalid-feedback" style="padding-left:180px">
+                            Please select month
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="StatusReportInfo.ExcelPath" class="control-label col-md-2">Upload file: <b style="color:red">*</b></label>
+                        <div class="form-control col-md-3 reportupload-div">
+                            <input type="file" name="ExcelFile" id="reportupload" required />
+                        </div>
+                        <div class="invalid-feedback reportupload-invalid-feedback" style="padding-left:180px">
+                            Please upload a file
+                        </div>
+                    </div>
+
+                    <div class="form-group row div-statusreporttype" style="display:none">
+                        <label for="reporttype" class="control-label col-md-2">Report Type: <b style="color:red">*</b></label>
+                        <select id="statusreporttype" name="reporttype" class="form-control col-md-3" required>
+                            <option value="Please Select Report Type">Please Select Report Type</option>
+                            <option value="Template1">Incident Report</option>
+                            <option value="Template2">Project Report</option>
+                            <option value="Template3">Audit Report</option>
+                        </select>
+
+                        <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:180px">
+                            Please select Report Type
+                        </div>
+                        <div>
+                            <ul>
+                                <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
+                                <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
+                                <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group row div-statusreportcategory" style="display:none">
+                        <label for="reportcategory" class="control-label col-md-2">Report Category: <b style="color:red">*</b></label>
+                        <select id="reportcategory" name="reportcategory" class="form-control col-md-3" required>
+                            <option value="newrunningprojects">New/Running Projects</option>
+                            <option value="regularprojects">Regular Project Activities</option>
+                        </select>
+                        <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:180px">
+                            Please select Report Category
+                        </div>
+                    </div>
+
+                    <div class="form-group row divtoolname" style="display: none">
+                        <label for="statusreportToolName" class="control-label col-md-2">Tool Name<b style="color:red">*</b></label>
+                        <select id="statusreportToolName" name="statusreportToolName" class="form-control col-md-3">
+                            <option value="Please Select Tool Name">Please Select Tool Name</option>
+                            <option value="Halo">Halo</option>
+                            <option value="Ivanti">Ivanti</option>
+                            <option value="Jira">Jira</option>
+                            <option value="LogicGate">Logic Gate</option>
+                            <option value="Othertool">Other tool</option>
+                            <option value="NA">NA</option>
+                        </select>
+                        <div class="invalid-feedback client-invalid-toolname" style="padding-left:180px">
+                            Please select Tool Name
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="card excel-field-mapping-div" style="padding-top: 10px; width: 60%; border: 3px solid #2167ae; color: #2167ae; display:none">
+                        <div class="card-body">
+                            <h5 class="card-title"><b>Database and Excel Fields mapping</b></h5>
+                            <ul class="">
+                                <li class="">Please select the <b style="color:red">Applicable</b> field from the uploaded excel sheet</li>
+                                <li class="">If <b style="color:red">Applicable</b> field not exists in excel then you can select <b style="color: green">"NA"</b></li>
+                                <li class="">Make sure you have selected <b style="color:green">Applicable Report type</b>  in above dropdown</li>
+                            </ul>
+
+                            <br />
+                            <div class="dynamic-field-binding text-center" style="padding-left:25px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+                    <hr />
+
+                    <div class="form-group row modal-footer" style="border-radius: 10px">
+                        <div class="col-md-offset-2 col-md-10 ">
+                            <input value="Download Templates" class="btn btn-lg btn-download-template" style="border-radius: 10px; background-color: yellow; font-weight: bold; color: #005983" />
+                            <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; " />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
+            <div class="activity-details" style="display: none">
+                <h4 style="font-size: 1.5rem; text-align: center; background-color: rgb(74, 172, 197); padding: 15px; border-radius: 10px; color: white; ">Add/Update Activity Details</h4>
+                <br />
+
+                <h2 class="roles-success-fail-msg">
+                </h2>
+                <br />
+                <div id="textboxDiv">
+
+                    @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'> Role </a>*@
+
+                    <button type="submit" id="Add" value=" ROLE " class="btn btn-success btn-lg add-roles" style="border-radius: 10px; margin-bottom: 10px">
+                        <img src="~/Assets/Icons/plus.png" width="20" /><b> Activity </b>
+                    </button>
+
+                    @{
+                        var empRoles = Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities;
+                    }
+
+                    @if (!string.IsNullOrEmpty(empRoles))
+                    {
+                        var roles = empRoles.Split('|');
+
+                        foreach (var role in roles)
+                        {
+                            var empRole = @role.Trim().TrimStart().TrimEnd();
+
+                            //if (empRole != "")
+                            //{
+                            <div class='div-parent-textarea'>
+                                <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                                @empRole
+                                </textarea>
+                                <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                            </div>
+                            //}
+
+                        }
+                    }
+                    else
+                    {
+                        <div class='div-parent-textarea'>
+                            <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                            </textarea>
+                            @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'></a>*@
+                            <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+            <div class="form-group" style="border-radius: 10px; margin-top: 25px; display: none">
+                <div class="">
+                    <input type="submit" id="Add" value="Upload Activities" class="btn btn-info btn-lg btn-activity-details" style="border-radius: 10px" />
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+    </div>
+</div>
+
+@{
+    Html.RenderPartial("_ModalAlerts");
+}
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-sample-template">
+    <div class="modal-dialog modal-lg" role="document" style="padding-top:0px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00344d">
+                <svg enable-background="new 0 0 30 30" height="30px" style="background-color: white" id="Layer_1" version="1.1" viewBox="0 0 30 30" width="30px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path clip-rule="evenodd" d="M28.705,7.506l-5.461-6.333l-1.08-1.254H9.262   c-1.732,0-3.133,1.403-3.133,3.136V7.04h1.942L8.07,3.818c0.002-0.975,0.786-1.764,1.758-1.764l11.034-0.01v5.228   c0.002,1.947,1.575,3.523,3.524,3.523h3.819l-0.188,15.081c-0.003,0.97-0.79,1.753-1.759,1.761l-16.57-0.008   c-0.887,0-1.601-0.87-1.605-1.942v-1.277H6.138v1.904c0,1.912,1.282,3.468,2.856,3.468l17.831-0.004   c1.732,0,3.137-1.41,3.137-3.139V8.966L28.705,7.506" fill="#434440" fill-rule="evenodd" /><path d="M20.223,25.382H0V6.068h20.223V25.382 M1.943,23.438h16.333V8.012H1.943" fill="#08743B" /><polyline fill="#08743B" points="15.73,20.822 12.325,20.822 10.001,17.538 7.561,20.822 4.14,20.822 8.384,15.486 4.957,10.817    8.412,10.817 10.016,13.355 11.726,10.817 15.242,10.817 11.649,15.486 15.73,20.822  " /></g></svg>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-sample-title" style="text-align: center; color: #2167ae"></h2>
+                <div class="sample-template-data">
+
+                    <div class="card card-body" style="border-radius: 10px">
+                        <div class="card status-report-card">
+                            <div class="card-body ">
+
+                                <p style="color: #005983"><b>NOTE:</b> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+
+                                <h2 style="color: #005983; font-family: Calibri; font-style: italic; text-decoration-line: underline ">Download Sample Templates using below links</h2>
+                                <br />
+
+                                <div class="form-group row">
+
+                                    @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="form-group row">
+                                    @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px " />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="form-group row">
+                                    @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml" />
+
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px " />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="model-footerbtn-custom">
+                <button type="button" class="btn btn-lg btn-close" data-dismiss="modal" style="border-radius: 10px; color: white; width: 100px; background-color: rgb(177, 3, 50) !important"><b>Close</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br />
+<br />
+
+<script>
+
+    jQuery(document).on("click", ".btn-close", function () {
+        jQuery('#modal-sample-template').hide();
+    });
+
+    jQuery(document).on("click", ".btn-download-template", function () {
+        jQuery('#modal-sample-template').show();
+    });
+
+    jQuery(document).on("click", ".add-roles", function () {
+        $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'></textarea><a class='glyphicon glyphicon-remove remove-roles' href='javascript: void (0)' style='margin-left:10px'></a></div>");
+    });
+
+    jQuery(document).on("click", ".remove-roles", function () {
+        var removalTextParentArea = jQuery(this).closest('.div-parent-textarea');
+        var removalTextArea = removalTextParentArea.find('.activity-details-textarea');
+        var removalPlusIcon = removalTextParentArea.find('.add-roles');
+        jQuery(this).remove();
+        removalTextArea.remove();
+        removalPlusIcon.remove();
+    });
+
+    var useRole = jQuery('.emprole').val();
+    var empId = jQuery('.agent-navdrop-empid').text();
+
+
+    if (useRole != "administrator") {
+        $("#StatusReportInfo_EmployeeName").prop("disabled", true);
+        $('#StatusReportInfo_EmployeeName  option[value=' + empId + ']').attr("selected", "selected");
+    }
+    else {
+        $("#StatusReportInfo_EmployeeName").prop("disabled", false);
+    }
+
+    jQuery("#StatusReportInfo_EmployeeName").change(function () {
+        $("#textboxDiv").empty();
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetProjectBasedOnEmpId",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val() },
+            success: function (data) {
+                jQuery('#statusreportEmpClient').empty();
+                jQuery.each(data, function (i, item) {
+                    jQuery('#statusreportEmpClient').append('<option value="' + item.Project_Code + '">' + item.Client + '</option>');
+                });
+
+                if (data.length > 0) {
+                    var roles = data[0].Roles_Responsibilities;
+                    EmpRolesAndResponsibilties(roles);
+                }
+            }
+        });
+    });
+
+    jQuery("#statusreportEmpClient").change(function () {
+        $("#textboxDiv").empty();
+        jQuery.ajax({
+            type: "POST",
+            url: "/GetProjectBasedOnEmpId",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "ClientName": jQuery('#statusreportEmpClient :selected').text() },
+            success: function (data) {
+                if (data.length == 1) {
+                    var roles = data[0].Roles_Responsibilities;
+                    EmpRolesAndResponsibilties(roles);
+                }
+            }
+        });
+    });
+
+    jQuery(document).on("click", ".btn-activity-details", function () {
+        var activities = jQuery('.activity-details-textarea');
+
+        var uploadActilityList = "";
+
+        if (activities.length > 0) {
+            jQuery.each(activities, function (i, item) {
+                if (item.value.trim() != "") {
+                    var requiredValue = item.value.trim().trimStart().trimEnd();
+                    uploadActilityList += requiredValue + " | ";
+                }
+            });
+        }
+
+        uploadActilityList = uploadActilityList.trimEnd('|');
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/UpdateRolesAndResposibilties",
+            dataType: "JSON",
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "ClientName": jQuery('#statusreportEmpClient :selected').text(), "Roles": uploadActilityList },
+            success: function (data) {
+                if (data.length == 1) {
+                    jQuery('.roles-success-fail-msg').text('Roles and Responsibilities updated successfully!')
+                }
+                else {
+                    jQuery('.roles-success-fail-msg').text('Roles and Responsibilities not updated!')
+                }
+            }
+        });
+    });
+
+    function EmpRolesAndResponsibilties(roles) {
+        if (roles != null && roles != undefined && roles != "") {
+            var rolesResponsibilties = roles.split('|');
+
+            jQuery.each(rolesResponsibilties, function (i, item) {
+                $("#textboxDiv").append("<div class='div-parent-textarea'><textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>" + item + "</textarea><a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a></div>");
+            });
+
+            jQuery('.emproles').val(roles);
+        }
+    }
+
+    function ExcelFieldMappingTemplate(fieldName) {
+
+        return '<div class="form-group row">'
+            + '<label for=' + fieldName + ' class="control-label col-md-4" style="padding-top: 10px;">' + fieldName + '<b style="color:red">*</b></label>'
+            + '<select id=' + fieldName + ' name=' + fieldName + ' class="form-control col-md-6 excel-columns" required>'
+            + '<option value="Please Select Excel Column Name" disabled selected>Please select Applicable excel column name</option>'
+            + '</select>'
+            + '<div class="dynamic-field-mapping" style="display:none">'
+            + '</div>'
+            + '</div>'
+    }
+
+
+    function ExcelFieldMappingBasedonDropdownValue(selctedFieldObj, multipleSelect) {
+        var fieldName = "";
+        var ValueText = "";
+        jQuery.each(selctedFieldObj, function (key, value) {
+            fieldName = key;
+            ValueText = value;
+            return false;
+        });
+
+        return '<div class="form-group row">'
+            + '<label for=' + fieldName + ' class="control-label col-md-4" style="padding-top: 10px;">' + fieldName + '<b style="color:red">*</b></label>'
+            + '<select ' + multipleSelect + ' id=' + fieldName + ' name=' + fieldName + ' class="form-control col-md-6 excel-values-mapping" required>'
+            + '<option value="Please Select Required Value" disabled selected>Please Select Required Value</option>'
+            + '</select>'
+            + '</div>'
+            + '<div class="form-group row" style="color: #0095a8; padding-left: 77px">' + ValueText + '</div>'
+    }
+    // Create FormData object
+    var fileData = new FormData();
+
+    jQuery("#reportupload").change(function () {
+        var fileUpload = $("#reportupload").get(0);
+        var files = fileUpload.files;
+
+        fileData = new FormData();
+
+        // Looping over all files and add it to FormData object
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("ExcelFile", files[i]);
+        }
+    });
+
+    jQuery('#statusreporttype').change(function (evt) {
+        jQuery(".dynamic-field-binding").empty();
+        var selectedTemplate = jQuery('#statusreporttype :selected').val();
+
+        if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
+            jQuery('#statusreporttype').css("border", "1px solid red");
+            jQuery('.reporttype-invalid-feedback').show();
+            jQuery('.excel-field-mapping-div').hide();
+        }
+        else {
+            jQuery('#statusreporttype').css("border", "1px solid green");
+            jQuery('.reporttype-invalid-feedback').hide();
+            jQuery('.excel-field-mapping-div').show();
+        }
+
+        jQuery('#reportcategory :selected').val('');
+
+        if (jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") {
+            jQuery('.divtoolname').show();
+            jQuery('.incident-option').show();
+            jQuery('.project-option').hide();
+        }
+        else {
+            jQuery('.divtoolname').hide();
+            jQuery('.incident-option').hide();
+            jQuery('.project-option').show();
+        }
+
+        if (jQuery('#statusreporttype :selected').val() == "Template2") {
+            jQuery('.div-statusreportcategory').show();
+        }
+        else {
+            jQuery('.div-statusreportcategory').hide();
+        }
+
+        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Status report will be generated.</h2>");
+        $('#modal-warning-message-popup').modal('show');
+
+        var selectedReportJsonFields = new Array();
+
+        jQuery.getJSON("StatusReports.json", function (data) {
+            var selectedTemplateJson = data.filter(v => v.Name === selectedTemplate)[0].fields;
+            jQuery.each(selectedTemplateJson, function (key, val) {
+                var dynamicTemplate = ExcelFieldMappingTemplate(val);
+                var newRow = jQuery(dynamicTemplate);
+                jQuery(".dynamic-field-binding").append(jQuery(newRow));
+                selectedReportJsonFields.push(val);
+            });
+        });
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/ReadExcelColumnNames",
+            contentType: false,
+            processData: false,
+            data: fileData,
+            success: function (data) {
+                var coumnNumber = 0;
+                jQuery.each(data, function (i, item) {
+                    jQuery('.excel-columns').append('<option value="' + item + '">' + i + '</option>');
+                    coumnNumber++;
+                });
+                var naIndexNumber = coumnNumber + 1;
+                jQuery('.excel-columns').append('<option value=' + naIndexNumber + '>NA</option>');
+
+            }
+        });
+
+
+        setTimeout(function () {
+            jQuery.each(selectedReportJsonFields, function (i, item) {
+                var fieldId = item;
+
+                if (fieldId == "Ticket_Status" || fieldId == "Ticket_Priority" || fieldId == "Project_Priority" || fieldId == "Project_Status") {
+                    //DO NOTHING
+                }
+                else {
+                    $('#' + fieldId + ' option:contains(' + fieldId + ')').attr('selected', 'selected');
+                }
+            });
+
+            jQuery('.btn-upload-report').click();
+
+        }, 2000);
+
+    });
+
+    jQuery(document).on("change", "#StatusReportInfo_Month", function () {
+        if (jQuery('#StatusReportInfo_Month :selected').text() == "Please select month") {
+            jQuery('#StatusReportInfo_Month').css("border", "1px solid red");
+            jQuery('.month-invalid-feedback').show();
+        }
+        else {
+            jQuery('#StatusReportInfo_Month').css("border", "1px solid green");
+            jQuery('.month-invalid-feedback').hide();
+        }
+    });
+
+    jQuery(document).on("change", "#StatusReportInfo_EmployeeName", function () {
+        if (jQuery('#StatusReportInfo_EmployeeName :selected').text() == "Please select employee") {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid red");
+            jQuery('.employee-invalid-feedback').show();
+        }
+        else {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid green");
+            jQuery('.employee-invalid-feedback').hide();
+        }
+    });
+
+
+
+    $("#reportupload").change(function () {
+        jQuery('.div-statusreporttype').show();
+        jQuery('.reportupload-div').css("border", "1px solid green");
+        jQuery('.reportupload-invalid-feedback').hide();
+        jQuery('#statusreporttype').focus();
+        jQuery('.reporttype-invalid-feedback').hide();
+    });
+
+    $("#statusreportToolName").change(function () {
+        jQuery('#statusreportToolName').css("border", "1px solid green");
+        jQuery('.client-invalid-toolname').hide();
+    });
+
+
+    jQuery(document).on("change", ".excel-values-mapping", function () {
+
+        //This is newly selected dropdown value
+        var currentField = jQuery(this);
+        //This is newly selected dropdown field ID
+        var fieldId = currentField.attr("id");
+
+        var fieldMapping = jQuery('.excel-values-mapping');
+        var excelColumnMappingFieldIndexs = new Array();
+        jQuery.each(fieldMapping, function () {
+            //Already Selected dropdown ID
+            var selectedField = jQuery(this);
+            var selectFieldId = selectedField.attr("id");
+            if (jQuery(this).prop('multiple') && jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Excel Column Name" && selectFieldId != fieldId) {
+                var selectedValues = jQuery('#' + selectFieldId).val();
+                for (var i = 0; i < selectedValues.length; i++)//see that I removed the $ preceeding the `for` keyword, it should not have been there
+                {
+                    if (selectedValues[i] != "NA") {
+                        excelColumnMappingFieldIndexs.push(selectedValues[i]);
+                    }
+                }
+            }
+            else {
+                if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Required Value" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
+                    excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+                }
+            }
+        });
+
+
+        if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Required Value") {
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+
+        if (excelColumnMappingFieldIndexs != null && excelColumnMappingFieldIndexs.length > 1) {
+            if (currentField.prop('multiple')) {
+                var selectedValues = jQuery('#' + fieldId).val();
+                for (var i = 0; i < selectedValues.length; i++)//see that I removed the $ preceeding the `for` keyword, it should not have been there
+                {
+                    var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == selectedValues[i]);
+                    if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+                        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                        jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + selectedValues[i] + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+                        jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+                        jQuery('#' + fieldId + '').css("border", "1px solid red");
+                        jQuery('#modal-warning-message-popup').modal("show");
+                        return false;
+                    }
+                }
+            }
+            else {
+                var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
+                if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+                    jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                    jQuery('.warning-message-popup').html("<h2>You cannot select the value <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+                    jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+                    jQuery('#' + fieldId + '').css("border", "1px solid red");
+                    jQuery('#modal-warning-message-popup').modal("show");
+                }
+            }
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+    });
+
+    jQuery(document).on("change", ".excel-columns", function () {
+
+        //This is newly selected dropdown value
+        var currentField = jQuery(this);
+        //This is newly selected dropdown field ID
+        var fieldId = currentField.attr("id");
+
+        var fieldMapping = jQuery('.excel-columns');
+        var excelColumnMappingFieldIndexs = new Array();
+        jQuery.each(fieldMapping, function () {
+            //Already Selected dropdown ID
+            var selectedField = jQuery(this);
+            var selectFieldId = selectedField.attr("id");
+            if (jQuery('#' + selectFieldId + ' :selected').val() != "Please Select Excel Column Name" && jQuery('#' + selectFieldId + ' :selected').text() != "NA" && selectFieldId != fieldId) {
+                excelColumnMappingFieldIndexs.push(jQuery('#' + selectFieldId + ' :selected').text());
+            }
+        });
+
+
+        if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Excel Column Name") {
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+
+        var selectedVlaueMappedAlready = excelColumnMappingFieldIndexs.filter(x => x == jQuery('#' + fieldId + ' :selected').text());
+        if (selectedVlaueMappedAlready != null && selectedVlaueMappedAlready.length > 0) {
+            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+            jQuery('.warning-message-popup').html("<h2>You cannot select the excel column <b style='color:red'>" + jQuery('#' + fieldId + ' :selected').text() + "</b> for <b style='color:green'>" + fieldId + "</b> field. Which you already selected for another field.</h2>");
+            jQuery("#" + fieldId + " option:first").prop("selected", "selected");
+            jQuery('#' + fieldId + '').css("border", "1px solid red");
+            jQuery('#modal-warning-message-popup').modal("show");
+        }
+        else {
+            jQuery('#' + fieldId + '').css("border", "1px solid green");
+        }
+
+        if ((fieldId == "Ticket_Status" || fieldId == "Ticket_Priority" || fieldId == "Project_Priority" || fieldId == "Project_Status") && jQuery('#' + fieldId + ' :selected').val() != "Please Select Excel Column Name") {
+            var selectedColumnIndex = jQuery('#' + fieldId + ' :selected').val();
+            var selectedColumnName = jQuery('#' + fieldId + ' :selected').text();
+
+            fileData.delete('SelectedColumnIndex');
+            fileData.delete('SelectedColumnName');
+
+            fileData.append('SelectedColumnIndex', selectedColumnIndex);
+            fileData.append('SelectedColumnName', selectedColumnName);
+
+            jQuery.ajax({
+                type: "POST",
+                url: "/ReadSelectedColumnUniqueValues",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                success: function (data) {
+                    if (data != null) {
+
+                        var mappingColumn = jQuery("#" + fieldId).siblings('.dynamic-field-mapping');
+                        mappingColumn.empty();
+                        var inputValues = jQuery.parseJSON(data);
+
+                        var FieldInputSources = new Array();
+
+                        var multipleSelect = "";
+
+                        if (fieldId == "Ticket_Status" || fieldId == "Project_Status") {
+                            //FieldInputSources.push("Newly Raised");
+                            //FieldInputSources.push("Open");
+                            FieldInputSources.push({ "Closed": "<span style='color:red'>Please select all applicable  <b> ' CLOSED ' </b>  related status for which no action required from your end!<span>" });
+                            FieldInputSources.push({ "TODO": "<span style='color:red'>Please select all applicable <b> ' TO DO ' </b> related status for which not decided when to start work!<span>" });
+                            FieldInputSources.push({ "Cancelled": "<span style='color:red'>Please select all applicable <b> ' CANCELLED ' </b> related which can be ignored or no further action needed on them!<span>" });
+
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>");                          
+                            multipleSelect = "multiple";
+                        }
+
+                        if (fieldId == "Ticket_Priority" || fieldId == "Project_Priority") {
+                            FieldInputSources.push({ "Critical": "" });
+                            FieldInputSources.push({ "High": "" });
+                            FieldInputSources.push({ "Medium": "" });
+                            FieldInputSources.push({ "Low": "" });
+
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
+                            mappingColumn.append("<br>")
+
+                            mappingColumn.append("<label><p><b style='color: green'>Example:  </b><b style='color:rgb(192, 80, 78)'> 1= Critical    </b> <b style='color: 'rgb(155, 187, 88)'>2= High    </b><b style='color:#005983'>3= Medium    </b><b style='color: rgb(74, 172, 197)'>4= Low    </b></p></label>");
+                        }
+
+                        jQuery.each(FieldInputSources, function (i, source) {
+                            mappingColumn.append(ExcelFieldMappingBasedonDropdownValue(source, multipleSelect));
+                        });
+
+                        jQuery.each(inputValues, function (i, inputVal) {
+                            mappingColumn.find('.excel-values-mapping').append('<option value="' + inputVal + '">' + inputVal + '</option>');
+                        });
+
+                        mappingColumn.find('.excel-values-mapping').append('<option value=NA>NA</option>');
+
+                        mappingColumn.css("display", "block");
+                        mappingColumn.css("width", "565px");
+                        mappingColumn.css("float", "right");
+                        mappingColumn.css("padding-left", "20px");
+                        mappingColumn.css("padding-top", "20px");
+                        mappingColumn.css("border", "1px solid #0095a8");
+                        mappingColumn.css("border-radius", "10px");
+                        mappingColumn.css("margin-top", "10px");
+                    }
+                }
+            });
+        }
+    });
+
+
+    //Final submit post confirmation
+    jQuery(".btn-upload-report").click(function () {
+
+        var fileUpload = $("#reportupload").get(0);
+        var files = fileUpload.files;
+
+        var fileValidated = true;
+
+        if (fileUpload == null || fileUpload.files == null || fileUpload.files.length == 0) {
+            jQuery('.reportupload-div').css("border", "1px solid red");
+            jQuery('.reportupload-invalid-feedback').show();
+            jQuery('.div-statusreporttype').hide();
+            fileValidated = false;
+        }
+        else {
+            jQuery('.reportupload-div').css("border", "1px solid green");
+            jQuery('.reportupload-invalid-feedback').hide();
+        }
+
+
+        if (jQuery('#StatusReportInfo_EmployeeName :selected').text() == "Please select employee") {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid red");
+            jQuery('.employee-invalid-feedback').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#StatusReportInfo_EmployeeName').css("border", "1px solid green");
+            jQuery('.employee-invalid-feedback').hide();
+        }
+
+        if (jQuery('#StatusReportInfo_Month :selected').text() == "Please select month") {
+            jQuery('#StatusReportInfo_Month').css("border", "1px solid red");
+            jQuery('.month-invalid-feedback').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#StatusReportInfo_Month').css("border", "1px solid green");
+            jQuery('.month-invalid-feedback').hide();
+        }
+
+        if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
+            jQuery('#statusreporttype').css("border", "1px solid red");
+            jQuery('.reporttype-invalid-feedback').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#statusreporttype').css("border", "1px solid green");
+            jQuery('.reporttype-invalid-feedback').hide();
+        }
+
+        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") && jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
+            jQuery('#statusreportToolName').css("border", "1px solid red");
+            jQuery('.client-invalid-toolname').show();
+            fileValidated = false;
+        }
+        else {
+            jQuery('#statusreportToolName').css("border", "1px solid green");
+            jQuery('.client-invalid-toolname').hide();
+        }
+
+        var fieldMapping = jQuery('.excel-columns');
+        var excelColumnMappingFieldIndexs = new Array();
+
+        jQuery.each(fieldMapping, function () {
+            var currentField = jQuery(this);
+            var fieldId = currentField.attr("id");
+            if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Excel Column Name") {
+                jQuery('#' + fieldId + '').css("border", "1px solid red");
+                fileValidated = false;
+            }
+            else {
+                var fieldIndexMappingModel = {
+                    FieldName: $(this).siblings('label').attr("for"),
+                    Index: jQuery('#' + fieldId + ' :selected').val(),
+                }
+                excelColumnMappingFieldIndexs.push(fieldIndexMappingModel);
+                jQuery('#' + fieldId + '').css("border", "1px solid green");
+            }
+        });
+
+        var excelValuesMapping = jQuery('.excel-values-mapping');
+        var excelValuesMappingIndexs = new Array();
+
+        jQuery.each(excelValuesMapping, function () {
+            var currentField = jQuery(this);
+            var fieldId = currentField.attr("id");
+
+            var isMultiSelectField = currentField.prop("multiple");
+
+            if (jQuery('#' + fieldId + ' :selected').val() == "Please Select Required Value") {
+                jQuery('#' + fieldId + '').css("border", "1px solid red");
+                fileValidated = false;
+            }
+            else {
+                var index = "";
+                if (isMultiSelectField) {
+                    var selectedValues = jQuery('#' + fieldId).val();
+
+                    jQuery.each(selectedValues, function (i, item) {
+                        index += item + "|"
+                    });
+
+                    index = index.trim('|');
+                    index = index.substring(0, index.length - 1);
+
+                }
+                else {
+                    index = jQuery('#' + fieldId + ' :selected').val()
+                }
+                var fieldIndexMappingModel = {
+                    FieldName: $(this).siblings('label').attr("for"),
+                    Index: index
+                }
+                excelValuesMappingIndexs.push(fieldIndexMappingModel);
+                jQuery('#' + fieldId + '').css("border", "1px solid green");
+            }
+        });
+
+        if (fileValidated) {
+            var empName = jQuery('#StatusReportInfo_EmployeeName :selected').text();
+            var EmployeeID = jQuery('#StatusReportInfo_EmployeeName :selected').val();
+            var reportMonth = jQuery('#StatusReportInfo_Month :selected').val();
+            var fieldIndexJson = JSON.stringify(excelColumnMappingFieldIndexs);
+            var fieldValuesMappingJson = JSON.stringify(excelValuesMappingIndexs);
+
+            fileData.append('EmployeeName', empName);
+            fileData.append('EmployeeID', EmployeeID);
+            fileData.append('Month', reportMonth);
+            fileData.append('FieldsIndexJson', fieldIndexJson);
+            fileData.append('TemplateType', jQuery('#statusreporttype :selected').val());
+            fileData.append('ProjectID', jQuery('#statusreportEmpClient :selected').val());
+            fileData.append('ClientName', jQuery('#statusreportEmpClient :selected').text().trim());
+            fileData.append('ValuesMappingJson', fieldValuesMappingJson);
+            fileData.append('ToolName', jQuery('#statusreportToolName :selected').val().trim());
+            fileData.append('Uploadedby', jQuery('.agent-full-name').text());
+            fileData.append('ProjectCategory', jQuery('#reportcategory :selected').val());
+            jQuery.ajax({
+                type: "POST",
+                url: "/StatusReportsUploadAjax",
+                datatype: 'json',
+                contentType: false,
+                processData: false,
+                async: false,
+                data: fileData,
+                success: function (data) {
+                    if (data.Response.StatusCode == 200) {
+                        var clientName = jQuery('#statusreportEmpClient :selected').text();
+                        var toolName = jQuery('#statusreportToolName :selected').val();
+
+                        jQuery('.status-report-card').empty();
+                        fileData = new FormData();
+                        window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
+                    }
+                    else {
+                        jQuery('.status-report-card').empty();
+                        fileData = new FormData();
+                        window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";
+                    }
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    jQuery(document).ready(function () {
+        if (window.location.href.toString().toLowerCase().indexOf("?success") > -1) {
+            var responseSuccess = getUrlVars()["success"];
+            var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);
+            var selectedEmpID = decodeURIComponent(getUrlVars()["empID"]);
+            var reportMonth = decodeURIComponent(getUrlVars()["month"]);
+            var templateType = decodeURIComponent(getUrlVars()["templatetype"]);
+            var clientName = decodeURIComponent(getUrlVars()["clientName"]);
+            var toolName = decodeURIComponent(getUrlVars()["toolName"]);
+
+            if (responseSuccess == "true") {
+                jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+
+                if (useRole == "administrator") {
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
+                }
+                else {
+                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
+                }
+
+                jQuery('.message-success-popup').modal('show');
+            }
+            else {
+                var responseError = getUrlVars()["error"];
+                var decodedUrlText = decodeURIComponent(responseError);
+                jQuery('.error-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                jQuery('.database-response').html("<h2>" + decodedUrlText + "</h2>");
+                jQuery('#modal-db-error-alert').modal('show');
+            }
+
+            var yourCurrentUrl = window.location.href.split('?')[0];
+            window.history.replaceState({}, '', yourCurrentUrl);
+        }
+
+    });
+
+</script>

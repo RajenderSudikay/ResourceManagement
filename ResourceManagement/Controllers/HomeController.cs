@@ -6,21 +6,27 @@ using System.Web.Mvc;
 
 namespace ResourceManagement.Controllers
 {
+    using Microsoft.Ajax.Utilities;
     using Models;
     using OfficeOpenXml;
     using SelectPdf;
     using System;
     using System.Configuration;
+    using System.Globalization;
     using System.IO;
     using System.Net;
+    using System.Net.Http;
     using System.Net.Mail;
     using System.Text;
     using System.Text.Json;
     using System.Web;
     using System.Web.UI;
     using static ResourceManagement.Helpers.DateHelper;
+    using static ResourceManagement.Models.Graph1DataPoint;
     using static ResourceManagement.Models.LeaveOrHolidayModel;
+    using static ResourceManagement.Models.ProjectGraphDataPoint;
     using static ResourceManagement.Models.TimesheetReportModel;
+    using DataPoint = Models.DataPoint;
 
     public class HomeController : Controller
     {
@@ -722,7 +728,8 @@ namespace ResourceManagement.Controllers
                                 var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                                 {
                                     LeaveDate = empHolidayInf.taskdate.ToString(),
-                                    LeaveType = empHolidayInf.comments
+                                    LeaveType = empHolidayInf.comments,
+                                    LeaveDateTime = empHolidayInf.taskdate
 
                                 };
 
@@ -743,11 +750,40 @@ namespace ResourceManagement.Controllers
                                 var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                                 {
                                     LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
-                                    LeaveType = empHalfDayHolidayInf.Leave_Type
+                                    LeaveType = empHalfDayHolidayInf.Leave_Type,
+                                    LeaveDateTime = empHalfDayHolidayInf.Leave_Date
 
                                 };
                                 reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
                             }
+                        }
+
+
+                        var empAppliedLeavePostTimeSheetSubmissions = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && (a.timespent > 0 || a.overtime > 0)).ToList();
+
+                        if (empAppliedLeavePostTimeSheetSubmissions != null)
+                        {
+                            foreach (var empAppliedLeavePostTimeSheetSubmission in empAppliedLeavePostTimeSheetSubmissions)
+                            {
+                                var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == empAppliedLeavePostTimeSheetSubmission.employeeid && leave.leavedate == empAppliedLeavePostTimeSheetSubmission.taskdate).FirstOrDefault();
+
+                                if (isEmpAppliedLeaveonDateModel != null)
+                                {
+                                    var isLeaveExistsInTheList = reportModel.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDateTime == isEmpAppliedLeaveonDateModel.leavedate).FirstOrDefault();
+
+                                    if (isLeaveExistsInTheList == null)
+                                    {
+                                        var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                        {
+                                            LeaveDate = isEmpAppliedLeaveonDateModel.leavedate.ToString(),
+                                            LeaveType = isEmpAppliedLeaveonDateModel.leavesource,
+                                            LeaveDateTime = isEmpAppliedLeaveonDateModel.leavedate
+                                        };
+                                        reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                                    }
+                                }
+                            }
+
                         }
 
                         //Passing Inputs to view
@@ -937,7 +973,8 @@ namespace ResourceManagement.Controllers
                         var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                         {
                             LeaveDate = empHolidayInf.taskdate.ToString(),
-                            LeaveType = empHolidayInf.comments
+                            LeaveType = empHolidayInf.comments,
+                            LeaveDateTime = empHolidayInf.taskdate
 
                         };
 
@@ -958,11 +995,39 @@ namespace ResourceManagement.Controllers
                         var leaveInfoModel = new ReportLeaveOrHolidayInfo()
                         {
                             LeaveDate = empHalfDayHolidayInf.Leave_Date.ToString(),
-                            LeaveType = empHalfDayHolidayInf.Leave_Type
+                            LeaveType = empHalfDayHolidayInf.Leave_Type,
+                            LeaveDateTime = empHalfDayHolidayInf.Leave_Date
 
                         };
                         reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
                     }
+                }
+
+                var empAppliedLeavePostTimeSheetSubmissions = db.ambctaskcaptures.Where(a => a.employeeid.Equals(employeeId) && a.weekno == weekNumber && (a.timespent > 0 || a.overtime > 0)).ToList();
+
+                if (empAppliedLeavePostTimeSheetSubmissions != null)
+                {
+                    foreach (var empAppliedLeavePostTimeSheetSubmission in empAppliedLeavePostTimeSheetSubmissions)
+                    {
+                        var isEmpAppliedLeaveonDateModel = db.con_leaveupdate.Where(leave => leave.employee_id == empAppliedLeavePostTimeSheetSubmission.employeeid && leave.leavedate == empAppliedLeavePostTimeSheetSubmission.taskdate).FirstOrDefault();
+
+                        if (isEmpAppliedLeaveonDateModel != null)
+                        {
+                            var isLeaveExistsInTheList = reportModel.timeSheetLeaveOrHolidayInfo.Where(x => x.LeaveDateTime == isEmpAppliedLeaveonDateModel.leavedate).FirstOrDefault();
+
+                            if (isLeaveExistsInTheList == null)
+                            {
+                                var leaveInfoModel = new ReportLeaveOrHolidayInfo()
+                                {
+                                    LeaveDate = isEmpAppliedLeaveonDateModel.leavedate.ToString(),
+                                    LeaveType = isEmpAppliedLeaveonDateModel.leavesource,
+                                    LeaveDateTime = isEmpAppliedLeaveonDateModel.leavedate
+                                };
+                                reportModel.timeSheetLeaveOrHolidayInfo.Add(leaveInfoModel);
+                            }
+                        }
+                    }
+
                 }
 
                 //Passing Inputs to view
@@ -1157,6 +1222,172 @@ namespace ResourceManagement.Controllers
             return PartialView(timeSheetRemainder);
         }
 
+        public JsonResult RunSchedularJob()
+        {
+            var response = new JsonResponseModel();
+            try
+            {
+                RemainderJobSchedular();
+                response.Message = "Job executed succesfully";
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.InnerException.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        public void RemainderJobSchedular()
+        {
+            var clientNames = new List<string>();
+            clientNames.Add("Littelfuse");
+            clientNames.Add("Federal Signal");
+            clientNames.Add("Modine");
+            clientNames.Add("AMBC");
+
+            var lastweekDay = DateTime.Today.AddDays(-7);
+            int weekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(lastweekDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+
+            DateTime Firstday = lastweekDay.AddDays(-(int)lastweekDay.DayOfWeek).AddDays(1);
+            DateTime Endaday = Firstday.AddDays(4);
+
+            var currentMonth = FirstDayOfMonth();
+            var currentMonthSf = MonthShortFormat(currentMonth);
+            var formattedCurrentMonth = FormatDate(currentMonth.ToString());
+
+            var lastMonth = FirstDayOfLastMonth();
+            var lastMonthSf = MonthShortFormat(lastMonth);
+            var formattedLastMonth = FormatDate(lastMonth.ToString());
+
+            var timeSheetnotSubmittedEmpList = new List<AMBC_Active_Emp_view>();
+            var statusReportnotSubmittedEmpList = new List<AMBC_Active_Emp_view>();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                foreach (var client in clientNames)
+                {
+                    var projectSpecificEmployees = db.AMBC_Active_Emp_view.Where(emp => emp.Client == client).ToList();
+                    foreach (var projectSpecificEmployee in projectSpecificEmployees)
+                    {
+                        var isEmployeeSubmittedTimeSheet = db.ambctaskcaptures.Where(a => a.weekno == weekNumber && a.clientname == client && a.employeeid == projectSpecificEmployee.Employee_ID).FirstOrDefault();
+
+                        if (isEmployeeSubmittedTimeSheet == null)
+                        {
+                            timeSheetnotSubmittedEmpList.Add(projectSpecificEmployee);
+                        }
+
+                        var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+
+                        statusReportnotSubmittedEmpList.Add(projectSpecificEmployee);
+                    }
+                }
+            }
+
+            var remainderModel = new JobRemainderModel();
+            remainderModel.EndDate = FormatDate(Endaday.ToString());
+            remainderModel.StartDate = FormatDate(Firstday.ToString());
+            remainderModel.CurrentMonth = formattedCurrentMonth;
+            remainderModel.CurrentMonthDate = currentMonth;
+            remainderModel.StartDateTime = Firstday;
+            remainderModel.EndDateTime = Endaday;
+            remainderModel.CurrentMonthShortFormat = currentMonthSf;
+            remainderModel.PreviousMonthShortFormat = lastMonthSf;
+
+            remainderModel.RemainderType = "TimeSheet";
+            SchedularJobRemainderEmail(timeSheetnotSubmittedEmpList, remainderModel);
+
+            remainderModel.RemainderType = "StatusReport";
+            SchedularJobRemainderEmail(statusReportnotSubmittedEmpList, remainderModel);
+        }
+
+        public string FormatDate(string Date)
+        {
+            var actualDate = Date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim();
+            if (actualDate.Contains('-'))
+            {
+                return actualDate.Split('-')[1] + "-" + actualDate.Split('-')[0] + "-" + actualDate.Split('-')[2];
+            }
+            if (actualDate.Contains('/'))
+            {
+                return actualDate.Split('/')[1] + "-" + actualDate.Split('/')[0] + "-" + actualDate.Split('/')[2];
+            }
+
+            return actualDate;
+        }
+
+        public void SchedularJobRemainderEmail(List<AMBC_Active_Emp_view> employees, JobRemainderModel remainderModel)
+        {
+            try
+            {
+                foreach (var emp in employees)
+                {
+                    if ((remainderModel.RemainderType == "StatusReport" && emp.Client == "AMBC") || emp.Employee_Name == "seema")
+                    {
+                        continue;
+                    }
+                    using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], emp.AMBC_Mail_Address))
+                    {
+                        if (remainderModel.RemainderType == "TimeSheet")
+                        {
+                            mm.Subject = "REMINDER: TimeSheet for the week - " + remainderModel.StartDate + " to " + remainderModel.EndDate;
+
+                            var renainderEmailModel = new RMA_RemainderEmailSelectedEmpModel();
+                            renainderEmailModel.selectedemployeeempname = emp.Employee_Name;
+                            renainderEmailModel.selectedweekstartdate = remainderModel.StartDate;
+                            renainderEmailModel.selectedweekenddate = remainderModel.EndDate;
+
+                            var emailBody = RenderPartialToString(this, "RemainderEmail", renainderEmailModel, ViewData, TempData);
+                            mm.Body = emailBody;
+                        }
+
+                        if (remainderModel.RemainderType == "StatusReport")
+                        {
+                            mm.Subject = "REMINDER: Dashboard Report for the month - " + remainderModel.PreviousMonthShortFormat;
+                            var remainderStatusEmailModel = new StatusReport_RemainderEmailSelectedEmpModel();
+                            remainderStatusEmailModel.SendSingleEmailToAllEmp = false;
+                            remainderStatusEmailModel.selectedemployeeempname = emp.Employee_Name;
+                            remainderStatusEmailModel.RemainderMonth = remainderModel.PreviousMonthShortFormat;
+
+                            var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", remainderStatusEmailModel, ViewData, TempData);
+
+                            mm.Body = emailBody;
+                        }
+
+                        //TODO                     
+                        if (!string.IsNullOrEmpty(emp.AMBC_PM_Mail_Address))
+                        {
+                            mm.CC.Add(emp.AMBC_PM_Mail_Address);
+                        }
+
+                        mm.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                        smtp.EnableSsl = true;
+                        NetworkCredential credentials = new NetworkCredential();
+                        credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                        credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                        smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = credentials;
+                        smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                        smtp.Send(mm);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
         public JsonResult SendRemainderEmail(RMA_TimeSheetRemainderEmail timesheetEmpRemainder)
         {
@@ -1283,6 +1514,12 @@ namespace ResourceManagement.Controllers
             return View(employeeModel);
         }
 
+        public ActionResult LeaveReport()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
 
         public DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
         {
@@ -1340,6 +1577,7 @@ namespace ResourceManagement.Controllers
                                     contextModelList.Add(new con_leaveupdate()
                                     {
                                         employee_id = leaveModel.SelectedEmpId,
+                                        employee_name = leaveModel.SelectedEmpName,
                                         leavedate = System.Convert.ToDateTime(leaveDate.ToString("yyyy-MM-dd")),
                                         leavesource = leaveModel.LeaveType,
                                         leavecategory = leaveModel.LeaveCategory,
@@ -1717,6 +1955,16 @@ namespace ResourceManagement.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ExportLeaveReport(string GridHtml)
+        {
+            RMA_LeaveModel leaveReportModel = JsonConvert.DeserializeObject<RMA_LeaveModel>(GridHtml);
+            var reportHtml = GetLeaveInfo(leaveReportModel);
+            var fileName = "Leave Report ";
+            return File(Encoding.ASCII.GetBytes(reportHtml.Data.ToString()), "application/vnd.ms-excel", fileName + ".xls");
+        }
+
         public JsonResult GetLeaveInfo(RMA_LeaveModel leaveReportModel)
         {
             try
@@ -1739,7 +1987,8 @@ namespace ResourceManagement.Controllers
 
                     if (leaveModel.leaveDetails != null && leaveModel.leaveDetails.Count > 0)
                     {
-                        leaveModel.leaveDetails.OrderBy(x => x.leavedate);
+                        var leavesBasedOnEmpId = leaveModel.leaveDetails.OrderBy(x => x.employee_id).ToList();
+                        leaveModel.leaveDetails = leavesBasedOnEmpId;
                         leaveModel.jsonResponse.StatusCode = 200;
                         leaveModel.jsonResponse.Message = "Leave Details Found for the selected inputs";
                     }
@@ -1748,7 +1997,7 @@ namespace ResourceManagement.Controllers
                         leaveModel.jsonResponse.StatusCode = 404;
                         leaveModel.jsonResponse.Message = "Leave Details not Found for the selected inputs";
                     }
-                 
+
 
                     leaveHtmlData = RenderPartialToString(this, "LeaveInfoPartial", leaveModel, ViewData, TempData);
                 }
@@ -1759,6 +2008,2368 @@ namespace ResourceManagement.Controllers
             {
                 return Json(null);
             }
+        }
+
+        //Status REPORt Upload Code
+        public ActionResult StatusReportUpload()
+        {
+            var model = new RMA_StatusReportModel();
+
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_EmployeeModel = employeeModel;
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeesDetails = db.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active").ToList();
+
+                if (employeesDetails != null && employeesDetails.Count > 0)
+                {
+                    foreach (var employeesDetail in employeesDetails)
+                    {
+                        model.StatusReportInfo.EmployeeList.Add(new SelectListItem()
+                        {
+                            Text = employeesDetail.Employee_Name,
+                            Value = employeesDetail.Employee_ID
+                        });
+                    }
+
+                }
+
+                var monthsList = new List<DateTime>();
+                monthsList.Add(DateTime.Now.AddMonths(-1));
+                monthsList.Add(DateTime.Now.AddMonths(-2));
+                monthsList.Add(DateTime.Now.AddMonths(-3));
+                monthsList.Add(DateTime.Now.AddMonths(-4));
+                monthsList.Add(DateTime.Now.AddMonths(-5));
+
+                foreach (var month in monthsList)
+                {
+                    model.StatusReportInfo.MonthList.Add(new SelectListItem()
+                    {
+                        Text = month.ToString("MMM") + "-" + month.Year,
+                        Value = month.ToString("MMM") + "-" + month.Year
+                    });
+                }
+
+            }
+
+            return View(model);
+        }
+
+
+        public JsonResult StatusReportsUploadAjax(StatusReportModel fileData)
+        {
+            var model = new RMA_StatusReportModel();
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_EmployeeModel = employeeModel;
+
+            HttpPostedFileBase file = fileData.ExcelFile;
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    var indexList = new List<FieldsIndex>();
+                    indexList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.FieldsIndexJson);
+
+                    switch (fileData.TemplateType)
+                    {
+                        case "Template1":
+                            Template1Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
+
+                        case "Template2":
+                            Template2Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
+
+                        case "Template3":
+                            fileData.IsAuditReport = true;
+                            Template1Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            //Template3Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            break;
+                    }
+                }
+            }
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public static double GetBusinessDays(DateTime startD, DateTime endD)
+        {
+            double calcBusinessDays =
+                1 + ((endD - startD).TotalDays * 5 -
+                (startD.DayOfWeek - endD.DayOfWeek) * 2) / 7;
+
+            if (endD.DayOfWeek == DayOfWeek.Saturday) calcBusinessDays--;
+            if (startD.DayOfWeek == DayOfWeek.Sunday) calcBusinessDays--;
+
+            return calcBusinessDays;
+        }
+
+
+        public static DateTime FirstDayOfMonth()
+        {
+            var date = DateTime.Now;
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+        public static DateTime FirstDayOfLastMonth()
+        {
+            var today = DateTime.Today;
+            var month = new DateTime(today.Year, today.Month, 1);
+            return month.AddMonths(-1);
+        }
+
+
+        private static void Template1Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+                //Ticket_Prioriy & Ticket& Status
+                var MappingValuesList = new List<FieldsIndex>();
+                MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
+
+                int Ticket_NumberIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Number").FirstOrDefault().Index);
+                //int Ticket_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Summary").FirstOrDefault().Index);
+
+                var Ticket_Created_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Created_Date").FirstOrDefault().Index) : 0;
+                var Ticket_CategoryIndex = fileData.IsAuditReport == false ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Category").FirstOrDefault().Index) : 0;
+
+                //var Ticket_RaisedbyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Raisedby").FirstOrDefault().Index);
+                var Ticket_PriorityIndex = indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Priority").FirstOrDefault().Index) : 0;
+
+                var Ticket_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Status").FirstOrDefault().Index);
+                var Ticket_Closed_DateIndex = indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault() != null ? System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Ticket_Closed_Date").FirstOrDefault().Index) : 0;
+
+                //var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+                //var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template1Model();
+
+                var currentDateStartDate = FirstDayOfMonth();
+                var validationErrors = false;
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    //CHECK IF THE REPORT CONTAINS OLD MONTH DATA ONLY
+                    //CHECKING WITH CREATED DATE AND CLOSED DATE VALUES
+                    var createdDateValue = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    if (createdDateValue > currentDateStartDate)
+                    {
+                        validationErrors = true;
+                        model.Response.StatusCode = 400;
+                        model.Response.Message = "Looks like in the uploaded report Created Date field <br>is having future date's like.. (" + createdDateValue + ").<br> You are not allowed to upload future date records";
+                        break;
+                    }
+
+                    var ClosedDateValue = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue;
+                    if (ClosedDateValue > currentDateStartDate)
+                    {
+                        validationErrors = true;
+                        model.Response.StatusCode = 400;
+                        model.Response.Message = "Looks like in the uploaded report Closed Date field <br>is having future date's like.. (" + ClosedDateValue + ").<br> You are not allowed to upload future date records";
+                        break;
+                    }
+
+                    //UNIQUE KEY VALUES CONDITION TO BE CHECKED HERE
+                    if (workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null)
+                    {
+                        //This logic for report graphs
+                        var reportTicketPriority = "";
+                        if (Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null)
+                        {
+                            var rowIteratorPriority = workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString();
+                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
+                            if (mappingListItem != null)
+                            {
+                                reportTicketPriority = mappingListItem.FieldName.Trim();
+                            }
+                        }
+                        else
+                        {
+                            reportTicketPriority = "Low";
+                        }
+
+                        bool IsOpenTicket = false;
+                        bool IsClosedTicket = false;
+                        bool IsTODOTicket = false;
+                        bool IsCancelledTicket = false;
+                        if (workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null)
+                        {
+                            var rowIteratorStatus = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString();
+                            var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                            if (mappingClosedListItem != null)
+                            {
+                                rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
+                                IsClosedTicket = true;
+                            }
+                            else
+                            {
+                                var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingTODOListItem != null)
+                                {
+                                    IsTODOTicket = true;
+                                }
+
+                                var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingCancelledListItem != null)
+                                {
+                                    IsCancelledTicket = true;
+                                }
+
+                                if (!IsCancelledTicket)
+                                {
+                                    IsOpenTicket = true;
+                                }
+                            }
+                        }
+
+                        bool IsNewTicket = false;
+                        var ticketAge = 0;
+                        var closedYear = 0;
+                        var closedMonth = 0;
+                        var createdYear = 0;
+                        var createdMonth = 0;
+
+                        if (Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()))
+                        {
+                            var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString());
+                            var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+                            createdYear = ticketDateCreated.Year;
+                            createdMonth = ticketDateCreated.Month;
+
+                            if (fileData.Month == ticketMonthYear)
+                            {
+                                IsNewTicket = true;
+                            }
+
+                            if (IsClosedTicket)
+                            {
+                                if (Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()))
+                                {
+                                    var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString());
+                                    ticketAge = System.Convert.ToInt32(GetBusinessDays(ticketDateCreated, ticketDateClosed));
+
+                                    closedYear = ticketDateClosed.Year;
+                                    closedMonth = ticketDateClosed.Month;
+                                }
+                                else
+                                {
+                                    ticketAge = 5;
+                                }
+                            }
+                        }
+
+                        reportModel.Template1Reports.Add(new monthlyreports_Template1()
+                        {
+                            Ticket_Number = workSheet.Cells[rowIterator, Ticket_NumberIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() : "",
+                            //Ticket_Summary = workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_SummaryIndex].Value.ToString() : "",
+                            //Ticket_Summary = fileData.ToolName,
+                            Ticket_Created_Date = Ticket_Created_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Ticket_Category = fileData.IsAuditReport == false && Ticket_CategoryIndex != 0 && workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_CategoryIndex].Value.ToString() : "",
+                            Ticket_Priority = Ticket_PriorityIndex != 0 && workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_PriorityIndex].Value.ToString() : "",
+                            //Ticket_Raisedby = workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_RaisedbyIndex].Value.ToString() : "",
+                            Ticket_Status = workSheet.Cells[rowIterator, Ticket_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Ticket_StatusIndex].Value.ToString() : "",
+                            Ticket_Closed_Date = Ticket_Closed_DateIndex != 0 && workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Ticket_Closed_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            //Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            //Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            Ticket_Raisedby = "DELETE",
+                            Uploadedby = fileData.Uploadedby,
+                            FileNamee = file.FileName,
+                            Consultant_Name = fileData.EmployeeName,
+                            Uploaded_Month = fileData.Month,
+                            Client_Name = fileData.ClientName,
+                            Is_Closed = IsClosedTicket,
+                            Is_Open = IsOpenTicket,
+                            Is_Newly_created = IsNewTicket,
+                            ReportPriority = reportTicketPriority,
+                            Ticket_Age = ticketAge,
+                            Closed_Month = closedMonth,
+                            Closed_Year = closedYear,
+                            Created_Month = createdMonth,
+                            Created_Year = createdYear,
+                            Is_Cancelled = IsCancelledTicket,
+                            Is_ToDo = IsTODOTicket,
+                            EmplyeeID = fileData.EmployeeID,
+                            ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                            IsAuditReport = fileData.IsAuditReport,
+                            TicketingToolName = fileData.ToolName,
+                            Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
+                        }); ;
+                    }
+                }
+
+                using (var context = new TimeSheetEntities())
+                {
+                    if (!validationErrors)
+                    {
+                        context.monthlyreports_Template1.AddRange(reportModel.Template1Reports);
+                        context.SaveChanges();
+                        model.Response.StatusCode = 200;
+                        model.Response.Message = "Status Report Uploaded Successfully!";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
+        }
+
+        private static void StatusReportReponse(RMA_StatusReportModel model, Exception ex)
+        {
+            model.Response.StatusCode = 500;
+            if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+            {
+                var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+
+                foreach (var actuallError in actuallErrors)
+                {
+                    if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                    {
+                        model.Response.Message = actuallError;
+                    }
+                }
+            }
+            else
+            {
+                model.Response.Message = ex.Message;
+            }
+        }
+
+        private static void Template2Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+
+                //Ticket_Prioriy & Ticket& Status
+                var MappingValuesList = new List<FieldsIndex>();
+                MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
+
+                int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
+                int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
+                var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
+                var Project_Closing_Date_TargetIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closing_Date_Target").FirstOrDefault().Index);
+                var Project_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Priority").FirstOrDefault().Index);
+                var Project_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Status").FirstOrDefault().Index);
+                var Project_Closed_Date_ActualIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closed_Date_Actual").FirstOrDefault().Index);
+                var CompletedPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "CompletedPercentage").FirstOrDefault().Index);
+                var RemainingPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "RemainingPercentage").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template2Model();
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (workSheet.Cells[rowIterator, Project_NameIndex].Value != null)
+                    {
+                        //PRIORITY LOGIC
+                        var projectPriority = "";
+                        if (workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString()))
+                        {
+                            var rowIteratorPriority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString();
+                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
+                            if (mappingListItem != null)
+                            {
+                                projectPriority = mappingListItem.FieldName.Trim();
+                            }
+                            else
+                            {
+                                projectPriority = "Low";
+                            }
+                        }
+                        else
+                        {
+                            projectPriority = "Low";
+                        }
+
+                        bool IsOpenProject = false;
+                        bool IsClosedProject = false;
+                        bool IsTODOProject = false;
+                        bool IsCancelledProject = false;
+
+                        var defaultStatus = "default";
+
+                        if (workSheet.Cells[rowIterator, Project_StatusIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString()))
+                        {
+                            var rowIteratorStatus = workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString();
+                            var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                            if (mappingClosedListItem != null)
+                            {
+                                rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
+                                IsClosedProject = true;
+                            }
+                            else
+                            {
+                                var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingTODOListItem != null)
+                                {
+                                    IsTODOProject = true;
+                                }
+
+                                var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
+                                if (mappingCancelledListItem != null)
+                                {
+                                    IsCancelledProject = true;
+                                }
+
+                                if (!IsCancelledProject)
+                                {
+                                    IsOpenProject = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            IsOpenProject = true;
+                        }
+
+                        var closedYear = 0;
+                        var closedMonth = 0;
+                        var createdYear = 0;
+                        var createdMonth = 0;
+
+                        if (workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()))
+                        {
+                            var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString());
+                            var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+                            createdYear = ticketDateCreated.Year;
+                            createdMonth = ticketDateCreated.Month;
+                        }
+
+                        if (workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()))
+                        {
+                            var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString());
+                            closedYear = ticketDateClosed.Year;
+                            closedMonth = ticketDateClosed.Month;
+                        }
+
+                        reportModel.Template2Reports.Add(new monthlyreports_Template2()
+                        {
+                            Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString().Trim() : "",
+                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString().Trim() : "",
+                            Project_Priority = projectPriority,
+                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString().Trim() : defaultStatus,
+                            Project_Category = fileData.ProjectCategory,
+
+                            CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
+                            RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
+
+                            Uploadedby = fileData.Uploadedby,
+                            FileNamee = file.FileName,
+                            ConsultantName = fileData.EmployeeName,
+                            Uploaded_Month = fileData.Month,
+                            ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                            EmplyeeID = fileData.EmployeeID,
+                            Is_Cancelled = IsCancelledProject,
+                            Is_Closed = IsClosedProject,
+                            Is_Open = IsOpenProject,
+                            Is_ToDo = IsTODOProject,
+
+                            Created_Month = createdMonth,
+                            Created_Year = createdYear,
+                            Closed_Month = closedMonth,
+                            Closed_Year = closedYear,
+                            Project_Raisedby = "DELETE DUMMY",
+                            Client_Name = fileData.ClientName,
+
+                            //NEED TO DECIDE
+                            uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
+
+                        });
+                    }
+
+                }
+                using (var context = new TimeSheetEntities())
+                {
+                    context.monthlyreports_Template2.AddRange(reportModel.Template2Reports);
+                    context.SaveChanges();
+                    model.Response.StatusCode = 200;
+                    model.Response.Message = "Status Report Uploaded Successfully!";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
+        }
+
+        private static void Template3Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        {
+            try
+            {
+                int Test_IDIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_ID").FirstOrDefault().Index);
+                int Control_Group_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Group_Name").FirstOrDefault().Index);
+
+                var Test_CompletedIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Completed").FirstOrDefault().Index);
+                var Test_Due_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Due_Date").FirstOrDefault().Index);
+
+                var Test_Completion_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Completion_Date").FirstOrDefault().Index);
+                var Test_ConclusionIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_Conclusion").FirstOrDefault().Index);
+
+                var Control_OwnerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Owner").FirstOrDefault().Index);
+                var Control_PerformerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Control_Performer").FirstOrDefault().Index);
+
+                var Test_applicationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Test_application").FirstOrDefault().Index);
+                var OrganisationIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Organisation").FirstOrDefault().Index);
+
+                var LayerIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Layer").FirstOrDefault().Index);
+                var FrequencyIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Frequency").FirstOrDefault().Index);
+
+                var Current_stepIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Current_step").FirstOrDefault().Index);
+                var CommentsIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Comments").FirstOrDefault().Index);
+
+                var reportModel = new StatusReport_Template3Model();
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (workSheet.Cells[rowIterator, Test_IDIndex].Value != null)
+                    {
+                        reportModel.Template3Reports.Add(new monthlyreports_Template3()
+                        {
+                            Control_Group_Name = workSheet.Cells[rowIterator, Control_Group_NameIndex].Value != null ? workSheet.Cells[rowIterator, Control_Group_NameIndex].Value.ToString() : "",
+                            Control_Owner = workSheet.Cells[rowIterator, Control_OwnerIndex].Value != null ? workSheet.Cells[rowIterator, Control_OwnerIndex].Value.ToString() : "",
+                            Control_Performer = workSheet.Cells[rowIterator, Control_PerformerIndex].Value != null ? workSheet.Cells[rowIterator, Control_PerformerIndex].Value.ToString() : "",
+                            Current_step = workSheet.Cells[rowIterator, Current_stepIndex].Value != null ? workSheet.Cells[rowIterator, Current_stepIndex].Value.ToString() : "",
+                            Frequency = workSheet.Cells[rowIterator, FrequencyIndex].Value != null ? workSheet.Cells[rowIterator, FrequencyIndex].Value.ToString() : "",
+                            Layer = workSheet.Cells[rowIterator, LayerIndex].Value != null ? workSheet.Cells[rowIterator, LayerIndex].Value.ToString() : "",
+                            Test_application = workSheet.Cells[rowIterator, Test_applicationIndex].Value != null ? workSheet.Cells[rowIterator, Test_applicationIndex].Value.ToString() : "",
+                            Test_Completed = workSheet.Cells[rowIterator, Test_CompletedIndex].Value != null ? workSheet.Cells[rowIterator, Test_CompletedIndex].Value.ToString() : "",
+                            Organisation = workSheet.Cells[rowIterator, OrganisationIndex].Value != null ? workSheet.Cells[rowIterator, OrganisationIndex].Value.ToString() : "",
+                            Comments = workSheet.Cells[rowIterator, CommentsIndex].Value != null ? workSheet.Cells[rowIterator, CommentsIndex].Value.ToString() : "",
+                            Test_Completion_Date = workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value != null && workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Test_Completion_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Test_Conclusion = workSheet.Cells[rowIterator, Test_ConclusionIndex].Value != null ? workSheet.Cells[rowIterator, Test_ConclusionIndex].Value.ToString() : "",
+                            Test_Due_Date = workSheet.Cells[rowIterator, Test_Due_DateIndex].Value != null && workSheet.Cells[rowIterator, Test_Due_DateIndex].Value.ToString() != string.Empty ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Test_Due_DateIndex].Value.ToString()) : DateTime.MinValue,
+                            Test_ID = workSheet.Cells[rowIterator, Test_IDIndex].Value != null ? workSheet.Cells[rowIterator, Test_IDIndex].Value.ToString() : "",
+                            Uploadedby = fileData.EmployeeName,
+                            FileNamee = file.FileName,
+                            Consultantname = fileData.EmployeeName,
+                            Uploadedmonth = fileData.Month,
+
+                            //NEED TO DECIDE
+
+                            Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Test_IDIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
+
+                        });
+                    }
+
+                }
+                using (var context = new TimeSheetEntities())
+                {
+                    context.monthlyreports_Template3.AddRange(reportModel.Template3Reports);
+                    context.SaveChanges();
+                    model.Response.StatusCode = 200;
+                    model.Response.Message = "Status Report Uploaded Successfully!";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusReportReponse(model, ex);
+            }
+        }
+
+        public JsonResult ReadExcelColumnNames(StatusReportModel fileData)
+        {
+            HttpPostedFileBase file = fileData.ExcelFile;
+            var columnNames = new Dictionary<string, int>();
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    for (int columnIterator = 1; columnIterator <= noOfCol; columnIterator++)
+                    {
+                        if (workSheet.Cells[1, columnIterator].Value != null)
+                            columnNames.Add(workSheet.Cells[1, columnIterator].Value.ToString(), columnIterator);
+                    }
+                }
+            }
+
+            return Json(columnNames, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ReadSelectedColumnUniqueValues(StatusReportModel fileData)
+        {
+            HttpPostedFileBase file = fileData.ExcelFile;
+            var columnValues = new List<string>();
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    var currentSheet = package.Workbook.Worksheets;
+                    var workSheet = currentSheet.First();
+                    var noOfCol = workSheet.Dimension.End.Column;
+                    var noOfRow = workSheet.Dimension.End.Row;
+
+                    var selectedColumnIndex = System.Convert.ToInt32(fileData.SelectedColumnIndex);
+
+                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                    {
+                        if (workSheet.Cells[rowIterator, selectedColumnIndex].Value != null)
+                            columnValues.Add(workSheet.Cells[rowIterator, selectedColumnIndex].Value.ToString());
+                    }
+                }
+            }
+
+            if (columnValues.Count > 0)
+            {
+                var distinctColumnsValues = columnValues.Distinct();
+                return Json(JsonSerializer.Serialize(distinctColumnsValues), JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null);
+
+        }
+
+
+        //Status REPORt View Report Code
+        public ActionResult StatusReport()
+        {
+            var model = new RMA_StatusReportViewModel();
+
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            model.RMA_StatusReportModel.RMA_EmployeeModel = employeeModel;
+            return View(model);
+        }
+
+        static string getAbbreviatedName(DateTime selectedDate)
+        {
+            DateTime date = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+            return date.ToString("MMM") + "-" + selectedDate.Year;
+        }
+
+        public static MonthWiseReportModel ReportGetMonthInfo(DateTime selectedDate)
+        {
+            DateTime date = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+            DateTime lastDay = new DateTime();
+
+            if (selectedDate.Month != 12)
+            {
+                lastDay = new DateTime(selectedDate.Year, selectedDate.Month + 1, 1).AddDays(-1);
+            }
+            else
+            {
+                lastDay = new DateTime(selectedDate.Year + 1, 1, 1).AddDays(-1);
+
+            }
+
+            var monthInfo = new MonthWiseReportModel()
+            {
+                Month = date.ToString("MMM") + "-" + selectedDate.Year,
+                Year = date.Year,
+                MonthNumber = date.Month,
+                StartDateOfTheMonth = selectedDate,
+                EndDateOfTheMonth = lastDay
+            };
+
+            return monthInfo;
+        }
+
+
+
+        public JsonResult GetMonthsBasedOnYear(int year, string reportType)
+        {
+
+            var selectedDate = new DateTime(year, 1, 1);
+
+            //Current month  report cant be seen, hence excluding the dropdown
+            var selctedDateMonth = System.Convert.ToInt32(DateTime.Now.ToString("MM"));
+
+            if (year != DateTime.Now.Year)
+            {
+                selctedDateMonth = 12;
+            }
+
+            var monthsList = new Dictionary<string, string>();
+
+            if (reportType == "Month Report")
+            {
+                var currentMonthStartdate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                for (int month = 1; month <= selctedDateMonth; month++)
+                {
+                    var newDate = new DateTime(year, month, 1);
+
+                    if (newDate != currentMonthStartdate)
+                    {
+                        var monthName = getAbbreviatedName(newDate);
+                        monthsList.Add(System.Convert.ToString(monthName + "&" + month), monthName);
+                    }
+                }
+
+            }
+
+            var inputMonthList = new Dictionary<string, int>();
+
+            //Based on this value in loop month start will be looped
+            var monthStartFrom = 0;
+
+            if (reportType == "Quarterly Report")
+            {
+                inputMonthList.Add("Quarter-1", 3);
+                inputMonthList.Add("Quarter-2", 6);
+                inputMonthList.Add("Quarter-3", 9);
+                inputMonthList.Add("Quarter-4", 12);
+
+                monthStartFrom = 2;
+            }
+
+            if (reportType == "Half Year Report")
+            {
+                inputMonthList.Add("First Half Year", 6);
+                inputMonthList.Add("Second Half Year", 12);
+
+                monthStartFrom = 5;
+            }
+
+            if (reportType == "Annual Report")
+            {
+                inputMonthList.Add("Annual Report", 12);
+                monthStartFrom = 11;
+            }
+
+            foreach (var quarter in inputMonthList)
+            {
+                var monthNames = string.Empty;
+                var quarterExists = false;
+
+                if (quarter.Value <= selctedDateMonth)
+                {
+                    var startMonth = quarter.Value - monthStartFrom;
+                    for (int month = startMonth; month <= quarter.Value; month++)
+                    {
+                        var newDate = new DateTime(year, month, 1);
+                        monthNames += getAbbreviatedName(newDate) + "&" + month + "|";
+                        quarterExists = true;
+                    }
+                }
+                if (quarterExists)
+                {
+                    monthsList.Add(monthNames, quarter.Key);
+                }
+            }
+
+
+            var requiredMonthsLost = monthsList.Reverse();
+            return Json(JsonSerializer.Serialize(requiredMonthsLost), JsonRequestBehavior.AllowGet);
+        }
+
+        static double PercentageCalculate(int num, int totalNum)
+        {
+            var percenatage = (double)num / totalNum * 100;
+            return percenatage;
+        }
+
+        static double PercentageCalculateCustom(int num, int totalNum)
+        {
+            //var percenatage = (double)num / totalNum * 100;
+            var percenatage = (int)Math.Round((double)(100 * num) / totalNum, MidpointRounding.AwayFromZero);
+            return percenatage;
+        }
+
+        public string EmployeeProfileImagePath(string EmpID)
+        {
+            var imageUrl = "/Assets/EmployeeImagesPNG/" + EmpID + ".png";
+            var baseUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority));
+            var url = new Uri(baseUri, VirtualPathUtility.ToAbsolute(imageUrl));
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Head, url);
+                var response = client.SendAsync(request).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    imageUrl = "/Assets/EmployeeImagesPNG/MaleDefault.png";
+                }
+            }
+
+            return imageUrl;
+        }
+
+        public ActionResult StatusGraphChartReport(StatusReportChartModel StatusReportChartModel)
+        {
+            var graphModel = new GraphChartModel();
+
+            graphModel.ViewModel = new List<GraphChartViewModel>();
+            var selectedReportedMonthStartDate = new DateTime();
+            var requiredReportMonths = new List<MonthWiseReportModel>();
+
+            var carryForwardMonthInfo = new MonthWiseReportModel();
+
+            Decimal emplyeeAvailabiliy = 0;
+            if (StatusReportChartModel.ReportType == "Month Report")
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
+                graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
+
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-1)));
+                //requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2)));
+
+                //var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-3));
+                //carryForwardMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-4));
+
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate.AddMonths(-2));
+
+                requiredReportMonths.Add(startingMonthForTheReport);
+                graphModel.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
+                requiredReportMonths.Reverse();
+
+                graphModel.SelectedReportMonth.ReportType = StatusReportChartModel.ReportType;
+                graphModel.SelectedReportMonth.QuarterName = graphModel.SelectedReportMonth.MonthName;
+
+            }
+
+            else
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+                int firstMonthFromTheSelection = 0;
+                var reportStartMonth = "";
+
+                var selectedMonthNumberCount = 0;
+
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
+                {
+                    if (selectedMonthNumber != string.Empty)
+                    {
+                        selectedMonthNumberCount++;
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
+
+                        graphModel.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
+
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        if (firstMonthFromTheSelection == 0)
+                        {
+                            reportStartMonth = selectedMonthInfo.Month;
+
+                            if (selectedMonthNum == 1)
+                            {
+                                var carryForwardYear = StatusReportChartModel.Year - 1;
+                                var carryForwardMonthNum = 12;
+                                var carryForwardMonth = new DateTime(carryForwardYear, carryForwardMonthNum, 1);
+                                carryForwardMonthInfo = ReportGetMonthInfo(carryForwardMonth);
+                            }
+
+                        }
+                        requiredReportMonths.Add(selectedMonthInfo);
+                        firstMonthFromTheSelection++;
+                    }
+                }
+                graphModel.SelectedReportMonth.ReportStartMonth = reportStartMonth;
+
+                var SelectedreportStartMonth = graphModel.SelectedReportMonth.ReportStartMonth.Split('-')[0];
+
+                if (selectedMonthNumberCount == 3)
+                {
+                    switch (SelectedreportStartMonth)
+                    {
+                        case "Jan":
+                            graphModel.SelectedReportMonth.QuarterName = "Q1";
+                            break;
+                        case "Apr":
+                            graphModel.SelectedReportMonth.QuarterName = "Q2";
+                            break;
+                        case "Jul":
+                            graphModel.SelectedReportMonth.QuarterName = "Q3";
+                            break;
+                        case "Oct":
+                            graphModel.SelectedReportMonth.QuarterName = "Q4";
+                            break;
+                    }
+
+                }
+
+                if (selectedMonthNumberCount == 6 && SelectedreportStartMonth == "Jan")
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Q1 & Q2";
+                }
+
+                if (selectedMonthNumberCount == 6 && SelectedreportStartMonth == "Jul")
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Q3 & Q4";
+                }
+
+                if (selectedMonthNumberCount == 12)
+                {
+                    graphModel.SelectedReportMonth.QuarterName = "Annual Report";
+                }
+            }
+
+            var graph1Reports = new List<Root>();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+
+                foreach (var empID in StatusReportChartModel.EmployeeID)
+                {
+                    var model = new GraphChartViewModel();
+                    model.EmployeeImage = EmployeeProfileImagePath(empID);
+
+                    model.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
+                    var MonthWisenewlyRaisedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseOpenTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseTotalClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthSpecificClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
+                    var MonthWiseCriticlOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseHighOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseMediumOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+                    var MonthWiseLowOpenTickets = new List<Graph1DataPoint.MonthWiseDataPoint>();
+
+                    var ProjectReports = new List<ProjectGraphDataPoint.Reports>();
+                    var FutureProjectReports = new List<ProjectGraphDataPoint.Reports>();
+
+                    var RegularProjectReports = new List<ProjectGraphDataPoint.Reports>();
+
+
+                    var MonthWiseAuditTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
+                    var MonthWiseInEfficientClosedTickets = new List<Graph1DataPoint.DataPoint>();
+
+                    var MonthWiseAttedenceFlowTillDate = new List<Graph1DataPoint.AvailabilityDataPoint>();
+
+                    //This object for category based chart
+                    var MonthWiseTotalCreatedTickes = new List<monthlyreports_Template1>();
+
+                    var MonthWiseCriticlTotalTickets = 0;
+                    var MonthWiseHighOpenTotalTickets = 0;
+                    var MonthWiseMediumOpenTotalTickets = 0;
+                    var MonthWiseLowOpenTotalTickets = 0;
+
+                    var sameDayCTCount = 0;
+                    var Twoto5DayCTCount = 0;
+                    var Sixto10DayCTCount = 0;
+                    var Elevento15DayCTCount = 0;
+                    var GT15DayCTCount = 0;
+
+                    var totalNewlyRaisedTickets = 0;
+                    var totalOpenTickets = 0;
+                    var totalClosedTickets = 0;
+
+                    int firstMonthFromrequiredReportMonths = 0;
+
+                    foreach (var requiredReportMonth in requiredReportMonths)
+                    {
+                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+
+                        if (specifMonthAvailablity != null)
+                        {
+                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+
+                            var reqConsultantAvailabity = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+
+                            if (StatusReportChartModel.ReportType == "Monthe Report")
+                            {
+                                if (StatusReportChartModel.Month == (requiredReportMonth.Month + "&" + requiredReportMonth.MonthNumber))
+                                {
+                                    emplyeeAvailabiliy += reqConsultantAvailabity;
+                                }
+                            }
+                            else
+                            {
+                                var selectiedPeriod = StatusReportChartModel.Month.TrimEnd('|').Split('|').Last();
+                                if (selectiedPeriod != null && selectiedPeriod == (requiredReportMonth.Month + "&" + requiredReportMonth.MonthNumber))
+                                {
+                                    emplyeeAvailabiliy += reqConsultantAvailabity;
+                                }
+                            }
+
+
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = System.Convert.ToDouble(reqConsultantAvailabity),
+                                label = requiredReportMonth.Month,
+                                markerColor = "rgb(81, 205, 160)",
+                                indexLabelFontColor = "rgb(81, 205, 160)"
+                            });
+                        }
+                        else
+                        {
+                            MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                            {
+                                y = 0,
+                                label = requiredReportMonth.Month,
+                                markerColor = "rgb(81, 205, 160)",
+                                indexLabelFontColor = "rgb(81, 205, 160)"
+                            });
+                        }
+
+                        var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
+                        if (selectedMonthTickets != null && selectedMonthTickets.Count() > 0)
+                        {
+                            //This is for category chart
+                            MonthWiseTotalCreatedTickes.AddRange(selectedMonthTickets);
+
+                            graphModel.IsIncidentReportExists = true;
+                        }
+                        var newlyCreatedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Newly_created == true).ToList();
+                        if (newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0)
+                        {
+
+                            totalNewlyRaisedTickets += System.Convert.ToInt32(newlyCreatedTickets.Count());
+                        }
+
+                        MonthWisenewlyRaisedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = newlyCreatedTickets != null && newlyCreatedTickets.Count() > 0 ? System.Convert.ToInt32(newlyCreatedTickets.Count()) : 0
+                        });
+
+                        var OpenTickets = selectedMonthTickets.Where(ticket => ticket.Is_Open == true).ToList();
+
+                        MonthWiseOpenTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = OpenTickets != null && OpenTickets.Count() > 0 ? System.Convert.ToInt32(OpenTickets.Count()) : 0
+                        });
+
+                        if (OpenTickets != null && OpenTickets.Count > 0)
+                        {
+                            var ctiticalTickets = OpenTickets.Where(x => x.ReportPriority == "Critical").ToList();
+
+                            if (ctiticalTickets != null && ctiticalTickets.Count > 0)
+                            {
+                                MonthWiseCriticlTotalTickets += ctiticalTickets.Count;
+                            }
+
+                            MonthWiseCriticlOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Critical",
+                                label = requiredReportMonth.Month,
+                                y = ctiticalTickets != null && ctiticalTickets.Count > 0 ? ctiticalTickets.Count : 0,
+                                totalTickets = MonthWiseCriticlTotalTickets
+                            });
+
+
+                            var highTickets = OpenTickets.Where(x => x.ReportPriority == "High").ToList();
+                            if (highTickets != null && highTickets.Count > 0)
+                            {
+                                MonthWiseHighOpenTotalTickets += highTickets.Count;
+                            }
+                            MonthWiseHighOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "High",
+                                label = requiredReportMonth.Month,
+                                y = highTickets != null && highTickets.Count > 0 ? highTickets.Count : 0,
+                                totalTickets = MonthWiseHighOpenTotalTickets
+                            });
+
+
+                            var mediumTickets = OpenTickets.Where(x => x.ReportPriority == "Medium").ToList();
+                            if (mediumTickets != null && mediumTickets.Count > 0)
+                            {
+                                MonthWiseMediumOpenTotalTickets += mediumTickets.Count;
+                            }
+                            MonthWiseMediumOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Medium",
+                                label = requiredReportMonth.Month,
+                                y = mediumTickets != null && mediumTickets.Count > 0 ? mediumTickets.Count : 0,
+                                totalTickets = MonthWiseMediumOpenTotalTickets
+                            });
+
+                            var lowTickets = OpenTickets.Where(x => x.ReportPriority == "Low").ToList();
+                            if (lowTickets != null && lowTickets.Count > 0)
+                            {
+                                MonthWiseLowOpenTotalTickets += lowTickets.Count;
+                            }
+                            MonthWiseLowOpenTickets.Add(new Graph1DataPoint.MonthWiseDataPoint()
+                            {
+                                Priority = "Low",
+                                label = requiredReportMonth.Month,
+                                y = lowTickets != null && lowTickets.Count > 0 ? lowTickets.Count : 0,
+                                totalTickets = MonthWiseLowOpenTotalTickets
+                            });
+
+                            totalOpenTickets += OpenTickets.Count;
+                        }
+
+                        var closedTickets = selectedMonthTickets.Where(ticket => ticket.Is_Closed == true).ToList();
+                        MonthWiseTotalClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = closedTickets != null && closedTickets.Count() > 0 ? System.Convert.ToInt32(closedTickets.Count()) : 0
+                        });
+
+                        if (closedTickets != null && closedTickets.Count > 0)
+                        {
+                            var sameDayTickets = closedTickets.Where(x => x.Ticket_Age == 1).ToList();
+                            sameDayCTCount += sameDayTickets != null && sameDayTickets.Count > 0 ? sameDayTickets.Count : 0;
+
+                            var twoTo5Tickets = closedTickets.Where(x => x.Ticket_Age >= 2 && x.Ticket_Age <= 5).ToList();
+                            Twoto5DayCTCount += twoTo5Tickets != null && twoTo5Tickets.Count > 0 ? twoTo5Tickets.Count : 0;
+
+                            var sixTo10Tickets = closedTickets.Where(x => x.Ticket_Age >= 6 && x.Ticket_Age <= 10).ToList();
+                            Sixto10DayCTCount += sixTo10Tickets != null && sixTo10Tickets.Count > 0 ? sixTo10Tickets.Count : 0;
+
+                            var elevanTo15Tickets = closedTickets.Where(x => x.Ticket_Age >= 11 && x.Ticket_Age <= 15).ToList();
+                            Elevento15DayCTCount += elevanTo15Tickets != null && elevanTo15Tickets.Count > 0 ? elevanTo15Tickets.Count : 0;
+
+                            var Greater15Tickets = closedTickets.Where(x => x.Ticket_Age > 15).ToList();
+                            GT15DayCTCount += Greater15Tickets != null && Greater15Tickets.Count > 0 ? Greater15Tickets.Count : 0;
+
+                            totalClosedTickets += closedTickets.Count;
+                        }
+
+                        var monthSpecificLosedTicketsCount = 0;
+                        var monthSpecifcClosedTockets = db.monthlyreports_Template1.Where(ticket => ticket.Closed_Month == requiredReportMonth.MonthNumber && ticket.Closed_Year == requiredReportMonth.Year && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && (ticket.IsAuditReport == null || ticket.IsAuditReport == false)).ToList();
+
+                        if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count() > 0)
+                        {
+                            if (monthSpecifcClosedTockets != null && monthSpecifcClosedTockets.Count > 0)
+                            {
+                                monthSpecificLosedTicketsCount = monthSpecifcClosedTockets.Count;
+                            }
+                        }
+                        MonthSpecificClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                        {
+                            label = requiredReportMonth.Month,
+                            y = monthSpecificLosedTicketsCount
+                        });
+
+
+                        //TEMPLATE2 code updates
+                        if (firstMonthFromrequiredReportMonths == 0)
+                        {
+                            var projectDetailsForCarryForwardMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == carryForwardMonthInfo.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
+
+                            if (projectDetailsForCarryForwardMonth != null && projectDetailsForCarryForwardMonth.Count() > 0)
+                            {
+                                ProjectReport(ProjectReports, projectDetailsForCarryForwardMonth, true);
+                            }
+                        }
+
+
+                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
+
+                        //In case of Month report for selected month only report will generate
+                        //if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
+                        //{
+                        //    ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                        //}
+                        //if (StatusReportChartModel.ReportType != "Month Report")
+                        //{
+                        ProjectReport(ProjectReports, projectDetailsForSelectedMonth);
+                        //}
+
+                        //REPEATED MONTHLY ACTIVITIES CONSIDERING HERE
+                        var runningProjectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category == "regularprojects").ToList();
+                        ProjectReport(RegularProjectReports, runningProjectDetailsForSelectedMonth);
+
+                        firstMonthFromrequiredReportMonths++;
+
+                        //TEMPLATE3 code updates
+                        var AuditReportsForSelectedMonth = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.EmplyeeID == empID && ticket.Client_Name == StatusReportChartModel.ClientName && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName) && ticket.IsAuditReport == true).ToList();
+
+                        if (AuditReportsForSelectedMonth != null && AuditReportsForSelectedMonth.Count() > 0)
+                        {
+                            graphModel.IsAuditReportExists = true;
+                            var EfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == true).ToList();
+                            var InEfficientClosedTickets = AuditReportsForSelectedMonth.Where(ticket => ticket.Is_Closed == false).ToList();
+
+                            MonthWiseAuditTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = AuditReportsForSelectedMonth != null && AuditReportsForSelectedMonth.Count() > 0 ? System.Convert.ToInt32(AuditReportsForSelectedMonth.Count()) : 0
+                            });
+
+                            MonthWiseEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = EfficientClosedTickets != null && EfficientClosedTickets.Count() > 0 ? System.Convert.ToInt32(EfficientClosedTickets.Count()) : 0
+                            });
+
+                            MonthWiseInEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = InEfficientClosedTickets != null && InEfficientClosedTickets.Count() > 0 ? System.Convert.ToInt32(InEfficientClosedTickets.Count()) : 0
+                            });
+                        }
+                        else
+                        {
+                            MonthWiseAuditTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
+
+                            MonthWiseEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
+
+                            MonthWiseInEfficientClosedTickets.Add(new Graph1DataPoint.DataPoint()
+                            {
+                                label = requiredReportMonth.Month,
+                                y = 0
+                            });
+                        }
+
+
+                    }
+
+                    var IncidentsPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                    var totalClosedInciendents = sameDayCTCount + Twoto5DayCTCount + Sixto10DayCTCount + Elevento15DayCTCount + GT15DayCTCount;
+
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(sameDayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(sameDayCTCount, totalClosedInciendents),
+                        legendText = "Same Day",
+                        indexLabelFontColor = "rgb(109, 120, 173)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Twoto5DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Twoto5DayCTCount, totalClosedInciendents),
+                        legendText = "2-5",
+                        indexLabelFontColor = "rgb(81, 205, 160)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Sixto10DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Sixto10DayCTCount, totalClosedInciendents),
+                        legendText = "6-10",
+                        indexLabelFontColor = "rgb(223, 121, 112)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(Elevento15DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(Elevento15DayCTCount, totalClosedInciendents),
+                        legendText = "11-15",
+                        indexLabelFontColor = "rgb(76, 156, 160)"
+                    });
+                    IncidentsPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = "",
+                        y = PercentageCalculate(GT15DayCTCount, totalClosedInciendents),
+                        Percentage = PercentageCalculateCustom(GT15DayCTCount, totalClosedInciendents),
+                        legendText = "Grtr-15",
+                        indexLabelFontColor = "rgb(174, 125, 153)"
+                    });
+
+                    var highestCosedDateRange = IncidentsPieChart.OrderByDescending(percentage => percentage.y).FirstOrDefault();
+                    if (highestCosedDateRange != null)
+                    {
+                        var grpah4OverallStatus = "" + highestCosedDateRange.Percentage + "% tickets closed within " + highestCosedDateRange.legendText + " days from the logged date.";
+                        model.Graph4OverallStatus = grpah4OverallStatus;
+                    }
+
+
+                    var IncidentsSummaryPieChart = new List<Graph1DataPoint.PieDataPoint>();
+                    IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = System.Convert.ToString(totalClosedTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
+                        y = PercentageCalculate(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                        Percentage = PercentageCalculateCustom(totalClosedTickets, totalClosedTickets + totalOpenTickets),
+                        legendText = "Closed",
+                        indexLabelFontColor = "rgb(81, 205, 160)",
+                        color = "rgb(81, 205, 160)",
+                    });
+                    IncidentsSummaryPieChart.Add(new Graph1DataPoint.PieDataPoint()
+                    {
+                        label = System.Convert.ToString(totalOpenTickets) + "/" + System.Convert.ToString(totalOpenTickets + totalClosedTickets),
+                        y = PercentageCalculate(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                        Percentage = PercentageCalculateCustom(totalOpenTickets, totalClosedTickets + totalOpenTickets),
+                        legendText = "Open",
+                        indexLabelFontColor = "rgb(247, 150, 71)",
+                        color = "rgb(247, 150, 71)"
+                    });
+
+                    var grpah5OverallStatus = "Total " + IncidentsSummaryPieChart[0].Percentage + "% tickets closed and " + IncidentsSummaryPieChart[1].Percentage + "% open till date.";
+                    model.Graph5OverallStatus = grpah5OverallStatus;
+
+
+                    //EMPLOYEE DETAILS
+                    //var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+
+                    //Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+                    // model.EmaployeeAvailabity = availabity
+
+                    model.EmaployeeAvailabity = System.Convert.ToInt32(emplyeeAvailabiliy);
+
+                    //GRAPH1
+                    var overallTicketRunRate = PercentageCalculateCustom(totalClosedTickets, totalNewlyRaisedTickets);
+                    model.Graph1OverallStatus = overallTicketRunRate;
+                    model.MNRTDataPoints = JsonConvert.SerializeObject(MonthWisenewlyRaisedTickets);
+                    model.MOTDataPoints = JsonConvert.SerializeObject(MonthWiseOpenTickets);
+                    model.MCTTotalDataPoints = JsonConvert.SerializeObject(MonthWiseTotalClosedTickets);
+
+
+                    //GRAPH2
+                    var newlyRaiseTicketsOrder = MonthWisenewlyRaisedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                    double highestNewRiasedTickNum = 0;
+                    string highestNewRiasedTickMonth = "";
+                    if (newlyRaiseTicketsOrder != null && newlyRaiseTicketsOrder.Count() > 0)
+                    {
+                        highestNewRiasedTickMonth = newlyRaiseTicketsOrder[0].label;
+                        highestNewRiasedTickNum = newlyRaiseTicketsOrder[0].y;
+                    }
+
+                    var closedTicketsOrder = MonthSpecificClosedTickets.OrderByDescending(ticket => ticket.y).ToList();
+                    double highestClosedTickNum = 0;
+                    string highestClosedTickMonth = "";
+                    if (closedTicketsOrder != null && closedTicketsOrder.Count() > 0)
+                    {
+                        highestClosedTickMonth = closedTicketsOrder[0].label;
+                        highestClosedTickNum = closedTicketsOrder[0].y;
+                    }
+                    if (highestNewRiasedTickNum > 0 && highestNewRiasedTickMonth != string.Empty)
+                    {
+                        var grpah2OverallStatus = "In " + highestClosedTickMonth + " we closed ~" + highestClosedTickNum + " tickets";
+                        model.Graph2OverallStatus = grpah2OverallStatus;
+                    }
+
+                    model.MSpecifCTDataPoints = JsonConvert.SerializeObject(MonthSpecificClosedTickets);
+
+
+                    //OPEN Tickets will be considered for Selected month only 
+                    //GRAPH3
+                    var allPriorityTickets = MonthWiseCriticlOpenTickets.Concat(MonthWiseHighOpenTickets).Concat(MonthWiseMediumOpenTickets).Concat(MonthWiseLowOpenTickets);
+                    var highestPrirityTickets = allPriorityTickets.OrderByDescending(ticket => ticket.totalTickets).FirstOrDefault();
+                    if (highestPrirityTickets != null)
+                    {
+                        var grpah3OverallStatus = "" + highestPrirityTickets.totalTickets + " " + highestPrirityTickets.Priority + " priority tickets are in Open till date.";
+                        model.Graph3OverallStatus = grpah3OverallStatus;
+                    }
+
+
+                    model.MCRITOTDataPoints = JsonConvert.SerializeObject(MonthWiseCriticlOpenTickets);
+                    model.MHIGOTDataPoints = JsonConvert.SerializeObject(MonthWiseHighOpenTickets);
+                    model.MMEDIOTDataPoints = JsonConvert.SerializeObject(MonthWiseMediumOpenTickets);
+                    model.MLOWOTDataPoints = JsonConvert.SerializeObject(MonthWiseLowOpenTickets);
+
+
+                    //CLOSED REPORT TREND
+                    //GRAPH4
+                    model.ClosedTrend = JsonConvert.SerializeObject(IncidentsPieChart);
+
+                    //INCIDENTS SUMMARY
+                    //GRAPH5
+                    model.IncidentsSummary = JsonConvert.SerializeObject(IncidentsSummaryPieChart);
+
+                    //******************* Past and Future Attednce Flow      ***********************//
+
+                    var totalMonthsAttedenceCaptured = requiredReportMonths.Count();
+                    var lastMonthAttedenceCaptured = requiredReportMonths[totalMonthsAttedenceCaptured - 1];
+                    var lastMonthNumberVal = lastMonthAttedenceCaptured.MonthNumber.ToString();
+
+                    var lastMonthNum = System.Convert.ToInt32(lastMonthNumberVal);
+                    var nextThreeMonthsForAttedence = new List<MonthWiseReportModel>();
+                    var funtureMonthNumber = lastMonthNum;
+
+                    var futureMonthCount = 0;
+                    if (lastMonthNum != 12)
+                    {
+                        //Considering only one future month hence changes i < 3 to i < 1
+                        for (int i = 0; i < 1; i++)
+                        {
+                            funtureMonthNumber = funtureMonthNumber + 1;
+                            futureMonthCount++;
+                            if (funtureMonthNumber <= 12 && futureMonthCount <= 3)
+                            {
+                                var futureMonth = new DateTime(StatusReportChartModel.Year, funtureMonthNumber, 1);
+                                nextThreeMonthsForAttedence.Add(ReportGetMonthInfo(futureMonth));
+                            }
+                        }
+
+                    }
+
+                    foreach (var futureMonth in nextThreeMonthsForAttedence)
+                    {
+                        var locationSpecifcHolidays = db.tblambcholidays.Where(holiday => holiday.holiday_date >= futureMonth.StartDateOfTheMonth && holiday.holiday_date <= futureMonth.EndDateOfTheMonth && holiday.region == model.AMBC_Active_Emp_view.Location).ToList();
+
+                        if (locationSpecifcHolidays != null)
+                        {
+                            graphModel.HolidayList = locationSpecifcHolidays;
+                        }
+                        //var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == futureMonth.Month).FirstOrDefault();
+
+                        //if (specifMonthAvailablity != null)
+                        //{
+                        //    var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                        //    var futureMonthAvailability = consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                        //    MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                        //    {
+                        //        y = System.Convert.ToDouble(futureMonthAvailability),
+                        //        label = futureMonth.Month,
+                        //        markerColor = "orange",
+                        //        indexLabelFontColor = "orange"
+                        //    });
+                        //}
+                        //else
+                        //{
+                        //    MonthWiseAttedenceFlowTillDate.Add(new Graph1DataPoint.AvailabilityDataPoint()
+                        //    {
+                        //        y = 0,
+                        //        label = futureMonth.Month,
+                        //        markerColor = "orange",
+                        //        indexLabelFontColor = "orange"
+                        //    });
+                        //}
+                    }
+
+                    model.PastAttedenceFlowTillDate = JsonConvert.SerializeObject(MonthWiseAttedenceFlowTillDate);
+
+                    //TEMPLTE 2 UPDATES  
+                    var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID && project.Project_Category != "regularprojects").ToList();
+
+                    if (empBasedFutureProjects != null && empBasedFutureProjects.Count() > 0)
+                    {
+                        model.FutureProjects = ProjectReport(FutureProjectReports, empBasedFutureProjects, false);
+                    }
+
+                    var UniqueProjectDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                    var ProjectComppletionDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+                    var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
+
+                    var ProjectsChart = new List<ProjectChartInfo>();
+
+                    if (ProjectReports != null && ProjectReports.Count > 0)
+                    {
+                        graphModel.IsProjectReportExists = true;
+
+                        var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
+
+                        var projectReportHeight = "140px";
+
+                        model.ProjectReportHeight = projectReportHeight;
+
+                        var requiredProjectCount = 0;
+                        foreach (var project in allProjects)
+                        {
+                            if (UniqueProjectDataPoints.Where(x => x.label == project.label).FirstOrDefault() == null)
+                            {
+                                requiredProjectCount++;
+                                UniqueProjectDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = project.label,
+                                    y = project.completionPercenatge
+                                });
+
+                                ProjectComppletionDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = project.ChartLabelWithStartEndDate,
+                                    y = project.completionPercenatge
+                                });
+
+                                ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                {
+                                    label = project.ChartLabelWithStartEndDate,
+                                    y = project.remainingPercenatge
+                                });
+                            }
+                        }
+
+                        if (requiredProjectCount > 2 && requiredProjectCount <= 5)
+                        {
+                            var height = requiredProjectCount * 45;
+                            model.ProjectReportHeight = height + "px";
+                        }
+
+                        if (requiredProjectCount > 5)
+                        {
+                            var height = requiredProjectCount * 35;
+                            model.ProjectReportHeight = height + "px";
+                        }
+
+                        //IN CASE OF BAR CHART SHOIN THE PROJECTS BASED ON SELECTION
+                        // CARRY FORWARD PROJECTS ARE IGNORED HERE
+                        var uniqueProjects = allProjects.Where(x => x.IsCarryForwardMonth == false).Select(x => x.label).Distinct().ToList();
+                        //var uniqueProjects = allProjects.Select(x => x.label).Distinct().ToList();
+
+                        var projectReportMonths = new List<MonthWiseReportModel>();
+                        if (StatusReportChartModel.ReportType != "Month Report")
+                        {
+                            projectReportMonths.Add(carryForwardMonthInfo);
+                        }
+
+                        //Adding carry forward month to list
+                        projectReportMonths.AddRange(requiredReportMonths);
+
+                        var dummyMonthToCalculatePendingPercenatge = new MonthWiseReportModel();
+                        dummyMonthToCalculatePendingPercenatge.Month = "pending-month";
+
+                        projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
+
+                        var projectsCompletedStatus = new Dictionary<string, decimal?>();
+
+                        var firstMonthOfTheReport = 1;
+                        foreach (var projectReportMonth in projectReportMonths)
+                        {
+                            var chartInfo = new ProjectChartInfo();
+                            if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
+                            {
+                                chartInfo.name = "till " + projectReportMonth.Month;
+                                firstMonthOfTheReport++;
+                            }
+                            else
+                            {
+                                chartInfo.name = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Remaining" : projectReportMonth.Month;
+                            }
+
+                            foreach (var uniqueProject in uniqueProjects)
+                            {
+                                var requiredProject = allProjects.Where(x => x.label == uniqueProject && x.MonthName == projectReportMonth.Month).FirstOrDefault();
+
+                                if (requiredProject != null)
+                                {
+                                    Decimal? actualCompletedPercenatge = 0;
+
+                                    if (!projectsCompletedStatus.ContainsKey(uniqueProject))
+                                    {
+                                        projectsCompletedStatus.Add(uniqueProject, requiredProject.completionPercenatge);
+                                        actualCompletedPercenatge = requiredProject.completionPercenatge;
+                                    }
+                                    else
+                                    {
+                                        var currentMonthCompletePercentage = requiredProject.completionPercenatge;
+                                        var previousMonthsCompletePercenatge = projectsCompletedStatus[uniqueProject].Value;
+
+                                        if (currentMonthCompletePercentage > previousMonthsCompletePercenatge)
+                                        {
+                                            actualCompletedPercenatge = currentMonthCompletePercentage - previousMonthsCompletePercenatge;
+                                        }
+                                        else
+                                        {
+                                            actualCompletedPercenatge = previousMonthsCompletePercenatge - currentMonthCompletePercentage;
+                                        }
+
+                                        projectsCompletedStatus.Remove(uniqueProject);
+
+                                        var totalCompletedPercenatage = actualCompletedPercenatge + previousMonthsCompletePercenatge;
+
+                                        projectsCompletedStatus.Add(uniqueProject, totalCompletedPercenatage);
+                                    }
+
+                                    chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                    {
+                                        label = requiredProject.ChartLabelWithStartEndDate,
+                                        y = actualCompletedPercenatge
+                                    });
+
+                                    chartInfo.indexLabel = "{y}%";
+                                    chartInfo.ProjestStartDate = requiredProject.ProjestStartDate;
+                                    chartInfo.TargetClosingDate = requiredProject.TargetClosingDate;
+                                    chartInfo.ActualClosedDate = requiredProject.ActualClosedDate;
+
+                                }
+                                else
+                                {
+                                    if (projectReportMonth.Month != "pending-month")
+                                    {
+                                        chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                        {
+                                            label = allProjects.Where(x => x.label == uniqueProject).FirstOrDefault().ChartLabelWithStartEndDate,
+                                            y = 0
+                                        });
+
+                                        chartInfo.indexLabel = "{y}%";
+
+                                        if (!projectsCompletedStatus.ContainsKey(uniqueProject))
+                                        {
+                                            projectsCompletedStatus.Add(uniqueProject, 0);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var completedTillMonth = projectsCompletedStatus[uniqueProject].Value;
+                                        var pendingCompletion = 100 - completedTillMonth;
+
+                                        chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                        {
+                                            label = allProjects.Where(x => x.label == uniqueProject).FirstOrDefault().ChartLabelWithStartEndDate,
+                                            y = pendingCompletion
+                                        });
+
+                                        chartInfo.indexLabel = "{y}%";
+                                    }
+
+                                }
+
+                            }
+                            ProjectsChart.Add(chartInfo);
+                        }
+                        //TODO
+
+                        if (uniqueProjects.Count() > 2)
+                        {
+                            var height = uniqueProjects.Count() * 100;
+                            model.ProjectReportbarChartHeight = height + "px";
+                        }
+                        else
+                        {
+                            var height = uniqueProjects.Count() * 300;
+                            model.ProjectReportbarChartHeight = height + "px";
+                        }
+                    }
+
+                    var RegularProjectChart = new List<ProjectChartInfo>();
+
+                    var regularUniqueProjects = RegularProjectReports.Select(x => x.label.Trim()).Distinct().ToList();
+
+                    if (regularUniqueProjects.Count > 0)
+                    {
+                        model.RegularProjectHeight = System.Convert.ToString(regularUniqueProjects.Count * 70);
+                    }
+
+                    if (RegularProjectReports != null && RegularProjectReports.Count > 0)
+                    {
+                        graphModel.IsRegularProjectReportExists = true;
+                        var projectReportMonths = new List<MonthWiseReportModel>();
+
+                        //if (StatusReportChartModel.ReportType != "Month Report")
+                        //{
+                        //    projectReportMonths.Add(carryForwardMonthInfo);
+                        //}
+
+                        ////Adding carry forward month to list
+                        projectReportMonths.AddRange(requiredReportMonths);
+
+                        //var dummyMonthToCalculatePendingPercenatge = new MonthWiseReportModel();
+                        //dummyMonthToCalculatePendingPercenatge.Month = "pending-month";
+
+                        //projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
+
+                        projectReportMonths.Reverse();
+
+                        foreach (var regularProject in regularUniqueProjects)
+                        {
+                            var runningProjcetChartInfo = new ProjectChartInfo();
+                            foreach (var projectReportMonth in projectReportMonths)
+                            {
+                                var monthName = projectReportMonth.Month;
+                                var requiredRunningProject = RegularProjectReports.Where(x => x.label.Trim() == regularProject.Trim() && x.MonthName == projectReportMonth.Month).FirstOrDefault();
+                                if (requiredRunningProject != null)
+                                {
+                                    runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                    {
+                                        label = monthName,
+                                        y = requiredRunningProject.completionPercenatge
+                                    });
+                                }
+
+                                else
+                                {
+                                    runningProjcetChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                    {
+                                        label = monthName,
+                                        y = 0
+                                    });
+
+                                    //runningProjcetChartInfo.name = regularProject;
+                                }
+                            }
+
+                            runningProjcetChartInfo.indexLabel = "";
+                            //runningProjcetChartInfo.ProjestStartDate = requiredRunningProject.ProjestStartDate;
+                            //runningProjcetChartInfo.TargetClosingDate = requiredRunningProject.TargetClosingDate;
+                            //runningProjcetChartInfo.ActualClosedDate = requiredRunningProject.ActualClosedDate;
+                            runningProjcetChartInfo.name = regularProject;
+
+                            RegularProjectChart.Add(runningProjcetChartInfo);
+                        }
+                    }
+
+
+                    //var chartProjectInfo = new ProjectChartInfoData();
+                    //chartProjectInfo.data.AddRange(ProjectsChart);
+
+                    model.ProjectChartsMonthWise = JsonConvert.SerializeObject(ProjectsChart);
+                    model.ProjectComppletionDataPoints = JsonConvert.SerializeObject(ProjectComppletionDataPoints);
+                    model.ProjectRemainingDataPoints = JsonConvert.SerializeObject(ProjectRemainingDataPoints);
+
+                    model.RegularProjectChartsMonthWise = JsonConvert.SerializeObject(RegularProjectChart);
+
+                    //TEMPLATE 3 UPDATES
+                    model.MSpecifcAudDataoints = JsonConvert.SerializeObject(MonthWiseAuditTickets);
+                    model.MSpecifcEffeAudDataoints = JsonConvert.SerializeObject(MonthWiseEfficientClosedTickets);
+                    model.MSpecifcInEffeAudDataoints = JsonConvert.SerializeObject(MonthWiseInEfficientClosedTickets);
+
+                    var TicketCategoryChart = new List<ProjectChartInfo>();
+                    if (MonthWiseTotalCreatedTickes != null && MonthWiseTotalCreatedTickes.Count > 0)
+                    {
+                        var uniqueCategories = MonthWiseTotalCreatedTickes.Select(x => x.Ticket_Category).Distinct();
+
+                        if (uniqueCategories != null && uniqueCategories.Count() > 1)
+                        {
+                            graphModel.IsCategoryBasedIncidentsExists = true;
+
+                            var chartStatus = new List<string>();
+                            var colors = ResourceManagement.Helpers.ColorCodes.Colors();
+
+                            chartStatus.Add("Newly Raised");
+                            chartStatus.Add("Closed");
+
+                            var requiredStatuses = new List<CategoryModel>();
+
+                            int colrIndex = 1;
+                            foreach (var uniqueCategorie in uniqueCategories)
+                            {
+                                if (!string.IsNullOrEmpty(uniqueCategorie))
+                                {
+                                    foreach (var status in chartStatus)
+                                    {
+                                        requiredStatuses.Add(new CategoryModel()
+                                        {
+                                            CategoryName = uniqueCategorie,
+                                            StausName = uniqueCategorie + " - " + status,
+                                            ColorCode = colors[colrIndex],
+                                        });
+
+                                        colrIndex = colrIndex + 1;
+                                    }
+                                }
+                            }
+
+                            var categoryMonths = requiredReportMonths;
+                            categoryMonths.Reverse();
+
+                            foreach (var requiredStatus in requiredStatuses)
+                            {
+                                var categoryChartInfo = new ProjectChartInfo();
+
+                                foreach (var requiredReportMonth in categoryMonths)
+                                {
+                                    IEnumerable<monthlyreports_Template1> maonthWiseCategoryTickets = null;
+                                    if (requiredStatus.StausName.Contains("Newly Raised"))
+                                    {
+                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.CategoryName && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Newly_created == true);
+                                    }
+                                    if (requiredStatus.StausName.Contains("Closed"))
+                                    {
+                                        maonthWiseCategoryTickets = MonthWiseTotalCreatedTickes.Where(x => x.Ticket_Category == requiredStatus.CategoryName && x.Uploaded_Month == requiredReportMonth.Month && x.Is_Closed == true);
+                                    }
+
+
+                                    if (maonthWiseCategoryTickets != null && maonthWiseCategoryTickets.Count() > 0)
+                                    {
+                                        categoryChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                        {
+                                            label = requiredReportMonth.Month,
+                                            y = maonthWiseCategoryTickets.Count(),
+                                            color = requiredStatus.ColorCode
+                                        });
+
+                                        categoryChartInfo.indexLabel = "{y}";
+                                        categoryChartInfo.name = requiredStatus.StausName;
+                                        categoryChartInfo.indexLabelFontSize = 11;
+                                        categoryChartInfo.legendMarkerColor = requiredStatus.ColorCode;
+                                    }
+                                    else
+                                    {
+                                        categoryChartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
+                                        {
+                                            label = requiredReportMonth.Month,
+                                            y = 0,
+                                            color = requiredStatus.ColorCode
+                                        });
+                                        categoryChartInfo.indexLabel = "{y}";
+                                        categoryChartInfo.name = requiredStatus.StausName;
+                                        categoryChartInfo.indexLabelFontSize = 11;
+                                        categoryChartInfo.legendMarkerColor = requiredStatus.ColorCode;
+                                    }
+                                }
+
+                                TicketCategoryChart.Add(categoryChartInfo);
+                            }
+                        }
+
+                    }
+
+                    model.CategoryWiseIncidents = JsonConvert.SerializeObject(TicketCategoryChart);
+
+                    graphModel.ViewModel.Add(model);
+
+                }
+
+            }
+            return PartialView(graphModel);
+        }
+
+        private static List<ProjectGraphDataPoint.Reports> ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth, bool isCarryForardMonthInfo = false)
+        {
+            foreach (var projectDetailForSelectedMonth in projectDetailsForSelectedMonth)
+            {
+                var projectStartMonthYear = "";
+                var projectEndMonthYear = "";
+
+                var requiredProjectStartEndDate = "";
+
+                if (projectDetailForSelectedMonth.Project_Created_Date != DateTime.MinValue)
+                {
+                    projectStartMonthYear = projectDetailForSelectedMonth.Project_Created_Date.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Created_Date.ToString("yyyy");
+                }
+
+                if (projectDetailForSelectedMonth.Project_Closing_Date_Target != DateTime.MinValue)
+                {
+                    projectEndMonthYear = " to " + projectDetailForSelectedMonth.Project_Closing_Date_Target?.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Closing_Date_Target?.ToString("yyyy");
+                }
+
+                if (projectStartMonthYear != "" && projectEndMonthYear != "")
+                {
+                    requiredProjectStartEndDate = " (" + projectStartMonthYear + projectEndMonthYear + ") ";
+                }
+                if (projectStartMonthYear != "" && projectEndMonthYear == "")
+                {
+                    requiredProjectStartEndDate = " (" + projectStartMonthYear + ") ";
+                }
+
+                ProjectReports.Add(new ProjectGraphDataPoint.Reports()
+                {
+                    label = projectDetailForSelectedMonth.Project_Name,
+                    ChartLabelWithStartEndDate = projectDetailForSelectedMonth.Project_Name + requiredProjectStartEndDate,
+                    completionPercenatge = projectDetailForSelectedMonth.CompletedPercentage,
+                    remainingPercenatge = projectDetailForSelectedMonth.RemainingPercentage,
+                    MonthName = projectDetailForSelectedMonth.Uploaded_Month,
+                    ProjestStartDate = projectDetailForSelectedMonth.Project_Created_Date,
+                    ActualClosedDate = projectDetailForSelectedMonth.Project_Closed_Date_Actual,
+                    TargetClosingDate = projectDetailForSelectedMonth.Project_Closing_Date_Target,
+                    IsCarryForwardMonth = isCarryForardMonthInfo,
+                    Summary = projectDetailForSelectedMonth.Project_Summary,
+                    ProjectCategory = projectDetailForSelectedMonth.Project_Category
+                });
+            }
+
+            return ProjectReports;
+        }
+
+        public static SelectedReportMonthModel SelectedMonthRelatedInfo(DateTime inputDateTime, StatusReportChartModel StatusReportChartModel)
+        {
+            return new SelectedReportMonthModel()
+            {
+                MonthEndDate = System.DateTime.DaysInMonth(inputDateTime.Year, inputDateTime.Month).ToString(),
+                MonthName = inputDateTime.ToString("MMM"),
+                year = inputDateTime.Year.ToString(),
+                ShortFormat = inputDateTime.ToString("MMM") + "-" + inputDateTime.Year.ToString(),
+                ReportType = StatusReportChartModel.ReportType
+            };
+        }
+
+        public string MonthShortFormat(DateTime datetime)
+        {
+            return datetime.ToString("MMM") + "-" + datetime.Year.ToString();
+        }
+
+        public ActionResult UploadedStatusReportView(StatusReportChartModel StatusReportChartModel)
+        {
+            RMA_UploadedStatusReportViewModel model = StatusUploadedReportModel(StatusReportChartModel);
+            return PartialView(model);
+        }
+
+        private RMA_UploadedStatusReportViewModel StatusUploadedReportModel(StatusReportChartModel StatusReportChartModel)
+        {
+            var model = new RMA_UploadedStatusReportViewModel();
+            model.AjaxModel = StatusReportChartModel;
+            var selectedReportedMonthStartDate = new DateTime();
+            var requiredReportMonths = new List<MonthWiseReportModel>();
+
+            if (StatusReportChartModel.ReportType == "Month Report")
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNumber, 1);
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+
+                model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
+                var startingMonthForTheReport = ReportGetMonthInfo(selectedReportedMonthStartDate);
+
+                model.SelectedReportMonth.ReportStartMonth = startingMonthForTheReport.Month;
+            }
+
+            else
+            {
+                var selectedMonth = StatusReportChartModel.Month;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+                int firstMonthFromTheSelection = 0;
+                var reportStartMonth = "";
+
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
+                {
+                    if (selectedMonthNumber != string.Empty)
+                    {
+
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(StatusReportChartModel.Year, selectedMonthNum, 1);
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        requiredReportMonths.Add(selectedMonthInfo);
+
+                        if (firstMonthFromTheSelection == 0)
+                        {
+                            reportStartMonth = selectedMonthInfo.Month;
+                        }
+                        requiredReportMonths.Add(selectedMonthInfo);
+                        firstMonthFromTheSelection++;
+
+                        model.SelectedReportMonth = SelectedMonthRelatedInfo(selectedReportedMonthStartDate, StatusReportChartModel);
+                    }
+                }
+                model.SelectedReportMonth.ReportStartMonth = reportStartMonth;
+            }
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                foreach (var empID in StatusReportChartModel.EmployeeID)
+                {
+                    var empReportModel = new RMA_UploadedStatusReportModel();
+
+                    empReportModel.AMBC_Active_Emp_view = db.AMBC_Active_Emp_view.Where(x => x.Employee_ID == empID).FirstOrDefault();
+                    empReportModel.EmployeeImage = EmployeeProfileImagePath(empReportModel.AMBC_Active_Emp_view.Employee_ID.ToString());
+
+                    Decimal emplyeeAvailabiliy = 0;
+
+                    foreach (var requiredReportMonth in requiredReportMonths)
+                    {
+                        var specifMonthAvailablity = db.consultantavailiability_Final.Where(Employee => Employee.Employee_Code == empID && Employee.Month_Year == requiredReportMonth.Month).FirstOrDefault();
+
+                        if (specifMonthAvailablity != null)
+                        {
+                            var consultantAvailabity = specifMonthAvailablity.ConslAvl.Replace("%", "");
+                            emplyeeAvailabiliy += consultantAvailabity.Contains('.') ? System.Convert.ToDecimal(consultantAvailabity.Split('.')[0]) : System.Convert.ToDecimal(consultantAvailabity);
+                        }
+
+                        if (StatusReportChartModel.TemplateNumber == "Template1")
+                        {
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == false && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+
+                            if (StatusReportChartModel.IsDelete && selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                db.monthlyreports_Template1.RemoveRange(selectedMonthTickets);
+                                db.SaveChanges();
+                                selectedMonthTickets = null;
+                            }
+
+                            if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                empReportModel.Template1Reports.AddRange(selectedMonthTickets);
+                            }
+                        }
+
+                        //TEMPLATE2 code updates
+                        if (StatusReportChartModel.TemplateNumber == "Template2")
+                        {
+                            var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.Is_Cancelled == false && project.EmplyeeID == empID).ToList();
+                            if (StatusReportChartModel.IsDelete && monthProjectReport != null && monthProjectReport.Count > 0)
+                            {
+                                db.monthlyreports_Template2.RemoveRange(monthProjectReport);
+                                db.SaveChanges();
+                                monthProjectReport = null;
+                            }
+
+                            if (monthProjectReport != null && monthProjectReport.Count > 0)
+                            {
+                                empReportModel.Template2Reports.AddRange(monthProjectReport);
+                            }
+
+                        }
+
+                        //TEMPLATE3 code updates
+                        if (StatusReportChartModel.TemplateNumber == "Template3")
+                        {
+                            var selectedMonthTickets = db.monthlyreports_Template1.Where(ticket => ticket.Uploaded_Month == requiredReportMonth.Month && ticket.Is_Cancelled == false && ticket.IsAuditReport == true && ticket.EmplyeeID == empID && StatusReportChartModel.ToolName.Contains(ticket.TicketingToolName)).ToList();
+                            if (selectedMonthTickets != null && selectedMonthTickets.Count > 0)
+                            {
+                                empReportModel.Template1Reports.AddRange(selectedMonthTickets);
+                            }
+                        }
+
+                    }
+
+                    //EMPLOYEE DETAILS
+                    var employeeTotalAvailabity = (emplyeeAvailabiliy / requiredReportMonths.Count).ToString();
+                    Int32 availabity = employeeTotalAvailabity.Contains('.') ? System.Convert.ToInt32(employeeTotalAvailabity.Split('.')[0]) + 1 : System.Convert.ToInt32(employeeTotalAvailabity);
+                    empReportModel.EmaployeeAvailabity = availabity;
+
+                    model.ViewModel.Add(empReportModel);
+                }
+            }
+
+            return model;
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ExportStatusReports(string GridHtml)
+        {
+            StatusReportChartModel ajaxReportModel = JsonConvert.DeserializeObject<StatusReportChartModel>(GridHtml);
+            List<SourceFile> sourceFiles = new List<SourceFile>();
+            var requiredZIPFileName = ajaxReportModel.ClientName + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType;
+
+            string htmlContent = "";
+            var excelFileName = "";
+
+            var isMultipleEmployeesSelected = ajaxReportModel.EmployeeID.Count() == 1 ? false : true;
+
+            if (ajaxReportModel != null)
+            {
+                foreach (var employee in ajaxReportModel.EmployeeID)
+                {
+                    var selectedEmp = new List<string>();
+                    selectedEmp.Add(employee);
+
+                    ajaxReportModel.EmployeeID = selectedEmp;
+                    var model = StatusUploadedReportModel(ajaxReportModel);
+                    model.IsExcelReport = true;
+
+                    htmlContent = RenderPartialToString(this, "UploadedStatusExcelReportView", model, ViewData, TempData);
+
+                    byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
+
+                    excelFileName = model.ViewModel[0].AMBC_Active_Emp_view.Employee_Name + "-" + ajaxReportModel.TemplateType + "-" + ajaxReportModel.ReportType + ".xls";
+
+                    sourceFiles.Add(new SourceFile()
+                    {
+                        FileBytes = byteArray,
+                        Extension = ".xls",
+                        Name = excelFileName
+                    });
+
+                }
+            }
+
+            if (!isMultipleEmployeesSelected)
+            {
+                return File(Encoding.ASCII.GetBytes(htmlContent), "application/vnd.ms-excel", excelFileName);
+            }
+            else
+            {
+                byte[] fileBytes = null;
+
+                // create a working memory stream
+                using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+                {
+                    // create a zip
+                    using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
+                    {
+                        // interate through the source files
+                        foreach (SourceFile f in sourceFiles)
+                        {
+                            // add the item name to the zip
+                            System.IO.Compression.ZipArchiveEntry zipItem = zip.CreateEntry(f.Name + "." + f.Extension);
+                            // add the item bytes to the zip entry by opening the original file and copying the bytes
+                            using (System.IO.MemoryStream originalFileMemoryStream = new System.IO.MemoryStream(f.FileBytes))
+                            {
+                                using (System.IO.Stream entryStream = zipItem.Open())
+                                {
+                                    originalFileMemoryStream.CopyTo(entryStream);
+                                }
+                            }
+                        }
+                    }
+                    fileBytes = memoryStream.ToArray();
+                }
+
+                // download the constructed zip
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + requiredZIPFileName + ".zip");
+                return File(fileBytes, "application/zip");
+            }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleIncidentReport(string GridHtml)
+        {
+
+            var filePath = @"C:\inetpub\wwwroot\Reports\Incident-Report.xlsx";
+            var fileName = "Incident-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleProjectReport(string GridHtml)
+        {
+
+            var filePath = @"C:\inetpub\wwwroot\Reports\Project-Report.xlsx";
+            var fileName = "Project-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+        }
+
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SampleAuditReport(string GridHtml)
+        {
+            var filePath = @"C:\inetpub\wwwroot\Reports\Audit-Report.xlsx";
+            var fileName = "Audit-Template.xlsx";
+            var mimeType = "application/vnd.ms-excel";
+            return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+        }
+
+        [HttpPost]
+        public JsonResult GetProjectBasedOnEmpId(string empID, string ClientName)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeeInfo = new List<AMBC_Active_Emp_view>();
+                if (string.IsNullOrEmpty(ClientName))
+                {
+                    employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active").ToList();
+                }
+                else
+                {
+                    employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active" && a.Client == ClientName).ToList();
+                }
+
+                if (employeeInfo != null && employeeInfo.Count() > 0)
+                {
+                    return Json(employeeInfo, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public JsonResult UpdateRolesAndResposibilties(string empID, string ClientName, string Roles)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeeInfo = db.AMBC_Active_Emp_view.Where(a => a.Employee_ID.Equals(empID) && a.Project_Status == "Active" && a.Client == ClientName).FirstOrDefault();
+                if (employeeInfo != null)
+                {
+                    employeeInfo.Roles_Responsibilities = Roles;
+                    db.SaveChanges();
+                    return Json(employeeInfo, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
+
+        public JsonResult ISStatusReportSubmitted(StatusReportRemainderModel StatusReportRemainderModel)
+        {
+            var response = new JsonResponseModel();
+            var model = new StatusReportRemainderViewModel();
+            var clients = new List<string>();
+            if (StatusReportRemainderModel.ClientName.Contains(","))
+            {
+                var empClients = StatusReportRemainderModel.ClientName.Split(',').Reverse();
+                clients.AddRange(empClients);
+            }
+            else
+            {
+                clients.Add(StatusReportRemainderModel.ClientName);
+            }
+
+            foreach (var client in clients)
+            {
+                StatusReportRemainderModel.ClientName = client.TrimStart().TrimEnd();
+                StatusReportRemainderDetails(StatusReportRemainderModel, model);
+                if (model.RemainderEmployees != null && model.RemainderEmployees.Count > 0)
+                {
+                    response.StatusCode = 404;
+                    break;
+                }
+            }
+
+            if (response.StatusCode == 404)
+            {
+                response.Message = "Status Report not submitted for the selected period!";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null);
+        }
+
+
+        public ActionResult StatusReportRemainder(StatusReportRemainderModel StatusReportRemainderModel)
+        {
+            var model = new StatusReportRemainderViewModel();
+            StatusReportRemainderDetails(StatusReportRemainderModel, model);
+            return PartialView(model);
+        }
+
+        private static StatusReportRemainderViewModel StatusReportRemainderDetails(StatusReportRemainderModel StatusReportRemainderModel, StatusReportRemainderViewModel model)
+        {
+            model.ClientName = StatusReportRemainderModel.ClientName;
+
+            var selectedReportedMonthStartDate = new DateTime();
+            var requiredReportMonths = new List<MonthWiseReportModel>();
+
+            if (StatusReportRemainderModel.ReportType == "Month Report")
+            {
+                var selectedMonth = StatusReportRemainderModel.Period;
+                var selectedMonthNumber = System.Convert.ToInt32(selectedMonth.Split('&')[1]);
+                selectedReportedMonthStartDate = new DateTime(System.Convert.ToInt32(StatusReportRemainderModel.Year), selectedMonthNumber, 1);
+                requiredReportMonths.Add(ReportGetMonthInfo(selectedReportedMonthStartDate));
+            }
+            else
+            {
+                var selectedMonth = StatusReportRemainderModel.Period;
+                var selectedMonthNumbers = selectedMonth.Split('|');
+
+                foreach (var selectedMonthNumber in selectedMonthNumbers)
+                {
+                    if (selectedMonthNumber != string.Empty)
+                    {
+                        var selectedMonthNum = System.Convert.ToInt32(selectedMonthNumber.Split('&')[1]);
+                        selectedReportedMonthStartDate = new DateTime(System.Convert.ToInt32(StatusReportRemainderModel.Year), selectedMonthNum, 1);
+                        var selectedMonthInfo = ReportGetMonthInfo(selectedReportedMonthStartDate);
+                        requiredReportMonths.Add(selectedMonthInfo);
+                    }
+                }
+            }
+
+            foreach (var requiredReportMonth in requiredReportMonths)
+            {
+                var remainderEmplyees = new List<StatusReportRemainderEmpModel>();
+
+                foreach (var empID in StatusReportRemainderModel.Employees)
+                {
+                    var remainderEmpInfo = new StatusReportRemainderEmpModel();
+                    using (TimeSheetEntities db = new TimeSheetEntities())
+                    {
+                        var currentEmpTemplate1Repots = db.monthlyreports_Template1.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                        if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
+                        {
+                            continue;
+                        }
+
+                        var currentEmpInfo = db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == empID && emp.Client == StatusReportRemainderModel.ClientName && emp.Project_Status == "Active").ToList();
+
+                        if (currentEmpInfo != null && currentEmpInfo.Count() > 0)
+                        {
+                            remainderEmpInfo.RemainderMonthInfo = requiredReportMonth;
+                            remainderEmpInfo.RemainderEmployee = currentEmpInfo[0];
+                        }
+                    }
+
+                    model.RemainderEmployees.Add(remainderEmpInfo);
+                }
+            }
+
+            return model;
+        }
+
+        public JsonResult SendStatusReportRemainderEmail(StatusReportRemainderEmailModel StatusReportEmpRemainder)
+        {
+            try
+            {
+                if (StatusReportEmpRemainder != null && StatusReportEmpRemainder.selctedempmodel.Count() > 0)
+                {
+                    var remainderMonth = StatusReportEmpRemainder.RemainderMonth;
+
+                    if (StatusReportEmpRemainder.SendSingleEmailToAllEmp == false)
+                    {
+                        foreach (var email in StatusReportEmpRemainder.selctedempmodel)
+                        {
+                            using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], email.selectedemployeeemail))
+                            {
+                                mm.Subject = "REMINDER: Dashboard Report for the month - " + email.RemainderMonth;
+
+                                var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", email, ViewData, TempData);
+
+                                mm.Body = emailBody;
+
+                                if (email.selectedemploymanageremail != string.Empty)
+                                {
+                                    mm.CC.Add(email.selectedemploymanageremail);
+                                }
+
+                                if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
+                                {
+                                    mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
+                                }
+
+                                mm.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                                smtp.EnableSsl = true;
+                                NetworkCredential credentials = new NetworkCredential();
+                                credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                                credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                                smtp.UseDefaultCredentials = true;
+                                smtp.Credentials = credentials;
+                                smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                                smtp.Send(mm);
+                            }
+                        }
+                    }
+
+                    //else
+                    //{
+                    //    var model = new StatusReport_RemainderEmailSelectedEmpModel();
+                    //    using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], StatusReportEmpRemainder.selctedempmodel[0].selectedemployeeemail))
+                    //    {
+                    //        mm.Subject = "REMINDER: Dashboard Report for the month - " + remainderMonth;
+                    //        int firstSelectedEmp = 0;
+
+                    //        foreach (var selectedEmp in StatusReportEmpRemainder.selctedempmodel)
+                    //        {
+                    //            if (firstSelectedEmp > 0)
+                    //            {
+                    //                mm.To.Add(selectedEmp.selectedemployeeemail);
+                    //            }
+                    //            firstSelectedEmp++;
+
+                    //            mm.CC.Add(selectedEmp.selectedemploymanageremail);
+                    //        }
+
+                    //        model.SendSingleEmailToAllEmp = StatusReportEmpRemainder.SendSingleEmailToAllEmp;
+
+                    //        var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", model, ViewData, TempData);
+
+                    //        mm.Body = emailBody;
+
+                    //        if (StatusReportEmpRemainder.LogedInEmpEmail != string.Empty)
+                    //        {
+                    //            mm.CC.Add(StatusReportEmpRemainder.LogedInEmpEmail);
+                    //        }
+
+                    //        mm.IsBodyHtml = true;
+                    //        SmtpClient smtp = new SmtpClient();
+                    //        smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
+                    //        smtp.EnableSsl = true;
+                    //        NetworkCredential credentials = new NetworkCredential();
+                    //        credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                    //        credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                    //        smtp.UseDefaultCredentials = true;
+                    //        smtp.Credentials = credentials;
+                    //        smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+                    //        smtp.Send(mm);
+                    //    }
+                    //}
+
+                }
+
+                var emailRemainderResponse = new JsonResponseModel();
+
+                emailRemainderResponse.StatusCode = 200;
+                emailRemainderResponse.Message = "Status Report Remainder Email Sent Successfully!";
+                return Json(emailRemainderResponse);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(null);
         }
     }
 }

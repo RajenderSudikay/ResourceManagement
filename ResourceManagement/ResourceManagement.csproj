@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -63,6 +69,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="Select.HtmlToPdf, Version=18.4.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
       <HintPath>..\packages\Select.HtmlToPdf.18.4.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
     </Reference>
@@ -206,6 +215,24 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="consultantavailiability1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability4.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability5.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consultantavailiability_Final.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -265,13 +292,29 @@
     <Compile Include="halfday_leave_view.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ColorCodes.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\Graph1DataPoint.cs" />
+    <Compile Include="Models\Jobclass.cs" />
+    <Compile Include="Models\JobRemainderModel.cs" />
+    <Compile Include="Models\JobScheduler.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Models\LeaveOrHolidayModel.cs" />
+    <Compile Include="Models\StatusReportModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Models\ZohoSignInModel.cs" />
+    <Compile Include="monthlyreports_Template1.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template2.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="monthlyreports_Template3.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tblambcholiday.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -309,21 +352,48 @@
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\Check-In.png" />
+    <Content Include="Assets\ClientLogos\Federal Signal.png" />
+    <Content Include="Assets\ClientLogos\Littelfuse.png" />
+    <Content Include="Assets\FemaleDefault.png" />
+    <Content Include="Assets\Graphs\attedence.png" />
+    <Content Include="Assets\Graphs\attendence-chart.png" />
+    <Content Include="Assets\Graphs\Audit-report.png" />
+    <Content Include="Assets\Graphs\bar-chart.png" />
+    <Content Include="Assets\Graphs\bar-graph.png" />
+    <Content Include="Assets\Graphs\category-based.png" />
+    <Content Include="Assets\Graphs\Closure-Trend.png" />
+    <Content Include="Assets\Graphs\ClosureTrend.png" />
+    <Content Include="Assets\Graphs\company-logo.png" />
+    <Content Include="Assets\Graphs\Incident-Summary.png" />
+    <Content Include="Assets\Graphs\open-tickets-new.png" />
+    <Content Include="Assets\Graphs\Project Status.png" />
+    <Content Include="Assets\Graphs\upcoming-holidays.png" />
     <Content Include="Assets\hr.jpg" />
+    <Content Include="Assets\Icons\availability.png" />
+    <Content Include="Assets\Icons\checked.png" />
+    <Content Include="Assets\Icons\email-new.png" />
     <Content Include="Assets\Icons\email.png" />
     <Content Include="Assets\Icons\graphic-designer.png" />
     <Content Include="Assets\Icons\hierarchical-structure.png" />
+    <Content Include="Assets\Icons\icons8-employee-48.png" />
+    <Content Include="Assets\Icons\icons8-xls-50.png" />
     <Content Include="Assets\Icons\id-card.png" />
     <Content Include="Assets\Icons\location.png" />
     <Content Include="Assets\Icons\logout.png" />
+    <Content Include="Assets\Icons\notification-bell.png" />
+    <Content Include="Assets\Icons\phone-call.png" />
     <Content Include="Assets\Icons\phone.png" />
+    <Content Include="Assets\Icons\plus.png" />
+    <Content Include="Assets\Icons\project-management.png" />
     <Content Include="Assets\Icons\project-status.png" />
     <Content Include="Assets\Icons\project.png" />
     <Content Include="Assets\Icons\supervisor.png" />
     <Content Include="Assets\Icons\woman.png" />
+    <Content Include="Assets\Icons\x-button.png" />
     <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
     <Content Include="Assets\loudspeaker.png" />
+    <Content Include="Assets\MaleDefault.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />
     <Content Include="Assets\PopupIcons\info.svg" />
@@ -331,11 +401,11 @@
     <Content Include="Assets\PopupIcons\success.svg" />
     <Content Include="Assets\PopupIcons\warning.svg" />
     <Content Include="Assets\Profile Photo.jpg" />
-    <Content Include="Assets\Rajender_Passport_Photo.jpg" />
     <Content Include="Assets\Report.png" />
     <Content Include="Assets\SignIn.png" />
+    <Content Include="Assets\status-repor-upload.jpg" />
+    <Content Include="Assets\status-report.jpg" />
     <Content Include="Assets\TimeSheet.png" />
-    <Content Include="Assets\zurich-logo-ranged-br.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -363,6 +433,12 @@
     <Content Include="EmployeeLoginModel.edmx.diagram">
       <DependentUpon>EmployeeLoginModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Assets\Reports\Sample-Incident-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Project-Report.xlsx" />
+    <Content Include="Assets\Reports\Sample-Audit-Report.xlsx" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -404,6 +480,17 @@
     <Content Include="Views\Home\zohosigninreport.cshtml" />
     <Content Include="Views\Home\RemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveInfoPartial.cshtml" />
+    <Content Include="Views\Home\StatusReportUpload.cshtml" />
+    <Content Include="StatusReports.json" />
+    <Content Include="Views\Home\_ModalAlerts.cshtml" />
+    <Content Include="Views\Home\StatusReport.cshtml" />
+    <Content Include="Views\Home\StatusGraphChartReport.cshtml" />
+    <Content Include="Views\Home\UploadedStatusReportView.cshtml" />
+    <Content Include="Views\Home\UploadedStatusExcelReportView.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainder.cshtml" />
+    <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
+    <Content Include="Views\Home\LeaveReport.cshtml" />
+    <Content Include="Views\Home\_MenuNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
