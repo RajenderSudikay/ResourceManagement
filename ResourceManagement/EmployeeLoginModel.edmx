@@ -4,7 +4,7 @@
 	<edmx:Runtime>
 		<!-- SSDL content -->
 		<edmx:StorageModels>
-		<Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+	  <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.ambctaskcapture' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ambctaskcapture">
@@ -86,6 +86,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.CategoryType' does not have a pr
           <Property Name="leavesource" Type="varchar" MaxLength="50" />
           <Property Name="leaveuniqkey" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="leavecategory" Type="varchar" MaxLength="250" />
+          <Property Name="employee_name" Type="varchar" MaxLength="1500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate_12072021' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -746,33 +747,26 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
     [Category].[category] AS [category], 
     [Category].[categoryType] AS [categoryType]
-    FROM [dbo].[Category] AS [Category]
-	</DefiningQuery>
+    FROM [dbo].[Category] AS [Category]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="CategoryList" EntityType="Self.CategoryList" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [CategoryList].[CategoryListItem] AS [CategoryListItem], 
     [CategoryList].[CategoryTypeID] AS [CategoryTypeID]
-    FROM [dbo].[CategoryList] AS [CategoryList]
-	</DefiningQuery>
+    FROM [dbo].[CategoryList] AS [CategoryList]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="CategoryType" EntityType="Self.CategoryType" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [CategoryType].[CategoryTypeID] AS [CategoryTypeID], 
     [CategoryType].[CategoryType] AS [CategoryType]
-    FROM [dbo].[CategoryType] AS [CategoryType]
-	</DefiningQuery>
+    FROM [dbo].[CategoryType] AS [CategoryType]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="con_leaveupdate_12072021" EntityType="Self.con_leaveupdate_12072021" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [con_leaveupdate_12072021].[leaveno] AS [leaveno], 
     [con_leaveupdate_12072021].[leavedate] AS [leavedate], 
     [con_leaveupdate_12072021].[employee_id] AS [employee_id], 
@@ -780,12 +774,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate_12072021].[submittedby] AS [submittedby], 
     [con_leaveupdate_12072021].[leavesource] AS [leavesource], 
     [con_leaveupdate_12072021].[leaveuniqkey] AS [leaveuniqkey]
-    FROM [dbo].[con_leaveupdate_12072021] AS [con_leaveupdate_12072021]
-	</DefiningQuery>
+    FROM [dbo].[con_leaveupdate_12072021] AS [con_leaveupdate_12072021]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="con_leaveupdate_20220517" EntityType="Self.con_leaveupdate_20220517" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [con_leaveupdate_20220517].[leaveno] AS [leaveno], 
     [con_leaveupdate_20220517].[leavedate] AS [leavedate], 
     [con_leaveupdate_20220517].[employee_id] AS [employee_id], 
@@ -793,12 +785,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate_20220517].[submittedby] AS [submittedby], 
     [con_leaveupdate_20220517].[leavesource] AS [leavesource], 
     [con_leaveupdate_20220517].[leaveuniqkey] AS [leaveuniqkey]
-    FROM [dbo].[con_leaveupdate_20220517] AS [con_leaveupdate_20220517]
-	</DefiningQuery>
+    FROM [dbo].[con_leaveupdate_20220517] AS [con_leaveupdate_20220517]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="con_leaveupdate20220510" EntityType="Self.con_leaveupdate20220510" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [con_leaveupdate20220510].[leaveno] AS [leaveno], 
     [con_leaveupdate20220510].[leavedate] AS [leavedate], 
     [con_leaveupdate20220510].[employee_id] AS [employee_id], 
@@ -806,15 +796,13 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate20220510].[submittedby] AS [submittedby], 
     [con_leaveupdate20220510].[leavesource] AS [leavesource], 
     [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
-    FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]
-	</DefiningQuery>
+    FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [tbl_LoginInformation_bkp].[login_id] AS [login_id], 
     [tbl_LoginInformation_bkp].[AMBCLogin_id] AS [AMBCLogin_id], 
     [tbl_LoginInformation_bkp].[Employee_Code] AS [Employee_Code], 
@@ -828,22 +816,18 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [tbl_LoginInformation_bkp].[Employee_Hostname] AS [Employee_Hostname], 
     [tbl_LoginInformation_bkp].[Employee_IP] AS [Employee_IP], 
     [tbl_LoginInformation_bkp].[Concat_loginstring] AS [Concat_loginstring]
-    FROM [dbo].[tbl_LoginInformation_bkp] AS [tbl_LoginInformation_bkp]
-	</DefiningQuery>
+    FROM [dbo].[tbl_LoginInformation_bkp] AS [tbl_LoginInformation_bkp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="tblambcholiday_06May2022" EntityType="Self.tblambcholiday_06May2022" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [tblambcholiday_06May2022].[holidayno] AS [holidayno], 
     [tblambcholiday_06May2022].[holiday_date] AS [holiday_date], 
     [tblambcholiday_06May2022].[holiday_name] AS [holiday_name], 
     [tblambcholiday_06May2022].[region] AS [region]
-    FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]
-	</DefiningQuery>
+    FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [AMBC_Active_Emp].[employee_id] AS [employee_id], 
     [AMBC_Active_Emp].[employee_name] AS [employee_name], 
     [AMBC_Active_Emp].[employee_mobile] AS [employee_mobile], 
@@ -851,57 +835,47 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [AMBC_Active_Emp].[project_shift] AS [project_shift], 
     [AMBC_Active_Emp].[emp_status] AS [emp_status], 
     [AMBC_Active_Emp].[region] AS [region]
-    FROM [dbo].[AMBC_Active_Emp] AS [AMBC_Active_Emp]
-	</DefiningQuery>
+    FROM [dbo].[AMBC_Active_Emp] AS [AMBC_Active_Emp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" store:Type="Views" Schema="dbo" />
           <EntitySet Name="ambclogin_leave_view" EntityType="Self.ambclogin_leave_view" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [ambclogin_leave_view].[Employee Code] AS [Employee Code], 
     [ambclogin_leave_view].[Sign In Date] AS [Sign In Date], 
     [ambclogin_leave_view].[Leave Date] AS [Leave Date], 
     [ambclogin_leave_view].[Leave Type] AS [Leave Type]
-    FROM [dbo].[ambclogin_leave_view] AS [ambclogin_leave_view]
-	</DefiningQuery>
+    FROM [dbo].[ambclogin_leave_view] AS [ambclogin_leave_view]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability_Final" EntityType="Self.consultantavailiability_Final" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability_Final].[Employee Code] AS [Employee Code], 
     [consultantavailiability_Final].[Month_Year] AS [Month_Year], 
     [consultantavailiability_Final].[Consultant_WorkedDays] AS [Consultant_WorkedDays], 
     [consultantavailiability_Final].[Monthly_WorkingDays] AS [Monthly_WorkingDays], 
     [consultantavailiability_Final].[ConslAvl] AS [ConslAvl]
-    FROM [dbo].[consultantavailiability_Final] AS [consultantavailiability_Final]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability_Final] AS [consultantavailiability_Final]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability1" EntityType="Self.consultantavailiability1" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability1].[Employee Code] AS [Employee Code], 
     [consultantavailiability1].[Month1] AS [Month1], 
     [consultantavailiability1].[year1] AS [year1], 
     [consultantavailiability1].[Month_year] AS [Month_year], 
     [consultantavailiability1].[TXNCount] AS [TXNCount], 
     [consultantavailiability1].[Leave Type] AS [Leave Type]
-    FROM [dbo].[consultantavailiability1] AS [consultantavailiability1]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability1] AS [consultantavailiability1]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability2" EntityType="Self.consultantavailiability2" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability2].[Employee Code] AS [Employee Code], 
     [consultantavailiability2].[Month_year] AS [Month_year], 
     [consultantavailiability2].[Leave Type] AS [Leave Type], 
     [consultantavailiability2].[LeaveTypeValue] AS [LeaveTypeValue], 
     [consultantavailiability2].[TXNCount] AS [TXNCount]
-    FROM [dbo].[consultantavailiability2] AS [consultantavailiability2]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability2] AS [consultantavailiability2]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability3" EntityType="Self.consultantavailiability3" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability3].[employee code] AS [employee code], 
     [consultantavailiability3].[Month_Year] AS [Month_Year], 
     [consultantavailiability3].[Leave Type] AS [Leave Type], 
@@ -909,43 +883,35 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [consultantavailiability3].[TXNCount] AS [TXNCount], 
     [consultantavailiability3].[FinalLeaveType] AS [FinalLeaveType], 
     [consultantavailiability3].[FinalValue] AS [FinalValue]
-    FROM [dbo].[consultantavailiability3] AS [consultantavailiability3]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability3] AS [consultantavailiability3]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability4" EntityType="Self.consultantavailiability4" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability4].[employee code] AS [employee code], 
     [consultantavailiability4].[Month_Year] AS [Month_Year], 
     [consultantavailiability4].[FinalLeaveType] AS [FinalLeaveType], 
     [consultantavailiability4].[DaysCount] AS [DaysCount]
-    FROM [dbo].[consultantavailiability4] AS [consultantavailiability4]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability4] AS [consultantavailiability4]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="consultantavailiability5" EntityType="Self.consultantavailiability5" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [consultantavailiability5].[employee code] AS [employee code], 
     [consultantavailiability5].[month_year] AS [month_year], 
     [consultantavailiability5].[finalleavetype] AS [finalleavetype], 
     [consultantavailiability5].[Working Days] AS [Working Days], 
     [consultantavailiability5].[WorkDays] AS [WorkDays]
-    FROM [dbo].[consultantavailiability5] AS [consultantavailiability5]
-	</DefiningQuery>
+    FROM [dbo].[consultantavailiability5] AS [consultantavailiability5]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="halfday_leave_view" EntityType="Self.halfday_leave_view" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [halfday_leave_view].[Employee Code] AS [Employee Code], 
     [halfday_leave_view].[Sign In Date] AS [Sign In Date], 
     [halfday_leave_view].[Leave Date] AS [Leave Date], 
     [halfday_leave_view].[Leave Type] AS [Leave Type]
-    FROM [dbo].[halfday_leave_view] AS [halfday_leave_view]
-	</DefiningQuery>
+    FROM [dbo].[halfday_leave_view] AS [halfday_leave_view]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="today_att" EntityType="Self.today_att" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>
-			SELECT 
+            <DefiningQuery>SELECT 
     [today_att].[employee_id] AS [employee_id], 
     [today_att].[employee_name] AS [employee_name], 
     [today_att].[employee_mobile] AS [employee_mobile], 
@@ -958,12 +924,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [today_att].[Signout_Time] AS [Signout_Time], 
     [today_att].[Working_Hours] AS [Working_Hours], 
     [today_att].[Employee_IP] AS [Employee_IP]
-    FROM [dbo].[today_att] AS [today_att]
-	</DefiningQuery>
+    FROM [dbo].[today_att] AS [today_att]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-	  </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
 		<!-- CSDL content -->
 		<edmx:ConceptualModels>
 			<Schema Namespace="TimesheetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1024,6 +988,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
 					<Property Name="leavesource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="leaveuniqkey" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="None" />
 					<Property Name="leavecategory" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="employee_name" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
 				</EntityType>
 				<EntityType Name="desk_att_taskcapture">
 					<Key>
@@ -1738,7 +1703,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
 					<EntitySetMapping Name="con_leaveupdate">
 						<EntityTypeMapping TypeName="TimesheetDBModel.con_leaveupdate">
 							<MappingFragment StoreEntitySet="con_leaveupdate">
-								<ScalarProperty Name="leavecategory" ColumnName="leavecategory" />
+								<ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="leavecategory" ColumnName="leavecategory" />
 								<ScalarProperty Name="leaveno" ColumnName="leaveno" />
 								<ScalarProperty Name="leavedate" ColumnName="leavedate" />
 								<ScalarProperty Name="employee_id" ColumnName="employee_id" />
