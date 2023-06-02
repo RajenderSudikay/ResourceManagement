@@ -401,13 +401,11 @@
     <Content Include="Assets\PopupIcons\success.svg" />
     <Content Include="Assets\PopupIcons\warning.svg" />
     <Content Include="Assets\Profile Photo.jpg" />
-    <Content Include="Assets\Rajender_Passport_Photo.jpg" />
     <Content Include="Assets\Report.png" />
     <Content Include="Assets\SignIn.png" />
     <Content Include="Assets\status-repor-upload.jpg" />
     <Content Include="Assets\status-report.jpg" />
     <Content Include="Assets\TimeSheet.png" />
-    <Content Include="Assets\zurich-logo-ranged-br.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
