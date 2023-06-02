@@ -215,11 +215,19 @@
 
                     </div>
                     @*style="margin-left: -50px; margin-top: -104px;"*@
-                    <div class="@chart10Name chartdiv " style="margin-left: -50px; margin-top: -125px;">
+
+                    @{ 
+                        var chartHeight = "-104px";
+                    }
+                    @if (@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address != @chartModel.AMBC_Active_Emp_view.Client_MailAddress)
+                    {
+                        chartHeight = "-125px";
+                    }
+                    <div class="@chart10Name chartdiv " style="margin-left: -50px; margin-top: @chartHeight;">
                         <div id="@chart10Name" class="chartimagediv-banner" style="width: 33%;height: 130px; display: inline-block; "></div>
                         @*<div>
-                                <textarea rows="3" class="project-chart-textarea"></textarea>
-                            </div>*@
+                <textarea rows="3" class="project-chart-textarea"></textarea>
+            </div>*@
 
                     </div>
                 </div>
