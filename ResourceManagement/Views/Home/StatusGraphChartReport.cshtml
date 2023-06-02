@@ -98,6 +98,13 @@
                         <p class="banner-empname">@chartModel.AMBC_Active_Emp_view.Employee_Name</p>
 
                         <div class="emp-banner-info-div">
+
+                            @if (@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address != @chartModel.AMBC_Active_Emp_view.Client_MailAddress)
+                            {
+                                <p>
+                                    <div class="employeeInfo-banner">  <img src="~/Assets/Icons/email-new.png" width="15" style="margin-top: -11px; margin-left: 75px; " /><div class="empPersonelInfoe-banner"><b style="color: #23366f !important ">@chartModel.AMBC_Active_Emp_view.Client_MailAddress</b> </div></div>
+                                </p>
+                            }
                             <p>
                                 <div class="employeeInfo-banner">  <img src="~/Assets/Icons/email-new.png" width="15" style="margin-top: -11px; margin-left: 75px; " /><div class="empPersonelInfoe-banner"><b style="color: #23366f !important ">@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
                             </p>
@@ -165,6 +172,10 @@
 
                     <div class="report-content-resource">
                         <br />
+                        @if (@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address != @chartModel.AMBC_Active_Emp_view.Client_MailAddress)
+                        {
+                            <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="20" /><div class="empPersonelInfoe"><b style="color: white !important ">@chartModel.AMBC_Active_Emp_view.Client_MailAddress</b> </div></div>
+                        }
                         <div class="employeeInfo">  <img src="~/Assets/Icons/email-new.png" width="20" /><div class="empPersonelInfoe"><b style="color: white !important ">@chartModel.AMBC_Active_Emp_view.AMBC_Mail_Address</b> </div></div>
                         <div class="employeeInfo">
                             <img src="~/Assets/Icons/phone-call.png" width="18" /><div class="empPersonelInfoe"><b style="color: white !important ">@chartModel.AMBC_Active_Emp_view.Contact_Number</b></div>
@@ -204,8 +215,8 @@
 
                     </div>
                     @*style="margin-left: -50px; margin-top: -104px;"*@
-                    <div class="@chart10Name chartdiv " style="margin-left: -50px; margin-top: -104px;">
-                        <div id="@chart10Name" class="chartimagediv-banner" style="width: 45%;height: 130px; display: inline-block; "></div>
+                    <div class="@chart10Name chartdiv " style="margin-left: -50px; margin-top: -125px;">
+                        <div id="@chart10Name" class="chartimagediv-banner" style="width: 33%;height: 130px; display: inline-block; "></div>
                         @*<div>
                                 <textarea rows="3" class="project-chart-textarea"></textarea>
                             </div>*@
