@@ -4,45 +4,48 @@
     ViewBag.Title = "Login Page";
 }
 
-<div class="sidenav">
+<div class="sidenav" style="width: 50% !important">
+    <div class="">
 
-    <div class="login-main-text">
-        <h2>Resource Management<br> Login Page</h2>
-        <br />
-        <p>Login from here to access.</p>
-    </div>
-</div>
-<div class="main">
-    <div class="col-md-6 col-sm-12 login-card">
+        <div class="" style="width: auto">
+            <div class="">
+                <div class="login-form" style="margin-top: 15% !important;">
+                    <h2 style=" margin-left: 209px; font-size: xx-large; width: 100%; color: #60baaf "> Login Here </h2>
 
-        <div class="card dashboard-zoom" style="width: auto">
-            <img class="card-img-top login-card-img-top" src="~/Assets/AMBC_Logo.png" alt="Card image cap">
-            <div class="card-body login-card-body">
-                <div class="login-form">
-
+                    <p style=" font-size: 13.5px; line-height: 24px; margin-bottom: 48px; margin-left: 146px; width: 100%; margin-top: 35px; color: #bdbdbd; }">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget</p>
                     <br />
-                    <br />
+                  
 
                     @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
+                <div class="form-group">
+                    @*<input type="text" class="form-control" placeholder="Emp ID">*@
+                    @*<img src="~/Assets/MenuIcons/username.png" width="40" style=" margin-left: 125px; margin-bottom: -50px; background-color: white" />*@
+                    @Html.TextBoxFor(a => a.att_username, new { @class = "form-control custom-form-control bi bi-people", placeholder = "User Name" })
+                    @Html.ValidationMessageFor(a => a.att_username, "", new { @class = "text-danger" })
+                </div>
+                        <br />
                         <div class="form-group">
-                            <label><b>Emp ID</b></label>
-                            @*<input type="text" class="form-control" placeholder="Emp ID">*@
-                            @Html.TextBoxFor(a => a.att_username, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(a => a.att_username, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            <label><b>Password</b></label>
-                            @*<input type="password" class="form-control" placeholder="Password">*@
-                            @Html.PasswordFor(a => a.att_password, new { @class = "form-control" })
+                            @*<input type="password" class="form-control" placeholder="Password">*@                         
+                            @*<img src="~/Assets/MenuIcons/padlock.png" width="40" style=" margin-left: 125px; margin-bottom: -50px;" />*@
+                            @Html.PasswordFor(a => a.att_password, new { @class = "form-control custom-form-control bi bi-people", placeholder = "Password" })
                             @Html.ValidationMessageFor(a => a.att_password, "", new { @class = "text-danger" })
                         </div>
-                        <div class="model-footer">
-                            <button type="submit" class="btn btn-info btn-lg">Login</button>
-                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                        </div>
+                        <br />
+                        <br />
+
+                        <button type="submit" class="btn btn-info btn-lg" style="border: none; margin-left: 165px; width: 280px; height: 50px; background-color: black; color: white">LOGIN</button>
+                        <br />
+                        <br />
+                        <h3 style="margin-top: 60px; margin-left: 150px !important; width: 100%">
+                            <b style="color: white !important">Don't Have an account..?</b>
+                            <a href="#" style="color: #60baaf">
+                                Register Here
+                            </a>
+                        </h3>
+
 
                     }
                 </div>
@@ -50,6 +53,21 @@
         </div>
 
 
+    </div>
+
+</div>
+<div class="main" style="width: 50% !important; margin-left: 50%; margin-top: -130px;">
+    <div class="login-main-text">
+        <h2>
+            Welcome To AMBC HRMS
+            <br> <span style="padding-left: 100px"> Login Form</span>
+        </h2>
+        <br />
+        <p style="font-size: large">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+    </div>
+
+    <div>
+        <img src="~/Assets/b11.png" style="margin-left: 200px !important" />
     </div>
 </div>
 
