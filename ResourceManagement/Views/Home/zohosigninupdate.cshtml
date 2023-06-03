@@ -87,6 +87,146 @@
         .time-headertitle {
             margin-left: 110px !important;
         }
+
+        .navbar-fixed-top {
+            width: 99.225vw;
+            position: relative;
+            margin-left: -49.59vw;
+            left: 50%;
+            margin-top: -50px;
+            background-color: #005983;
+        }
+
+        .custom-container-fullwidth {
+            width: 95%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .nav-logo {
+            border-bottom-right-radius: 35px;
+            margin-top: -0.25vw;
+            position: relative;
+            margin-left: -0.59vw;
+            margin-bottom: -0.3vw;
+        }
+
+        .custom-button {
+            background-color: #00344d;
+            border-radius: 15px;
+            color: white;
+            height: 40px;
+            border: 1px solid yellow;
+        }
+
+            .custom-button:hover {
+                background-color: rgb(74, 172, 197);
+                color: white;
+            }
+
+        .footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: red;
+            color: white;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .custom-button-submit {
+            background-color: rgb(74, 172, 197);
+            border-radius: 15px;
+            color: white;
+            height: 40px;
+            border: 1px solid yellow;
+        }
+
+        /*   Related stop nav bar*/
+        .time-headertitle {
+            margin-left: auto !important
+        }
+
+        @@media (min-width: 992px) {
+            .dropdown-menu .dropdown-toggle:after {
+                border-top: .3em solid transparent;
+                border-right: 0;
+                border-bottom: .3em solid transparent;
+                border-left: .3em solid;
+            }
+
+            .dropdown-menu .dropdown-menu {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .dropdown-menu li {
+                position: relative;
+            }
+
+            .nav-item .submenu {
+                display: none;
+                position: absolute;
+                left: 100%;
+                top: -7px;
+            }
+
+            .nav-item .submenu-left {
+                right: 100%;
+                left: auto;
+            }
+
+            .dropdown-menu > li:hover {
+                background-color: rgb(74, 172, 197)
+            }
+
+                .dropdown-menu > li:hover > .submenu {
+                    display: block;
+                }
+        }
+
+        .custom-navbar-nav {
+            font-size: medium !important;
+            color: white !important;
+            margin-top: 20px !important
+        }
+
+            .custom-navbar-nav > a {
+                color: white !important;
+            }
+
+            .custom-navbar-nav > li > a {
+                color: white !important;
+            }
+
+            .custom-navbar-nav > .open > a {
+                background-color: transparent !important;
+            }
+
+            .custom-navbar-nav .dropdown-menu {
+                border-radius: 12px !important;
+                font-size: small !important;
+                background-color: white !important;
+            }
+
+            .custom-navbar-nav > li {
+                float: left !important;
+                margin-right: 8px !important;
+            }
+
+                .custom-navbar-nav > li > .dropdown-menu {
+                    margin-top: 7px !important;
+                }
+
+            .custom-navbar-nav .nav-item:hover {
+                transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        .my-dropdown-toggle::after {
+            content: none;
+        }
     </style>
 </head>
 <body>
@@ -97,9 +237,14 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="time-headertitle">
-                <h2 class="text-uppercase text-white">Add Employee Chek-In to HRMS Application</h2>
-            </div>
+
+            @{
+                Html.RenderPartial("_MenuLinks");
+            }
+
+            @*<div class="time-headertitle">
+                    <h2 class="text-uppercase text-white">Add Employee Chek-In to HRMS Application</h2>
+                </div>*@
         </nav>
 
 
@@ -207,6 +352,28 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        // Prevent closing from click inside dropdown
+        $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+        // make it as accordion for smaller screens
+        if ($(window).width() < 992) {
+            $('.dropdown-menu a').click(function (e) {
+                e.preventDefault();
+                if ($(this).next('.submenu').length) {
+                    $(this).next('.submenu').toggle();
+                }
+                $('.dropdown').on('hide.bs.dropdown', function () {
+                    $(this).find('.submenu').hide();
+                })
+            });
+        }
+
+    </script>
 
 </body>
 </html>

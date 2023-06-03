@@ -10,10 +10,15 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="padding-left: 69px !important">
+
+    @{
+        Html.RenderPartial("_MenuLinks");
+    }
+
+    @*<div class="time-headertitle" style="padding-left: 69px !important">
         <h2 class="text-uppercase text-white">Leave Management System</h2>
 
-    </div>
+    </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -143,8 +148,8 @@
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
-        <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">Apply Leave</h2>
-        <hr />
+        @*<h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">Apply Leave</h2>
+        <hr />*@
         <div class="card-body ">
             @*<form class="needs-validation" novalidate>*@
             <div class="row">
@@ -242,9 +247,10 @@
                     </div>
                 </div>
             </div>
-
+            <br />
+            <br />
             <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg btn-apply-leave" style="width:100px; border-radius:10px"><b>Submit</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-apply-leave" style="width:100px; height:40px; border-radius:10px"><b>Submit</b></button>
             </div>
 
             @*</form>*@
@@ -255,62 +261,62 @@
 <br />
 <br />
 @*@if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
-{
-    <div class="card card-body" style="border-radius: 10px">
-        <div class="card timesheet-card">
-            <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
-            <hr />
-            <div class="card-body ">
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group selectemp-div">
-                            <label for="leavereportemployeename">Employee Name<b style="color:red">*</b></label>
-                            <select id="selectReportEmployeename" name="leavereportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option value="Select Employee" selected disabled>Select Employee</option>
-                                <option value="All Employees">All Employees</option>
-                            </select>
-                            <div class="invalid-feedback-report-employee" style="display:none; color: red">
-                                Please Select Employee
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="leavereportstartdate" class="leavestartdate">Start Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="leavereportstartdate" required>
-                            <div class="invalid-feedback-report-leavedate" style="color:red; display:none">
-                                Please Start Date
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 leave-enddate-div">
-                        <div class="form-group">
-                            <label for="leavereportenddate">End Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="leavereportenddate" required>
-                            <div class="invalid-feedback-report-enddate" style="display:none; color: red">
-                                Please Select End Date
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer mt-xl-4">
-                    <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width:200px; border-radius:10px"><b>Get Leave Details</b></button>
-                </div>
-
-                <br />
+    {
+        <div class="card card-body" style="border-radius: 10px">
+            <div class="card timesheet-card">
+                <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
                 <hr />
+                <div class="card-body ">
 
-                <div class="leave-info-container"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group selectemp-div">
+                                <label for="leavereportemployeename">Employee Name<b style="color:red">*</b></label>
+                                <select id="selectReportEmployeename" name="leavereportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                                    <option value="Select Employee" selected disabled>Select Employee</option>
+                                    <option value="All Employees">All Employees</option>
+                                </select>
+                                <div class="invalid-feedback-report-employee" style="display:none; color: red">
+                                    Please Select Employee
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="leavereportstartdate" class="leavestartdate">Start Date<b style="color:red">*</b></label>
+                                <input type="date" class="form-control" id="leavereportstartdate" required>
+                                <div class="invalid-feedback-report-leavedate" style="color:red; display:none">
+                                    Please Start Date
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 leave-enddate-div">
+                            <div class="form-group">
+                                <label for="leavereportenddate">End Date<b style="color:red">*</b></label>
+                                <input type="date" class="form-control" id="leavereportenddate" required>
+                                <div class="invalid-feedback-report-enddate" style="display:none; color: red">
+                                    Please Select End Date
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer mt-xl-4">
+                        <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width:200px; border-radius:10px"><b>Get Leave Details</b></button>
+                    </div>
+
+                    <br />
+                    <hr />
+
+                    <div class="leave-info-container"></div>
+
+                </div>
             </div>
         </div>
-    </div>
-}*@
+    }*@
 
 <div class="modal" tabindex="-1" role="dialog" id="modal-db-error-alert">
     <div class="modal-dialog" role="document">

@@ -10,10 +10,15 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="padding-left: 69px !important">
+
+    @{
+        Html.RenderPartial("_MenuLinks");
+    }
+
+    @*<div class="time-headertitle" style="padding-left: 69px !important">
         <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Leave Management System</h2>
 
-    </div>
+    </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -146,8 +151,8 @@
 {
     <div class="card card-body" style="border-radius: 10px">
         <div class="card timesheet-card">
-            <h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
-            <hr />
+            @*<h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">View Leave details</h2>
+            <hr />*@
             <div class="card-body ">
 
                 <div class="row">
@@ -185,14 +190,15 @@
                         </div>
                     </div>
                 </div>
-
+                <br />
+                <br />
                 <div class="modal-footer mt-xl-4">
 
                     @using (Html.BeginForm("ExportLeaveReport", "Home", FormMethod.Post))
                     {
 
                         <input type="hidden" name="GridHtml" />
-                        <button type="submit" class="btn btn-lg text-white btn-leave-report-excel-generate" value="Leave Report" style="border-radius: 10px; background-color: #388E3C; display:none">
+                        <button type="submit" class="btn btn-lg text-white btn-leave-report-excel-generate" value="Leave Report" style="border-radius: 10px; background-color: #388E3C; display:none; height:40px">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel" viewBox="0 0 16 16" style="margin-bottom: -3px">
                                 <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
                                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
@@ -200,7 +206,7 @@
                         </button>
                     }
 
-                    <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width:200px; border-radius:10px"><b>View Leave Info</b></button>
+                    <button type="submit" class="btn btn-info btn-lg btn-leave-report" style="width: 200px; border-radius: 10px; height: 40px"><b>View Leave Info</b></button>
                 </div>
 
                 <br />

@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://cdn-ecpoc.nitrocdn.com/XaYLKlLnwUlnkVbJmDrBqpTtlAYIrCaz/assets/images/optimized/rev-bb15dcb/wp-content/uploads/2020/12/ambc_favicon.png" />
 
     <title class="page-name-title">@ViewBag.Title - AMBC HRMS</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -32,6 +32,7 @@
             margin-left: -49.59vw;
             left: 50%;
             margin-top: -50px;
+            background-color: #005983;
         }
 
         .custom-container-fullwidth {
@@ -42,7 +43,13 @@
             margin-left: auto;
         }
 
-        .nav-logo {
+        .custom-container-fullwidth100 {
+            width: 100%;
+         
+        }
+
+     
+            .nav-logo {
             border-bottom-right-radius: 35px;
             margin-top: -0.25vw;
             position: relative;
@@ -64,7 +71,6 @@
             }
 
         .footer {
-         
             left: 0;
             bottom: 0;
             width: 100%;
@@ -82,10 +88,100 @@
             border: 1px solid yellow;
         }
 
-     /*   Related stop nav bar*/
+        /*   Related stop nav bar*/
         .time-headertitle {
             margin-left: auto !important
         }
+
+        @@media (min-width: 992px) {
+            .dropdown-menu .dropdown-toggle:after {
+                border-top: .3em solid transparent;
+                border-right: 0;
+                border-bottom: .3em solid transparent;
+                border-left: .3em solid;
+            }
+
+            .dropdown-menu .dropdown-menu {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .dropdown-menu li {
+                position: relative;
+            }
+
+            .nav-item .submenu {
+                display: none;
+                position: absolute;
+                left: 100%;
+                top: -7px;
+            }
+
+            .nav-item .submenu-left {
+                right: 100%;
+                left: auto;
+            }
+
+            .dropdown-menu > li:hover {
+                background-color: rgb(74, 172, 197)
+            }
+
+                .dropdown-menu > li:hover > .submenu {
+                    display: block;
+                }
+        }
+
+        .custom-navbar-nav {
+            font-size: medium !important;
+            color: white !important;
+            margin-top: 20px !important
+        }
+
+            .custom-navbar-nav > a {
+                color: white !important;
+            }
+
+            .custom-navbar-nav > li > a {
+                color: white !important;
+            }
+
+            .custom-navbar-nav > .open > a {
+                background-color: transparent !important;
+                border-bottom: 2px solid white;
+            }
+
+            .custom-navbar-nav .dropdown-menu {
+                border-radius: 12px !important;
+                font-size: small !important;
+                background-color: white !important;
+            }
+
+            .custom-navbar-nav > li {
+                float: left !important;
+                margin-right: 20px !important;
+            }
+
+                .custom-navbar-nav > li > .dropdown-menu {
+                    margin-top: 0px !important;
+                }
+
+            .custom-navbar-nav .nav-item:hover {
+                transform: scale(1.1);
+            }
+
+        .my-dropdown-toggle::after {
+            content: none;
+        }
+
+        .modal-footer {
+            background-color: #dae2f4 !important;
+            border-radius: 10px !important;
+        }
+        .custom-navbar-nav .dropdown-menu {
+            background-color: #dae2f4 !important
+        }
+
+       
     </style>
 </head>
 <body>
@@ -95,7 +191,7 @@
             <span class="spinner"></span>
         </div>
     </div>
-    <div class="custom-container-fullwidth">
+    <div class="custom-container-fullwidth" id="layout-div">
         @RenderBody()
     </div>
 
@@ -105,6 +201,32 @@
     <script src="~/Scripts/main.js"></script>
     <div style="background-color: rebeccapurple">
     </div>
+
+    <script>
+        // Prevent closing from click inside dropdown
+        $(document).on('click', '.dropdown-menu', function (e) {         
+            e.stopPropagation();
+        });
+
+        $(document).on('click', '.nav-item', function (e) {           
+            e.stopPropagation();
+            $(this).css('border-bottom', '2px solid white');
+        });
+
+        // make it as accordion for smaller screens
+        if ($(window).width() < 992) {
+            $('.dropdown-menu a').click(function (e) {
+                e.preventDefault();
+                if ($(this).next('.submenu').length) {
+                    $(this).next('.submenu').toggle();
+                }
+                $('.dropdown').on('hide.bs.dropdown', function () {
+                    $(this).find('.submenu').hide();
+                })
+            });
+        }  
+      
+    </script>
 
 </body>
 </html>

@@ -394,7 +394,12 @@
     <Content Include="Assets\LMS.png" />
     <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\MaleDefault.png" />
+    <Content Include="Assets\MenuIcons\business-report.png" />
+    <Content Include="Assets\MenuIcons\document.png" />
     <Content Include="Assets\MenuIcons\icons8-home-20.png" />
+    <Content Include="Assets\MenuIcons\management.png" />
+    <Content Include="Assets\MenuIcons\manager.png" />
+    <Content Include="Assets\MenuIcons\technical-support.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />
     <Content Include="Assets\PopupIcons\info.svg" />
@@ -406,6 +411,7 @@
     <Content Include="Assets\SignIn.png" />
     <Content Include="Assets\status-repor-upload.jpg" />
     <Content Include="Assets\status-report.jpg" />
+    <Content Include="Assets\test.png" />
     <Content Include="Assets\TimeSheet.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -492,6 +498,7 @@
     <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveReport.cshtml" />
     <Content Include="Views\Home\_MenuNavigation.cshtml" />
+    <Content Include="Views\Home\_MenuLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

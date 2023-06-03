@@ -9,7 +9,8 @@
     .headerrow {
         border: 0px !important;
         padding: 2px !important;
-        background-color: LightGray;
+        background-color: #005983 !important;
+        color: white !important;
     }
 
     .headertd {
@@ -22,7 +23,8 @@
         width: 100%;
         border: 1px solid black;
         padding: 6px;
-        background-color: LightGray;
+        background-color: #005983 !important;
+        color: white !important;
     }
 
     #timesheet-table th, td {
@@ -40,10 +42,15 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="">
-        <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">TimeSheet Reports</h2>
 
-    </div>
+    @{
+        Html.RenderPartial("_MenuLinks");
+    }
+
+    @*<div class="time-headertitle" style="">
+            <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">TimeSheet Reports</h2>
+
+        </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -187,37 +194,39 @@
             </div>
         </div>
 
-        <div class="row mt-xl-4">
-            <div class="form-group col-lg-1">
-                <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px">
-                    View Report
-                </button>
-            </div>
-
-            @using (Html.BeginForm("Export", "Home", FormMethod.Post))
-            {
-
-                <input type="hidden" name="GridHtml" />
-
-                <div class="form-group col-lg-4" style="margin-left:10px">
-                    <div class="btn-group">
-                        <input type="submit" class="btn btn-success btn-lg text-white btn-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius:15px" />
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-4" style="margin-left:-10px; display:none">
-                    <div class="btn-group">
-                        <input type="submit" id="btnPdfSubmit" class="btn btn-danger btn-lg text-white btn-report-generate" value="PDF Report" style="border-radius:15px" />
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-3" style="margin-left: 15px">
-                    <button type="button" class="btn btn-warning btn-lg btn-remainder" style="border-radius:15px" data-toggle="modal">
-                        Remainder
+        <div class="modal-footer" style="height: 60px; margin-top: 35px;">
+            <div class="row mt-xl-4">
+                <div class="form-group col-lg-1">
+                    <button type="button" class="btn btn-primary openmodel btn-lg text-white reports-view" style="border-radius: 15px; margin-left: -60px; height: 40px">
+                        <b>View Report</b>
                     </button>
                 </div>
-            }
 
+                @using (Html.BeginForm("Export", "Home", FormMethod.Post))
+                {
+
+                    <input type="hidden" name="GridHtml" />
+
+                    <div class="form-group col-lg-4" style="margin-left:10px">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-success btn-lg text-white btn-report-generate" id="btnExcelSubmit" value="Excel Report" style="border-radius: 15px; height: 40px; font-weight: bold" />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4" style="margin-left:-10px; display:none">
+                        <div class="btn-group">
+                            <input type="submit" id="btnPdfSubmit" class="btn btn-danger btn-lg text-white btn-report-generate" value="PDF Report" style="border-radius: 15px; height: 40px; font-weight: bold " />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3" style="margin-left: 15px">
+                        <button type="button" class="btn btn-warning btn-lg btn-remainder" style="border-radius: 15px; height: 40px; font-weight: bold" data-toggle="modal">
+                            Remainder
+                        </button>
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
 </div>

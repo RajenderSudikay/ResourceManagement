@@ -10,10 +10,15 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="">
+
+    @{
+        Html.RenderPartial("_MenuLinks");
+    }
+
+    @*<div class="time-headertitle" style="">
         <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Check-In Adjust</h2>
 
-    </div>
+    </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)

@@ -10,10 +10,15 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="padding-left: 69px !important">
+
+    @{
+        Html.RenderPartial("_MenuLinks");
+    }
+
+    @*<div class="time-headertitle" style="padding-left: 69px !important">
         <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Status Report</h2>
 
-    </div>
+    </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -151,8 +156,8 @@
         <div class="card-body ">
 
             <div class="">
-                <h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>
-                <hr />
+                @*<h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>*@
+                @*<hr />*@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 @if (Model != null && Model.StatusReportInfo.SuccessMessage != "")
