@@ -6,7 +6,9 @@
 }
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <div class="nav-logo">
+        <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,9 +18,9 @@
     }
 
     @*<div class="time-headertitle" style="padding-left: 69px !important">
-        <h2 class="text-uppercase text-white">Leave Management System</h2>
+            <h2 class="text-uppercase text-white">Leave Management System</h2>
 
-    </div>*@
+        </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -149,7 +151,7 @@
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
         @*<h2 style="text-align: center; background-color: black; padding: 10px; color: white; border-radius: 10px;">Apply Leave</h2>
-        <hr />*@
+            <hr />*@
         <div class="card-body ">
             @*<form class="needs-validation" novalidate>*@
             <div class="row">
@@ -250,7 +252,7 @@
             <br />
             <br />
             <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg btn-apply-leave" style="width:100px; height:40px; border-radius:10px"><b>Submit</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-apply-leave" style="width:100px; height:30px; border-radius:10px"><b>Submit</b></button>
             </div>
 
             @*</form>*@

@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Login Page";
 }
+<style>
+    body {
+        overflow: hidden !important; /* Hide scrollbars */
+    }
+</style>
 
 <div class="sidenav" style="width: 50% !important">
     <div class="">
@@ -56,19 +61,19 @@
     </div>
 
 </div>
-<div class="main" style="width: 50% !important; margin-left: 50%; margin-top: -130px;">
+<div class="main login-main" style="width: 60% !important; margin-left: 50%; margin-top: -220px; ">
     <div class="login-main-text">
-        <h2>
+        <h2 style="margin-left: 45px; margin-top:45px">
             Welcome To AMBC HRMS
-            <br> <span style="padding-left: 100px"> Login Form</span>
+            <br> <span style="padding-left: 100px"></span>
         </h2>
-        <br />
-        <p style="font-size: large">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+      
+        <p style="font-size: large; width: 583px; margin-top: -35px">Stay organized and stay ahead with our comprehensive suite of features tailored to your needs.</p>
     </div>
 
-    <div>
-        <img src="~/Assets/b11.png" style="margin-left: 200px !important" />
-    </div>
+    @*<div>
+        <img src="~/Assets/Login-image.jpeg" style="margin-left: 200px !important" width="300" />
+    </div>*@
 </div>
 
 

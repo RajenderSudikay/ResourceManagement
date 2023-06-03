@@ -28,73 +28,33 @@
     <script src="~/Scripts/moment.js"></script>
 
     <style>
+        body {
+            font-family: Calibri;
+        }
+
         .navbar-fixed-top {
             width: 99.225vw;
             position: relative;
             margin-left: -49.59vw;
             left: 50%;
             margin-top: -50px;
+            background-color: white !important;
+            border: 0;
+            height: 139px !important;
+            border-bottom: 1px solid #91bfe3 !important;
         }
 
-        .custom-container-fullwidth {
-            width: 95%;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .nav-logo {
-            border-bottom-right-radius: 35px;
-            margin-top: -0.25vw;
-            position: relative;
-            margin-left: -0.59vw;
-            margin-bottom: -0.3vw;
-        }
-
-        .custom-button {
-            background-color: #00344d;
-            border-radius: 15px;
-            color: white;
-            height: 40px;
-            border: 1px solid yellow;
-        }
-
-            .custom-button:hover {
-                background-color: rgb(74, 172, 197);
-                color: white;
-            }
-
-        .footer {
-            left: 0;
-            bottom: 0;
-            width: 100%;
+        .navbar-collapse {
+            margin-bottom: -47px !important;
+            margin-left: -239px !important;
+            margin-top: 42px;
             background-color: red;
-            color: white;
-            text-align: center;
-            margin-bottom: 0px;
         }
 
-        .custom-button-submit {
-            background-color: rgb(74, 172, 197);
-            border-radius: 15px;
-            color: white;
-            height: 40px;
-            border: 1px solid yellow;
-        }
 
-        /*   Related stop nav bar*/
-        .time-headertitle {
-            margin-left: 110px !important;
-        }
 
-        .navbar-fixed-top {
-            width: 99.225vw;
-            position: relative;
-            margin-left: -49.59vw;
-            left: 50%;
-            margin-top: -50px;
-            background-color: #005983;
+        .navbar-brand {
+            margin-top: -45px !important;
         }
 
         .custom-container-fullwidth {
@@ -105,12 +65,17 @@
             margin-left: auto;
         }
 
+        .custom-container-fullwidth100 {
+            width: 100% !important;
+        }
+
+
         .nav-logo {
             border-bottom-right-radius: 35px;
-            margin-top: -0.25vw;
+            /*  margin-top: -3.25vw;*/
             position: relative;
             margin-left: -0.59vw;
-            margin-bottom: -0.3vw;
+            margin-bottom: 0px;
         }
 
         .custom-button {
@@ -188,7 +153,7 @@
         }
 
         .custom-navbar-nav {
-            font-size: medium !important;
+            font-size: 16px !important;
             color: white !important;
             margin-top: 20px !important
         }
@@ -199,10 +164,12 @@
 
             .custom-navbar-nav > li > a {
                 color: white !important;
+                font-size: 16px !important;
             }
 
             .custom-navbar-nav > .open > a {
                 background-color: transparent !important;
+                border-bottom: 2px solid orange !important;
             }
 
             .custom-navbar-nav .dropdown-menu {
@@ -213,19 +180,89 @@
 
             .custom-navbar-nav > li {
                 float: left !important;
-                margin-right: 8px !important;
+                margin-right: 20px !important;
             }
 
                 .custom-navbar-nav > li > .dropdown-menu {
-                    margin-top: 7px !important;
+                    margin-top: 0px !important;
                 }
 
-            .custom-navbar-nav .nav-item:hover {
-                transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-            }
+        /*   .custom-navbar-nav .nav-item:hover {
+                transform: scale(1.1);
+            }*/
 
         .my-dropdown-toggle::after {
             content: none;
+        }
+
+        .modal-footer {
+            background-color: #dae2f4 !important;
+            border-radius: 10px !important;
+        }
+
+        .custom-navbar-nav .dropdown-menu {
+            background-color: white !important
+        }
+
+        .sidenav {
+            background-color: #3a3d6e !important;
+        }
+
+        .login-main-text {
+            padding-left: 100px;
+            color: #005983;
+            font-weight: 500;
+        }
+
+            .login-main-text h2 {
+                font-size: xx-large;
+                font-weight: 500;
+            }
+
+        .custom-form-control {
+            background-color: transparent !important;
+            margin-left: 165px !important;
+            border: 2px solid white !important;
+            height: 45px !important;
+            color: white !important;
+            font-size: large !important;
+        }
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: white !important;
+            opacity: 1 !important; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: white !important;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: white !important;
+        }
+
+        .agent-navigation {
+            margin-top: 70px !important;
+        }
+
+        .agent-full-name {
+            color: white !important;
+        }
+
+        .agent-navigation .dropdownheading:after {
+            border-bottom: 1px solid white !important;
+            border-right: 1px solid white !important;
+        }
+
+        .agent-navigation .agent-description {
+            top: 136px !important;
+        }
+
+        .card-body {
+            border-radius: 10px !important;
+            font-size: 15px !important;
+            font-family: Calibri !important;
+            color: #23366f !important;
         }
     </style>
 </head>
@@ -233,7 +270,9 @@
     <div class="container">
 
         <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-            <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+            <div class="nav-logo">
+                <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

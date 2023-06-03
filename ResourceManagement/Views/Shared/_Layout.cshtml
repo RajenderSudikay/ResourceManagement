@@ -27,16 +27,44 @@
 
     <style>
 
-     /*   body{
-            font-size: large;
-        }*/
+        body {
+            font-family: Calibri;
+        }
+
+        .login-main {
+            background-image: url("/Assets/Login-image.jpeg");
+            background-color: #cccccc; /* Used if the image is unavailable */
+            height: 720px !important; /* You must set a specified height */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover; /* Resize the background image to cover the entire container */
+            width: 100% !important;
+           
+           
+        }
         .navbar-fixed-top {
             width: 99.225vw;
             position: relative;
             margin-left: -49.59vw;
             left: 50%;
             margin-top: -50px;
-            background-color: #005983;
+            background-color: white !important;
+            border: 0;
+            height: 139px !important;
+            border-bottom: 1px solid #91bfe3 !important;
+        }
+
+        .navbar-collapse {
+            margin-bottom: -47px !important;
+            margin-left: -239px !important;
+            margin-top: 42px;
+            background-color: red;
+        }
+      
+        
+
+        .navbar-brand {
+            margin-top: -45px !important;
         }
 
         .custom-container-fullwidth {
@@ -48,17 +76,17 @@
         }
 
         .custom-container-fullwidth100 {
-            width: 100%;
-         
+            width: 100% !important;
+           
         }
 
      
             .nav-logo {
             border-bottom-right-radius: 35px;
-            margin-top: -0.25vw;
+          /*  margin-top: -3.25vw;*/
             position: relative;
             margin-left: -0.59vw;
-            margin-bottom: -0.3vw;
+            margin-bottom: 0px;
         }
 
         .custom-button {
@@ -70,7 +98,7 @@
         }
 
             .custom-button:hover {
-                background-color: rgb(74, 172, 197);
+                background-color: #0094ff !important;
                 color: white;
             }
 
@@ -135,8 +163,13 @@
                 }
         }
 
+        .dropdown-item {
+            font-size: 16px !important;
+            font-family: Calibri !important;
+        }
+
         .custom-navbar-nav {
-            font-size: medium !important;
+            font-size: 16px !important;
             color: white !important;
             margin-top: 20px !important
         }
@@ -147,11 +180,14 @@
 
             .custom-navbar-nav > li > a {
                 color: white !important;
+                font-size: 16px !important;             
+                font-family: Calibri !important;
             }
 
             .custom-navbar-nav > .open > a {
                 background-color: transparent !important;
-                border-bottom: 2px solid white;
+                border-bottom: 2px solid orange !important;
+               
             }
 
             .custom-navbar-nav .dropdown-menu {
@@ -169,9 +205,9 @@
                     margin-top: 0px !important;
                 }
 
-            .custom-navbar-nav .nav-item:hover {
+         /*   .custom-navbar-nav .nav-item:hover {
                 transform: scale(1.1);
-            }
+            }*/
 
         .my-dropdown-toggle::after {
             content: none;
@@ -182,7 +218,7 @@
             border-radius: 10px !important;
         }
         .custom-navbar-nav .dropdown-menu {
-            background-color: #dae2f4 !important
+            background-color: white !important
         }
 
         .sidenav {
@@ -223,6 +259,42 @@
             color: white !important;
         }
 
+        .agent-navigation {
+            margin-top: 70px !important;
+        }
+
+        .agent-full-name {
+            color: white !important;
+        }
+
+        .agent-navigation .dropdownheading:after {
+            border-bottom: 1px solid white !important;
+            border-right: 1px solid white !important;
+        }
+
+        .agent-navigation .agent-description {
+            top: 136px !important;
+        }
+
+        .card-body {
+            border-radius: 10px !important;
+            font-size: 15px !important;
+            font-family: Calibri !important;
+            color: #23366f !important;
+           
+        }
+
+        select{
+            font-size: 16px !important;
+            font-family: Calibri !important;
+        }
+
+        input {
+            font-size: 16px !important;
+            font-family: Calibri !important;
+        }
+
+      
        
     </style>
 </head>
@@ -235,7 +307,10 @@
     </div>
     <div class="custom-container-fullwidth" id="layout-div">
         @RenderBody()
+
+       
     </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -246,11 +321,11 @@
 
     <script>
         // Prevent closing from click inside dropdown
-        $(document).on('click', '.dropdown-menu', function (e) {         
+        $(document).on('click', '.dropdown-menu', function (e) {
             e.stopPropagation();
         });
 
-        $(document).on('click', '.nav-item', function (e) {           
+        $(document).on('click', '.nav-item', function (e) {
             e.stopPropagation();
             $(this).css('border-bottom', '2px solid white');
         });
@@ -266,8 +341,8 @@
                     $(this).find('.submenu').hide();
                 })
             });
-        }  
-      
+        }
+
     </script>
 
 </body>

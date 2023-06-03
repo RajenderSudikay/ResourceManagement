@@ -154,7 +154,7 @@
         border-radius: 50% !important;
         width: 100px !important;
         height: 100px !important;
-        margin-left: 300px !important;
+        margin-left: 430px !important;
         margin-top: -74px !important;
         border: 2px solid white !important
     }
@@ -164,7 +164,7 @@
         border-radius: 50% !important;
         width: 100px !important;
         height: 100px !important;
-        margin-left: 430px !important;
+        margin-left: 560px !important;
         margin-top: -102px !important;
         border: 2px solid white !important
     }
@@ -173,7 +173,9 @@
 
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <div class="nav-logo">
+        <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -183,9 +185,9 @@
     }
 
     @*<div class="time-headertitle" style="padding-left: 69px !important;">
-        <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">DASHBOARD REPORT</h2>
+            <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">DASHBOARD REPORT</h2>
 
-    </div>*@
+        </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -652,17 +654,17 @@
     jQuery('.btn-download-report').click(function () {
         /*   jQuery('.chartContainer1-table').css("width", "70%");*/
 
-        
+
         //jQuery('.chart-textarea').css('resize', 'none !important');
 
         jQuery('.chart-textarea').attr('style', 'resize: none !important');
-       
+
         jQuery('.chart-multiple-textarea').attr('style', 'margin-left: 0px !important');
 
         jQuery('.chart-7-testarea').attr('style', 'margin-left: 110px !important');
 
-        
-      
+
+
         jQuery('#circle').css("margin-left", "430px !important");
         jQuery('.project-chart-textarea').css("border", "none");
         jQuery('.chart-textarea').css("border", "none");
@@ -683,7 +685,7 @@
         jQuery('#chart12Container1').css('margin-left', '80px');
         jQuery('.chart-multiple-textarea').attr('style', 'margin-left: 0px !important');
         jQuery('.chart-7-testarea').attr('style', 'margin-left: 110px !important');
-       
+
         jQuery(".chart-textarea").css('border', '');
         jQuery('#circle').css("margin-left", "470px !important");
         jQuery('.employeeinfohr').css('width', '90%');
@@ -831,7 +833,7 @@
                 $('#chartContainer').html(data);
                 jQuery('#modal-delete-alert').modal('hide');
             }
-        });       
+        });
     });
 
     jQuery(".btn-status-uploaded-view").click(function () {
@@ -858,9 +860,9 @@
                 jQuery('.delete-message-popup').html("<h2>Are you sure you want to delete the records?</h2>");
             }
             else {
-                jQuery('.delete-message-popup').html("<h2>Are you sure you want to delete the records for <b>" + jQuery("#selectEmployeename :selected").text() +"</b>?</h2>");
+                jQuery('.delete-message-popup').html("<h2>Are you sure you want to delete the records for <b>" + jQuery("#selectEmployeename :selected").text() + "</b>?</h2>");
             }
-          
+
             jQuery('#modal-delete-alert').modal('show');
         }
 

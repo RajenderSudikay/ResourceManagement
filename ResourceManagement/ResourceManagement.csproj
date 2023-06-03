@@ -393,6 +393,7 @@
     <Content Include="Assets\Icons\x-button.png" />
     <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
+    <Content Include="Assets\Login-image.jpeg" />
     <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\MaleDefault.png" />
     <Content Include="Assets\MenuIcons\business-report.png" />

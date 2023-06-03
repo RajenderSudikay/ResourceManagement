@@ -18,11 +18,11 @@
         padding-left: 15px !important;
         margin-right: auto !important;
         margin-left: auto !important;
+
     }
 
     body {
-        color: #23366f;
-        font-family:Calibri;
+        color: #23366f;      
     }
 </style>
 
@@ -38,11 +38,11 @@
                 var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
             }
 
-            <button type="submit" class="signin custom-button @showCheckIn" style="width:100px; border-radius:10px;"><b style="font-size:medium">Check-In</b></button>
-            <button type="submit" class="signout custom-button  @showCheckOut" style="width:100px; border-radius:10px"><b style="font-size:medium">Check-Out</b></button>
+            <button type="submit" class="signin custom-button @showCheckIn" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium;">Check-In</b></button>
+            <button type="submit" class="signout custom-button  @showCheckOut" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium; ">Check-Out</b></button>
             <label class="@showLabel done-forday"><b style="font-size:medium">See you tomorrow!</b></label>
             <br />
-            <h3><span class="title-2"><b>DO YOUR PART,</b> Please Check-In. Admin team will mark your attendence. Thanks you for understanding.</span></h3>
+            <h3><span class="title-2"><b>DO YOUR PART,</b> Kindly proceed with the check-in process. Our admin team will record your attendance. Thank you!</span></h3>
         </div>
     </div>
 
