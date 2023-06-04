@@ -18,18 +18,40 @@
         padding-left: 15px !important;
         margin-right: auto !important;
         margin-left: auto !important;
-
     }
 
     body {
-        color: #23366f;      
+        color: #23366f;
     }
 </style>
 
-<div class="custom-container-fullwidth100" style="background-color: #dae2f4 !important; margin-top: -20px !important; height: 200px !important ">
+<div class="custom-container-fullwidth100" style="background-color: #dae2f4 !important; margin-top: -20px !important; height: 375px !important ">
+    <div class="row">
+
+        <div class="col-lg-8" style="margin-top: 85px; margin-left: 100px">
+            <h2 style="font-size: 3rem">
+                Your collaboration is immensely valued and greatly appreciated.
+            </h2>
+            <div style="margin-left: 100px">
+                <h3 style="font-weight: bold; text-decoration: underline;" class="line-height"><span style="color: red">Mandatory</span> Activities:</h3>
+                <h2 class="line-height"><b>Check-In/Check-Out</b> - Daily activity</h2>
+                <h2 class="line-height"><b>Timesheet</b> - Weekly Activity</h2>
+                <h2 class="line-height"><b>Status Report</b> - Monthly Activity</h2>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+            <img alt="" src="~/Assets/mandatory-act.png" class="card-img-top img-fluid rounded-circle" style="height: 330px !important; width: 340px !important; margin-top: 20px !important; margin-left: -75px !important">
+        </div>
+    </div>
+
+</div>
+
+<div class="custom-container-fullwidth100" style="background-color: #91bfe3 !important; margin-top: -20px !important; height: 200px !important ">
     <div class="row">
         <div class="col-lg-3">
-            <img alt="" src="@imagePath" width="250" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style=" margin-left: 200px; margin-top: 35px;">
+            <img alt="" src="@imagePath" width="250" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style=" margin-left: 200px; margin-top: 45px;">
         </div>
         <div class="col-lg-8" style="margin-top: 85px">
             @{
@@ -65,27 +87,27 @@
 
 
 @*<div class="col-sm ">
-    <div class="card dashboard-zoom" style="width: 18rem; height:285px">
-        <img src="@imagePath" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
-        <div class="card-body">
-            <p class="card-text" style="width: 158px">
-                DO YOUR PART, Please Check-In. Admin team will mark your attendence. Thanks you for understanding.
-            </p>
+        <div class="card dashboard-zoom" style="width: 18rem; height:285px">
+            <img src="@imagePath" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" alt="..." height="120">
+            <div class="card-body">
+                <p class="card-text" style="width: 158px">
+                    DO YOUR PART, Please Check-In. Admin team will mark your attendence. Thanks you for understanding.
+                </p>
 
-        </div>
-        <div class="modal-footer header-nav-modalfooter">
-            @{
-                var showCheckIn = Model.signInOutInfo == null ? "show" : "hide";
-                var showCheckOut = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time == null ? "show" : "hide";
-                var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
-            }
+            </div>
+            <div class="modal-footer header-nav-modalfooter">
+                @{
+                    var showCheckIn = Model.signInOutInfo == null ? "show" : "hide";
+                    var showCheckOut = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time == null ? "show" : "hide";
+                    var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
+                }
 
-            <button type="submit" class="signin btn-info @showCheckIn" style="width:100px; border-radius:10px;"><b>Check-In</b></button>
-            <button type="submit" class="signout btn-info  @showCheckOut" style="width:100px; border-radius:10px"><b>Check-Out</b></button>
-            <label class="@showLabel done-forday">See you tomorrow!</label>
+                <button type="submit" class="signin btn-info @showCheckIn" style="width:100px; border-radius:10px;"><b>Check-In</b></button>
+                <button type="submit" class="signout btn-info  @showCheckOut" style="width:100px; border-radius:10px"><b>Check-Out</b></button>
+                <label class="@showLabel done-forday">See you tomorrow!</label>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 
 

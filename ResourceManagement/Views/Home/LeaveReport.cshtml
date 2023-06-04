@@ -183,7 +183,7 @@
                     <div class="col-md-6 leave-enddate-div">
                         <div class="form-group">
                             <label for="leavereportenddate">End Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="leavereportenddate" required>
+                            <input type="date" class="form-control" id="leavereportenddate" required disabled>
                             <div class="invalid-feedback-report-enddate" style="display:none; color: red">
                                 Please Select End Date
                             </div>
@@ -198,7 +198,7 @@
                     {
 
                         <input type="hidden" name="GridHtml" />
-                        <button type="submit" class="btn btn-lg text-white btn-leave-report-excel-generate" value="Leave Report" style="border-radius: 10px; background-color: #388E3C; display:none; height:40px">
+                        <button type="submit" class="btn btn-lg text-white btn-leave-report-excel-generate" value="Leave Report" style="border-radius: 10px; background-color: #388E3C; display:none; height:35px">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel" viewBox="0 0 16 16" style="margin-bottom: -3px">
                                 <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
                                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
@@ -237,6 +237,8 @@
 
 
     jQuery('#leavereportstartdate').change(function () {
+        $("#leavereportenddate").removeAttr('disabled');
+        jQuery('#leavereportenddate').attr("min", jQuery('#leavereportstartdate').val());
         $('#leavereportstartdate').css("border", "1px solid green");
         $('.invalid-feedback-report-leavedate').hide();
     });

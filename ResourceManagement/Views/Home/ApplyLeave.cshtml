@@ -188,7 +188,7 @@
                 <div class="col-md-6 leave-enddate-div" style="display:none">
                     <div class="form-group">
                         <label for="leaveenddate">End Date<b style="color:red">*</b></label>
-                        <input type="date" class="form-control" id="leaveenddate">
+                        <input type="date" class="form-control" id="leaveenddate" disabled>
                         <div class="invalid-feedback-enddate" style="display:none; color: red">
                             Please Select End Date
                         </div>
@@ -592,6 +592,8 @@
     });
 
     jQuery('#leavestartdate').change(function () {
+        $("#leaveenddate").removeAttr('disabled');
+        jQuery('#leaveenddate').attr("min", jQuery('#leavestartdate').val());
         $('#leavestartdate').css("border", "1px solid green");
         $('.invalid-feedback-leavedate').hide();
     });
@@ -710,22 +712,14 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.jsonResponse.StatusCode == 200) {
-                        jQuery.ajax({
-                            type: "POST",
-                            url: "/SubmitLeavesEmailGenerate",
-                            data: JSON.stringify({ emailLeaveModel: data.AjaxleaveModel }),
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (emaildata) {
-                                if (emaildata.jsonResponse.StatusCode == 200) {
-                                    console.log("Leave Submitted Email Sent Successfully");
-                                    $('.message-success-popup').modal('show');
-                                }
-                                else {
-                                    console.log("Leave Submitted Email Failed to send");
-                                    $('#modal-db-error-email-alert').modal('show');
-                                }
-                            }
-                        });
+                        if (data.jsonResponse.StatusCode == 200) {
+                            console.log("Leave Submitted Email Sent Successfully");
+                            $('.message-success-popup').modal('show');
+                        }
+                        else {
+                            console.log("Leave Submitted Email Failed to send");
+                            $('#modal-db-error-email-alert').modal('show');
+                        }
                     }
                     else {
                         if (data.jsonResponse.StatusCode == 500) {

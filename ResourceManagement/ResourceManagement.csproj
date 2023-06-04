@@ -396,6 +396,7 @@
     <Content Include="Assets\Login-image.jpeg" />
     <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\MaleDefault.png" />
+    <Content Include="Assets\mandatory-act.png" />
     <Content Include="Assets\MenuIcons\business-report.png" />
     <Content Include="Assets\MenuIcons\document.png" />
     <Content Include="Assets\MenuIcons\icons8-home-20.png" />

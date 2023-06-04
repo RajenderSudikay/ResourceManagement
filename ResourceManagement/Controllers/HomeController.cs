@@ -1594,12 +1594,9 @@ namespace ResourceManagement.Controllers
                         }
                     }
 
-                    respone.AjaxleaveModel = new RMA_LeaveModel();
-                    respone.AjaxleaveModel = leaveModel;
-
-                    respone.jsonResponse = new JsonResponseModel();
+                    SubmitLeavesEmailGenerate(leaveModel);
                     respone.jsonResponse.StatusCode = 200;
-
+                    respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
                 }
             }
             catch (Exception ex)
