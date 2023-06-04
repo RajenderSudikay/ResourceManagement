@@ -8,43 +8,39 @@
     <ul class="navbar-nav custom-navbar-nav" style="margin-top: 6px !important; margin-left: 30px !important">
         <li class="nav-item">
             <a class="nav-link" href="/dashboard">
-                <img src="~/Assets/MenuIcons/icons8-home-20.png" width="15" /> Home
+                <img src="~/Assets/MenuIcons/icons8-home-20.png" width="15" /> <b>Home</b>
             </a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/document.png" width="15" /> TimeSheet
-            </a>
+                <img src="~/Assets/MenuIcons/document.png" width="15" /> <b>TimeSheet</b>
+</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/timesheet"> Upload Timesheet </a></li>
+                <li><a class="dropdown-item" href="/timesheet"> <b>Upload Timesheet</b> </a></li>
                 @if (isAdminUser)
                 {
-                    <li><a class="dropdown-item" href="/timesheetreports"> View Report </a></li>
+                    <li><a class="dropdown-item" href="/timesheetreports"> <b>View Report</b> </a></li>
                 }
             </ul>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/business-report.png" width="15" /> My Reports
-            </a>
+                <img src="~/Assets/MenuIcons/business-report.png" width="15" /> <b>My Reports</b>
+</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/StatusReportUpload"> Upload Status Report </a></li>
-                @if (isAdminUser)
-                {
-                    <li><a class="dropdown-item" href="/StatusReport"> View Report </a></li>
-                }
-
+                <li><a class="dropdown-item" href="/StatusReportUpload"> <b>Upload Status Report</b> </a></li>
+                <li><a class="dropdown-item" href="/StatusReport"> <b>View Report</b> </a></li>
             </ul>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/management.png" width="15" />  LMS
-            </a>
+                <img src="~/Assets/MenuIcons/management.png" width="15" />  <b>LMS</b>
+</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/applyleave"> Apply Leave </a></li>
+                <li><a class="dropdown-item" href="/applyleave"> <b>Apply Leave</b> </a></li>
                 @if (isAdminUser)
                 {
-                    <li><a class="dropdown-item" href="/leavereport"> View Report </a></li>
+                    <li><a class="dropdown-item" href="/leavereport"> <b>View Report</b> </a></li>
                 }
 
             </ul>
@@ -53,11 +49,11 @@
         {
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  IT
-                </a>
+                    <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  <b>IT</b>
+</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"> Upload IT Report </a></li>
-                    <li><a class="dropdown-item" href="#"> View Report </a></li>
+                    <li><a class="dropdown-item" href="#"> <b>Upload IT Report</b> </a></li>
+                    <li><a class="dropdown-item" href="#"> <b>View Report</b> </a></li>
                 </ul>
             </li>
         }
@@ -66,11 +62,11 @@
         {
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/manager.png" width="15" /> Admin
-                </a>
+                    <img src="~/Assets/MenuIcons/manager.png" width="15" /> <b>Admin</b>
+</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/zohosigninupdate"> Check In Adjust </a></li>
-                    <li><a class="dropdown-item" href="/checkinadjust"> Check In Day wise </a></li>
+                    <li><a class="dropdown-item" href="/zohosigninupdate"> <b>Check In Adjust</b> </a></li>
+                    <li><a class="dropdown-item" href="/checkinadjust"> <b>Check In Day wise</b> </a></li>
                 </ul>
             </li>
         }

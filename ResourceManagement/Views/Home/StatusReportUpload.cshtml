@@ -224,12 +224,12 @@
                             Please select Report Type
                         </div>
                         @*<div>
-                            <ul>
-                                <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
-                                <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
-                                <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
-                            </ul>
-                        </div>*@
+                                <ul>
+                                    <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
+                                    <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
+                                    <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
+                                </ul>
+                            </div>*@
                     </div>
 
                     <div class="form-group row div-statusreportcategory" style="display:none">
@@ -587,6 +587,7 @@
     var fileData = new FormData();
 
     jQuery("#reportupload").change(function () {
+        jQuery('.btn-download-template').attr('disabled', 'disabled');
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -900,7 +901,7 @@
                         mappingColumn.css("border-radius", "10px");
                         mappingColumn.css("margin-top", "10px");
                         mappingColumn.css("margin-left", "-9px");
-                      
+
                     }
                 }
             });
@@ -1096,15 +1097,8 @@
             var toolName = decodeURIComponent(getUrlVars()["toolName"]);
 
             if (responseSuccess == "true") {
-                jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-
-                if (useRole == "administrator") {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
-                }
-                else {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
-                }
-
+                jQuery('.success-message-popup-title').html("Hey there");
+                jQuery('.database-response').html("<h2><b> " + selectedEmp + "</b> details have been successfully saved, and we greatly appreciate your cooperation.</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
                 jQuery('.message-success-popup').modal('show');
             }
             else {

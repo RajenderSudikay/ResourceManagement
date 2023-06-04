@@ -35,8 +35,8 @@
             <div style="margin-left: 100px">
                 <h3 style="font-weight: bold; text-decoration: underline;" class="line-height"><span style="color: red">Mandatory</span> Activities:</h3>
                 <h2 class="line-height"><b>Check-In/Check-Out</b> - Daily activity</h2>
-                <h2 class="line-height"><b>Timesheet</b> - Weekly Activity</h2>
-                <h2 class="line-height"><b>Status Report</b> - Monthly Activity</h2>
+                <h2 class="line-height"><a href="/timesheet"><b>Timesheet</b></a> - Weekly Activity</h2>
+                <h2 class="line-height"><a href="/timesheet"><b>Status Report</b></a> - Monthly Activity</h2>
             </div>
 
         </div>
@@ -60,8 +60,8 @@
                 var showLabel = Model.signInOutInfo != null && Model.signInOutInfo.Signout_Time != null && Model.signInOutInfo.Signin_Time != null ? "show" : "hide";
             }
 
-            <button type="submit" class="signin custom-button @showCheckIn" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium;">Check-In</b></button>
-            <button type="submit" class="signout custom-button  @showCheckOut" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium; ">Check-Out</b></button>
+            <button disabled type="submit" class="signin custom-button @showCheckIn" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium;">Check-In</b></button>
+            <button disabled type="submit" class="signout custom-button  @showCheckOut" style="width: 100px; border-radius: 10px; background-color: #23366f !important "><b style="font-size: medium; ">Check-Out</b></button>
             <label class="@showLabel done-forday"><b style="font-size:medium">See you tomorrow!</b></label>
             <br />
             <h3><span class="title-2"><b>DO YOUR PART,</b> Kindly proceed with the check-in process. Our admin team will record your attendance. Thank you!</span></h3>
@@ -70,7 +70,7 @@
 
 </div>
 
-<div class="container custom-container-fullwidth">
+@*<div class="container custom-container-fullwidth">
     <div class="row">
         <div class="col-lg-8" style="margin-left: -50px !important">
             <h2 class="" style="margin-top: 150px !important"><b style="color:orange">WHAT</b> <b style="color:navy">WE</b> <b style="color: darkcyan">DO</b></h2>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-</div>
+</div>*@
 
 
 @*<div class="col-sm ">
