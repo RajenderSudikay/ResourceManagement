@@ -369,6 +369,7 @@
     <Content Include="Assets\Graphs\open-tickets-new.png" />
     <Content Include="Assets\Graphs\Project Status.png" />
     <Content Include="Assets\Graphs\upcoming-holidays.png" />
+    <Content Include="Assets\Home Page.gif" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\availability.png" />
     <Content Include="Assets\Icons\checked.png" />
