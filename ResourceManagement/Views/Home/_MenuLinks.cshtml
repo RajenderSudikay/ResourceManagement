@@ -1,5 +1,10 @@
-﻿<div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: #3a3d6e; height: 50px !important; margin-right: -610px ">
+﻿@model ResourceManagement.AMBC_Active_Emp_view
 
+@{
+    var isAdminUser = Model != null && Model.Access_Role == "administrator" ? true : false;
+}
+
+<div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: #3a3d6e; height: 50px !important; margin-right: -610px ">
     <ul class="navbar-nav custom-navbar-nav" style="margin-top: 6px !important; margin-left: 30px !important">
         <li class="nav-item">
             <a class="nav-link" href="/dashboard">
@@ -12,23 +17,10 @@
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/timesheet"> Upload Timesheet </a></li>
-                @*<li>
-                    <a class="dropdown-item" href="#"> Second level 2 &raquo </a>
-                    <ul class="submenu dropdown-menu">
-                        <li><a class="dropdown-item" href=""> Third level 1</a></li>
-                        <li><a class="dropdown-item" href=""> Third level 2</a></li>
-                        <li>
-                            <a class="dropdown-item" href=""> Third level 3 &raquo </a>
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href=""> Fourth level 1</a></li>
-                                <li><a class="dropdown-item" href=""> Fourth level 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a class="dropdown-item" href=""> Second level  4</a></li>
-                        <li><a class="dropdown-item" href=""> Second level  5</a></li>
-                    </ul>
-                </li>*@
-                <li><a class="dropdown-item" href="/timesheetreports"> View Report </a></li>
+                @if (isAdminUser)
+                {
+                    <li><a class="dropdown-item" href="/timesheetreports"> View Report </a></li>
+                }
             </ul>
         </li>
         <li class="nav-item dropdown">
@@ -37,7 +29,11 @@
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/StatusReportUpload"> Upload Status Report </a></li>
-                <li><a class="dropdown-item" href="/StatusReport"> View Report </a></li>
+                @if (isAdminUser)
+                {
+                    <li><a class="dropdown-item" href="/StatusReport"> View Report </a></li>
+                }
+
             </ul>
         </li>
         <li class="nav-item dropdown">
@@ -46,30 +42,37 @@
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/applyleave"> Apply Leave </a></li>
-                <li><a class="dropdown-item" href="/leavereport"> View Report </a></li>
+                @if (isAdminUser)
+                {
+                    <li><a class="dropdown-item" href="/leavereport"> View Report </a></li>
+                }
+
             </ul>
         </li>
+        @if (isAdminUser)
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  IT
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#"> Upload IT Report </a></li>
+                    <li><a class="dropdown-item" href="#"> View Report </a></li>
+                </ul>
+            </li>
+        }
 
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  IT
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"> Upload IT Report </a></li>
-                <li><a class="dropdown-item" href="#"> View Report </a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">               
-                <img src="~/Assets/MenuIcons/manager.png" width="15" /> Admin
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/zohosigninupdate"> Check In Adjust </a></li>
-                <li><a class="dropdown-item" href="/checkinadjust"> Check In Day wise </a></li>
-            </ul>
-        </li>
-
+        @if (isAdminUser)
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/manager.png" width="15" /> Admin
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/zohosigninupdate"> Check In Adjust </a></li>
+                    <li><a class="dropdown-item" href="/checkinadjust"> Check In Day wise </a></li>
+                </ul>
+            </li>
+        }
     </ul>
-
 </div>
