@@ -14,6 +14,7 @@ namespace ResourceManagement.Models
         [JsonPropertyName("statuscode")]
         public int StatusCode { get; set; } = 500;
 
+
     }
 
     public class SignInOurResponseModel
@@ -56,6 +57,8 @@ namespace ResourceManagement.Models
     {
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
         public RMA_LeaveModel AjaxleaveModel { get; set; }
+
+        public bool EmailSent { get; set; }
     }
 
     public class ApplyLeaveForMissedSidnInModel

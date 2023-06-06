@@ -502,16 +502,16 @@
                 </button>
             </div>
             <div class="modal-body text-center">
-                <h2 class="modal-body-custom-success">
-                    Hey @Model.AMBC_Active_Emp_view.Employee_Name
-                    <br />
-                    <br />
-                    Leave submitted/Cancelled successfully for the selcted dates. Please check your email for more details.
+                <h2 class="" style="color: darkblue">
+                    Hey there,
+                    @*Leave submitted/Cancelled successfully for the selcted dates. Please check your email for more details.*@
                 </h2>
+                <br />
+                <h2 class="leave-status-msg" style="color: darkblue"></h2>
             </div>
 
             <div class="">
-                <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal">Okay</button>
+                <button type="button" class="btn btn-lg modal-success-popup-btn" data-dismiss="modal" style="font-size: 16px !important"><b>Okay</b></button>
             </div>
         </div>
     </div>
@@ -712,21 +712,22 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.jsonResponse.StatusCode == 200) {
-                        if (data.jsonResponse.StatusCode == 200) {
-                            console.log("Leave Submitted Email Sent Successfully");
-                            $('.message-success-popup').modal('show');
-                        }
-                        else {
-                            console.log("Leave Submitted Email Failed to send");
-                            $('#modal-db-error-email-alert').modal('show');
-                        }
+                        console.log("Leave Submitted Email Sent Successfully");
+                        $('.leave-status-msg').html("<b>" + jQuery('#selectedleavetype :selected').text() + "</b>" + " of" + " <b>" + jQuery('#selectEmployeename :selected').text() + "</b>" + " has been submitted successfully, and we greatly appreciate your cooperation.");
+                        $('.message-success-popup').modal('show');
                     }
-                    else {
-                        if (data.jsonResponse.StatusCode == 500) {
-                            jQuery('.database-response').text(data.jsonResponse.Message);
-                            $('#modal-db-error-alert').modal('show');
-                        }
+
+                    if (data.jsonResponse.StatusCode == 201) {
+                        console.log("" + jQuery('#selectedleavetype :selected').text() + " Email Failed to send!");
+                        $('.leave-status-msg').html("" + jQuery('#selectedleavetype :selected').text() + " Email Failed to send!")
+                        $('#modal-db-error-email-alert').modal('show');
                     }
+
+                    if (data.jsonResponse.StatusCode == 500) {
+                        jQuery('.database-response').text(data.jsonResponse.Message);
+                        $('#modal-db-error-alert').modal('show');
+                    }
+
                 }
             });
         }

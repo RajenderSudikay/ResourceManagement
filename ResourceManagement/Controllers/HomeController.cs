@@ -1589,14 +1589,23 @@ namespace ResourceManagement.Controllers
                             }
 
                             context.con_leaveupdate.AddRange(contextModelList);
-                            context.SaveChanges();
-                            respone.jsonResponse.Message = "Leave Submitted Successfully!";
+                            context.SaveChanges();                           
                         }
                     }
 
-                    SubmitLeavesEmailGenerate(leaveModel);
-                    respone.jsonResponse.StatusCode = 200;
-                    respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
+                   var leaveEmailInfo = SubmitLeavesEmailGenerate(leaveModel);
+
+                    if(leaveEmailInfo.EmailSent)
+                    {
+                        respone.jsonResponse.StatusCode = 200;
+                        respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
+                    }
+                    else
+                    {
+                        respone.jsonResponse.StatusCode = 201;
+                        respone.jsonResponse.Message = "Leave Apply Email Sent failed to send!";
+                    }
+                   
                 }
             }
             catch (Exception ex)
@@ -1624,7 +1633,7 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public JsonResult SubmitLeavesEmailGenerate(RMA_LeaveModel emailLeaveModel)
+        public LeaveEmailModel SubmitLeavesEmailGenerate(RMA_LeaveModel emailLeaveModel)
         {
             var respone = new LeaveEmailModel();
             try
@@ -1669,8 +1678,7 @@ namespace ResourceManagement.Controllers
                                 smtp.Credentials = credentials;
                                 smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
                                 smtp.Send(mm);
-                                respone.jsonResponse.StatusCode = 200;
-                                respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
+                                respone.EmailSent = true;
                             }
                         }
 
@@ -1680,11 +1688,10 @@ namespace ResourceManagement.Controllers
             }
             catch (Exception ex)
             {
-                respone.jsonResponse.StatusCode = 500;
-                respone.jsonResponse.Message = ex.Message;
+                respone.EmailSent = false;
             }
 
-            return Json(respone, JsonRequestBehavior.AllowGet);
+            return respone;
         }
 
 
