@@ -351,6 +351,7 @@
     <Content Include="Assets\Arrows\pdf.png" />
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
+    <Content Include="Assets\b11.png" />
     <Content Include="Assets\Check-In.png" />
     <Content Include="Assets\ClientLogos\Federal Signal.png" />
     <Content Include="Assets\ClientLogos\Littelfuse.png" />
@@ -368,6 +369,7 @@
     <Content Include="Assets\Graphs\open-tickets-new.png" />
     <Content Include="Assets\Graphs\Project Status.png" />
     <Content Include="Assets\Graphs\upcoming-holidays.png" />
+    <Content Include="Assets\Home Page.gif" />
     <Content Include="Assets\hr.jpg" />
     <Content Include="Assets\Icons\availability.png" />
     <Content Include="Assets\Icons\checked.png" />
@@ -392,8 +394,18 @@
     <Content Include="Assets\Icons\x-button.png" />
     <Content Include="Assets\Leave.jpeg" />
     <Content Include="Assets\LMS.png" />
+    <Content Include="Assets\Login-image.jpeg" />
     <Content Include="Assets\loudspeaker.png" />
     <Content Include="Assets\MaleDefault.png" />
+    <Content Include="Assets\mandatory-act.png" />
+    <Content Include="Assets\MenuIcons\business-report.png" />
+    <Content Include="Assets\MenuIcons\document.png" />
+    <Content Include="Assets\MenuIcons\icons8-home-20.png" />
+    <Content Include="Assets\MenuIcons\management.png" />
+    <Content Include="Assets\MenuIcons\manager.png" />
+    <Content Include="Assets\MenuIcons\padlock.png" />
+    <Content Include="Assets\MenuIcons\technical-support.png" />
+    <Content Include="Assets\MenuIcons\username.png" />
     <Content Include="Assets\Payroll.png" />
     <Content Include="Assets\PopupIcons\error.svg" />
     <Content Include="Assets\PopupIcons\info.svg" />
@@ -405,6 +417,7 @@
     <Content Include="Assets\SignIn.png" />
     <Content Include="Assets\status-repor-upload.jpg" />
     <Content Include="Assets\status-report.jpg" />
+    <Content Include="Assets\test.png" />
     <Content Include="Assets\TimeSheet.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -491,6 +504,7 @@
     <Content Include="Views\Home\StatusReportRemainderEmail.cshtml" />
     <Content Include="Views\Home\LeaveReport.cshtml" />
     <Content Include="Views\Home\_MenuNavigation.cshtml" />
+    <Content Include="Views\Home\_MenuLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

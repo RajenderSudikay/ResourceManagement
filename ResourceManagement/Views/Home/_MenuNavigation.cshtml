@@ -5,18 +5,27 @@
     var imagePath = "";
 }
 
+<style>
+</style>
+
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
     <div class="nav-logo">
         <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
     </div>
 
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="margin-left: auto !important">
-        <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Employee Time Sheet</h2>
+    <br />
 
-    </div>
+    @{
+        Html.RenderPartial("_MenuLinks", Model.AMBC_Active_Emp_view);
+    }
+    @*<div class="time-headertitle" style="margin-left: auto !important">
+            <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Employee Time Sheet</h2>
+
+        </div>*@
 
     <div class="col-lg-offset-3" style=" margin-left: auto !important">
         @if (Model != null)
@@ -35,7 +44,7 @@
                     <div class="agent-description hide" style="">
                         <div class="agent-details">
                             <div class="agent-img">
-                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+                                <img alt="" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
 
                             </div>
 
@@ -136,8 +145,12 @@
                 </div>
             </div>
 
-            <input type="hidden" class="systemhostname" value="@Model.SystemInfo.SystemHostName" />
-            <input type="hidden" class="systemipaddress" value="@Model.SystemInfo.SystemIP" />
+            if (@Model.SystemInfo != null)
+            {
+                <input type="hidden" class="systemhostname" value="@Model.SystemInfo.SystemHostName" />
+                <input type="hidden" class="systemipaddress" value="@Model.SystemInfo.SystemIP" />
+            }
+
             <input type="hidden" class="empshifttiming" value="@Model.AMBC_Active_Emp_view.Shift" />
         }
 

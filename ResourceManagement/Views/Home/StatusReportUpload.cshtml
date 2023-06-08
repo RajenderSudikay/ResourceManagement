@@ -6,14 +6,21 @@
 }
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    <div class="nav-logo">
+        <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="time-headertitle" style="padding-left: 69px !important">
-        <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Status Report</h2>
 
-    </div>
+    @{
+        Html.RenderPartial("_MenuLinks", Model.RMA_EmployeeModel.AMBC_Active_Emp_view);
+    }
+
+    @*<div class="time-headertitle" style="padding-left: 69px !important">
+            <h2 class="text-uppercase text-white" style="margin-right: 130px !important;">Status Report</h2>
+
+        </div>*@
 
     <div class="col-lg-offset-3">
         @if (Model != null)
@@ -141,31 +148,24 @@
     </div>
 </nav>
 
-
-
-<br />
-
-
 <div class="card card-body" style="border-radius: 10px">
     <div class="card status-report-card">
         <div class="card-body ">
 
             <div class="">
-                <h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>
-                <hr />
+                @*<h4 style="font-size: 1.5rem; text-align: center; background-color: #005983; padding: 15px; border-radius: 10px; color: white; ">Upload Monthly Status Reports</h4>*@
+                @*<hr />*@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                @if (Model != null && Model.StatusReportInfo.SuccessMessage != "")
+                @if (Model != null && !string.IsNullOrWhiteSpace(Model.StatusReportInfo.SuccessMessage))
                 {
                     <h2 class="text-success">@Model.StatusReportInfo.SuccessMessage</h2>
                     <br />
                 }
-
-                @if (Model != null && Model.StatusReportInfo.FailureMessage != "")
+                @if (Model != null && !string.IsNullOrWhiteSpace(Model.StatusReportInfo.FailureMessage))
                 {
                     <h2 class="text-danger">@Model.StatusReportInfo.FailureMessage</h2>
                     <br />
-
                 }
 
                 <form class="needs-validation" novalidate>
@@ -173,7 +173,7 @@
                     <div class="form-group row">
                         <label for="StatusReportInfo.EmployeeName" class="control-label col-md-2">Employee Name: <b style="color:red">*</b></label>
                         @Html.DropDownListFor(m => m.StatusReportInfo.EmployeeName, Model.StatusReportInfo.EmployeeList, "Please select employee", new { required = "required", @class = "form-control col-md-3", @style = "background-color: white" })
-                        <div class="invalid-feedback employee-invalid-feedback" style="padding-left:180px">
+                        <div class="invalid-feedback employee-invalid-feedback" style="padding-left:230px">
                             Please select employee
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                     <div class="form-group row">
                         <label for="StatusReportInfo.MonthList" class="control-label col-md-2">Select Month: <b style="color:red">*</b></label>
                         @Html.DropDownListFor(m => m.StatusReportInfo.Month, Model.StatusReportInfo.MonthList, "Please select month", new { required = "required", @class = "form-control col-md-3" })
-                        <div class="invalid-feedback month-invalid-feedback" style="padding-left:180px">
+                        <div class="invalid-feedback month-invalid-feedback" style="padding-left:230px">
                             Please select month
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                         <div class="form-control col-md-3 reportupload-div">
                             <input type="file" name="ExcelFile" id="reportupload" required />
                         </div>
-                        <div class="invalid-feedback reportupload-invalid-feedback" style="padding-left:180px">
+                        <div class="invalid-feedback reportupload-invalid-feedback" style="padding-left:230px">
                             Please upload a file
                         </div>
                     </div>
@@ -220,16 +220,16 @@
                             <option value="Template3">Audit Report</option>
                         </select>
 
-                        <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:180px">
+                        <div class="invalid-feedback reporttype-invalid-feedback" style="padding-left:230px">
                             Please select Report Type
                         </div>
-                        <div>
-                            <ul>
-                                <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
-                                <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
-                                <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
-                            </ul>
-                        </div>
+                        @*<div>
+                                <ul>
+                                    <li><b style="color: darkblue">Incident Report:</b> Incident ID/Ticket ID/Task ID etc..</li>
+                                    <li><b style="color: green">Project Report:</b> Project_Name/Project_Summary etc..</li>
+                                    <li><b style="color: blueviolet">Audit Report:</b> Test_ID/Control_Group_Name etc..</li>
+                                </ul>
+                            </div>*@
                     </div>
 
                     <div class="form-group row div-statusreportcategory" style="display:none">
@@ -238,7 +238,7 @@
                             <option value="newrunningprojects">New/Running Projects</option>
                             <option value="regularprojects">Regular Project Activities</option>
                         </select>
-                        <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:180px">
+                        <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:230px">
                             Please select Report Category
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                             <option value="Othertool">Other tool</option>
                             <option value="NA">NA</option>
                         </select>
-                        <div class="invalid-feedback client-invalid-toolname" style="padding-left:180px">
+                        <div class="invalid-feedback client-invalid-toolname" style="padding-left:230px">
                             Please select Tool Name
                         </div>
                     </div>
@@ -281,8 +281,8 @@
 
                     <div class="form-group row modal-footer" style="border-radius: 10px">
                         <div class="col-md-offset-2 col-md-10 ">
-                            <input value="Download Templates" class="btn btn-lg btn-download-template" style="border-radius: 10px; background-color: yellow; font-weight: bold; color: #005983" />
-                            <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; " />
+                            <input value="Use Recommended Templates" class="btn btn-download-template custom-button" style="border-radius: 10px; font-weight: bold; width: 230px" />
+                            <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; height: 40px; " />
                         </div>
                     </div>
 
@@ -375,9 +375,9 @@
                         <div class="card status-report-card">
                             <div class="card-body ">
 
-                                <p style="color: #005983"><b>NOTE:</b> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+                                <p style="color: #005983" class="popup-line-height"><b>NOTE: "Our comprehensive understanding of various reports has enabled us to offer recommended templates. By simply uploading the reports, you can eliminate manual efforts and experience instant report generation upon clicking the 'Upload Records' button."</b></p>
 
-                                <h2 style="color: #005983; font-family: Calibri; font-style: italic; text-decoration-line: underline ">Download Sample Templates using below links</h2>
+                                <h2 class="line-height" style="color: blue; font-family: Calibri; font-style: italic; text-decoration-line: underline; margin-top: 30px; font-size: 2.5rem !important ">Download the recommended templates below.</h2>
                                 <br />
 
                                 <div class="form-group row">
@@ -389,7 +389,7 @@
 
                                         <div class="form-group col-lg-4" style="margin-left:10px">
                                             <div class="btn-group">
-                                                <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px" />
+                                                <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px; height: 35px; font-weight: bold" />
                                             </div>
                                         </div>
                                     }
@@ -402,7 +402,7 @@
 
                                         <div class="form-group col-lg-4" style="margin-left:10px">
                                             <div class="btn-group">
-                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px " />
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px; height: 35px; font-weight: bold " />
                                             </div>
                                         </div>
                                     }
@@ -416,7 +416,7 @@
 
                                         <div class="form-group col-lg-4" style="margin-left:10px">
                                             <div class="btn-group">
-                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px " />
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px; height: 35px; font-weight: bold " />
                                             </div>
                                         </div>
                                     }
@@ -426,8 +426,8 @@
                     </div>
                 </div>
             </div>
-            <div class="model-footerbtn-custom">
-                <button type="button" class="btn btn-lg btn-close" data-dismiss="modal" style="border-radius: 10px; color: white; width: 100px; background-color: rgb(177, 3, 50) !important"><b>Close</b></button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-lg btn-close" data-dismiss="modal" style="border-radius: 10px; color: white; width: 100px; height: 38px; background-color: rgb(177, 3, 50) !important; font-size: 20px !important"><b>Close</b></button>
             </div>
         </div>
     </div>
@@ -587,6 +587,7 @@
     var fileData = new FormData();
 
     jQuery("#reportupload").change(function () {
+        jQuery('.btn-download-template').attr('disabled', 'disabled');
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -634,7 +635,7 @@
         }
 
         jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-        jQuery('.warning-message-popup').html("<h2>Are you sure you are uploading <b style='color:red'>" + jQuery('#statusreporttype :selected').text() + "</b>. Based on uploaded data Status report will be generated.</h2>");
+        jQuery('.warning-message-popup').html("<h2>The <b>Status report</b> will be generated based on the data you upload. Your attention to this detail is greatly appreciated, and we thank you for your cooperation.</h2>");
         $('#modal-warning-message-popup').modal('show');
 
         var selectedReportJsonFields = new Array();
@@ -865,7 +866,7 @@
                             FieldInputSources.push({ "TODO": "<span style='color:red'>Please select all applicable <b> ' TO DO ' </b> related status for which not decided when to start work!<span>" });
                             FieldInputSources.push({ "Cancelled": "<span style='color:red'>Please select all applicable <b> ' CANCELLED ' </b> related which can be ignored or no further action needed on them!<span>" });
 
-                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>");                          
+                            mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Status values below</b></h2></label>");
                             multipleSelect = "multiple";
                         }
 
@@ -878,7 +879,7 @@
                             mappingColumn.append("<label><h2><b style='color:green'>Map the Ticket_Priority values below</b></h2></label>")
                             mappingColumn.append("<br>")
 
-                            mappingColumn.append("<label><p><b style='color: green'>Example:  </b><b style='color:rgb(192, 80, 78)'> 1= Critical    </b> <b style='color: 'rgb(155, 187, 88)'>2= High    </b><b style='color:#005983'>3= Medium    </b><b style='color: rgb(74, 172, 197)'>4= Low    </b></p></label>");
+                            mappingColumn.append("<label><p><b style='color: green'>Example:  </b><b style='color:rgb(192, 80, 78)'> 1= Critical;    </b> <b style='color: 'rgb(155, 187, 88)'>2= High;    </b><b style='color:#005983'>3= Medium;    </b><b style='color: rgb(74, 172, 197)'>4= Low;    </b><b style='color: red'>NA= please select 'NA' to indicate that it is not applicable.;    </b></p></label>");
                         }
 
                         jQuery.each(FieldInputSources, function (i, source) {
@@ -892,13 +893,15 @@
                         mappingColumn.find('.excel-values-mapping').append('<option value=NA>NA</option>');
 
                         mappingColumn.css("display", "block");
-                        mappingColumn.css("width", "565px");
+                        mappingColumn.css("width", "100%");
                         mappingColumn.css("float", "right");
                         mappingColumn.css("padding-left", "20px");
                         mappingColumn.css("padding-top", "20px");
-                        mappingColumn.css("border", "1px solid #0095a8");
+                        mappingColumn.css("border", "0px solid #0095a8");
                         mappingColumn.css("border-radius", "10px");
                         mappingColumn.css("margin-top", "10px");
+                        mappingColumn.css("margin-left", "-9px");
+
                     }
                 }
             });
@@ -1094,15 +1097,8 @@
             var toolName = decodeURIComponent(getUrlVars()["toolName"]);
 
             if (responseSuccess == "true") {
-                jQuery('.success-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-
-                if (useRole == "administrator") {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report for <b> " + selectedEmp + "</b>, details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
-                }
-                else {
-                    jQuery('.database-response').html("<h2>Thank you for submitting the report, your details saved successfully!</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
-                }
-
+                jQuery('.success-message-popup-title').html("Hey there");
+                jQuery('.database-response').html("<h2><b> " + selectedEmp + "</b> details have been successfully saved, and we greatly appreciate your cooperation.</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + selectedEmpID + "&reportMonth=" + reportMonth + "&templateType=" + templateType + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
                 jQuery('.message-success-popup').modal('show');
             }
             else {

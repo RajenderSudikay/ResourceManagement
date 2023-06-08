@@ -28,12 +28,33 @@
     <script src="~/Scripts/moment.js"></script>
 
     <style>
+        body {
+            font-family: Calibri;
+        }
+
         .navbar-fixed-top {
             width: 99.225vw;
             position: relative;
             margin-left: -49.59vw;
             left: 50%;
             margin-top: -50px;
+            background-color: white !important;
+            border: 0;
+            height: 139px !important;
+            border-bottom: 1px solid #91bfe3 !important;
+        }
+
+        .navbar-collapse {
+            margin-bottom: -47px !important;
+            margin-left: -239px !important;
+            margin-top: 42px;
+            background-color: red;
+        }
+
+
+
+        .navbar-brand {
+            margin-top: -45px !important;
         }
 
         .custom-container-fullwidth {
@@ -44,12 +65,17 @@
             margin-left: auto;
         }
 
+        .custom-container-fullwidth100 {
+            width: 100% !important;
+        }
+
+
         .nav-logo {
             border-bottom-right-radius: 35px;
-            margin-top: -0.25vw;
+            /*  margin-top: -3.25vw;*/
             position: relative;
             margin-left: -0.59vw;
-            margin-bottom: -0.3vw;
+            margin-bottom: 0px;
         }
 
         .custom-button {
@@ -85,7 +111,158 @@
 
         /*   Related stop nav bar*/
         .time-headertitle {
-            margin-left: 110px !important;
+            margin-left: auto !important
+        }
+
+        @@media (min-width: 992px) {
+            .dropdown-menu .dropdown-toggle:after {
+                border-top: .3em solid transparent;
+                border-right: 0;
+                border-bottom: .3em solid transparent;
+                border-left: .3em solid;
+            }
+
+            .dropdown-menu .dropdown-menu {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .dropdown-menu li {
+                position: relative;
+            }
+
+            .nav-item .submenu {
+                display: none;
+                position: absolute;
+                left: 100%;
+                top: -7px;
+            }
+
+            .nav-item .submenu-left {
+                right: 100%;
+                left: auto;
+            }
+
+            .dropdown-menu > li:hover {
+                background-color: rgb(74, 172, 197)
+            }
+
+                .dropdown-menu > li:hover > .submenu {
+                    display: block;
+                }
+        }
+
+        .custom-navbar-nav {
+            font-size: 16px !important;
+            color: white !important;
+            margin-top: 20px !important
+        }
+
+            .custom-navbar-nav > a {
+                color: white !important;
+            }
+
+            .custom-navbar-nav > li > a {
+                color: white !important;
+                font-size: 16px !important;
+            }
+
+            .custom-navbar-nav > .open > a {
+                background-color: transparent !important;
+                border-bottom: 2px solid orange !important;
+            }
+
+            .custom-navbar-nav .dropdown-menu {
+                border-radius: 12px !important;
+                font-size: small !important;
+                background-color: white !important;
+            }
+
+            .custom-navbar-nav > li {
+                float: left !important;
+                margin-right: 20px !important;
+            }
+
+                .custom-navbar-nav > li > .dropdown-menu {
+                    margin-top: 0px !important;
+                }
+
+        /*   .custom-navbar-nav .nav-item:hover {
+                transform: scale(1.1);
+            }*/
+
+        .my-dropdown-toggle::after {
+            content: none;
+        }
+
+        .modal-footer {
+            background-color: #dae2f4 !important;
+            border-radius: 10px !important;
+        }
+
+        .custom-navbar-nav .dropdown-menu {
+            background-color: white !important
+        }
+
+        .sidenav {
+            background-color: #3a3d6e !important;
+        }
+
+        .login-main-text {
+            padding-left: 100px;
+            color: #005983;
+            font-weight: 500;
+        }
+
+            .login-main-text h2 {
+                font-size: xx-large;
+                font-weight: 500;
+            }
+
+        .custom-form-control {
+            background-color: transparent !important;
+            margin-left: 165px !important;
+            border: 2px solid white !important;
+            height: 45px !important;
+            color: white !important;
+            font-size: large !important;
+        }
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: white !important;
+            opacity: 1 !important; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: white !important;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: white !important;
+        }
+
+        .agent-navigation {
+            margin-top: 70px !important;
+        }
+
+        .agent-full-name {
+            color: white !important;
+        }
+
+        .agent-navigation .dropdownheading:after {
+            border-bottom: 1px solid white !important;
+            border-right: 1px solid white !important;
+        }
+
+        .agent-navigation .agent-description {
+            top: 136px !important;
+        }
+
+        .card-body {
+            border-radius: 10px !important;
+            font-size: 15px !important;
+            font-family: Calibri !important;
+            color: #23366f !important;
         }
     </style>
 </head>
@@ -93,13 +270,20 @@
     <div class="container">
 
         <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
-            <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+            <div class="nav-logo">
+                <a class="navbar-brand" href="/dashboard"><img src="~/Assets/AMBC_Logo.png" alt="Header Logo" /></a>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="time-headertitle">
-                <h2 class="text-uppercase text-white">Add Employee Chek-In to HRMS Application</h2>
-            </div>
+
+            @{
+                Html.RenderPartial("_MenuLinks");
+            }
+
+            @*<div class="time-headertitle">
+                    <h2 class="text-uppercase text-white">Add Employee Chek-In to HRMS Application</h2>
+                </div>*@
         </nav>
 
 
@@ -207,6 +391,28 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        // Prevent closing from click inside dropdown
+        $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+        // make it as accordion for smaller screens
+        if ($(window).width() < 992) {
+            $('.dropdown-menu a').click(function (e) {
+                e.preventDefault();
+                if ($(this).next('.submenu').length) {
+                    $(this).next('.submenu').toggle();
+                }
+                $('.dropdown').on('hide.bs.dropdown', function () {
+                    $(this).find('.submenu').hide();
+                })
+            });
+        }
+
+    </script>
 
 </body>
 </html>

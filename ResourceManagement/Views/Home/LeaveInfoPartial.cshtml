@@ -4,37 +4,41 @@
 @if (Model != null)
 {
     <div>
-        <table class="table table-bordered table-timesheet-remainder" style="width: 60% !important">
-            <thead style="background-color: #0095a8 !important">
+        <table class="table table-bordered table-timesheet-remainder" style="width: 100% !important">
+            <thead style="background-color: #005983 !important">
                 <tr>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Employee ID</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Employee Name</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Date</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Submitted By</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Type</b></th>
-                    <th scope="col" style="text-align: center; background-color: #0095a8 !important; color: white !important"><b>Leave Category</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important"><b>S No</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important"><b>Employee ID</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important "><b>Employee Name</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important "><b>Leave Date</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important "><b>Submitted By</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important "><b>Leave Type</b></th>
+                    <th scope="col" style="text-align: center; background-color: #005983 !important; color: white !important; font-size: small !important "><b>Leave Category</b></th>
                 </tr>
             </thead>
             <tbody>
 
                 @if (Model.jsonResponse.StatusCode == 200)
                 {
+                    int i = 0;
                     foreach (var leave in Model.leaveDetails)
                     {
+                        i = i + 1;
                         var leaveOriginalDate = @leave.leavedate.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Trim().Replace("/", "-").Split('-');
                         var leaveDisplayDate = leaveOriginalDate[1] + "-" + leaveOriginalDate[0] + "-" + leaveOriginalDate[2];
-                        <tr>
-                            <td style="text-align:center">@leave.employee_id</td>
-                            <td style="text-align:center">@leave.employee_name</td>
-                            <td style="text-align:center">@leaveDisplayDate</td>
-                            <td style="text-align:center">@leave.submittedby</td>
-                            <td style="text-align:center">@leave.leavesource</td>
+                <tr>
+                    <td style="text-align:center">@i</td>
+                    <td style="text-align:center">@leave.employee_id</td>
+                    <td style="text-align:center">@leave.employee_name</td>
+                    <td style="text-align:center">@leaveDisplayDate</td>
+                    <td style="text-align:center">@leave.submittedby</td>
+                    <td style="text-align:center">@leave.leavesource</td>
 
-                            @{
-                                var category = leave.leavecategory == null || leave.leavecategory == "NULL" ? "" : leave.leavecategory;
-                            }
-                            <td style="text-align:center">@category</td>
-                        </tr>
+                    @{
+                        var category = leave.leavecategory == null || leave.leavecategory == "NULL" ? "" : leave.leavecategory;
+                    }
+                    <td style="text-align:center">@category</td>
+                </tr>
                     }
                 }
 
