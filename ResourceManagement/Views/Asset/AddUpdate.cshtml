@@ -1,0 +1,289 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "Asset Add Update Page";
+}
+
+@{
+    Html.RenderPartial("_MenuNavigation", Model);
+}
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group selectemp-div">
+                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="leaveapplytype" class="leaveapplytype">Team<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetteam">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetallocationstatus">Allocation Status<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetallocationstatus">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetdescription">Description<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetdescription">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetassettype">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetmanufacturer">Manufacturer<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmanufacturer">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetassignedasset">Assigned Asset<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetassignedasset">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetchargerdetails">Charger Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetchargerdetails">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assethostname">Host Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assethostname">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label for="assetmousedetails">Mouse Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmousedetails">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetmodel">Model<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmodel">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetaccesscontrol">Access Control<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetaccesscontrol">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetchargerid">Charger Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetchargerid">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetfunctionality">Functionality<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetfunctionality">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetusbport">USB Port Status<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetusbport">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetexpresscode">Express Code<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetexpresscode">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetheadsets">Headsets<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetheadsets">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetbarcodeid">Barcode ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetbarcodeid">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetservicetag">Service Tag<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetservicetag">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetmac">Mac<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmac">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetid">Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetid">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetosversion">OS Version<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetosversion">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetipaddress">IP Address<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetipaddress">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetwifiip">WIFI IP<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetwifiip">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetwarrantystartdate">Warranty Start Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control" id="assetwarrantystartdate" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetwarantyenddate">Warranty End Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control" id="assetwarantyenddate" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetwarrantystatus">Warranty Status<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetwarrantystatus">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetram">RAM<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetram">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetos">OS<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetos">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="assetremarks">Remarks<b style="color:red"> </b></label>
+                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>                    
+                    </div>
+                </div>
+            </div>
+
+
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Submit</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+
+<script>
+
+    GetEmployees();
+    function GetEmployees() {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                jQuery.each(obj, function (i, item) {
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                var useRole = jQuery('.emprole').val();
+                var empId = jQuery('.agent-navdrop-empid').text();
+                jQuery('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+
+                if (useRole == "consultant") {
+                    jQuery("#selectEmployeename").prop("disabled", true);
+                }
+                else {
+                    jQuery("#selectEmployeename").prop("disabled", false);
+                }
+            }
+        });
+    }
+
+</script>

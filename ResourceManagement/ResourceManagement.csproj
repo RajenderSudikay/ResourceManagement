@@ -233,6 +233,7 @@
     <Compile Include="consultantavailiability_Final.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
@@ -505,9 +506,13 @@
     <Content Include="Views\Home\LeaveReport.cshtml" />
     <Content Include="Views\Home\_MenuNavigation.cshtml" />
     <Content Include="Views\Home\_MenuLinks.cshtml" />
+    <Content Include="Views\Asset\AddUpdate.cshtml" />
+    <Content Include="Views\Shared\_MenuNavigation.cshtml" />
+    <Content Include="Views\Shared\_MenuLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Asset\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -14,10 +14,27 @@ namespace ResourceManagement
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+             "Asset", "Asset/{action}/{name}", new
+             {
+                 controller = "Asset",
+                 action = "Index",
+                 name = UrlParameter.Optional
+             });
+
+            //routes.MapRoute(
+            // "assetaddupdate", "asset-addupdate/{name}", new
+            // {
+            //     controller = "Asset",
+            //     action = "AddUpdate",
+            //     name = UrlParameter.Optional
+            // });
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{action}/{id}",
                 defaults: new { controller = "Home", action = "Login", id = UrlParameter.Optional }
-            );
+            );           
+
         }
     }
 }
