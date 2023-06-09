@@ -1,0 +1,33 @@
+﻿
+<script>
+
+    GetEmployees();
+    function GetEmployees() {
+        jQuery.ajax({
+            url: "/GetEmployees",
+            type: "POST",
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                jQuery.each(obj, function (i, item) {
+                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                jQuery.each(obj, function (i, item) {
+                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
+                });
+
+                var useRole = jQuery('.emprole').val();
+                var empId = jQuery('.agent-navdrop-empid').text();
+                jQuery('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+
+                if (useRole == "consultant") {
+                    jQuery("#selectEmployeename").prop("disabled", true);
+                }
+                else {
+                    jQuery("#selectEmployeename").prop("disabled", false);
+                }
+            }
+        });
+    }
+
+</script>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace ResourceManagement.Helpers
 {
@@ -26,6 +27,28 @@ namespace ResourceManagement.Helpers
             weekDays.Add(Constants.Sunday);
 
             return weekDays;
+        }
+
+        public static List<SelectListItem> MonthList()
+        {
+            var monthList = new List<System.Web.Mvc.SelectListItem>();
+            var monthsList = new List<DateTime>();
+            monthsList.Add(DateTime.Now.AddMonths(-1));
+            monthsList.Add(DateTime.Now.AddMonths(-2));
+            monthsList.Add(DateTime.Now.AddMonths(-3));
+            monthsList.Add(DateTime.Now.AddMonths(-4));
+            monthsList.Add(DateTime.Now.AddMonths(-5));
+
+            foreach (var month in monthsList)
+            {
+                monthList.Add(new System.Web.Mvc.SelectListItem()
+                {
+                    Text = month.ToString("MMM") + "-" + month.Year,
+                    Value = month.ToString("MMM") + "-" + month.Year
+                });
+            }
+
+            return monthList;
         }
     }
 }

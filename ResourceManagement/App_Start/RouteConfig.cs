@@ -14,9 +14,9 @@ namespace ResourceManagement
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-             "Asset", "Asset/{action}/{name}", new
+             "IT", "IT/{action}/{name}", new
              {
-                 controller = "Asset",
+                 controller = "IT",
                  action = "Index",
                  name = UrlParameter.Optional
              });

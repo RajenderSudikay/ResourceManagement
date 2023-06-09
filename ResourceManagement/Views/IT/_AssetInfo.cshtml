@@ -1,31 +1,23 @@
 ﻿@model ResourceManagement.Models.RMA_EmployeeModel
 
-@{
-    ViewBag.Title = "Asset Add Update Page";
-}
-
-@{
-    Html.RenderPartial("_MenuNavigation", Model);
-}
-
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
         <div class="card-body ">
             <div class="row">
-                <div class="col-md-4">
+                @*<div class="col-md-4">
                     <div class="form-group selectemp-div">
                         <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
                         <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
                             <option disabled selected> -- Select Employee Name -- </option>
                         </select>
                     </div>
-                </div>
-                <div class="col-md-4">
+                </div>*@
+                @*<div class="col-md-4">
                     <div class="form-group">
                         <label for="leaveapplytype" class="leaveapplytype">Team<b style="color:red">*</b></label>
                         <input type="text" class="form-control" id="assetteam">
                     </div>
-                </div>
+                </div>*@
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -236,7 +228,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="assetremarks">Remarks<b style="color:red"> </b></label>
-                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>                    
+                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>
                     </div>
                 </div>
             </div>
@@ -251,39 +243,4 @@
     </div>
 </div>
 
-<br />
-<br />
-
-
-<script>
-
-    GetEmployees();
-    function GetEmployees() {
-        jQuery.ajax({
-            url: "/GetEmployees",
-            type: "POST",
-            success: function (data) {
-                var obj = jQuery.parseJSON(data);
-                jQuery.each(obj, function (i, item) {
-                    $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
-                });
-
-                jQuery.each(obj, function (i, item) {
-                    $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
-                });
-
-                var useRole = jQuery('.emprole').val();
-                var empId = jQuery('.agent-navdrop-empid').text();
-                jQuery('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
-
-                if (useRole == "consultant") {
-                    jQuery("#selectEmployeename").prop("disabled", true);
-                }
-                else {
-                    jQuery("#selectEmployeename").prop("disabled", false);
-                }
-            }
-        });
-    }
-
-</script>
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);

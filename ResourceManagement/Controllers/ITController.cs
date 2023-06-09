@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace ResourceManagement.Controllers
 {
-    public class AssetController : Controller
+    public class ITController : Controller
     {
 
         // GET: Employee    
@@ -16,7 +16,19 @@ namespace ResourceManagement.Controllers
             return null;
         }
     
-        public ActionResult AddUpdate()
+        public ActionResult AssetAddUpdate()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+        public ActionResult AssetAssign()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+        public ActionResult UploadReport()
         {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             return View(employeeModel);
