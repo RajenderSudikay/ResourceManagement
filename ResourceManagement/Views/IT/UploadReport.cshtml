@@ -9,73 +9,75 @@
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
         <div class="card-body ">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group selectemp-div">
-                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                            <option disabled selected> -- Select Employee Name -- </option>
-                        </select>
+            <form class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group selectemp-div">
+                            <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                            <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                                <option disabled selected> -- Select Employee Name -- </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required disabled>
-                            <option value="" disabled selected>Select Asset ID</option>
-                            <option value="Asset1">Asset1</option>
-                            <option value="Asset2">Asset2</option>
-                            <option value="Asset3">Asset3</option>
-                            <option value="Asset4">Asset4</option>
-                        </select>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
+                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required disabled>
+                                <option value="" disabled selected>Select Asset ID</option>
+                                <option value="Asset1">Asset1</option>
+                                <option value="Asset2">Asset2</option>
+                                <option value="Asset3">Asset3</option>
+                                <option value="Asset4">Asset4</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="assetAssignID">Month<b style="color:red">*</b></label>
-                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Month</option>
-                            <option value="Asset1">Asset1</option>
-                            <option value="Asset2">Asset2</option>
-                            <option value="Asset3">Asset3</option>
-                            <option value="Asset4">Asset4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="assetAssignID">Report Type<b style="color:red">*</b></label>
-                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Report Type</option>
-                            <option value="Monthly Maintenance">Monthly Maintenance</option>
-                            <option value="Vulnerability">Vulnerability</option>
-                            <option value="IT Audit">IT Audit</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-
-                    <div class="form-group">
-                        <label for="assetAssignID">Upload Report:<b style="color:red">*</b></label>
-                        <div class="form-control">
-                            <input type="file" name="ExcelFile" id="reportupload" required />
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="assetAssignID">Month<b style="color:red">*</b></label>
+                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                                <option value="" disabled selected>Select Month</option>
+                                <option value="Asset1">Asset1</option>
+                                <option value="Asset2">Asset2</option>
+                                <option value="Asset3">Asset3</option>
+                                <option value="Asset4">Asset4</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <br />
-            <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Upload IT Report</b></button>
-            </div>
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="assetAssignID">Report Type<b style="color:red">*</b></label>
+                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                                <option value="" disabled selected>Select Report Type</option>
+                                <option value="Monthly Maintenance">Monthly Maintenance</option>
+                                <option value="Vulnerability">Vulnerability</option>
+                                <option value="IT Audit">IT Audit</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="assetAssignID">Upload Report:<b style="color:red">*</b></label>
+                            <div class="form-control">
+                                <input type="file" name="ExcelFile" id="reportupload" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="modal-footer mt-xl-4">
+                    <button type="submit" class="btn btn-info btn-lg btn-upload-it-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Upload IT Report</b></button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -84,5 +86,50 @@
 
 <br />
 <script>
+
+    // Create FormData object
+    var fileData = new FormData();
+
+    jQuery("#reportupload").change(function () {
+    
+        var fileUpload = $("#reportupload").get(0);
+        var files = fileUpload.files;
+
+        fileData = new FormData();
+
+        // Looping over all files and add it to FormData object
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("ExcelFile", files[i]);
+        }
+    });
+
+    //Final submit post confirmation
+    jQuery(".btn-upload-it-report").click(function () {
+        var fileUpload = $("#reportupload").get(0);
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/itreportsuploadajax",
+            datatype: 'json',
+            contentType: false,
+            processData: false,
+            async: false,
+            data: fileData,
+            success: function (data) {
+                if (data.Response.StatusCode == 200) {
+                    var clientName = jQuery('#statusreportEmpClient :selected').text();
+                    var toolName = jQuery('#statusreportToolName :selected').val();
+
+                    jQuery('.status-report-card').empty();
+                    fileData = new FormData();
+                    window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
+                }
+                else {
+                    jQuery('.status-report-card').empty();
+                    fileData = new FormData();
+                    window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";
+                }
+            }
+        });
+    });
 
 </script>

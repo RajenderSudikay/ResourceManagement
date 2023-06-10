@@ -299,6 +299,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Graph1DataPoint.cs" />
+    <Compile Include="Models\IT\ITUpload.cs" />
     <Compile Include="Models\Jobclass.cs" />
     <Compile Include="Models\JobRemainderModel.cs" />
     <Compile Include="Models\JobScheduler.cs" />
@@ -514,7 +515,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\IT\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
