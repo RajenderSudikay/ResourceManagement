@@ -1,0 +1,138 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+@{
+    ViewBag.Title = "Asset Upload Report Page";
+}
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel);
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card upload-it-report-card">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group selectemp-div">
+                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
+                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Asset ID</option>
+                            @foreach (var asset in Model.AmbcNewITAssetMgmt)
+                            {
+                                <option value="@asset.AssetSerialNo">@asset.AssetSerialNo</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetUploadMonth">Month<b style="color:red">*</b></label>
+                        <select id="assetUploadMonth" name="assetUploadMonth" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Month</option>
+                            @foreach (var month in Model.MonthsList)
+                            {
+                                <option value="@month.Value">@month.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-view-it-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View Report</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<div class="card card-body upload-it-report-body" style="border-radius: 10px; display: none">
+    <div class="card upload-it-report-card">
+        <div class="card-body ">
+            @using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
+            {
+                <input type="hidden" name="GridHtml" />
+                <div id="report-container">
+                    <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
+                        <thead class="table-bordered" style="height: 35px !important">
+                            <tr style="background-color: #005983">
+                                @*<th class="" scope="col" width="30">Action</th>*@
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="timesheet-table-grid">
+                            <tr style="background-color: #ccffcc">
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
+
+<br />
+<script>
+
+    function DownloadITReport(ele) {
+        var ITDownloadReportModel = {
+            FileName: $(ele).html(),
+            ReportMonth: jQuery('#assetUploadMonth :selected').val(),
+        }
+        var GridHtml = JSON.stringify(ITDownloadReportModel).toString();
+        $("input[name='GridHtml']").val(GridHtml);
+
+        $('form#itdownloadform').submit();
+    }
+
+
+    jQuery(".btn-view-it-report").click(function () {
+        jQuery('.upload-it-report-body').show();
+        $('.timesheet-table-grid').empty();
+        var itReportModel = {
+            EmployeeID: jQuery('#selectEmployeename :selected').val(),
+            reportMonth: jQuery('#assetUploadMonth :selected').val(),
+            AssetID: jQuery('#assetAssignID :selected').val(),
+        };
+
+        jQuery.ajax({
+            url: "/it/viewitajaxreports",
+            type: "POST",
+            data: JSON.stringify({ itReportModel: itReportModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {               
+                var obj = jQuery.parseJSON(data);
+                jQuery.each(obj, function (i, item) {
+                    $('.timesheet-table-grid').append(
+                        '<tr style="height: 30px;">>'
+/*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
+                        + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.MaintenanceMonth + '</td>'
+                        + '<td class="report-empname" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmployeeName + '</td>'
+                        + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
+                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" onclick=DownloadITReport(this)>' + item.Remarks + '</a></td>'
+                        + '</tr>'
+                    )
+                });
+            }
+        });
+    });
+
+</script>

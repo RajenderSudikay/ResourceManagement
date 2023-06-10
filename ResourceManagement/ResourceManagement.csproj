@@ -304,6 +304,7 @@
     </Compile>
     <Compile Include="Helpers\ColorCodes.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
@@ -521,6 +522,7 @@
     <Content Include="Views\IT\AssetAssign.cshtml" />
     <Content Include="Views\IT\UploadReport.cshtml" />
     <Content Include="Views\Shared\_EmployeeDetails.cshtml" />
+    <Content Include="Views\IT\ViewReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

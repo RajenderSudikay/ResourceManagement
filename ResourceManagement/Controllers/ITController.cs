@@ -5,10 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Linq;
 using System.Configuration;
+using Newtonsoft.Json;
+using System.Web.UI;
 
 namespace ResourceManagement.Controllers
 {
     using static Helpers.DateHelper;
+    using static Helpers.MediaHelper;
 
     public class ITController : Controller
     {
@@ -61,6 +64,11 @@ namespace ResourceManagement.Controllers
 
                 if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
                 {
+                    var uploadedMonth = fileData.UploadedMonth;
+                    var year = uploadedMonth.Split('-')[1];
+                    var month = uploadedMonth.Split('-')[0];
+                    systemGeneratedFileName = fileData.ReportType + "-" + fileData.EmployeeID + "-" + file.FileName;
+
                     using (var context = new TimeSheetEntities())
                     {
                         var contextModel = new AMBCITMonthlyMaintenance()
@@ -77,10 +85,6 @@ namespace ResourceManagement.Controllers
                         context.SaveChanges();
                     }
 
-                    var uploadedMonth = fileData.UploadedMonth;
-                    var year = uploadedMonth.Split('-')[1];
-                    var month = uploadedMonth.Split('-')[0];
-                    systemGeneratedFileName = fileData.AssetID + "-" + fileData.EmployeeID + "-" + file.FileName;
                     var fileLocation = ConfigurationManager.AppSettings["UploadFilePath"] + year + "\\" + month;
 
                     if (!Directory.Exists(fileLocation))
@@ -92,8 +96,8 @@ namespace ResourceManagement.Controllers
                     file.SaveAs(_path);
 
                     model.jsonResponse.StatusCode = 200;
-                }           
-                           
+                }
+
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (System.Exception ex)
@@ -117,6 +121,66 @@ namespace ResourceManagement.Controllers
             }
 
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult ViewReport()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+            var ITModel = new ITModel();
+            ITModel.RMA_EmployeeModel = employeeModel;
+            ITModel.MonthsList = MonthList();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                if (Assets != null && Assets.Count() > 0)
+                {
+                    ITModel.AmbcNewITAssetMgmt = Assets;
+                }
+            }
+
+            return View(ITModel);
+        }
+
+        public JsonResult ViewITAjaxReports(ITUpload itReportModel)
+        {
+            var reports = new System.Collections.Generic.List<AMBCITMonthlyMaintenance>();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                reports = db.AMBCITMonthlyMaintenances.Where(x => x.EmployeeID == itReportModel.EmployeeID && x.Remarks != null && x.Remarks != "").ToList();
+                var jsonReponse = JsonConvert.SerializeObject(reports);
+                return Json(jsonReponse, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult DownloadReport(string GridHtml)
+        {
+            ITDownloadReportModel itReportModel = JsonConvert.DeserializeObject<ITDownloadReportModel>(GridHtml);
+
+            var reportYear = itReportModel.ReportMonth.Split('-')[1];
+            var reportmonth = itReportModel.ReportMonth.Split('-')[0];
+
+            var filePath = ConfigurationManager.AppSettings["UploadFilePath"] + reportYear + "\\" + reportmonth + "\\" + itReportModel.FileName;
+            var fileName = itReportModel.FileName;
+            var mimeType = GetMimeType(fileName);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+            }
+            else
+            {
+                Response.Write("<script>alert('File not exists!')</script>");              
+                return null;
+            }           
         }
 
     }

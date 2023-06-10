@@ -48,4 +48,10 @@ namespace ResourceManagement.Models.IT
 
         public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
     }
+
+    public class ITDownloadReportModel
+    {
+        public string FileName { get; set; }
+        public string ReportMonth { get; set; }        
+    }
 }
