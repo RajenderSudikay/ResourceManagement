@@ -1,15 +1,15 @@
-﻿@model ResourceManagement.Models.RMA_EmployeeModel
+﻿@model ResourceManagement.Models.IT.ITModel
 
 @{
     ViewBag.Title = "Asset Upload Report Page";
 }
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model);
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel);
 
 <div class="card card-body" style="border-radius: 10px">
-    <div class="card timesheet-card">
+    <div class="card upload-it-report-card">
         <div class="card-body ">
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation it-upload-form" novalidate>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group selectemp-div">
@@ -23,25 +23,25 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required disabled>
+                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
                                 <option value="" disabled selected>Select Asset ID</option>
-                                <option value="Asset1">Asset1</option>
-                                <option value="Asset2">Asset2</option>
-                                <option value="Asset3">Asset3</option>
-                                <option value="Asset4">Asset4</option>
+                                @foreach (var asset in Model.AmbcNewITAssetMgmt)
+                                {
+                                    <option value="@asset.AssetSerialNo">@asset.AssetSerialNo</option>
+                                }
                             </select>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="assetAssignID">Month<b style="color:red">*</b></label>
-                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                            <label for="assetUploadMonth">Month<b style="color:red">*</b></label>
+                            <select id="assetUploadMonth" name="assetUploadMonth" class="form-control form-select form-select-lg mb-3" required>
                                 <option value="" disabled selected>Select Month</option>
-                                <option value="Asset1">Asset1</option>
-                                <option value="Asset2">Asset2</option>
-                                <option value="Asset3">Asset3</option>
-                                <option value="Asset4">Asset4</option>
+                                @foreach (var month in Model.MonthsList)
+                                {
+                                    <option value="@month.Value">@month.Text</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -51,8 +51,8 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="assetAssignID">Report Type<b style="color:red">*</b></label>
-                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                            <label for="assetReportType">Report Type<b style="color:red">*</b></label>
+                            <select id="assetReportType" name="assetReportType" class="form-control form-select form-select-lg mb-3" required>
                                 <option value="" disabled selected>Select Report Type</option>
                                 <option value="Monthly Maintenance">Monthly Maintenance</option>
                                 <option value="Vulnerability">Vulnerability</option>
@@ -65,10 +65,19 @@
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <label for="assetAssignID">Upload Report:<b style="color:red">*</b></label>
+                            <label for="reportupload">Upload Report:<b style="color:red">*</b></label>
                             <div class="form-control">
                                 <input type="file" name="ExcelFile" id="reportupload" required />
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="assetremarks">Remarks<b style="color:red"> </b></label>
+                            <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -82,7 +91,8 @@
     </div>
 </div>
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml");
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml");
 
 <br />
 <script>
@@ -91,7 +101,7 @@
     var fileData = new FormData();
 
     jQuery("#reportupload").change(function () {
-    
+
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -105,7 +115,24 @@
 
     //Final submit post confirmation
     jQuery(".btn-upload-it-report").click(function () {
-        var fileUpload = $("#reportupload").get(0);
+        var empName = jQuery('#selectEmployeename :selected').text();
+        var EmployeeID = jQuery('#selectEmployeename :selected').val();
+        var reportMonth = jQuery('#assetUploadMonth :selected').val();
+        var AssetID = jQuery('#assetAssignID :selected').val();
+        var ReportType = jQuery('#assetReportType :selected').val();
+        var Remarks = jQuery('#assetremarks').text();
+        var UploadedByEmpName = jQuery('.agent-full-name').text();
+        var UploadedByEmpID = jQuery('.agent-navdrop-empid').text();
+
+        fileData.append('EmployeeName', empName);
+        fileData.append('EmployeeID', EmployeeID);
+        fileData.append('UploadedMonth', reportMonth);
+        fileData.append('AssetID', AssetID);
+        fileData.append('ReportType', ReportType);
+        fileData.append('Remarks', Remarks);
+        fileData.append('Uploadedbyempid', UploadedByEmpID);
+        fileData.append('Uploadedempname', UploadedByEmpName);
+
         jQuery.ajax({
             type: "POST",
             url: "/it/itreportsuploadajax",
@@ -115,19 +142,15 @@
             async: false,
             data: fileData,
             success: function (data) {
-                if (data.Response.StatusCode == 200) {
-                    var clientName = jQuery('#statusreportEmpClient :selected').text();
-                    var toolName = jQuery('#statusreportToolName :selected').val();
-
-                    jQuery('.status-report-card').empty();
-                    fileData = new FormData();
-                    window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
+                fileData = new FormData();               
+                if (data.jsonResponse.StatusCode == 200) {                  
+                    window.location.href = "/it/uploadreport?success=true&selectedemp=" + empName;                  
                 }
-                else {
-                    jQuery('.status-report-card').empty();
-                    fileData = new FormData();
-                    window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";
+                else {                  
+                    window.location.href = "/it/uploadreport?success=false&error=" + data.jsonResponse.Message + "";
                 }
+                jQuery('.upload-it-report-card').empty();
+                fileData = new FormData();
             }
         });
     });

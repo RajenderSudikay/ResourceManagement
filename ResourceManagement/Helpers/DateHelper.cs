@@ -31,7 +31,7 @@ namespace ResourceManagement.Helpers
 
         public static List<SelectListItem> MonthList()
         {
-            var monthList = new List<System.Web.Mvc.SelectListItem>();
+            var monthList = new List<SelectListItem>();
             var monthsList = new List<DateTime>();
             monthsList.Add(DateTime.Now.AddMonths(-1));
             monthsList.Add(DateTime.Now.AddMonths(-2));

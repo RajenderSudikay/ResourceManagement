@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,28 +15,37 @@ namespace ResourceManagement.Models.IT
         [DisplayName("Employee ID")]
         public string EmployeeID { get; set; }
 
+        [DisplayName("Employee Email")]
+        public string Emailaddress { get; set; }
+
         //To change label title value  
         [DisplayName("Month")]
-        public string Month { get; set; }
-        public string TemplateType { get; set; }
-        public string ProjectID { get; set; }
-        public string ClientName { get; set; }
+        public string UploadedMonth { get; set; }
+        public string AssetID { get; set; }
+        public string ReportType { get; set; }
 
         //To change label title value  
         [DisplayName("Upload Report File")]
         public string ExcelPath { get; set; }
         public HttpPostedFileBase ExcelFile { get; set; }
         public List<SelectListItem> EmployeeList { get; set; } = new List<SelectListItem>();
-        public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();
-        public string FieldsIndexJson { get; set; }
-        public string ValuesMappingJson { get; set; }
+        public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();      
         public string SuccessMessage { get; set; }
-        public string FailureMessage { get; set; }
-        public string SelectedColumnIndex { get; set; }
-        public string SelectedColumnName { get; set; }
-        public string ToolName { get; set; }
-        public string Uploadedby { get; set; }
-        public bool IsAuditReport { get; set; }
-        public string ProjectCategory { get; set; }
+        public string FailureMessage { get; set; }     
+        public string Uploadedbyempid { get; set; }
+        public string Uploadedempname { get; set; }
+        public string Remarks { get; set; }
+        public string UploadedFileName { get; set; }
+
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+    }
+
+    public class ITModel
+    {
+        public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
+
+        public List<SelectListItem> MonthsList { get; set; }
+
+        public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
     }
 }

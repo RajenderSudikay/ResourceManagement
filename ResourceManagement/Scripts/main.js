@@ -91,3 +91,38 @@ jQuery(document).ready(function () {
     });
 });
 
+function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+jQuery(document).ready(function () {
+    if (window.location.href.toString().toLowerCase().indexOf("?success") > -1) {
+        var responseSuccess = getUrlVars()["success"];
+        var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);     
+
+        if (responseSuccess == "true") {
+            jQuery('.success-message-popup-title').html("Hey there");
+            jQuery('.database-response').html("<h2><b> " + selectedEmp + "</b> details have been successfully saved, and we greatly appreciate your cooperation.</h2>");
+            jQuery('.message-success-popup').modal('show');
+        }
+        else {
+            var responseError = getUrlVars()["error"];
+            var decodedUrlText = decodeURIComponent(responseError);
+            jQuery('.error-message-popup-title').html("Hey there");
+            jQuery('.database-response').html("<h2>" + decodedUrlText + "</h2>");
+            jQuery('#modal-db-error-alert').modal('show');
+        }
+
+        var yourCurrentUrl = window.location.href.split('?')[0];
+        window.history.replaceState({}, '', yourCurrentUrl);
+    }
+
+});
+
