@@ -190,7 +190,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AMBCITMonthlyMaintenance.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ambclogin_leave_view.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AmbcNewITAssetMgmt.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AmbcNewPeripheral.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ambctaskcapture.cs">

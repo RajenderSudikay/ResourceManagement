@@ -63,5 +63,8 @@ namespace ResourceManagement
         public virtual DbSet<consultantavailiability3> consultantavailiability3 { get; set; }
         public virtual DbSet<consultantavailiability4> consultantavailiability4 { get; set; }
         public virtual DbSet<consultantavailiability5> consultantavailiability5 { get; set; }
+        public virtual DbSet<AMBCITMonthlyMaintenance> AMBCITMonthlyMaintenances { get; set; }
+        public virtual DbSet<AmbcNewITAssetMgmt> AmbcNewITAssetMgmts { get; set; }
+        public virtual DbSet<AmbcNewPeripheral> AmbcNewPeripherals { get; set; }
     }
 }
