@@ -178,9 +178,66 @@ namespace ResourceManagement.Controllers
             }
             else
             {
-                Response.Write("<script>alert('File not exists!')</script>");              
+                Response.Write("<script>alert('File not exists!')</script>");
                 return null;
-            }           
+            }
+        }
+     
+        public JsonResult AssetsAddUpdateAjax(AssetModelData assetInfo)
+        {
+            var model = assetInfo;
+            try
+            {
+                using (var context = new TimeSheetEntities())
+                {
+                    var contextModel = new AmbcNewITAssetMgmt()
+                    {
+                        AssetHostName = assetInfo.AssetHostName,
+                        AssetMacNo = assetInfo.AssetMacNo,
+                        AssetModel = assetInfo.AssetModel,
+                        AssetManufacturer = assetInfo.AssetManufacturer,
+                        AssetSerialNo = assetInfo.AssetSerialNo,
+                        AssetType = assetInfo.AssetType,
+                        ChargerCapicity = assetInfo.ChargerCapicity,
+                        ChargerSerialNo = assetInfo.ChargerSerialNo,
+                        OperatingSystemDetail = assetInfo.OperatingSystemDetail,
+                        RAM_Size = assetInfo.RAM_Size,
+                        ServiceTag = assetInfo.ServiceTag,
+                        USBPortStatus = assetInfo.USBPortStatus,
+                        WarrentyEndDate = assetInfo.WarrentyEndDate,
+                        WarrentyStartDate = assetInfo.WarrentyStartDate,
+                        WarrentyStatus = assetInfo.WarrentyStatus,
+                        Lastupdated = System.DateTime.Now
+                    };
+
+                    context.AmbcNewITAssetMgmts.Add(contextModel);
+                    context.SaveChanges();
+                    model.jsonResponse.StatusCode = 200;
+                }
+                var finalResponse = JsonConvert.SerializeObject(model);
+                return Json(finalResponse, JsonRequestBehavior.AllowGet);
+            }
+            catch (System.Exception ex)
+            {
+                model.jsonResponse.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            model.jsonResponse.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    model.jsonResponse.Message = ex.Message;
+                }
+            }
+            var finalResponseonError = JsonConvert.SerializeObject(model);
+            return Json(finalResponseonError, JsonRequestBehavior.AllowGet);
         }
 
     }

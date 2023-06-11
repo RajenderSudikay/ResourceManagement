@@ -309,6 +309,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Graph1DataPoint.cs" />
+    <Compile Include="Models\IT\AssetModel.cs" />
     <Compile Include="Models\IT\ITUpload.cs" />
     <Compile Include="Models\Jobclass.cs" />
     <Compile Include="Models\JobRemainderModel.cs" />

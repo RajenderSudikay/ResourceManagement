@@ -11,6 +11,107 @@
 <br />
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
 <script>
+
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                });
+            });
+        });
+    })();
+
+    var formValidated = false;
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+
+    jQuery(".btn-asset-add-update").click(function (event) {
+
+        var isModalValidated = true;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                isModalValidated = false;
+            }
+
+            form.classList.add('was-validated');
+        });
+
+        if (isModalValidated) {
+
+            var assetInfoModel = {
+                AllocationStatus: jQuery('#assetallocationstatus :selected').val(),
+                PurchaseDate: jQuery('#assetPurchaseDate').val(),
+                PurchaseLocation: jQuery('#assetPurchaseLocation :selected').val(),
+                Description: jQuery('#assetdescription').val(),
+                AssetType: jQuery('#assetassettype :selected').val(),
+                AssetManufacturer: jQuery('#assetmanufacturer').val(),
+                AssignedAsset: jQuery('#assetassignedasset').val(),
+                ChargerDetails: jQuery('#assetchargerdetails').val(),
+                AssetHostName: jQuery('#assethostname').val(),
+                MouseDetails: jQuery('#assetmousedetails').val(),
+                AssetModel: jQuery('#assetmodel').val(),
+                AccessControl: jQuery('#assetaccesscontrol').val(),
+                ChargerSerialNo: jQuery('#assetchargerid').val(),
+                Functionality: jQuery('#assetfunctionality :selected').val(),
+                USBPortStatus: jQuery('#assetusbport :selected').val(),
+                ExpressCode: jQuery('#assetchargerid').val(),
+                Headsets: jQuery('#assetheadsets').val(),
+                BarcodeID: jQuery('#assetbarcodeid').val(),
+                ServiceTag: jQuery('#assetservicetag').val(),
+                AssetMacNo: jQuery('#assetmac').val(),
+                AssetSerialNo: jQuery('#assetid').val(),
+                OperatingSystemDetail: jQuery('#assetosversion :selected').val(),
+                IPAddress: jQuery('#assetipaddress').val(),
+                WIFIIP: jQuery('#assetwifiip').val(),
+                WarrentyStartDate: jQuery('#assetwarrantystartdate').val(),
+                WarrentyEndDate: jQuery('#assetwarantyenddate').val(),
+                WarrentyStatus: jQuery('#assetwarrantystatus :selected').val(),
+                RAM_Size: jQuery('#assetram :selected').val(),
+                OS: jQuery('#assetos').val(),
+                Remarks: jQuery('#assetremarks').val(),
+                CreatedByName: jQuery('.agent-full-name').text(),
+                CreatedByID: jQuery('.agent-navdrop-empid').text()
+            };
+            jQuery.ajax({
+                url: "/it/assetsaddupdateajax",
+                type: "POST",             
+                data: { assetInfo: assetInfoModel },          
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);                 
+                    if (obj.jsonResponse.StatusCode == 200) {
+                        jQuery('.success-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>Asset details have been successfully saved, and we greatly appreciate your cooperation.</h2>");
+                        jQuery('.message-success-popup').modal('show');
+                    }
+                    else {
+                        jQuery('.error-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
+                        jQuery('#modal-db-error-alert').modal('show');
+                    }
+                }
+            });
+            return false;
+        }
+    });
+
+
 </script>
