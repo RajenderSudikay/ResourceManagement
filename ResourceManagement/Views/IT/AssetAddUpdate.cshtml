@@ -107,6 +107,8 @@
                         jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
                         jQuery('#modal-db-error-alert').modal('show');
                     }
+
+                    jQuery('form[name="asset-from"]').trigger("reset");
                 }
             });
             return false;
