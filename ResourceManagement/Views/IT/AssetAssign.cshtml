@@ -9,29 +9,45 @@
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
         <div class="card-body ">          
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group selectemp-div">
-                            <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                            <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Employee Name -- </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Asset ID</option>
-                                <option value="Asset1">Asset1</option>
-                                <option value="Asset2">Asset2</option>
-                                <option value="Asset3">Asset3</option>
-                                <option value="Asset4">Asset4</option>
-                            </select>
-                        </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group selectemp-div">
+                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
+                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required multiple>                         
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="MacBook">MacBook</option>
+                            <option value="MacBook">Tablet</option>
+                            <option value="MacBook">Headset</option>
+                            <option value="MacBook">Mouse</option>
+                            <option value="MacBook">Charger</option>
+                            <option value="MacBook">Mobile</option>
+                            <option value="MacBook">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
+                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Asset ID</option>
+                            <option value="Asset1">Asset1</option>
+                            <option value="Asset2">Asset2</option>
+                            <option value="Asset3">Asset3</option>
+                            <option value="Asset4">Asset4</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
                 <br />
                 <div class="modal-footer mt-xl-4">

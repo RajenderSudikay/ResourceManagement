@@ -4,296 +4,297 @@
     <div class="card timesheet-card">
         <div class="card-body ">
             <form class="needs-validation asset-from" novalidate name="asset-from">
-                <div class="row">
-                    @*<div class="col-md-4">
-                            <div class="form-group selectemp-div">
-                                <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                                <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                    <option disabled selected> -- Select Employee Name -- </option>
-                                </select>
-                            </div>
-                        </div>*@
-                    @*<div class="col-md-4">
-                            <div class="form-group">
-                                <label for="leaveapplytype" class="leaveapplytype">Team<b style="color:red">*</b></label>
-                                <input type="text" class="form-control" id="assetteam">
-                            </div>
-                        </div>*@
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetallocationstatus">Allocation Status<b style="color:red">*</b></label>
-                            <select id="assetallocationstatus" name="assetallocationstatus" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Allocation Status</option>
-                                <option value="Assigned">Assigned</option>
-                                <option value="Not Assigned">Not Assigned</option>
-                            </select>
-                        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
+                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="MacBook">MacBook</option>
+                            <option value="MacBook">Tablet</option>
+                            <option value="MacBook">Headset</option>
+                            <option value="MacBook">Mouse</option>
+                            <option value="MacBook">Charger</option>
+                            <option value="MacBook">Mobile</option>
+                            <option value="MacBook">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetid">Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetid" required>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetPurchaseDate" class="">Asset Purchase Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control" id="assetPurchaseDate" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetallocationstatus">Allocation Status<b style="color:red">*</b></label>
+                        <select id="assetallocationstatus" name="assetallocationstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Allocation Status</option>
+                            <option value="Assigned">Assigned</option>
+                            <option value="Not Assigned">Not Assigned</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetPurchaseLocation" class="">Asset Purchase Location<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetPurchaseLocation" required>
+                        <small style="color:teal !important; width: 200px !important">Please enter Location_Vendor Name (Ex: Hyderbad_Satyam computers)</small>
+                        @*<select id="assetPurchaseLocation" name="assetPurchaseLocation" class="form-control form-select form-select-lg mb-3" required>
+                    <option value="" disabled selected>Select Location</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Madurai">Madurai</option>
+                    <option value="US">US</option>
+                    <option value="Other Location">Other Location</option>
+                </select>*@
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetPurchaseDate" class="">Asset Purchase Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="assetPurchaseDate" required>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetPurchaseLocation" class="">Asset Purchase Location<b style="color:red">*</b></label>
-                            <select id="assetPurchaseLocation" name="assetPurchaseLocation" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Location</option>
-                                <option value="Hyderabad">Hyderabad</option>
-                                <option value="Madurai">Madurai</option>
-                                <option value="US">US</option>
-                                <option value="Other Location">Other Location</option>                               
-                            </select>
-                        </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetdescription">Description<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetdescription" required>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetmanufacturer">Manufacturer<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmanufacturer" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetfunctionality">Working Condition<b style="color:red">*</b></label>
+                        <select id="assetfunctionality" name="assetfunctionality" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Condition</option>
+                            <option value="Good">Good</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetmodel">Model<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmodel" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetbarcodeid">Barcode ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetbarcodeid" required>
+                    </div>
+                </div>
+                <div class="col-md-4 div-charger-details showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetchargerdetails">Charger Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetchargerdetails" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-host-name showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assethostname">Host Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assethostname" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-mouse-details showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetmousedetails">Mouse Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetmousedetails" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-access-control showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetaccesscontrol">Access Control<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetaccesscontrol" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-charger-assetid showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetchargerid">Charger Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetchargerid" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-usb-portstattus showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetusbport">USB Port Status<b style="color:red">*</b></label>
+                        <select id="assetusbport" name="assetusbport" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select Port Status</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Not Blocked">Not Blocked</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-express-code showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetexpresscode">Express Code<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetexpresscode" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-headset showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetheadsets">Headsets<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetheadsets" required>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4 div-servicetag showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetservicetag">Service Tag<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetservicetag" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 showhide div-mac" style="display: none">
+                    <div class="form-group">
+                        <label for="assetmac">Mac<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetmac" required>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4 div-os-version showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetosversion">OS Version<b style="color:red">*</b></label>
+                        <select id="assetosversion" name="assetosversion" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select OS Version</option>
+                            <option value="64-bit">64-bit</option>
+                            <option value="32-bit">32-bit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-4 div-ip-address showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetipaddress">IP Address<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetipaddress" required>
+                    </div>
+                </div>
+                <div class="col-md-4 div-wifi-ip showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetwifiip">WIFI IP<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetwifiip" required>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4 div-warranty-start showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetwarrantystartdate">Warranty Start Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-required" id="assetwarrantystartdate" required>
+                    </div>
+                </div>
+                <div class="col-md-4 div-warranty-end showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetwarantyenddate">Warranty End Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-required" id="assetwarantyenddate" required>
+                    </div>
+                </div>
+                <div class="col-md-4 div-warranty-status showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetwarrantystatus">Warranty Status<b style="color:red">*</b></label>
+                        <select id="assetwarrantystatus" name="assetusbport" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select Warranty Status</option>
+                            <option value="In Warranty">In Warranty</option>
+                            <option value="No Warranty">No Warranty</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4 div-ram showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetram">RAM<b style="color:red">*</b></label>
+                        <select id="assetram" name="assetram" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select RAM</option>
+                            <option value="4GB">4GB</option>
+                            <option value="8GB">8GB</option>
+                            <option value="16GB">16GB</option>
+                            <option value="20GB">20GB</option>
+                            <option value="32GB">32GB</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-4 div-os showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetos">OS<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetos" required>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="assetremarks">Remarks<b style="color:red"> </b></label>
+                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Remarks..."></textarea>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="p-3 mb-2 bg-secondary text-white">In case Asset is SOLD OUT update the details below</div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetsoldout">Asset Sold OUT<b style="color:red">*</b></label>
+                        <select id="assetsoldout" name="assetsoldout" class="form-control form-select form-select-lg mb-3">
+                            <option value="" disabled selected>Select Sold Out</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 div-os showhide-soldout" style="display: none">
+                    <div class="form-group">
+                        <label for="assetsoldoutdate">Sold Out date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-soldout-required" id="assetsoldoutdate">
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-os showhide-soldout" style="display: none">
+                    <div class="form-group">
+                        <label for="assetsoldoutvendor">Sold Out Vendor<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutvendor">
+                    </div>
+                </div>
+
+                <div class="col-md-4 div-os showhide-soldout" style="display: none">
+                    <div class="form-group">
+                        <label for="assetos">Sold Out Price<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-soldout-required" id="assetos">
                     </div>
                 </div>
 
                 <br />
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetdescription">Description<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetdescription" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
-                            <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Type</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Desktop">Desktop</option>
-                                <option value="MacBook">MacBook</option>                              
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetmanufacturer">Manufacturer<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetmanufacturer" required>
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-
-                <div class="row">
-                    @*<div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetassignedasset">Assigned Asset<b style="color:red">*</b></label>
-                            <select id="assetassignedasset" name="assetusbport" class="form-control form-select form-select-lg mb-3" required multiple>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Charger">Charger</option>
-                                <option value="Headset">Headset</option>
-                            </select>
-                        </div>
-                    </div>*@
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetchargerdetails">Charger Details<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetchargerdetails" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assethostname">Host Name<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assethostname" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-                            <label for="assetmousedetails">Mouse Details<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetmousedetails" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetmodel">Model<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetmodel" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetaccesscontrol">Access Control<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetaccesscontrol" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetchargerid">Charger Asset ID<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetchargerid" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetfunctionality">Functionality<b style="color:red">*</b></label>
-                            <select id="assetfunctionality" name="assetfunctionality" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Functionality</option>
-                                <option value="Good">Good</option>
-                                <option value="Bad">Bad</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetusbport">USB Port Status<b style="color:red">*</b></label>
-                            <select id="assetusbport" name="assetusbport" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Port Status</option>
-                                <option value="Blocked">Blocked</option>
-                                <option value="Not Blocked">Not Blocked</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetexpresscode">Express Code<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetexpresscode" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetheadsets">Headsets<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetheadsets" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetbarcodeid">Barcode ID<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetbarcodeid" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetservicetag">Service Tag<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetservicetag" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetmac">Mac<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetmac" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetid">Asset ID<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetid" required>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetosversion">OS Version<b style="color:red">*</b></label>
-                            <select id="assetosversion" name="assetosversion" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select OS Version</option>
-                                <option value="64-bit">64-bit</option>
-                                <option value="32-bit">32-bit</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetipaddress">IP Address<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetipaddress" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetwifiip">WIFI IP<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetwifiip" required>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetwarrantystartdate">Warranty Start Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="assetwarrantystartdate" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetwarantyenddate">Warranty End Date<b style="color:red">*</b></label>
-                            <input type="date" class="form-control" id="assetwarantyenddate" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetwarrantystatus">Warranty Status<b style="color:red">*</b></label>
-                            <select id="assetwarrantystatus" name="assetusbport" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Warranty Status</option>
-                                <option value="In Warranty">In Warranty</option>
-                                <option value="No Warranty">No Warranty</option>
-                            </select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetram">RAM<b style="color:red">*</b></label>
-                            <select id="assetram" name="assetram" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select RAM</option>
-                                <option value="4GB">4GB</option>
-                                <option value="8GB">8GB</option>
-                                <option value="16GB">16GB</option>
-                                <option value="20GB">20GB</option>
-                                <option value="32GB">32GB</option>
-                            </select>                          
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetos">OS<b style="color:red">*</b></label>
-                            <input type="text" class="form-control" id="assetos" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="assetremarks">Remarks<b style="color:red"> </b></label>
-                            <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Remarks..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <br />
+                <div class="clearfix"></div>
                 <div class="modal-footer mt-xl-4">
                     <button type="submit" class="btn btn-info btn-lg btn-asset-add-update" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Submit</b></button>
                 </div>

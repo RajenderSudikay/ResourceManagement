@@ -16,6 +16,32 @@
 <script>
 
 
+    jQuery("#assetassettype").change(function (evt) {
+        if (jQuery(this).val() == "Laptop" || jQuery(this).val() == "Desktop") {
+            jQuery('.showhide').show();           
+            jQuery(".showhide-required").prop('required', true);
+        }
+        else {
+            jQuery('.showhide').hide();
+            jQuery('.showhide-required').removeAttr("required");
+        }
+    });
+
+    jQuery("#assetsoldout").change(function (evt) {
+        if (jQuery(this).val() == "Yes") {
+            jQuery('.showhide-soldout').show();
+            jQuery(".showhide-soldout-required").prop('required', true);
+        }
+        else {
+            jQuery('.showhide-soldout').hide();
+            jQuery('.showhide-soldout-required').removeAttr("required");
+        }
+    });
+
+
+    
+
+
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict';
@@ -60,7 +86,7 @@
             var assetInfoModel = {
                 AllocationStatus: jQuery('#assetallocationstatus :selected').val(),
                 PurchaseDate: jQuery('#assetPurchaseDate').val(),
-                PurchaseLocation: jQuery('#assetPurchaseLocation :selected').val(),
+                PurchaseLocation: jQuery('#assetPurchaseLocation').val(),
                 Description: jQuery('#assetdescription').val(),
                 AssetType: jQuery('#assetassettype :selected').val(),
                 AssetManufacturer: jQuery('#assetmanufacturer').val(),
