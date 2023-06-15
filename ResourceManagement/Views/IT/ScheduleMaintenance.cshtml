@@ -1,0 +1,172 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+@{
+    ViewBag.Title = "Asset Upload Report Page";
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/src/css/site.css" rel="stylesheet" />
+<link href="~/src/richtext.min.css" rel="stylesheet" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/src/jquery.richtext.js"></script>
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card ">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group selectemp-div">
+                        <label for="selectemployeename">To:<b style="color:red">*</b></label>
+                        <select id="selectEmployeename" name="selectemployeename" class="form-control form-select form-select-lg" style="background-color:white">
+                            <option value="" disabled selected>Select Employee</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="schedulecc">CC:<b style="color:red">*</b></label>
+                        @*<input type="text" class="form-control" id="schedulecc" required>*@
+                        <textarea class="form-control schedulecc" id="schedulecc" style="min-width: 100%" placeholder="CC..." rows="1" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="schedulebcc">BCC:<b style="color:red">*</b></label>
+                        @*<input type="text" class="form-control" id="schedulebcc" required>*@
+                    <textarea class="form-control schedulebcc" id="schedulebcc" style="min-width: 100%" placeholder="BCC..." rows="1" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="schedulesubject">Subject:<b style="color:red">*</b></label>
+                        <textarea class="form-control schedulesubject" id="schedulesubject" style="min-width: 100%" placeholder="Subject..." rows="1">Request schedule for Monthly Maintenance activity</textarea>
+                        @*<textarea class="schedulesubject" name="example" id="schedulesubject"></textarea>*@
+                        @*<input type="text" class="form-control" value="Request schedule for Monthly Maintenance activity" id="schedulesubject" required>*@
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="page-wrapper box-content" style="margin: 0px !important; background-color: white !important; padding: 0px !important; margin-left: 15px !important">
+                    <textarea class="content" name="example"></textarea>
+                </div>
+            </div>
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-schedule-maintenance" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Schedule</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<div class="card card-body upload-it-report-body" style="border-radius: 10px; display: none">
+    <div class="card upload-it-report-card">
+        <div class="card-body ">
+            @using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
+            {
+                <input type="hidden" name="GridHtml" />
+                <div id="report-container">
+                    <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
+                        <thead class="table-bordered" style="height: 35px !important">
+                            <tr style="background-color: #005983">
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="timesheet-table-grid">
+                            <tr style="background-color: #ccffcc">
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
+
+<br />
+<script>
+
+    jQuery(document).ready(function () {
+        jQuery('.content').richText();
+        GenerateEmailBody();
+    });
+
+    function GenerateEmailBody() {
+        var MaintenanceModel = {
+            EmpName: jQuery('#selectEmployeename :selected').text(),          
+        };
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/generateemailbody",
+            data: JSON.stringify({ maintenanceModel: MaintenanceModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('.richText-editor').html(data);
+            }
+        });
+    }
+
+    jQuery("#selectEmployeename").change(function (evt) {
+        GenerateEmailBody();
+    });
+
+
+    jQuery(".btn-schedule-maintenance").click(function () {
+        var itScheduleModel = {
+            EmpName: jQuery('#selectEmployeename :selected').text(),
+            EmpID: jQuery('#selectEmployeename :selected').val(),
+            UploadedByName: jQuery('.agent-full-name').text(),
+            UploadedByID: jQuery('.agent-navdrop-empid').text(),
+            CC: jQuery('#schedulecc').text(),
+            BCC: jQuery('#schedulebcc').text(),
+            Subject: jQuery('#schedulesubject').text(),
+            EmailBody: jQuery('.richText-editor').text().replace(/<div[^<]*?>/g, '').replace(/<\/div[^<]*?>/g, '<br>'),
+            TO: "rajendersudikay@ambconline.com"
+        };
+
+        jQuery.ajax({
+            url: "/it/ScheduleMaintenanceEmailTrigger",
+            type: "POST",
+            data: JSON.stringify({ maintenanceModel: itScheduleModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                if (obj.JsonResponse.StatusCode == 200) {
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>Schedulre Maintenance email sent successfully!.</h2>");
+                    jQuery('.message-success-popup').modal('show');
+                }
+                else {
+                    jQuery('.error-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>" + obj.JsonResponse.Message + "</h2>");
+                    jQuery('#modal-db-error-alert').modal('show');
+                }
+            }
+        });
+    });
+
+</script>

@@ -12,14 +12,50 @@ namespace ResourceManagement.Controllers
 {
     using static Helpers.DateHelper;
     using static Helpers.MediaHelper;
+    using static Helpers.MVCExtension;
+    using static Helpers.EmailHelper;
 
     public class ITController : Controller
     {
-
         // GET: Employee    
         public ActionResult Index()
         {
             return null;
+        }
+
+        ////https://www.jqueryscript.net/text/Rich-Text-Editor-jQuery-RichText.html
+        public ActionResult ScheduleMaintenance()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+            var ITModel = new ITModel();
+            ITModel.RMA_EmployeeModel = employeeModel;
+            return View(ITModel);
+        }
+
+        public JsonResult GenerateEmailBody(ITScheduleMaintenanceModel maintenanceModel)
+        {
+            var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
+            return Json(emailBody, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ScheduleMaintenanceEmailTrigger(ITScheduleMaintenanceModel maintenanceModel)
+        {
+            //var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
+            maintenanceModel.EmailBody = maintenanceModel.EmailBody.Trim();
+            var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
+            Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
+            {
+                To = maintenanceModel.TO,
+                BCC = maintenanceModel.BCC,
+                Subject = maintenanceModel.Subject,
+                CC = maintenanceModel.CC,
+                EmailBody = emailBody
+            };
+
+            var EmailResponse = SendStatusReportRemainderEmail(emailModel);
+
+            return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AssetAddUpdate()
@@ -182,7 +218,7 @@ namespace ResourceManagement.Controllers
                 return null;
             }
         }
-     
+
         public JsonResult AssetsAddUpdateAjax(AssetModelData assetInfo)
         {
             var model = assetInfo;

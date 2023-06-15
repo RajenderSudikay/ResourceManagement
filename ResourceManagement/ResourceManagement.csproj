@@ -304,8 +304,11 @@
     </Compile>
     <Compile Include="Helpers\ColorCodes.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
+    <Compile Include="Helpers\MVCExtension.cs" />
     <Compile Include="Models\DataPoint.cs" />
+    <Compile Include="Models\Email\SendEmail.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Graph1DataPoint.cs" />
@@ -479,6 +482,10 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.js" />
+    <Content Include="src\css\site.css" />
+    <Content Include="src\jquery.richtext.js" />
+    <Content Include="src\jquery.richtext.min.js" />
+    <Content Include="src\richtext.min.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -524,6 +531,9 @@
     <Content Include="Views\IT\UploadReport.cshtml" />
     <Content Include="Views\Shared\_EmployeeDetails.cshtml" />
     <Content Include="Views\IT\ViewReport.cshtml" />
+    <Content Include="src\richtext.scss" />
+    <Content Include="Views\IT\ScheduleMaintenance.cshtml" />
+    <Content Include="Views\IT\ScheduleMaintenanceEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

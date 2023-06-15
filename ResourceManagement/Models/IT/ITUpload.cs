@@ -54,4 +54,26 @@ namespace ResourceManagement.Models.IT
         public string FileName { get; set; }
         public string ReportMonth { get; set; }        
     }
+
+    public class ITScheduleMaintenanceModel
+    {
+        public string EmpName { get; set; }
+
+        public string EmpID { get; set; }
+
+        public string UploadedByName { get; set; }
+
+        public string UploadedByID { get; set; }
+
+        public string TO { get; set; }
+
+        public string CC { get; set; }
+
+        public string BCC { get; set; }
+
+        public string Subject { get; set; }
+
+        public string EmailBody { get; set; }
+
+    }
 }
