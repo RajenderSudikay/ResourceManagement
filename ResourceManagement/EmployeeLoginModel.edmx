@@ -808,40 +808,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ambctaskcapture].[tslogno] AS [tslogno], 
-    [ambctaskcapture].[weekno] AS [weekno], 
-    [ambctaskcapture].[weekstartdate] AS [weekstartdate], 
-    [ambctaskcapture].[weekenddate] AS [weekenddate], 
-    [ambctaskcapture].[employeeid] AS [employeeid], 
-    [ambctaskcapture].[employeename] AS [employeename], 
-    [ambctaskcapture].[empdesignation] AS [empdesignation], 
-    [ambctaskcapture].[empmanager] AS [empmanager], 
-    [ambctaskcapture].[empcontactnumber] AS [empcontactnumber], 
-    [ambctaskcapture].[clientname] AS [clientname], 
-    [ambctaskcapture].[projectname] AS [projectname], 
-    [ambctaskcapture].[projstatus] AS [projstatus], 
-    [ambctaskcapture].[taskdate] AS [taskdate], 
-    [ambctaskcapture].[category] AS [category], 
-    [ambctaskcapture].[incidentnumber] AS [incidentnumber], 
-    [ambctaskcapture].[taskdetails] AS [taskdetails], 
-    [ambctaskcapture].[requester] AS [requester], 
-    [ambctaskcapture].[callpriority] AS [callpriority], 
-    [ambctaskcapture].[callstatus] AS [callstatus], 
-    [ambctaskcapture].[closeddate] AS [closeddate], 
-    [ambctaskcapture].[timespent] AS [timespent], 
-    [ambctaskcapture].[comments] AS [comments], 
-    [ambctaskcapture].[submittedsystem] AS [submittedsystem], 
-    [ambctaskcapture].[currentyear] AS [currentyear], 
-    [ambctaskcapture].[shiftdetails] AS [shiftdetails], 
-    [ambctaskcapture].[submittedtime] AS [submittedtime], 
-    [ambctaskcapture].[uniquekey] AS [uniquekey], 
-    [ambctaskcapture].[overtime] AS [overtime], 
-    [ambctaskcapture].[recorduniqueid] AS [recorduniqueid], 
-    [ambctaskcapture].[weekendworkstatus] AS [weekendworkstatus]
-    FROM [dbo].[ambctaskcapture] AS [ambctaskcapture]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
@@ -894,108 +861,9 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
     FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [monthlyreports_Template1].[Ticket_Number] AS [Ticket_Number], 
-    [monthlyreports_Template1].[Ticket_Summary] AS [Ticket_Summary], 
-    [monthlyreports_Template1].[Ticket_Created_Date] AS [Ticket_Created_Date], 
-    [monthlyreports_Template1].[Ticket_Category] AS [Ticket_Category], 
-    [monthlyreports_Template1].[Ticket_Raisedby] AS [Ticket_Raisedby], 
-    [monthlyreports_Template1].[Ticket_Priority] AS [Ticket_Priority], 
-    [monthlyreports_Template1].[Ticket_Status] AS [Ticket_Status], 
-    [monthlyreports_Template1].[Ticket_Closed_Date] AS [Ticket_Closed_Date], 
-    [monthlyreports_Template1].[Organisation] AS [Organisation], 
-    [monthlyreports_Template1].[Comments] AS [Comments], 
-    [monthlyreports_Template1].[Consultant_Name] AS [Consultant_Name], 
-    [monthlyreports_Template1].[Uploaded_Month] AS [Uploaded_Month], 
-    [monthlyreports_Template1].[Uniquekey] AS [Uniquekey], 
-    [monthlyreports_Template1].[Uploadedby] AS [Uploadedby], 
-    [monthlyreports_Template1].[FileNamee] AS [FileNamee], 
-    [monthlyreports_Template1].[Is_Newly_created] AS [Is_Newly_created], 
-    [monthlyreports_Template1].[Is_Open] AS [Is_Open], 
-    [monthlyreports_Template1].[Is_Closed] AS [Is_Closed], 
-    [monthlyreports_Template1].[Ticket_Age] AS [Ticket_Age], 
-    [monthlyreports_Template1].[ReportPriority] AS [ReportPriority], 
-    [monthlyreports_Template1].[Client_Name] AS [Client_Name], 
-    [monthlyreports_Template1].[Created_Year] AS [Created_Year], 
-    [monthlyreports_Template1].[Created_Month] AS [Created_Month], 
-    [monthlyreports_Template1].[Closed_Year] AS [Closed_Year], 
-    [monthlyreports_Template1].[Closed_Month] AS [Closed_Month], 
-    [monthlyreports_Template1].[Is_ToDo] AS [Is_ToDo], 
-    [monthlyreports_Template1].[Is_Cancelled] AS [Is_Cancelled], 
-    [monthlyreports_Template1].[EmplyeeID] AS [EmplyeeID], 
-    [monthlyreports_Template1].[ProjectID] AS [ProjectID], 
-    [monthlyreports_Template1].[IsAuditReport] AS [IsAuditReport], 
-    [monthlyreports_Template1].[TicketingToolName] AS [TicketingToolName]
-    FROM [dbo].[monthlyreports_Template1] AS [monthlyreports_Template1]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [monthlyreports_Template2].[Project_Name] AS [Project_Name], 
-    [monthlyreports_Template2].[Project_Summary] AS [Project_Summary], 
-    [monthlyreports_Template2].[Project_Created_Date] AS [Project_Created_Date], 
-    [monthlyreports_Template2].[Project_Closing_Date_Target] AS [Project_Closing_Date_Target], 
-    [monthlyreports_Template2].[Project_Category] AS [Project_Category], 
-    [monthlyreports_Template2].[Project_Raisedby] AS [Project_Raisedby], 
-    [monthlyreports_Template2].[Project_Priority] AS [Project_Priority], 
-    [monthlyreports_Template2].[Project_Status] AS [Project_Status], 
-    [monthlyreports_Template2].[Project_Closed_Date_Actual] AS [Project_Closed_Date_Actual], 
-    [monthlyreports_Template2].[Organisation] AS [Organisation], 
-    [monthlyreports_Template2].[Comments] AS [Comments], 
-    [monthlyreports_Template2].[ConsultantName] AS [ConsultantName], 
-    [monthlyreports_Template2].[Uploaded_Month] AS [Uploaded_Month], 
-    [monthlyreports_Template2].[uniquekey] AS [uniquekey], 
-    [monthlyreports_Template2].[Uploadedby] AS [Uploadedby], 
-    [monthlyreports_Template2].[FileNamee] AS [FileNamee], 
-    [monthlyreports_Template2].[Client_Name] AS [Client_Name], 
-    [monthlyreports_Template2].[EmplyeeID] AS [EmplyeeID], 
-    [monthlyreports_Template2].[ProjectID] AS [ProjectID], 
-    [monthlyreports_Template2].[CompletedPercentage] AS [CompletedPercentage], 
-    [monthlyreports_Template2].[RemainingPercentage] AS [RemainingPercentage], 
-    [monthlyreports_Template2].[Is_Open] AS [Is_Open], 
-    [monthlyreports_Template2].[Is_Closed] AS [Is_Closed], 
-    [monthlyreports_Template2].[Is_ToDo] AS [Is_ToDo], 
-    [monthlyreports_Template2].[Is_Cancelled] AS [Is_Cancelled], 
-    [monthlyreports_Template2].[Created_Year] AS [Created_Year], 
-    [monthlyreports_Template2].[Created_Month] AS [Created_Month], 
-    [monthlyreports_Template2].[Closed_Year] AS [Closed_Year], 
-    [monthlyreports_Template2].[Closed_Month] AS [Closed_Month]
-    FROM [dbo].[monthlyreports_Template2] AS [monthlyreports_Template2]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [monthlyreports_Template3].[Test_ID] AS [Test_ID], 
-    [monthlyreports_Template3].[Control_Group_Name] AS [Control_Group_Name], 
-    [monthlyreports_Template3].[Test_Completed] AS [Test_Completed], 
-    [monthlyreports_Template3].[Test_Due_Date] AS [Test_Due_Date], 
-    [monthlyreports_Template3].[Test_Completion_Date] AS [Test_Completion_Date], 
-    [monthlyreports_Template3].[Test_Conclusion] AS [Test_Conclusion], 
-    [monthlyreports_Template3].[Control_Owner] AS [Control_Owner], 
-    [monthlyreports_Template3].[Control_Performer] AS [Control_Performer], 
-    [monthlyreports_Template3].[Test_application] AS [Test_application], 
-    [monthlyreports_Template3].[Organisation] AS [Organisation], 
-    [monthlyreports_Template3].[Layer] AS [Layer], 
-    [monthlyreports_Template3].[Frequency] AS [Frequency], 
-    [monthlyreports_Template3].[Current_step] AS [Current_step], 
-    [monthlyreports_Template3].[Comments] AS [Comments], 
-    [monthlyreports_Template3].[Consultantname] AS [Consultantname], 
-    [monthlyreports_Template3].[Uploadedmonth] AS [Uploadedmonth], 
-    [monthlyreports_Template3].[Uniquekey] AS [Uniquekey], 
-    [monthlyreports_Template3].[Uploadedby] AS [Uploadedby], 
-    [monthlyreports_Template3].[FileNamee] AS [FileNamee], 
-    [monthlyreports_Template3].[Client_Name] AS [Client_Name], 
-    [monthlyreports_Template3].[EmplyeeID] AS [EmplyeeID], 
-    [monthlyreports_Template3].[ProjectID] AS [ProjectID], 
-    [monthlyreports_Template3].[Is_Open] AS [Is_Open], 
-    [monthlyreports_Template3].[Is_Closed] AS [Is_Closed], 
-    [monthlyreports_Template3].[Is_ToDo] AS [Is_ToDo], 
-    [monthlyreports_Template3].[Is_Cancelled] AS [Is_Cancelled], 
-    [monthlyreports_Template3].[Created_Year] AS [Created_Year], 
-    [monthlyreports_Template3].[Created_Month] AS [Created_Month], 
-    [monthlyreports_Template3].[Closed_Year] AS [Closed_Year], 
-    [monthlyreports_Template3].[Closed_Month] AS [Closed_Month]
-    FROM [dbo].[monthlyreports_Template3] AS [monthlyreports_Template3]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template2" EntityType="Self.monthlyreports_Template2" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_LoginInformation_bkp].[login_id] AS [login_id], 

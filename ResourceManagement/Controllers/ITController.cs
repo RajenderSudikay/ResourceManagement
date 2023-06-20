@@ -64,9 +64,28 @@ namespace ResourceManagement.Controllers
             return View(employeeModel);
         }
 
-        public ActionResult AssetAssign()
+        public ActionResult MMReportgenerate()
         {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            var ITModel = new ITModel();
+            ITModel.RMA_EmployeeModel = employeeModel;
+            ITModel.MonthsList = MonthList();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                if (Assets != null && Assets.Count() > 0)
+                {
+                    ITModel.AmbcNewITAssetMgmt = Assets;
+                }
+            }
+
+            return View(ITModel);
+        }
+
+        public ActionResult AssetAssign()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;         
             return View(employeeModel);
         }
 
