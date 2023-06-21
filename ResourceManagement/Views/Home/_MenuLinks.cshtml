@@ -52,12 +52,36 @@
                     <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  <b>IT</b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Schedule Maintenance</b> </a></li>
-                    <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b> </a></li>
-                    <li><a class="dropdown-item" href="/it/uploadreport"> <b>Upload IT Report</b> </a></li>
-                    <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>
-                    <li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
-                    <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>
+                    <li>
+                        <a class="dropdown-item" href="#"> <b>Monthly Maintenance</b> </a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" href="/it/schedulemaintenance"><b>Schedule Maintenance</b> </a></li>
+                            <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b></a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="#"> <b>Reports</b> </a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" href="/it/uploadreport"> <b>Upload IT Report</b> </a></li>
+                            <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="#"> <b>Assets</b> </a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
+                            <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>
+                        </ul>
+                    </li>
+
+                    @*<li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Schedule Maintenance</b> </a></li>
+        <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b> </a></li>*@
+                    @*<li><a class="dropdown-item" href="/it/uploadreport"> <b>Upload IT Report</b> </a></li>
+        <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>*@
+                    @*<li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>*@
                 </ul>
             </li>
         }
