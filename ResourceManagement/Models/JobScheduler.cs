@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Quartz;
+﻿using Quartz;
 using Quartz.Impl;
+using System;
+using System.Configuration;
 namespace ResourceManagement.Models
 {
     public class JobScheduler
@@ -17,7 +15,7 @@ namespace ResourceManagement.Models
 
             ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("trigger1", "group1")
-            .WithCronSchedule("0 0 17 ? * MON,TUE *")
+            .WithCronSchedule(ConfigurationManager.AppSettings["SchedularCornExpression"])
             .StartAt(DateTime.UtcNow)
             .WithPriority(1)
             .Build();

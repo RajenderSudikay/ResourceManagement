@@ -308,6 +308,7 @@
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\MVCExtension.cs" />
     <Compile Include="Models\DataPoint.cs" />
+    <Compile Include="Models\Email\RemainderEmailBody.cs" />
     <Compile Include="Models\Email\SendEmail.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />

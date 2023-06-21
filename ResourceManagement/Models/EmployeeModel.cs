@@ -122,6 +122,8 @@ namespace ResourceManagement.Models
         public string selectedweekstartdate { get; set; }
         public string selectedweekenddate { get; set; }
         public bool SendSingleEmailToAllEmp { get; set; }
+        public string RemainderMonth { get; set; }
+        public string EmailType { get; set; }
     }
 
     public class RMA_LeaveModel

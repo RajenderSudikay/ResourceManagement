@@ -27,6 +27,7 @@ namespace ResourceManagement.Controllers
     using static ResourceManagement.Models.ProjectGraphDataPoint;
     using static ResourceManagement.Models.TimesheetReportModel;
     using DataPoint = Models.DataPoint;
+    using static ResourceManagement.Models.Email.RemainderEmailBody;
 
     public class HomeController : Controller
     {
@@ -1336,6 +1337,11 @@ namespace ResourceManagement.Controllers
                     {
                         continue;
                     }
+
+                    //if(emp.Employee_ID != "C4046")
+                    //{
+                    //    continue;
+                    //}
                     using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], emp.AMBC_Mail_Address))
                     {
                         if (remainderModel.RemainderType == "TimeSheet")
@@ -1346,21 +1352,22 @@ namespace ResourceManagement.Controllers
                             renainderEmailModel.selectedemployeeempname = emp.Employee_Name;
                             renainderEmailModel.selectedweekstartdate = remainderModel.StartDate;
                             renainderEmailModel.selectedweekenddate = remainderModel.EndDate;
-
-                            var emailBody = RenderPartialToString(this, "RemainderEmail", renainderEmailModel, ViewData, TempData);
+                            renainderEmailModel.EmailType = "TimeSheet";
+                            //var emailBody = RenderPartialToString(this, "RemainderEmail", renainderEmailModel, ViewData, TempData);
+                            var emailBody = GenerateEmailBody(renainderEmailModel);
                             mm.Body = emailBody;
                         }
 
                         if (remainderModel.RemainderType == "StatusReport")
                         {
                             mm.Subject = "REMINDER: Dashboard Report for the month - " + remainderModel.PreviousMonthShortFormat;
-                            var remainderStatusEmailModel = new StatusReport_RemainderEmailSelectedEmpModel();
+                            var remainderStatusEmailModel = new RMA_RemainderEmailSelectedEmpModel();
                             remainderStatusEmailModel.SendSingleEmailToAllEmp = false;
                             remainderStatusEmailModel.selectedemployeeempname = emp.Employee_Name;
                             remainderStatusEmailModel.RemainderMonth = remainderModel.PreviousMonthShortFormat;
-
-                            var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", remainderStatusEmailModel, ViewData, TempData);
-
+                            remainderStatusEmailModel.EmailType = "StatusReport";
+                            //var emailBody = RenderPartialToString(this, "StatusReportRemainderEmail", remainderStatusEmailModel, ViewData, TempData);
+                            var emailBody = GenerateEmailBody(remainderStatusEmailModel);
                             mm.Body = emailBody;
                         }
 

@@ -1,4 +1,5 @@
 ﻿using Quartz;
+using ResourceManagement.Controllers;
 using System.Configuration;
 using System.Net;
 
@@ -8,12 +9,12 @@ namespace ResourceManagement.Models
     {
         public void Execute(IJobExecutionContext context)
         {
-            if(ConfigurationManager.AppSettings["RunSchedularJob"] == "true")
+            if (ConfigurationManager.AppSettings["RunSchedularJob"] == "true")
             {
                 using (var client = new WebClient())
-                {
-                    var jobURL = ConfigurationManager.AppSettings["SiteURL"] + "/RunSchedularJob";
-                    var contents = client.DownloadString(jobURL);                 
+                {                   
+                    HomeController ext = new HomeController();
+                    ext.RunSchedularJob();
                 }
             }
         }
