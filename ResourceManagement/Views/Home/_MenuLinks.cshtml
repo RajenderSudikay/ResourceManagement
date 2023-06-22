@@ -2,6 +2,8 @@
 
 @{
     var isAdminUser = Model != null && Model.Access_Role == "administrator" ? true : false;
+
+    var isITUser = Model != null && Model.Access_Role == "ITAdmin" ? true : false;
 }
 
 <div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: #3a3d6e; height: 50px !important; margin-right: -610px ">
@@ -45,7 +47,7 @@
 
             </ul>
         </li>
-        @if (isAdminUser)
+        @if (isAdminUser || isITUser)
         {
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">

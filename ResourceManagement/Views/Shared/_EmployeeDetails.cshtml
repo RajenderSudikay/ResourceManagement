@@ -16,6 +16,11 @@
                     $('#selectReportEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
                 });
 
+                jQuery.each(obj, function (i, item) {
+                    var empidandEmail = item.Employee_ID + "|" + item.AMBC_Mail_Address;
+                    $('#selectEmployeenameandemail').append('<option value="' + empidandEmail + '">' + item.Employee_Name + '</option>');
+                });
+
                 var useRole = jQuery('.emprole').val();
                 var empId = jQuery('.agent-navdrop-empid').text();
                 jQuery('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");

@@ -4,6 +4,16 @@
     ViewBag.Title = "Asset Upload Report Page";
 }
 
+@{
+    var itEmpEmailIds = "";
+}
+
+<style>
+    textarea {
+        resize: none;
+    }
+</style>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="~/src/css/site.css" rel="stylesheet" />
 <link href="~/src/richtext.min.css" rel="stylesheet" />
@@ -19,9 +29,12 @@
                 <div class="col-md-9">
                     <div class="form-group selectemp-div">
                         <label for="selectemployeename">To:<b style="color:red">*</b></label>
-                        <select id="selectEmployeename" name="selectemployeename" class="form-control form-select form-select-lg" style="background-color:white">
+                        <select id="selectEmployeenameandemail" name="selectemployeename" class="form-control form-select form-select-lg" style="background-color:white">
                             <option value="" disabled selected>Select Employee</option>
                         </select>
+                        <div class="invalid-emp" style="display: none; color: red">
+                            Please Select Employee
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,9 +42,13 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="form-group">
-                        <label for="schedulecc">CC:<b style="color:red">*</b></label>
-                        @*<input type="text" class="form-control" id="schedulecc" required>*@
-                        <textarea class="form-control schedulecc" id="schedulecc" style="min-width: 100%" placeholder="CC..." rows="1" required></textarea>
+                        <label for="schedulecc">CC:<b style="color:red"></b></label>
+                        @foreach (var itAdmin in Model.ITAdminUsers)
+                        {
+                            itEmpEmailIds += itAdmin.AMBC_Mail_Address.Trim() + ",";
+                        }
+                        <textarea class="form-control schedulecc" id="schedulecc" style="min-width: 100%" placeholder="CC..." rows="1" required>@itEmpEmailIds.Trim(',')</textarea>
+                        <small style="color:hotpink !important; width: 200px !important">Please enter CC email id's with comma(,) seperator</small>
                     </div>
                 </div>
             </div>
@@ -40,9 +57,9 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="form-group">
-                        <label for="schedulebcc">BCC:<b style="color:red">*</b></label>
-                        @*<input type="text" class="form-control" id="schedulebcc" required>*@
-                    <textarea class="form-control schedulebcc" id="schedulebcc" style="min-width: 100%" placeholder="BCC..." rows="1" required></textarea>
+                        <label for="schedulebcc">BCC:<b style="color:red"></b></label>
+                        <textarea class="form-control schedulebcc" id="schedulebcc" style="min-width: 100%" placeholder="BCC..." rows="1" required></textarea>
+                        <small style="color:hotpink !important; width: 200px !important">Please enter BCC email id's with comma(,) seperator</small>
                     </div>
                 </div>
             </div>
@@ -52,8 +69,9 @@
                     <div class="form-group">
                         <label for="schedulesubject">Subject:<b style="color:red">*</b></label>
                         <textarea class="form-control schedulesubject" id="schedulesubject" style="min-width: 100%" placeholder="Subject..." rows="1">Request schedule for Monthly Maintenance activity</textarea>
-                        @*<textarea class="schedulesubject" name="example" id="schedulesubject"></textarea>*@
-                        @*<input type="text" class="form-control" value="Request schedule for Monthly Maintenance activity" id="schedulesubject" required>*@
+                        <div class="invalid-subject" style="display: none; color: red">
+                            Please enter subject
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,6 +79,10 @@
             <div class="row">
                 <div class="page-wrapper box-content" style="margin: 0px !important; background-color: white !important; padding: 0px !important; margin-left: 15px !important">
                     <textarea class="content" name="example"></textarea>
+                    <br />
+                    <div class="invalid-email-body" style="display: none; color: red">
+                        Please enter Email body
+                    </div>
                 </div>
             </div>
 
@@ -74,34 +96,6 @@
 
 <br />
 <br />
-<div class="card card-body upload-it-report-body" style="border-radius: 10px; display: none">
-    <div class="card upload-it-report-card">
-        <div class="card-body ">
-            @using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
-            {
-                <input type="hidden" name="GridHtml" />
-                <div id="report-container">
-                    <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
-                        <thead class="table-bordered" style="height: 35px !important">
-                            <tr style="background-color: #005983">
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
-                            </tr>
-                        </thead>
-
-                        <tbody class="timesheet-table-grid">
-                            <tr style="background-color: #ccffcc">
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            }
-        </div>
-    </div>
-</div>
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
 @Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
@@ -116,7 +110,7 @@
 
     function GenerateEmailBody() {
         var MaintenanceModel = {
-            EmpName: jQuery('#selectEmployeename :selected').text(),          
+            EmpName: jQuery('#selectEmployeenameandemail :selected').text(),
         };
 
         jQuery.ajax({
@@ -130,22 +124,52 @@
         });
     }
 
-    jQuery("#selectEmployeename").change(function (evt) {
+    jQuery("#selectEmployeenameandemail").change(function (evt) {
         GenerateEmailBody();
     });
 
 
     jQuery(".btn-schedule-maintenance").click(function () {
+        var hasValidationErrors = false;
+        if (jQuery('.richText-editor').text().trim() == "") {
+            jQuery('.invalid-email-body').show();
+            hasValidationErrors = true;
+        }
+        else {
+            jQuery('.invalid-email-body').hide();
+        }
+
+        if (jQuery('.schedulesubject').val() == "") {
+            jQuery('.invalid-subject').show();
+            hasValidationErrors = true;
+        }
+        else {
+            jQuery('.invalid-subject').hide();
+        }
+
+
+        if (jQuery('#selectEmployeenameandemail :selected').val() == "") {
+            jQuery('.invalid-emp').show();
+            hasValidationErrors = true;
+        }
+        else {
+            jQuery('.invalid-emp').hide();
+        }
+        if (hasValidationErrors == true) {
+            return false;
+        }
+
         var itScheduleModel = {
-            EmpName: jQuery('#selectEmployeename :selected').text(),
-            EmpID: jQuery('#selectEmployeename :selected').val(),
+            EmpName: jQuery('#selectEmployeenameandemail :selected').text(),
+            EmpID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
             UploadedByName: jQuery('.agent-full-name').text(),
             UploadedByID: jQuery('.agent-navdrop-empid').text(),
-            CC: jQuery('#schedulecc').text(),
-            BCC: jQuery('#schedulebcc').text(),
-            Subject: jQuery('#schedulesubject').text(),
+            UploadedByEmail: jQuery('.agent-navdrop-empemail').text(),
+            CC: jQuery('#schedulecc').val(),
+            BCC: jQuery('#schedulebcc').val(),
+            Subject: jQuery('#schedulesubject').val(),
             EmailBody: jQuery('.richText-editor').text().replace(/<div[^<]*?>/g, '').replace(/<\/div[^<]*?>/g, '<br>'),
-            TO: "rajendersudikay@ambconline.com"
+            TO: jQuery('#selectEmployeenameandemail :selected').val().split('|')[1]
         };
 
         jQuery.ajax({
@@ -159,6 +183,7 @@
                     jQuery('.success-message-popup-title').html("Hey there");
                     jQuery('.database-response').html("<h2>Schedulre Maintenance email sent successfully!.</h2>");
                     jQuery('.message-success-popup').modal('show');
+                    $("#selectEmployeenameandemail option:first").attr('selected', 'selected');
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");

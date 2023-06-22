@@ -30,6 +30,16 @@ namespace ResourceManagement.Controllers
 
             var ITModel = new ITModel();
             ITModel.RMA_EmployeeModel = employeeModel;
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var itAdminEmplist = db.AMBC_Active_Emp_view.Where(a => a.Access_Role.Equals("itadmin") && a.Project_Status == "Active").ToList();
+                if (itAdminEmplist != null && itAdminEmplist.Count() > 0)
+                {
+                    ITModel.ITAdminUsers = itAdminEmplist;
+                }
+            }
+
             return View(ITModel);
         }
 
@@ -44,6 +54,16 @@ namespace ResourceManagement.Controllers
             //var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
             maintenanceModel.EmailBody = maintenanceModel.EmailBody.Trim();
             var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
+
+            if (maintenanceModel.CC != null && !maintenanceModel.CC.Contains(maintenanceModel.UploadedByEmail))
+            {
+                maintenanceModel.CC += "," + maintenanceModel.UploadedByEmail;
+            }
+            else
+            {
+                maintenanceModel.CC = maintenanceModel.UploadedByEmail;
+            }
+
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
                 To = maintenanceModel.TO,
@@ -85,7 +105,7 @@ namespace ResourceManagement.Controllers
 
         public ActionResult AssetAssign()
         {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;         
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             return View(employeeModel);
         }
 

@@ -43,7 +43,7 @@ namespace ResourceManagement.Models.IT
     public class ITModel
     {
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
-
+        public List<AMBC_Active_Emp_view> ITAdminUsers { get; set; } = new List<AMBC_Active_Emp_view>();
         public List<SelectListItem> MonthsList { get; set; }
 
         public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
@@ -61,19 +61,23 @@ namespace ResourceManagement.Models.IT
 
         public string EmpID { get; set; }
 
+        public string EmpEmail { get; set; }
+
         public string UploadedByName { get; set; }
 
         public string UploadedByID { get; set; }
 
-        public string TO { get; set; }
+        public string UploadedByEmail { get; set; }
 
-        public string CC { get; set; }
+        public string TO { get; set; } = string.Empty;
 
-        public string BCC { get; set; }
+        public string CC { get; set; } = string.Empty;
 
-        public string Subject { get; set; }
+        public string BCC { get; set; } = string.Empty;
 
-        public string EmailBody { get; set; }
+        public string Subject { get; set; } = string.Empty;
+
+        public string EmailBody { get; set; } = string.Empty;
 
     }
 }
