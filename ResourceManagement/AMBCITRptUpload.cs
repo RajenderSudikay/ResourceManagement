@@ -12,25 +12,18 @@ namespace ResourceManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class AMBCITMonthlyMaintenance
+    public partial class AMBCITRptUpload
     {
-        public int UniqNo { get; set; }
-        public string AssetID { get; set; }
         public string EmployeeName { get; set; }
-        public string EmployeeID { get; set; }
-        public string Emailaddress { get; set; }
-        public string MaintenanceMonth { get; set; }
-        public string Office365UpdateStatus { get; set; }
-        public string OSUpdateStatus { get; set; }
-        public string Remarks { get; set; }
-        public string AssetPerformaceStatus { get; set; }
-        public string PeripheralPerformaceStatus { get; set; }
+        public string EmpAssetID { get; set; }
+        public string ReportMonth { get; set; }
+        public string ReportType { get; set; }
+        public string UploadReportPathDetail { get; set; }
+        public string UploadRemarks { get; set; }
         public string UploadedByID { get; set; }
         public string UploadedByName { get; set; }
         public string UploadedByEmail { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<bool> EmployeeAck { get; set; }
         public string EmpClient { get; set; }
-        public string PerformedActivityInfo { get; set; }
     }
 }
