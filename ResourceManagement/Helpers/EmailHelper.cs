@@ -9,7 +9,7 @@ namespace ResourceManagement.Helpers
 {
     public class EmailHelper
     {
-        public static string SendStatusReportRemainderEmail(Models.Email.SendEmail emailModel)
+        public static string SendEmailFromHRMS(Models.Email.SendEmail emailModel)
         {
             try
             {
@@ -19,15 +19,15 @@ namespace ResourceManagement.Helpers
                     mm.Body = HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(emailModel.EmailBody));
 
 
-                    if (!string.IsNullOrWhiteSpace(emailModel.CC))
-                    {
-                        mm.CC.Add(emailModel.CC);
-                    }
+                    //if (!string.IsNullOrWhiteSpace(emailModel.CC))
+                    //{
+                    //    mm.CC.Add(emailModel.CC);
+                    //}
 
-                    if (!string.IsNullOrWhiteSpace(emailModel.BCC))
-                    {
-                        mm.Bcc.Add(emailModel.BCC);
-                    }
+                    //if (!string.IsNullOrWhiteSpace(emailModel.BCC))
+                    //{
+                    //    mm.Bcc.Add(emailModel.BCC);
+                    //}
 
                     mm.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();

@@ -1,0 +1,180 @@
+﻿@model ResourceManagement.Models.IT.ITMaintenanceEmailAck
+
+@{
+    ViewBag.Title = "TimeSheet Email Report Page";
+}
+
+<style>
+    body {
+        background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
+</style>
+
+@if (Model != null)
+{
+    <div class="emailbodycontent">
+        <table>
+            <tr>
+                <td style="width: 60%">
+                    <div class="emailbody" style="font-family: Calibri;">
+                        <h2>Hi <b>@Model.AMBCITMonthlyMaintenance.EmployeeName</b>,</h2>
+                        <br />
+                        We have successfully completed monthly activity against your asset. Please find the details below.
+                        <br /> <br />
+                    </div>
+                </td>
+                <td style="width: 45%; float: right; margin-right: 13px;">
+                    <div>
+                        <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+        <table style="background-color: lightblue !important; width: 80% !important; font-size: medium !important">
+
+            <tr>
+                <td style="width: 30%">
+                    <b>Employee Name:</b> @Model.SelectedEmp[0].Employee_Name
+                </td>
+
+                <td style="width: 30%">
+                    <b>Employee ID:</b> @Model.SelectedEmp[0].Employee_ID
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 30%">
+                    <b>Role:</b> @Model.SelectedEmp[0].Access_Role
+                </td>
+                <td style="width: 30%">
+                    <b>Asset#:</b> @Model.AMBCITMonthlyMaintenance.AssetID
+                </td>
+            </tr>
+        </table>
+
+
+       <h6 style=" text-decoration: underline !important; font-size: medium !important; color: #2167ae !important; font-size: inherit !important"><b >Monthly maintenance report</b></h6> 
+
+
+        <div class="table-responsive table" style="max-width: 80% !important">
+            <table class="table table-hover table-striped table-bordered" id="timesheet-table" style="border: 1px solid black !important; width: 80% !important">
+                <thead class="table-bordered">
+                    <tr style="background-color: #005983">
+                        <th scope="col" style="width: 20% !important; color: white;">Activity</th>
+                        <th scope="col" style="width: 10% !important; color: white">Status</th>
+                        <th scope="col" style="width: auto !important; color: white">Remarks</th>
+                        @*<th scope="col" style="width: 200px; color: white ">Additional Comments</th>*@
+                    </tr>
+                </thead>
+
+                <tbody class="timesheet-table-grid">
+                    @{
+                        int i = 0;
+                        string backgroundColor = "";
+                    }
+                    @foreach (var activity in Model.ITActivities)
+                    {
+                        i = i + 1; // is the first item considered even or odd?  that answer changes where this should go
+                        backgroundColor = i % 2 == 0 ? "lavender" : "lightgray";
+
+                        <tr class="default-table-row" style="background-color:  @backgroundColor ">
+                            <td scope="row" style="width: 20% !important; vertical-align: middle; ">@activity.ActivityName</td>
+                            <td scope="row" style="width: 10% !important; vertical-align: middle; ">@activity.Status</td>
+                            <td scope="row" style="width: auto !important; vertical-align: middle;">@activity.Remarks</td>
+                            @*<td scope="row" style="width: 200px;vertical-align: middle;">@activity.Additionalcomments</td>*@
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+        <br />
+        <div style="font-family: Calibri; color: #2167ae; font-size: initial">
+            Thanks & Regards,
+            <br />
+            <b>HR Department</b>
+            <br />
+            Admin Office: Elcot IT Park – Madurai, India.  Ph:  0452 6610202
+            <br />
+            Development Office: Hi-Tech City - Hyderabad, India.  Ph: 040 66577488
+            <br />
+            Centre of Excellence: Madurai, India. Ph: 0452 4500127
+            <br />
+            <a href="www.ambconline.com">www.ambconline.com</a>
+            <br />
+            <br />
+            <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="300" height="85" sizes="188px" alt="AMBC Inc">
+            <br />
+            <br />
+            “Pursuant to Federal Law, if you do not wish to receive future email messages from us, please send an email to remove@ambconline.com. If you wish to receive future email messages from us, please reply to this message with “ADD” in the subject line. Any inconvenience caused is unintentional and is sincerely regretted. Thank you".
+        </div>
+        <br />
+        <br />
+        <div class="email-footer" style="text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; ">
+            Autogenarted email.Please do  not reply.
+        </div>
+    </div>
+}
+
+
+
+
+

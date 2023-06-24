@@ -838,6 +838,16 @@ namespace ResourceManagement.Controllers
             }
         }
 
+        public JsonResult GetEmployeeByEmpID(string empID)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var employeesDetails = db.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == empID).ToList();
+                var employeeJson = JsonConvert.SerializeObject(employeesDetails);
+                return Json(employeeJson);
+            }
+        }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Export(string GridHtml)

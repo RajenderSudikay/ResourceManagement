@@ -105,7 +105,7 @@ function getUrlVars() {
 jQuery(document).ready(function () {
     if (window.location.href.toString().toLowerCase().indexOf("?success") > -1) {
         var responseSuccess = getUrlVars()["success"];
-        var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);     
+        var selectedEmp = decodeURIComponent(getUrlVars()["selectedemp"]);
 
         if (responseSuccess == "true") {
             jQuery('.success-message-popup-title').html("Hey there");
@@ -133,5 +133,25 @@ jQuery('textarea').on('input', function () {
     this.style.height =
         (this.scrollHeight) + 'px';
 });
+
+function GetAssetsByEmpID(empID) {
+    var GetAssetEmpModel = {
+        EmpID: empID,
+    };
+
+    jQuery.ajax({
+        type: "POST",
+        url: "/it/getAssetsbyempid",
+        data: JSON.stringify({ GetAssetModelByEmp: GetAssetEmpModel }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            jQuery.each(data.EmpSpecificAssets, function (i, item) {
+                jQuery('#assetAssignID').empty();
+                $('#assetAssignID').append('<option value="' + item.AssetSerialNo + '">' + item.AssetSerialNo + '</option>');
+            });
+        }
+    });
+}
+
 
 

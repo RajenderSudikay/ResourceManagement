@@ -33,6 +33,7 @@ namespace ResourceManagement.Helpers
         {
             var monthList = new List<SelectListItem>();
             var monthsList = new List<DateTime>();
+            monthsList.Add(DateTime.Now);
             monthsList.Add(DateTime.Now.AddMonths(-1));
             monthsList.Add(DateTime.Now.AddMonths(-2));
             monthsList.Add(DateTime.Now.AddMonths(-3));

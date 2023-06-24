@@ -29,13 +29,14 @@ namespace ResourceManagement.Models.IT
         public string ExcelPath { get; set; }
         public HttpPostedFileBase ExcelFile { get; set; }
         public List<SelectListItem> EmployeeList { get; set; } = new List<SelectListItem>();
-        public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();      
+        public List<SelectListItem> MonthList { get; set; } = new List<SelectListItem>();
         public string SuccessMessage { get; set; }
-        public string FailureMessage { get; set; }     
+        public string FailureMessage { get; set; }
         public string Uploadedbyempid { get; set; }
         public string Uploadedempname { get; set; }
         public string Remarks { get; set; }
         public string UploadedFileName { get; set; }
+        public string Activities { get; set; }
 
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
     }
@@ -45,14 +46,14 @@ namespace ResourceManagement.Models.IT
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
         public List<AMBC_Active_Emp_view> ITAdminUsers { get; set; } = new List<AMBC_Active_Emp_view>();
         public List<SelectListItem> MonthsList { get; set; }
-
         public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
+        public List<AmbcNewITAssetMgmt> EmpSpecificAssets { get; set; } = new List<AmbcNewITAssetMgmt>();
     }
 
     public class ITDownloadReportModel
     {
         public string FileName { get; set; }
-        public string ReportMonth { get; set; }        
+        public string ReportMonth { get; set; }
     }
 
     public class ITScheduleMaintenanceModel
@@ -78,6 +79,34 @@ namespace ResourceManagement.Models.IT
         public string Subject { get; set; } = string.Empty;
 
         public string EmailBody { get; set; } = string.Empty;
+
+    }
+
+    public class ITMaintenanceActivityModel
+    {
+        public string ActivityName { get; set; }
+
+        public string Status { get; set; }
+
+        public string Remarks { get; set; }
+
+        public string Additionalcomments { get; set; }
+
+    }
+
+    public class ITMaintenanceEmailAck
+    {
+        public List<ITMaintenanceActivityModel> ITActivities { get; set; }
+        public AMBCITMonthlyMaintenance AMBCITMonthlyMaintenance { get; set; }
+        public string itadminIds { get; set; }
+        public List<AMBC_Active_Emp_view> SelectedEmp { get; set; }
+
+    }
+
+    public class ITMaintenanceAjaxModel
+    {
+        public string itadminIds { get; set; }
+        public AMBCITMonthlyMaintenance AMBCITMonthlyMaintenance { get; set; }
 
     }
 }

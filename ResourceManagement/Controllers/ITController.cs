@@ -7,6 +7,7 @@ using System.Linq;
 using System.Configuration;
 using Newtonsoft.Json;
 using System.Web.UI;
+using System.Collections.Generic;
 
 namespace ResourceManagement.Controllers
 {
@@ -73,7 +74,7 @@ namespace ResourceManagement.Controllers
                 EmailBody = emailBody
             };
 
-            var EmailResponse = SendStatusReportRemainderEmail(emailModel);
+            var EmailResponse = SendEmailFromHRMS(emailModel);
 
             return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
@@ -98,9 +99,59 @@ namespace ResourceManagement.Controllers
                 {
                     ITModel.AmbcNewITAssetMgmt = Assets;
                 }
+
+                var itAdminEmplist = db.AMBC_Active_Emp_view.Where(a => a.Access_Role.Equals("itadmin") && a.Project_Status == "Active").ToList();
+                if (itAdminEmplist != null && itAdminEmplist.Count() > 0)
+                {
+                    ITModel.ITAdminUsers = itAdminEmplist;
+                }
             }
 
             return View(ITModel);
+        }
+
+        public JsonResult MMReportgenerateAjax(AMBCITMonthlyMaintenance monthlyMaintenanceModel, string itadminIds)
+        {
+            var emailModel = new ITMaintenanceEmailAck();
+
+            monthlyMaintenanceModel.CreatedDate = System.DateTime.Now;
+            using (TimeSheetEntities context = new TimeSheetEntities())
+            {
+                context.AMBCITMonthlyMaintenances.Add(monthlyMaintenanceModel);
+                context.SaveChanges();
+                emailModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == monthlyMaintenanceModel.EmployeeID).ToList();
+            }
+          
+            emailModel.AMBCITMonthlyMaintenance = monthlyMaintenanceModel;
+            emailModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(monthlyMaintenanceModel.PerformedActivityInfo.ToString());
+            emailModel.itadminIds = itadminIds;
+
+            return ITMaintenaceAckEmailTrigger(emailModel);
+        }
+
+        public JsonResult ITMaintenaceAckEmailTrigger(ITMaintenanceEmailAck ITMaintenanceEmailAck)
+        {
+            var emailBody = RenderPartialToString(this, "MMAckEmail", ITMaintenanceEmailAck, ViewData, TempData);
+            if (ITMaintenanceEmailAck.itadminIds != null && !ITMaintenanceEmailAck.itadminIds.Contains(ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail))
+            {
+                ITMaintenanceEmailAck.itadminIds += "," + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
+            }
+            else
+            {
+                ITMaintenanceEmailAck.itadminIds += ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
+            }
+
+            Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
+            {
+                To = ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.Emailaddress,
+                Subject = "Monthly Maintenace Acknowledgement -  Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
+                CC = ITMaintenanceEmailAck.itadminIds,
+                EmailBody = emailBody
+            };
+
+            var EmailResponse = SendEmailFromHRMS(emailModel);
+
+            return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AssetAssign()
@@ -214,6 +265,10 @@ namespace ResourceManagement.Controllers
                 {
                     ITModel.AmbcNewITAssetMgmt = Assets;
                 }
+
+
+                //var Assets1 = db.AMBCITMonthlyMaintenances.Where(x => x.UniqNo == 40);
+                //var result = JsonConvert.DeserializeObject<dynamic>(Assets1.FirstOrDefault().PerformedActivityInfo);
             }
 
             return View(ITModel);
@@ -315,25 +370,18 @@ namespace ResourceManagement.Controllers
             return Json(finalResponseonError, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAssetsByEmpID()
+        public JsonResult GetAssetsByEmpID(GetAssetModelByEmp GetAssetModelByEmp)
         {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-
-            var ITModel = new ITModel();
-            ITModel.RMA_EmployeeModel = employeeModel;
-            ITModel.MonthsList = MonthList();
-
+            var model = new ITModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetAssignedToEmpID == GetAssetModelByEmp.EmpID).ToList();
                 if (Assets != null && Assets.Count() > 0)
                 {
-                    ITModel.AmbcNewITAssetMgmt = Assets;
+                    model.EmpSpecificAssets = Assets;
                 }
             }
-
-            return View(ITModel);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

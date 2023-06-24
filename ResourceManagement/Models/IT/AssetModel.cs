@@ -4,13 +4,13 @@ namespace ResourceManagement.Models.IT
 {
     public class AssetModelData
     {
-      //
+        //
         public string AllocationStatus { get; set; }
-     //
+        //
         public string Description { get; set; }
-    
+
         public string AssetType { get; set; }
-     
+
         public string AssetManufacturer { get; set; }
 
         //
@@ -89,5 +89,11 @@ namespace ResourceManagement.Models.IT
 
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
 
+    }
+
+    public class GetAssetModelByEmp
+    {
+        //
+        public string EmpID { get; set; }
     }
 }

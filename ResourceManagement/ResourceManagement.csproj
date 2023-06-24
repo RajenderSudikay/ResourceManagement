@@ -539,6 +539,7 @@
     <Content Include="Views\IT\ScheduleMaintenance.cshtml" />
     <Content Include="Views\IT\ScheduleMaintenanceEmail.cshtml" />
     <Content Include="Views\IT\MMReportgenerate.cshtml" />
+    <Content Include="Views\IT\MMAckEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
