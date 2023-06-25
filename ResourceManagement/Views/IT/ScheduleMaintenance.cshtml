@@ -12,6 +12,17 @@
     textarea {
         resize: none;
     }
+
+    textarea {
+        font-family: Calibri;
+        color: #2167ae;
+    }
+
+    .richText {
+        margin-top: 0px !important;
+        margin-bottom: -21px !important;
+        border: 1px solid blue !important;
+    }
 </style>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,7 +35,7 @@
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card ">
-        <div class="card-body ">
+        <div class="card-body " style="background-color: #F0F8FF !important ">
             <div class="row">
                 <div class="col-md-9">
                     <div class="form-group selectemp-div">
@@ -47,8 +58,8 @@
                         {
                             itEmpEmailIds += itAdmin.AMBC_Mail_Address.Trim() + ",";
                         }
-                        <textarea class="form-control schedulecc" id="schedulecc" style="min-width: 100%" placeholder="CC..." rows="1" required>@itEmpEmailIds.Trim(',')</textarea>
-                        <small style="color:hotpink !important; width: 200px !important">Please enter CC email id's with comma(,) seperator</small>
+                        <textarea class="form-control schedulecc" id="schedulecc" style="min-width: 100%; color: #2167ae " placeholder="CC..." rows="1" required>@itEmpEmailIds.Trim(',')</textarea>
+                        <small style="color:green !important; width: 200px !important">Please enter CC email id's with <b>comma(,)</b> seperator</small>
                     </div>
                 </div>
             </div>
@@ -58,8 +69,8 @@
                 <div class="col-md-9">
                     <div class="form-group">
                         <label for="schedulebcc">BCC:<b style="color:red"></b></label>
-                        <textarea class="form-control schedulebcc" id="schedulebcc" style="min-width: 100%" placeholder="BCC..." rows="1" required></textarea>
-                        <small style="color:hotpink !important; width: 200px !important">Please enter BCC email id's with comma(,) seperator</small>
+                        <textarea class="form-control schedulebcc" id="schedulebcc" style="min-width: 100%; color: #2167ae" placeholder="BCC..." rows="1" required></textarea>
+                        <small style="color:green !important; width: 200px !important">Please enter BCC email id's with <b>comma(,)</b> seperator</small>
                     </div>
                 </div>
             </div>
@@ -68,7 +79,7 @@
                 <div class="col-md-9">
                     <div class="form-group">
                         <label for="schedulesubject">Subject:<b style="color:red">*</b></label>
-                        <textarea class="form-control schedulesubject" id="schedulesubject" style="min-width: 100%" placeholder="Subject..." rows="1">Request schedule for Monthly Maintenance activity</textarea>
+                        <textarea class="form-control schedulesubject" id="schedulesubject" style="min-width: 100%; color: #2167ae" placeholder="Subject..." rows="1">Request schedule for Monthly Maintenance activity</textarea>
                         <div class="invalid-subject" style="display: none; color: red">
                             Please enter subject
                         </div>
@@ -76,6 +87,7 @@
                 </div>
             </div>
             <div class="clearfix"></div>
+            <br />
             <div class="row">
                 <div class="page-wrapper box-content" style="margin: 0px !important; background-color: white !important; padding: 0px !important; margin-left: 15px !important">
                     <textarea class="content" name="example"></textarea>
@@ -161,7 +173,7 @@
 
         var itScheduleModel = {
             EmpName: jQuery('#selectEmployeenameandemail :selected').text(),
-            EmpID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0].Trim(),
+            EmpID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0].trim(),
             UploadedByName: jQuery('.agent-full-name').text(),
             UploadedByID: jQuery('.agent-navdrop-empid').text(),
             UploadedByEmail: jQuery('.agent-navdrop-empemail').text(),
@@ -169,7 +181,7 @@
             BCC: jQuery('#schedulebcc').val(),
             Subject: jQuery('#schedulesubject').val(),
             EmailBody: jQuery('.richText-editor').text().replace(/<div[^<]*?>/g, '').replace(/<\/div[^<]*?>/g, '<br>'),
-            TO: jQuery('#selectEmployeenameandemail :selected').val().split('|')[1].Trim()
+            TO: jQuery('#selectEmployeenameandemail :selected').val().split('|')[1].trim()
         };
 
         jQuery.ajax({
