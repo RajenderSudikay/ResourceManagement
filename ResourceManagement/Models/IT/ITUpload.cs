@@ -34,6 +34,7 @@ namespace ResourceManagement.Models.IT
         public string FailureMessage { get; set; }
         public string Uploadedbyempid { get; set; }
         public string Uploadedempname { get; set; }
+        public string UploadedByEmpEmail { get; set; }
         public string Remarks { get; set; }
         public string UploadedFileName { get; set; }
         public string Activities { get; set; }

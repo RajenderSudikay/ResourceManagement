@@ -143,6 +143,7 @@
         $('.itreport-table-grid').empty();
         var itReportModel = {
             EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
             UploadedMonth: jQuery('#assetUploadMonth :selected').val(),
             AssetID: jQuery('#assetAssignID :selected').val(),
             Action: model != undefined ? model.Action : "",

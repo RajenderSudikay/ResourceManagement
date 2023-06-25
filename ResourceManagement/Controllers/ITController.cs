@@ -224,21 +224,26 @@ namespace ResourceManagement.Controllers
 
                     using (var context = new TimeSheetEntities())
                     {
-                        var contextModel = new AMBCITMonthlyMaintenance()
+                        var contextModel = new AMBCITRptUpload()
                         {
-                            AssetID = fileData.AssetID,
-                            EmployeeID = fileData.EmployeeID,
-                            MaintenanceMonth = fileData.UploadedMonth,
-                            //TODOD REMARKS
-                            Remarks = systemGeneratedFileName,
-                            EmployeeName = fileData.EmployeeName
+                            EmpAssetID = fileData.AssetID,
+                            EmployeeName = fileData.EmployeeName,
+                            ReportMonth = fileData.UploadedMonth,
+                            UploadedByID = fileData.Uploadedbyempid,
+                            UploadedByName = fileData.Uploadedempname,
+                            UploadedByEmail = fileData.UploadedByEmpEmail,
+                            UploadReportPathDetail = systemGeneratedFileName,
+                            ReportType = fileData.ReportType,
+                            UploadRemarks = fileData.Remarks,
+                            CreatedDate = System.DateTime.Now
                         };
 
-                        context.AMBCITMonthlyMaintenances.Add(contextModel);
+                        context.AMBCITRptUploads.Add(contextModel);
                         context.SaveChanges();
                     }
 
                     var fileLocation = ConfigurationManager.AppSettings["UploadFilePath"] + year + "\\" + month;
+
 
                     if (!Directory.Exists(fileLocation))
                     {
@@ -315,6 +320,16 @@ namespace ResourceManagement.Controllers
                             db.SaveChanges();
                         }
                     }
+                    else
+                    {
+                        var deleteRecord = db.AMBCITRptUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).FirstOrDefault();
+
+                        if (deleteRecord != null)
+                        {
+                            db.AMBCITRptUploads.Remove(deleteRecord);
+                            db.SaveChanges();
+                        }
+                    }
 
                 }
 
@@ -338,6 +353,24 @@ namespace ResourceManagement.Controllers
                     }
                 }
 
+                var ITOtherReports = db.AMBCITRptUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).ToList();
+
+                if (ITOtherReports != null && ITOtherReports.Count > 0)
+                {
+                    foreach (var ITOtherReport in ITOtherReports)
+                    {
+                        reportViewModel.Add(new ITDownloadReportViewModel()
+                        {
+                            AssetID = ITOtherReport.EmpAssetID,                          
+                            EmpName = ITOtherReport.EmployeeName,
+                            FileName = ITOtherReport.UploadReportPathDetail,
+                            ReportType = ITOtherReport.ReportType,
+                            ReportMonth = ITOtherReport.ReportMonth,
+                            Ack = "NA",
+                            UniqueNumber = "0"
+                        });
+                    }
+                }
                 var jsonReponse = JsonConvert.SerializeObject(reportViewModel);
                 return Json(jsonReponse, JsonRequestBehavior.AllowGet);
             }
