@@ -66,11 +66,21 @@
                     <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
                         <thead class="table-bordered" style="height: 35px !important">
                             <tr style="background-color: #005983">
+                                @if (Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
+                                {
+                                    <th class="" scope="col" width="30" style="color: white; text-align: center">Action</th>
+                                }
+                                else
+                                {
+                                    <th class="" scope="col" width="30" style="color: white; text-align: center; display:none">Action</th>
+                                }
+
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Type</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Ack</th>
                             </tr>
                         </thead>
 
@@ -136,19 +146,40 @@
                 var i = 0;
                 jQuery.each(obj, function (i, item) {
                     var backgroundColor = "";
-                    $('.timesheet-table-grid').append(                    
 
-                    '<tr style="height: 30px;" class="it-report-tr">'
-                        /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
-                        + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
-                        + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
-                        + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
-                        + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
-                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
-                        + '</tr>'
-                    )
-            });
-    }
+                    if (jQuery('.emprole').val() == "administrator") {
+                        $('.timesheet-table-grid').append(
+
+                            '<tr style="height: 30px;" class="it-report-tr">'
+                            + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
+                            /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
+                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
+                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
+                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
+                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
+                            + '</tr>'
+                        )
+                    }
+                    else {
+                        $('.timesheet-table-grid').append(
+
+                            '<tr style="height: 30px;" class="it-report-tr">'
+                            + '<td scope="row" style="padding-left: 25px; display:none"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
+                            /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
+                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
+                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
+                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
+                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
+                            + '</tr>'
+                        )
+                    }
+
+                });
+            }
         });
     });
 

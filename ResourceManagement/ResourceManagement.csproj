@@ -547,6 +547,7 @@
     <Content Include="Views\IT\MMReportgenerate.cshtml" />
     <Content Include="Views\IT\MMAckEmail.cshtml" />
     <Content Include="Views\IT\MMreport.cshtml" />
+    <Content Include="Views\IT\MMreportAckFromEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

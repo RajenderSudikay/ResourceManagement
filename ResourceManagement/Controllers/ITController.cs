@@ -147,7 +147,7 @@ namespace ResourceManagement.Controllers
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
                 To = ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.Emailaddress,
-                Subject = "MM Report -" + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ") + " - Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
+                Subject = "MM Report - " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ") + " - Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
                 CC = ITMaintenanceEmailAck.itadminIds,
                 EmailBody = emailBody
             };
@@ -181,6 +181,30 @@ namespace ResourceManagement.Controllers
             }
 
             return View(ITModel);
+        }
+
+
+        public ActionResult MMreportAckFromEmail(int uniqueID)
+        {
+
+            var reportAckModel = new ITMaintenanceEmailAck();
+            using (var context = new TimeSheetEntities())
+            {
+                var requireMMReport = context.AMBCITMonthlyMaintenances.Where(report => report.UniqNo == uniqueID).FirstOrDefault();
+
+                if (requireMMReport != null)
+                {
+                    reportAckModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(requireMMReport.PerformedActivityInfo.ToString());
+                    reportAckModel.AMBCITMonthlyMaintenance = requireMMReport;
+                }
+
+                reportAckModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == requireMMReport.EmployeeID).ToList();
+
+                requireMMReport.EmployeeAck = true;
+                context.SaveChanges();
+            }
+
+            return View(reportAckModel);
         }
 
         public JsonResult ITReportsUploadAjax(ITUpload fileData)
@@ -293,8 +317,9 @@ namespace ResourceManagement.Controllers
                             FileName = "MMR-" + mmReport.EmployeeName + "-" + mmReport.MaintenanceMonth,
                             ReportType = "MM Report",
                             ReportMonth = mmReport.MaintenanceMonth,
-                            UniqueNumber = mmReport.UniqNo.ToString()
-                        }); ;
+                            UniqueNumber = mmReport.UniqNo.ToString(),
+                            Ack = mmReport.EmployeeAck == true ? "Yes" : "No"
+                        });
                     }
                 }
 

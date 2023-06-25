@@ -1,7 +1,7 @@
 ﻿@model ResourceManagement.Models.IT.ITMaintenanceEmailAck
 
 @{
-    ViewBag.Title = "TimeSheet Email Report Page";
+    ViewBag.Title = "TimeSheet Email ACK Report Page";
 }
 
 <style>
@@ -69,15 +69,15 @@
     <div class="emailbodycontent">
         <table>
             <tr>
-                <td style="width: 60%">
+                <td>
                     <div class="emailbody" style="font-family: Calibri;">
                         <h2>Hi <b>@Model.AMBCITMonthlyMaintenance.EmployeeName</b>,</h2>
                         <br />
-                        Your monthly maintenance has been completed for the month @Model.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ")
+                        Thank you so much for the acknowledgement, much appreciated.
                         <br /> <br />
                     </div>
                 </td>
-                <td style="width: 45%; float: right; margin-right: 13px;">
+                <td>
                     <div>
                         <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="188" height="80" sizes="188px" alt="AMBC Inc">
                     </div>
@@ -85,6 +85,7 @@
             </tr>
 
         </table>
+        <div class="clearfix"></div>
 
         <table style="background-color: lightblue !important; width: 80% !important; font-size: medium !important">
 
@@ -98,7 +99,7 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr style="background-color: lightblue !important; width: 80% !important; font-size: medium !important">
                 <td style="width: 30%">
                     <b>Role:</b> @Model.SelectedEmp[0].Access_Role
                 </td>
@@ -108,36 +109,11 @@
             </tr>
         </table>
         <br />
-        Click <a href="@System.Configuration.ConfigurationManager.AppSettings["SiteURL"]/it/mmreportackfromemail?uniqueID=@Model.AMBCITMonthlyMaintenance.UniqNo"><b style="background-color: yellow">here</b></a> to acknowledge.
+        <br />
 
         <br />
         <br />
-        <br />
-        <br />
-        <div style="font-family: Calibri; color: #2167ae; font-size: initial">
-            Thanks & Regards,
-            <br />
-            <b>HR Department</b>
-            <br />
-            Admin Office: Elcot IT Park – Madurai, India.  Ph:  0452 6610202
-            <br />
-            Development Office: Hi-Tech City - Hyderabad, India.  Ph: 040 66577488
-            <br />
-            Centre of Excellence: Madurai, India. Ph: 0452 4500127
-            <br />
-            <a href="www.ambconline.com">www.ambconline.com</a>
-            <br />
-            <br />
-            <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="300" height="85" sizes="188px" alt="AMBC Inc">
-            <br />
-            <br />
-            “Pursuant to Federal Law, if you do not wish to receive future email messages from us, please send an email to remove@ambconline.com. If you wish to receive future email messages from us, please reply to this message with “ADD” in the subject line. Any inconvenience caused is unintentional and is sincerely regretted. Thank you".
-        </div>
-        <br />
-        <br />
-        <div class="email-footer" style="text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; ">
-            Autogenarted email.Please do  not reply.
-        </div>
+
     </div>
 }
 
