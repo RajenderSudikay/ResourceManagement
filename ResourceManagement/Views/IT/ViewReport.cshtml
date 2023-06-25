@@ -84,7 +84,7 @@
                             </tr>
                         </thead>
 
-                        <tbody class="timesheet-table-grid">
+                        <tbody class="itreport-table-grid">
                             <tr style="background-color: #ccffcc">
                             </tr>
 
@@ -126,14 +126,28 @@
         $('form#itdownloadform').submit();
     }
 
+    function DeleteITReport(ele) {
+        var parentElement = $(ele).parents('.it-report-tr');
+        var ITReportDeleModel = {
+            Action: "Delete",
+            UniqueNumber: $(ele).attr("data-uniqueid"),
+            ReportType: parentElement.find('td.report-type').html(),
+            AssetID: parentElement.find('td.report-assetid').html(),
+        }
+        ViewReport(ITReportDeleModel);
+    }
 
-    jQuery(".btn-view-it-report").click(function () {
+
+    function ViewReport(model) {
         jQuery('.upload-it-report-body').show();
-        $('.timesheet-table-grid').empty();
+        $('.itreport-table-grid').empty();
         var itReportModel = {
             EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
             UploadedMonth: jQuery('#assetUploadMonth :selected').val(),
             AssetID: jQuery('#assetAssignID :selected').val(),
+            Action: model != undefined ? model.Action : "",
+            UniqueNo: model != undefined ? model.UniqueNumber : "",
+            ReportType: model != undefined ? model.ReportType : ""
         };
 
         jQuery.ajax({
@@ -148,11 +162,11 @@
                     var backgroundColor = "";
 
                     if (jQuery('.emprole').val() == "administrator") {
-                        $('.timesheet-table-grid').append(
+                        $('.itreport-table-grid').append(
 
                             '<tr style="height: 30px;" class="it-report-tr">'
-                            + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
-                            /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
+                            + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqueNumber + '" onclick=DeleteITReport(this)></a></td>'
+                            /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadIT   Report(this) > ' + item.Remarks + '</a > "</td>'*/
                             + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
                             + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
                             + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
@@ -163,7 +177,7 @@
                         )
                     }
                     else {
-                        $('.timesheet-table-grid').append(
+                        $('.itreport-table-grid').append(
 
                             '<tr style="height: 30px;" class="it-report-tr">'
                             + '<td scope="row" style="padding-left: 25px; display:none"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
@@ -181,6 +195,11 @@
                 });
             }
         });
+    }
+
+
+    jQuery(".btn-view-it-report").click(function () {
+        ViewReport();
     });
 
 </script>

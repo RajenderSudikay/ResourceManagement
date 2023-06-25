@@ -37,7 +37,8 @@ namespace ResourceManagement.Models.IT
         public string Remarks { get; set; }
         public string UploadedFileName { get; set; }
         public string Activities { get; set; }
-
+        public string Action { get; set; }
+        public int UniqueNo { get; set; }
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
     }
 

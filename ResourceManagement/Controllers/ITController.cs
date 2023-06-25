@@ -303,6 +303,21 @@ namespace ResourceManagement.Controllers
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
+                if (itReportModel.Action == "Delete")
+                {
+                    if (itReportModel.ReportType == "MM Report")
+                    {
+                        var deleteRecord = db.AMBCITMonthlyMaintenances.Where(x => x.EmployeeID == itReportModel.EmployeeID && x.MaintenanceMonth == itReportModel.UploadedMonth && x.AssetID == itReportModel.AssetID && x.UniqNo == itReportModel.UniqueNo).FirstOrDefault();
+
+                        if (deleteRecord != null)
+                        {
+                            db.AMBCITMonthlyMaintenances.Remove(deleteRecord);
+                            db.SaveChanges();
+                        }
+                    }
+
+                }
+
                 var MMReports = db.AMBCITMonthlyMaintenances.Where(x => x.EmployeeID == itReportModel.EmployeeID && x.MaintenanceMonth == itReportModel.UploadedMonth && x.AssetID == itReportModel.AssetID).ToList();
 
                 if (MMReports != null && MMReports.Count > 0)
@@ -326,8 +341,6 @@ namespace ResourceManagement.Controllers
                 var jsonReponse = JsonConvert.SerializeObject(reportViewModel);
                 return Json(jsonReponse, JsonRequestBehavior.AllowGet);
             }
-
-
         }
 
 
