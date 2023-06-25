@@ -12,8 +12,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group selectemp-div">
-                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                        <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
                             <option disabled selected> -- Select Employee Name -- </option>
                         </select>
                     </div>
@@ -66,10 +66,10 @@
                     <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
                         <thead class="table-bordered" style="height: 35px !important">
                             <tr style="background-color: #005983">
-                                @*<th class="" scope="col" width="30">Action</th>*@
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Type</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
                             </tr>
                         </thead>
@@ -92,11 +92,24 @@
 <br />
 <script>
 
+    jQuery("#selectEmployeenameandemail").change(function (evt) {
+        GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);
+    });
+
+
     function DownloadITReport(ele) {
+        var parentElement = $(ele).parents('.it-report-tr');
+
         var ITDownloadReportModel = {
             FileName: $(ele).html(),
-            ReportMonth: jQuery('#assetUploadMonth :selected').val(),
+            ReportMonth: parentElement.find('td.report-month').html(),
+            UniqueNumber: $(ele).attr("data-uniqueid"),
+            EmpName: parentElement.find('td.report-empname').html(),
+            EmpID: parentElement.find('td.report-empname').attr("data-empid"),
+            ReportType: parentElement.find('td.report-type').html(),
+            AssetID: parentElement.find('td.report-assetid').html(),
         }
+
         var GridHtml = JSON.stringify(ITDownloadReportModel).toString();
         $("input[name='GridHtml']").val(GridHtml);
 
@@ -108,8 +121,8 @@
         jQuery('.upload-it-report-body').show();
         $('.timesheet-table-grid').empty();
         var itReportModel = {
-            EmployeeID: jQuery('#selectEmployeename :selected').val(),
-            reportMonth: jQuery('#assetUploadMonth :selected').val(),
+            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            UploadedMonth: jQuery('#assetUploadMonth :selected').val(),
             AssetID: jQuery('#assetAssignID :selected').val(),
         };
 
@@ -118,16 +131,17 @@
             type: "POST",
             data: JSON.stringify({ itReportModel: itReportModel }),
             contentType: 'application/json; charset=utf-8',
-            success: function (data) {               
+            success: function (data) {
                 var obj = jQuery.parseJSON(data);
                 jQuery.each(obj, function (i, item) {
                     $('.timesheet-table-grid').append(
-                        '<tr style="height: 30px;">>'
-/*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
-                        + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.MaintenanceMonth + '</td>'
-                        + '<td class="report-empname" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmployeeName + '</td>'
+                        '<tr style="height: 30px;" class="it-report-tr">'
+                        /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
+                        + '<td class="report-empname" data-empid="' + item.EmpID+'" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
                         + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
-                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" onclick=DownloadITReport(this)>' + item.Remarks + '</a></td>'
+                        + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
+                        + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
+                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber+'" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
                         + '</tr>'
                     )
                 });

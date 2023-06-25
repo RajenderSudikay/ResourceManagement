@@ -121,7 +121,7 @@ namespace ResourceManagement.Controllers
                 context.SaveChanges();
                 emailModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == monthlyMaintenanceModel.EmployeeID).ToList();
             }
-          
+
             emailModel.AMBCITMonthlyMaintenance = monthlyMaintenanceModel;
             emailModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(monthlyMaintenanceModel.PerformedActivityInfo.ToString());
             emailModel.itadminIds = itadminIds;
@@ -276,12 +276,30 @@ namespace ResourceManagement.Controllers
 
         public JsonResult ViewITAjaxReports(ITUpload itReportModel)
         {
-            var reports = new System.Collections.Generic.List<AMBCITMonthlyMaintenance>();
+            var reportViewModel = new System.Collections.Generic.List<ITDownloadReportViewModel>();
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                reports = db.AMBCITMonthlyMaintenances.Where(x => x.EmployeeID == itReportModel.EmployeeID && x.Remarks != null && x.Remarks != "").ToList();
-                var jsonReponse = JsonConvert.SerializeObject(reports);
+                var MMReports = db.AMBCITMonthlyMaintenances.Where(x => x.EmployeeID == itReportModel.EmployeeID && x.MaintenanceMonth == itReportModel.UploadedMonth && x.AssetID == itReportModel.AssetID).ToList();
+
+                if (MMReports != null && MMReports.Count > 0)
+                {
+                    foreach (var mmReport in MMReports)
+                    {
+                        reportViewModel.Add(new ITDownloadReportViewModel()
+                        {
+                            AssetID = mmReport.AssetID,
+                            EmpID = mmReport.EmployeeID,
+                            EmpName = mmReport.EmployeeName,
+                            FileName = "MMR-" + mmReport.EmployeeName + "-" + mmReport.MaintenanceMonth,
+                            ReportType = "Monthly",
+                            ReportMonth = mmReport.MaintenanceMonth,
+                            UniqueNumber = mmReport.UniqNo.ToString()
+                        }); ;
+                    }
+                }
+
+                var jsonReponse = JsonConvert.SerializeObject(reportViewModel);
                 return Json(jsonReponse, JsonRequestBehavior.AllowGet);
             }
 
@@ -298,19 +316,44 @@ namespace ResourceManagement.Controllers
             var reportYear = itReportModel.ReportMonth.Split('-')[1];
             var reportmonth = itReportModel.ReportMonth.Split('-')[0];
 
-            var filePath = ConfigurationManager.AppSettings["UploadFilePath"] + reportYear + "\\" + reportmonth + "\\" + itReportModel.FileName;
-            var fileName = itReportModel.FileName;
-            var mimeType = GetMimeType(fileName);
-
-            if (System.IO.File.Exists(filePath))
+            if (itReportModel.ReportType == "Monthly")
             {
-                return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+                var reportModel = new ITMaintenanceEmailAck();
+                using (var context = new TimeSheetEntities())
+                {
+                    var requireMMReport = context.AMBCITMonthlyMaintenances.Where(report => report.EmployeeID == itReportModel.EmpID && report.UniqNo == itReportModel.UniqueNumber && report.AssetID == itReportModel.AssetID).FirstOrDefault();
+
+                    if(requireMMReport != null)
+                    {
+                        reportModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(requireMMReport.PerformedActivityInfo.ToString());
+                    }
+
+                    reportModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == itReportModel.EmpID).ToList();
+                    var reportContent = RenderPartialToString(this, "MMAckEmail", reportModel, ViewData, TempData);
+
+                    //Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+
+                }
             }
             else
             {
-                Response.Write("<script>alert('File not exists!')</script>");
-                return null;
+                var filePath = ConfigurationManager.AppSettings["UploadFilePath"] + reportYear + "\\" + reportmonth + "\\" + itReportModel.FileName;
+                var fileName = itReportModel.FileName;
+                var mimeType = GetMimeType(fileName);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    return File(new FileStream(filePath, FileMode.Open), mimeType, fileName);
+                }
+                else
+                {
+                    Response.Write("<script>alert('File not exists!')</script>");
+                    return null;
+                }
             }
+
+            return null;
+
         }
 
         public JsonResult AssetsAddUpdateAjax(AssetModelData assetInfo)

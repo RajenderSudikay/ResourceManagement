@@ -54,6 +54,22 @@ namespace ResourceManagement.Models.IT
     {
         public string FileName { get; set; }
         public string ReportMonth { get; set; }
+        public int UniqueNumber { get; set; }
+        public string EmpName { get; set; }
+        public string EmpID { get; set; }
+        public string ReportType { get; set; }
+        public string AssetID { get; set; }
+    }
+
+    public class ITDownloadReportViewModel
+    {
+        public string FileName { get; set; }
+        public string ReportMonth { get; set; }
+        public string EmpName { get; set; }
+        public string EmpID { get; set; }
+        public string ReportType { get; set; }
+        public string AssetID { get; set; }
+        public string UniqueNumber { get; set; }
     }
 
     public class ITScheduleMaintenanceModel
