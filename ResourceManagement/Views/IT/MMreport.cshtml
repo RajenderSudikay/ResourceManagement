@@ -1,0 +1,115 @@
+﻿@model ResourceManagement.Models.IT.ITMaintenanceEmailAck
+
+@{
+    ViewBag.Title = "TimeSheet Email Report Page";
+}
+
+
+@*https://stackoverflow.com/questions/74902163/setting-table-height-fixed-in-multipage-pdf*@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    @*<title>Creating Fixed Header and Footer with CSS</title>*@
+    <style></style>
+</head>
+<body>
+    @if (Model != null)
+    {
+        <header>
+            <table width="100%" style="font-family: Lato, sans-serif; color: #2167ae;">
+                <thead>
+                    <tr>
+                        <td colspan="2">
+                            <div style="margin-left: 100px !important">
+                                <h2><b>MM Report - @Model.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ")</b></h2>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="130" height="60" sizes="130px" alt="AMBC Inc">
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+
+        </header>
+        <div class="clearfix"></div>
+        <br />
+        <div style="font-family: Lato, sans-serif; color: #2167ae;">
+            <table bgcolor="lightblue">
+                <tr>
+                    <td colspan="2">
+                        <b>Employee Name:</b> @Model.SelectedEmp[0].Employee_Name
+                    </td>
+                    <td>
+                        <b>Employee ID:</b> @Model.SelectedEmp[0].Employee_ID
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <b>Role:</b> @Model.SelectedEmp[0].Access_Role
+                    </td>
+
+                    <td>
+                        <b>Asset#:</b> @Model.AMBCITMonthlyMaintenance.AssetID
+                    </td>
+                </tr>
+                <tr style="height:20px"></tr>
+            </table>
+            <br />
+            <div class="clearfix"></div>
+            <table>
+                <thead class="">
+                    <tr>
+                        <th bgcolor="#005983" color="white" valign="middle"><b>Activity</b></th>
+                        <th bgcolor="#005983" color="white" valign="middle"><b>Status</b></th>
+                        <th bgcolor="#005983" color="white" valign="middle"><b>Remarks</b></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int i = 0;
+                        string backgroundColor = "";
+                    }
+                    @foreach (var activity in Model.ITActivities)
+                    {
+                        i = i + 1;
+                        backgroundColor = i % 2 == 0 ? "#DAE2F4 " : "#EDF1F9";
+
+                        <tr bgcolor="@backgroundColor">
+                            <td style="font-size: 10px; width: 15%">@activity.ActivityName</td>
+                            <td style="font-size: 10px; width: 7%">@activity.Status</td>
+                            <td style="font-size: 10px; width: auto">@activity.Remarks</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+
+            <b style="font-size: 8px; color: black">Reported Date: @ResourceManagement.Helpers.DateHelper.ConvertDateToServerSystemFormat(Model.AMBCITMonthlyMaintenance.CreatedDate)</b>
+            <br />
+            <br />
+            <div style="font-family: Calibri; color: #2167ae; font-size: 10px;">
+                <br />
+                <b>IT Department</b>
+                <br />
+                <a href="www.ambconline.com">www.ambconline.com</a>
+                <br />
+                <br />
+                <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="220" height="70" sizes="188px" alt="AMBC Inc">
+                <br />
+                <br />
+
+            </div>
+            <br />
+            <br />
+        </div>
+    }
+
+</body>
+</html>

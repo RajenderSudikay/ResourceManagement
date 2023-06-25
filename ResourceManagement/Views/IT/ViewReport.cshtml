@@ -133,19 +133,22 @@
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
+                var i = 0;
                 jQuery.each(obj, function (i, item) {
-                    $('.timesheet-table-grid').append(
-                        '<tr style="height: 30px;" class="it-report-tr">'
+                    var backgroundColor = "";
+                    $('.timesheet-table-grid').append(                    
+
+                    '<tr style="height: 30px;" class="it-report-tr">'
                         /*                        + '<td class= "glyphicon glyphicon-download" style = "width: 80px;vertical-align: middle;" > <a href="#" onclick=DownloadITReport(this) > ' + item.Remarks + '</a > "</td>'*/
-                        + '<td class="report-empname" data-empid="' + item.EmpID+'" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
+                        + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
                         + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
                         + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
                         + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
-                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber+'" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
                         + '</tr>'
                     )
-                });
-            }
+            });
+    }
         });
     });
 

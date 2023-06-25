@@ -67,110 +67,44 @@
                     </tr>
                 </thead>
 
+                @{
+                    var MMActivities = new List<string>(){
+                        "Cache files/Trash",
+                        "Web Cleaner",
+                        "Software updates",
+                        "Data Storage",
+                        "Speed check",
+                        "CPU Test"
+                    };
+                }
+
                 <tbody class="maintenance-report-table-grid">
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Cache files/Trash</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
 
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Web Cleaner</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
+                    @foreach (var activity in MMActivities)
+                    {
+                        <tr style="background-color: #fff">
+                            <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">@activity</textarea></td>
+                            <td scope="row" style="max-width:100px">
+                                <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                                    <option disabled selected> -- Select Status -- </option>
+                                    <option value="Activited">Activited</option>
+                                    <option value="Blocked">Blocked</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cleared">Cleared</option>
+                                    <option value="Checked">Checked</option>
+                                    <option value="Reported">Reported</option>
+                                    <option value="Tested">Tested</option>
+                                    <option value="Updated">Updated</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="NA">NA</option>
+                                </select>
+                            </td>
+                            <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
+                            @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
 
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Software updates</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
+                        </tr>
+                    }
 
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Bios Updates</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @*<td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
-
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Data Storage</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
-
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Speed check</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
-
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">CPU Test</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
-
-                    </tr>
-                    <tr style="background-color: #fff">
-                        <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">Phishing emails</textarea></td>
-                        <td scope="row" style="max-width:100px">
-                            <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Status -- </option>
-                                <option value="YES">YES</option>
-                                <option value="NO">NO</option>
-                            </select>
-                        </td>
-                        <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
-                        @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
-                    </tr>
                 </tbody>
             </table>
 
@@ -215,8 +149,16 @@
             + '<td scope="row" style="max-width:100px">'
             + '<select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">'
             + '<option disabled selected> -- Select Status -- </option>'
-            + '<option value="YES">YES</option>'
-            + '<option value="NO">NO</option>'
+            + '<option value="Activited">Activited</option>'
+            + '<option value="Blocked">Blocked</option>'
+            + '<option value = "Completed" >Completed</option>'
+            + '<option value="Cleared">Cleared</option>'
+            + '<option value="Checked">Checked</option>'
+            + '<option value="Reported">Reported</option>'
+            + '<option value="Tested">Tested</option>'
+            + '<option value="Updated">Updated</option>'
+            + '<option value="Verified">Verified</option>'
+            + '<option value="NA">NA</option>'
             + '</select>'
             + '</td>'
             + '<td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%"  rows="1" resize="none"></textarea></td>'

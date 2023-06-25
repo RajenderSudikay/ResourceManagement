@@ -8,6 +8,9 @@ using System.Configuration;
 using Newtonsoft.Json;
 using System.Web.UI;
 using System.Collections.Generic;
+using iTextSharp.text;
+using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
 
 namespace ResourceManagement.Controllers
 {
@@ -144,7 +147,7 @@ namespace ResourceManagement.Controllers
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
                 To = ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.Emailaddress,
-                Subject = "Monthly Maintenace Acknowledgement -  Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
+                Subject = "MM Report -" + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ") + " - Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
                 CC = ITMaintenanceEmailAck.itadminIds,
                 EmailBody = emailBody
             };
@@ -265,10 +268,6 @@ namespace ResourceManagement.Controllers
                 {
                     ITModel.AmbcNewITAssetMgmt = Assets;
                 }
-
-
-                //var Assets1 = db.AMBCITMonthlyMaintenances.Where(x => x.UniqNo == 40);
-                //var result = JsonConvert.DeserializeObject<dynamic>(Assets1.FirstOrDefault().PerformedActivityInfo);
             }
 
             return View(ITModel);
@@ -292,7 +291,7 @@ namespace ResourceManagement.Controllers
                             EmpID = mmReport.EmployeeID,
                             EmpName = mmReport.EmployeeName,
                             FileName = "MMR-" + mmReport.EmployeeName + "-" + mmReport.MaintenanceMonth,
-                            ReportType = "Monthly",
+                            ReportType = "MM Report",
                             ReportMonth = mmReport.MaintenanceMonth,
                             UniqueNumber = mmReport.UniqNo.ToString()
                         }); ;
@@ -316,22 +315,61 @@ namespace ResourceManagement.Controllers
             var reportYear = itReportModel.ReportMonth.Split('-')[1];
             var reportmonth = itReportModel.ReportMonth.Split('-')[0];
 
-            if (itReportModel.ReportType == "Monthly")
+            if (itReportModel.ReportType == "MM Report")
             {
                 var reportModel = new ITMaintenanceEmailAck();
                 using (var context = new TimeSheetEntities())
                 {
                     var requireMMReport = context.AMBCITMonthlyMaintenances.Where(report => report.EmployeeID == itReportModel.EmpID && report.UniqNo == itReportModel.UniqueNumber && report.AssetID == itReportModel.AssetID).FirstOrDefault();
 
-                    if(requireMMReport != null)
+                    if (requireMMReport != null)
                     {
                         reportModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(requireMMReport.PerformedActivityInfo.ToString());
+                        reportModel.AMBCITMonthlyMaintenance = requireMMReport;
                     }
 
                     reportModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == itReportModel.EmpID).ToList();
-                    var reportContent = RenderPartialToString(this, "MMAckEmail", reportModel, ViewData, TempData);
+                    var reportContent = RenderPartialToString(this, "MMreport", reportModel, ViewData, TempData);
 
-                    //Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+
+                    //https://www.c-sharpcorner.com/article/convert-html-string-to-pdf-via-itextsharp-library-and-downlo/
+                    StringReader reportData = new StringReader(reportContent.ToString());
+
+                    Document pdfDoc = new Document(PageSize.A4, 15f, 15f, 30f, 0f);
+                    HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+                        pdfDoc.Open();
+
+                        htmlparser.Parse(reportData);
+                        pdfDoc.Close();
+
+                        byte[] bytes = memoryStream.ToArray();
+                        memoryStream.Close();
+
+                        // Clears all content output from the buffer stream
+                        Response.Clear();
+                        // Gets or sets the HTTP MIME type of the output stream.
+                        Response.ContentType = "application/pdf";
+                        // Adds an HTTP header to the output stream
+                        var fileName = itReportModel.FileName + ".pdf";
+                        Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName + "");
+
+                        //Gets or sets a value indicating whether to buffer output and send it after
+                        // the complete response is finished processing.
+                        Response.Buffer = true;
+                        // Sets the Cache-Control header to one of the values of System.Web.HttpCacheability.
+                        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                        // Writes a string of binary characters to the HTTP output stream. it write the generated bytes .
+                        Response.BinaryWrite(bytes);
+
+                        // Sends all currently buffered output to the client, stops execution of the
+                        // page, and raises the System.Web.HttpApplication.EndRequest event.
+                        Response.End();
+                        // Closes the socket connection to a client. it is a necessary step as you must close the response after doing work.its best approach.
+                        Response.Close();
+                    }
 
                 }
             }

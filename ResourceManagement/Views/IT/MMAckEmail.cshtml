@@ -73,7 +73,7 @@
                     <div class="emailbody" style="font-family: Calibri;">
                         <h2>Hi <b>@Model.AMBCITMonthlyMaintenance.EmployeeName</b>,</h2>
                         <br />
-                        We have successfully completed monthly activity against your asset. Please find the details below.
+                        Your monthly maintenance has been completed for the month @Model.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ")
                         <br /> <br />
                     </div>
                 </td>
@@ -108,43 +108,7 @@
             </tr>
         </table>
 
-
-       <h6 style=" text-decoration: underline !important; font-size: medium !important; color: #2167ae !important; font-size: inherit !important"><b >Monthly maintenance report</b></h6> 
-
-
-        <div class="table-responsive table" style="max-width: 80% !important">
-            <table class="table table-hover table-striped table-bordered" id="timesheet-table" style="border: 1px solid black !important; width: 80% !important">
-                <thead class="table-bordered">
-                    <tr style="background-color: #005983">
-                        <th scope="col" style="width: 20% !important; color: white;">Activity</th>
-                        <th scope="col" style="width: 10% !important; color: white">Status</th>
-                        <th scope="col" style="width: auto !important; color: white">Remarks</th>
-                        @*<th scope="col" style="width: 200px; color: white ">Additional Comments</th>*@
-                    </tr>
-                </thead>
-
-                <tbody class="timesheet-table-grid">
-                    @{
-                        int i = 0;
-                        string backgroundColor = "";
-                    }
-                    @foreach (var activity in Model.ITActivities)
-                    {
-                        i = i + 1; // is the first item considered even or odd?  that answer changes where this should go
-                        backgroundColor = i % 2 == 0 ? "lavender" : "lightgray";
-
-                        <tr class="default-table-row" style="background-color:  @backgroundColor ">
-                            <td scope="row" style="width: 20% !important; vertical-align: middle; ">@activity.ActivityName</td>
-                            <td scope="row" style="width: 10% !important; vertical-align: middle; ">@activity.Status</td>
-                            <td scope="row" style="width: auto !important; vertical-align: middle;">@activity.Remarks</td>
-                            @*<td scope="row" style="width: 200px;vertical-align: middle;">@activity.Additionalcomments</td>*@
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
-        </div>
-
+       
         <br />
         <br />
         <div style="font-family: Calibri; color: #2167ae; font-size: initial">
