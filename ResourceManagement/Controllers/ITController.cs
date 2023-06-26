@@ -348,7 +348,8 @@ namespace ResourceManagement.Controllers
                             ReportType = "MM Report",
                             ReportMonth = mmReport.MaintenanceMonth,
                             UniqueNumber = mmReport.UniqNo.ToString(),
-                            Ack = mmReport.EmployeeAck == true ? "Yes" : "No"
+                            Ack = mmReport.EmployeeAck == true ? "Yes" : "No",
+                            ReportDate = ConvertDateToServerSystemFormat(mmReport.CreatedDate)
                         });
                     }
                 }
@@ -361,13 +362,14 @@ namespace ResourceManagement.Controllers
                     {
                         reportViewModel.Add(new ITDownloadReportViewModel()
                         {
-                            AssetID = ITOtherReport.EmpAssetID,                          
+                            AssetID = ITOtherReport.EmpAssetID,
                             EmpName = ITOtherReport.EmployeeName,
                             FileName = ITOtherReport.UploadReportPathDetail,
                             ReportType = ITOtherReport.ReportType,
                             ReportMonth = ITOtherReport.ReportMonth,
                             Ack = "NA",
-                            UniqueNumber = "0"
+                            UniqueNumber = "0",
+                            ReportDate = ConvertDateToServerSystemFormat(ITOtherReport.CreatedDate)
                         });
                     }
                 }

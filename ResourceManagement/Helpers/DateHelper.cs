@@ -57,13 +57,13 @@ namespace ResourceManagement.Helpers
             if (date.ToString().Contains("-"))
             {
                 var actualDate = date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
-                return actualDate[1].Trim() + "-" + actualDate[2].Trim() + "-" + actualDate[0].Trim();
+                return actualDate[0].Trim() + "-" + actualDate[1].Trim() + "-" + actualDate[2].Trim();
             }
 
             if (date.ToString().Contains("/"))
             {
-                var actualDate = date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('/');
-                return actualDate[1].Trim() + "-" + actualDate[2].Trim() + "-" + actualDate[0].Trim();
+                var actualDate = date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
+                return actualDate[1].Trim()  + "-" + actualDate[0].Trim() + "-" + actualDate[2].Trim();
             }
 
             return "";

@@ -75,11 +75,12 @@
                                     <th class="" scope="col" width="30" style="color: white; text-align: center; display:none">Action</th>
                                 }
 
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Employee Name</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Asset ID</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Name</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Asset#</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Month</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Type</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Report</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Date</th>
                                 <th class="" scope="col" width="30" style="color: white; text-align: center">Ack</th>
                             </tr>
                         </thead>
@@ -173,6 +174,7 @@
                             + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
                             + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
                             + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
                             + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
                             + '</tr>'
                         )
@@ -188,6 +190,7 @@
                             + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
                             + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
                             + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
                             + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
                             + '</tr>'
                         )

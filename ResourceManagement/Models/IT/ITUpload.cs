@@ -72,8 +72,10 @@ namespace ResourceManagement.Models.IT
         public string ReportType { get; set; }
         public string AssetID { get; set; }
         public string UniqueNumber { get; set; }
-
         public string Ack { get; set; }
+
+        //Created date from db
+        public string ReportDate { get; set; }
     }
 
     public class ITScheduleMaintenanceModel
