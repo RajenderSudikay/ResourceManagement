@@ -19,10 +19,13 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group selectemp-div">
-                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                        <select id="selectEmployeenameandemail" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                            <option disabled selected> -- Select Employee Name -- </option>
+                        <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option value="" disabled selected> -- Select Employee Name -- </option>
                         </select>
+                        <div class="invalid-emp" style="display: none; color: red">
+                            Please Select Employee
+                        </div>
                     </div>
 
                 </div>
@@ -32,11 +35,10 @@
                         <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
                         <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Asset ID</option>
-                            @*@foreach (var asset in Model.AmbcNewITAssetMgmt)
-                                {
-                                    <option value="@asset.AssetSerialNo">@asset.AssetSerialNo</option>
-                                }*@
                         </select>
+                        <div class="invalid-assetid" style="display: none; color: red">
+                            Please Select Aseet ID
+                        </div>
                     </div>
                 </div>
 
@@ -50,6 +52,10 @@
                                 <option value="@month.Value">@month.Text</option>
                             }
                         </select>
+
+                        <div class="invalid-month" style="display: none; color: red">
+                            Please Select Month
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,9 +66,9 @@
             <table class="table" id="maintenance-report-table" style="margin-top: 2px">
                 <thead class="table-bordered">
                     <tr style="background-color: #005983">
-                        <th class="" scope="col" style="max-width:120px; color: white">Activity</th>
-                        <th class="" scope="col" style="max-width: 100px; color: white">Status </th>
-                        <th class="" scope="col" style="color: white">Remarks</th>
+                        <th class="" scope="col" style="max-width:120px; color: white; text-align: center">Activity</th>
+                        <th class="" scope="col" style="max-width: 100px; color: white; text-align: center">Status </th>
+                        <th class="" scope="col" style="color: white; text-align: center">Remarks(if any)</th>
                         @*<th class="" scope="col">Additional comments</th>*@
                     </tr>
                 </thead>
@@ -83,10 +89,10 @@
                     @foreach (var activity in MMActivities)
                     {
                         <tr style="background-color: #fff">
-                            <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1">@activity</textarea></td>
+                            <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" rows="1">@activity</textarea></td>
                             <td scope="row" style="max-width:100px">
-                                <select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                    <option disabled selected> -- Select Status -- </option>
+                                <select name="selectstatus" class="form-control form-select form-select-lg mb-3 selectstatus" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="background-color:white">
+                                    <option value="" disabled selected> -- Select Status -- </option>
                                     <option value="Activited">Activited</option>
                                     <option value="Blocked">Blocked</option>
                                     <option value="Completed">Completed</option>
@@ -99,7 +105,7 @@
                                     <option value="NA">NA</option>
                                 </select>
                             </td>
-                            <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%" rows="1"></textarea></td>
+                            <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" rows="1"></textarea></td>
                             @* <td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%" rows="1"></textarea> </td>*@
 
                         </tr>
@@ -136,8 +142,47 @@
 <br />
 <script>
 
-    jQuery("#selectEmployeenameandemail").change(function (evt) {
-        GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);
+    /*    jQuery("#selectEmployeenameandemail").change(function (evt) {*/
+    jQuery(document).on("change", "#selectEmployeenameandemail", function () {
+        jQuery('.invalid-emp').hide();
+        jQuery('#selectEmployeenameandemail').css("border", "1px solid green");
+        GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);       
+    });
+
+    /* jQuery("#assetAssignID").change(function (evt) {*/
+    jQuery(document).on("change", "#assetAssignID", function () {
+        jQuery('.invalid-assetid').hide();
+        jQuery('#assetAssignID').css("border", "1px solid green");
+    });
+
+    /*   jQuery("#assetUploadMonth").change(function (evt) {*/
+    jQuery(document).on("change", "#assetUploadMonth", function () {
+        jQuery('.invalid-month').hide();
+        jQuery('#assetUploadMonth').css("border", "1px solid green");
+    });
+
+    jQuery(document).on('change', 'textarea', function () {
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");         
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");         
+        }
+    });
+
+    jQuery(document).on("change", ".selectstatus", function () {
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");      
+
+        if (jQuery('#' + fieldId + ' :selected').val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
     });
 
 
@@ -145,10 +190,10 @@
         //var sampletr = jQuery('.sample-it-maintenace-report');
 
         var sampletr = '<tr class="sample-it-maintenace-report">'
-            + '<td scope = "row" style = "max-width:120px" > <textarea class="form-control maintenance-activity" style="min-width: 100%" rows="1" resize="none"></textarea></td>'
+            + '<td scope = "row" style = "max-width:120px"> <textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" rows="1" resize="none"></textarea></td>'
             + '<td scope="row" style="max-width:100px">'
-            + '<select id="selectstatus" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">'
-            + '<option disabled selected> -- Select Status -- </option>'
+            + '<select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">'
+            + '<option disabled selected value=""> -- Select Status -- </option>'
             + '<option value="Activited">Activited</option>'
             + '<option value="Blocked">Blocked</option>'
             + '<option value = "Completed" >Completed</option>'
@@ -161,7 +206,7 @@
             + '<option value="NA">NA</option>'
             + '</select>'
             + '</td>'
-            + '<td scope="row" style="max-width:200px"><textarea class="form-control maintenance-remarks" style="min-width: 100%"  rows="1" resize="none"></textarea></td>'
+            + '<td scope="row" style="max-width:200px"><textarea id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" class="form-control maintenance-remarks" style="min-width: 100%"  rows="1" resize="none"></textarea></td>'
             //+ '<td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%"  rows="1" resize="none"></textarea> </td>'
             + '</tr>';
 
@@ -170,13 +215,41 @@
 
     //Final submit post confirmation
     jQuery(".btn-sumit-maintenance-report").click(function () {
+        var isFormValidated = true;
 
+        var isTableFieldsValidated = true;
         var activitytrs = $('.maintenance-report-table-grid tr');
         var activities = new Array();
         jQuery.each(activitytrs, function (i, tabletr) {
+
             var activityName = $(this).find('td .maintenance-activity').val();
-            var activityStatus = $(this).find('td #selectstatus :selected').text();
+            if (activityName == "") {
+                $(this).find('td .maintenance-activity').css("border", "1px red solid");
+                isTableFieldsValidated = false;
+            }
+            else {
+                $(this).find('td .maintenance-activity').css("border", "1px solid green");
+
+            }
+
+            var activityStatus = $(this).find('td .selectstatus :selected').text();
+            var activityVal = $(this).find('td .selectstatus :selected').val();
+            if (activityVal == "") {
+                $(this).find('td .selectstatus').css("border", "1px solid red");
+                isTableFieldsValidated = false;
+            }
+            else {
+                $(this).find('td .selectstatus').css("border", "1px solid green");
+            }
+
             var activityRemarks = $(this).find('td .maintenance-remarks').val();
+            if (activityRemarks == "") {
+                $(this).find('td .maintenance-remarks').css("border", "1px solid red");
+                isTableFieldsValidated = false;
+            }
+            else {
+                $(this).find('td .maintenance-remarks').css("border", "1px solid green");
+            }
             var activityAddlComments = $(this).find('td .maintenance-addi-comments').val();
 
             var activityModel = {
@@ -187,6 +260,45 @@
             };
             activities.push(activityModel);
         });
+
+        if (jQuery('#selectEmployeenameandemail :selected').val() == "") {
+            jQuery('.invalid-emp').show();
+            jQuery('#selectEmployeenameandemail').css("border", "1px red solid");
+            isFormValidated = false;
+        }
+        else {
+            isFormValidated = true;
+            jQuery('.invalid-emp').hide();
+            jQuery('#selectEmployeenameandemail').css("border", "1px red green");
+        }
+
+        if (jQuery('#assetAssignID :selected').val() == "") {
+            jQuery('.invalid-assetid').show();
+            jQuery('#assetAssignID').css("border", "1px red solid");
+            isFormValidated = false;
+        }
+        else {
+            isFormValidated = true;
+            jQuery('.invalid-assetid').hide();
+            jQuery('#assetAssignID').css("border", "1px red green");
+        }
+
+        if (jQuery('#assetUploadMonth :selected').val() == "") {
+            jQuery('.invalid-month').show();
+            jQuery('#assetUploadMonth').css("border", "1px red solid");
+            isFormValidated = false;
+        }
+        else {
+            isFormValidated = true;
+            jQuery('.invalid-month').hide();
+            jQuery('#assetUploadMonth').css("border", "1px red green");
+        }
+
+
+
+        if (isFormValidated == false || isTableFieldsValidated == false) {
+            return;
+        }
 
         var jsonActivityInfo = JSON.stringify(activities);
 
@@ -213,10 +325,28 @@
             data: JSON.stringify({ monthlyMaintenanceModel: AMBCITMonthlyMaintenance, itadminIds: jQuery('.it-admin-list').text() }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                jQuery.each(data.EmpSpecificAssets, function (i, item) {
+                var obj = jQuery.parseJSON(data);
+                if (obj.JsonResponse.StatusCode == 200) {
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>MM report acknowledge email sent successfully!.</h2>");
+                    jQuery('.message-success-popup').modal('show');
+                
+                    jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+
                     jQuery('#assetAssignID').empty();
-                    $('#assetAssignID').append('<option value="' + item.AssetSerialNo + '">' + item.AssetSerialNo + '</option>');
-                });
+                    jQuery('#assetAssignID').append(' <option value="" disabled selected>Select Asset ID</option>');
+
+                    jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());
+
+                    jQuery(".selectstatus").val($(".selectstatus option:first").val());
+                    jQuery(".maintenance-remarks").val("");
+                   
+                }
+                else {
+                    jQuery('.error-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>" + obj.JsonResponse.Message + "</h2>");
+                    jQuery('#modal-db-error-alert').modal('show');
+                }
             }
         });
     });

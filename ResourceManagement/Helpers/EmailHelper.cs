@@ -21,12 +21,21 @@ namespace ResourceManagement.Helpers
 
                     if (!string.IsNullOrWhiteSpace(emailModel.CC))
                     {
-                        mm.CC.Add(emailModel.CC);
+                        var ccEmails = emailModel.CC.Split(',');
+                        foreach(var ccEmail in ccEmails)
+                        {
+                            mm.CC.Add(ccEmail.Trim());
+                        }
+                       
                     }
 
                     if (!string.IsNullOrWhiteSpace(emailModel.BCC))
                     {
-                        mm.Bcc.Add(emailModel.BCC);
+                        var bccEmails = emailModel.BCC.Split(',');
+                        foreach (var bccEmail in bccEmails)
+                        {
+                            mm.Bcc.Add(bccEmail.Trim());
+                        }                      
                     }
 
                     mm.IsBodyHtml = true;

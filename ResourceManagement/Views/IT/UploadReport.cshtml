@@ -55,13 +55,13 @@
                             <select id="assetReportType" name="assetReportType" class="form-control form-select form-select-lg mb-3" required>
                                 <option value="" disabled selected>Select Report Type</option>
                                 @*<option value="Monthly Maintenance">Monthly Maintenance</option>*@
-                                <option value="Vulnerability">Vulnerability</option>                             
+                                <option value="Vulnerability">Vulnerability</option>
                                 <option value="Others">Others</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
 
                         <div class="form-group">
                             <label for="reportupload">Upload Report:<b style="color:red">*</b></label>
@@ -149,11 +149,11 @@
             async: false,
             data: fileData,
             success: function (data) {
-                fileData = new FormData();               
-                if (data.jsonResponse.StatusCode == 200) {                  
-                    window.location.href = "/it/uploadreport?success=true&selectedemp=" + empName;                  
+                fileData = new FormData();
+                if (data.jsonResponse.StatusCode == 200) {
+                    window.location.href = "/it/uploadreport?success=true&selectedemp=" + empName;
                 }
-                else {                  
+                else {
                     window.location.href = "/it/uploadreport?success=false&error=" + data.jsonResponse.Message + "";
                 }
                 jQuery('.upload-it-report-card').empty();

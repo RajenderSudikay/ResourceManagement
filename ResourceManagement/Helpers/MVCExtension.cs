@@ -30,6 +30,11 @@ namespace ResourceManagement.Helpers
             return String.Empty;
         }
 
+        public static string GUIDGenerate()
+        {
+            return Guid.NewGuid().ToString().Replace("{","").Replace("}","");
+        }
+
 
     }
 }
