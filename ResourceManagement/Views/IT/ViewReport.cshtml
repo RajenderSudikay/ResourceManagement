@@ -14,8 +14,11 @@
                     <div class="form-group selectemp-div">
                         <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
                         <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                            <option disabled selected> -- Select Employee Name -- </option>
+                            <option disabled selected value=""> -- Select Employee Name -- </option>
                         </select>
+                        <div class="invalid-emp" style="display: none; color: red">
+                            Please Select Employee
+                        </div>
                     </div>
                 </div>
 
@@ -29,6 +32,9 @@
                                 <option value="@asset.AssetSerialNo">@asset.AssetSerialNo</option>
                             }
                         </select>
+                        <div class="invalid-assetid" style="display: none; color: red">
+                            Please Select Aseet ID
+                        </div>
                     </div>
                 </div>
 
@@ -42,6 +48,9 @@
                                 <option value="@month.Value">@month.Text</option>
                             }
                         </select>
+                        <div class="invalid-month" style="display: none; color: red">
+                            Please Select Month
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,6 +149,11 @@
 
 
     function ViewReport(model) {
+        var isFormValidated = AssetFormValidated();
+        if (isFormValidated == false) {
+            return;
+        }
+
         jQuery('.upload-it-report-body').show();
         $('.itreport-table-grid').empty();
         var itReportModel = {
