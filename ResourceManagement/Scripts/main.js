@@ -169,4 +169,61 @@ function GenerateGUID() {
 }
 
 
+/*    jQuery("#selectEmployeenameandemail").change(function (evt) {*/
+jQuery(document).on("change", "#selectEmployeenameandemail", function () {
+    jQuery('.invalid-emp').hide();
+    jQuery('#selectEmployeenameandemail').css("border", "1px solid green");
+    GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);
+});
+
+/* jQuery("#assetAssignID").change(function (evt) {*/
+jQuery(document).on("change", "#assetAssignID", function () {
+    jQuery('.invalid-assetid').hide();
+    jQuery('#assetAssignID').css("border", "1px solid green");
+});
+
+/*   jQuery("#assetUploadMonth").change(function (evt) {*/
+jQuery(document).on("change", "#assetUploadMonth", function () {
+    jQuery('.invalid-month').hide();
+    jQuery('#assetUploadMonth').css("border", "1px solid green");
+});
+
+
+function AssetFormValidated()
+{
+    var isFormValidated = true;
+    if (jQuery('#selectEmployeenameandemail :selected').val() == "") {
+        jQuery('.invalid-emp').show();
+        jQuery('#selectEmployeenameandemail').css("border", "1px red solid");
+        isFormValidated = false;
+    }
+    else {
+        jQuery('.invalid-emp').hide();
+        jQuery('#selectEmployeenameandemail').css("border", "1px red green");
+    }
+
+    if (jQuery('#assetAssignID :selected').val() == "") {
+        jQuery('.invalid-assetid').show();
+        jQuery('#assetAssignID').css("border", "1px red solid");
+        isFormValidated = false;
+    }
+    else {
+        jQuery('.invalid-assetid').hide();
+        jQuery('#assetAssignID').css("border", "1px red green");
+    }
+
+    if (jQuery('#assetUploadMonth :selected').val() == "") {
+        jQuery('.invalid-month').show();
+        jQuery('#assetUploadMonth').css("border", "1px red solid");
+        isFormValidated = false;
+    }
+    else {
+        jQuery('.invalid-month').hide();
+        jQuery('#assetUploadMonth').css("border", "1px red green");
+    }
+
+    return isFormValidated;
+}
+
+
 

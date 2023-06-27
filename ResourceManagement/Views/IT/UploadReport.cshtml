@@ -9,14 +9,17 @@
 <div class="card card-body" style="border-radius: 10px">
     <div class="card upload-it-report-card">
         <div class="card-body ">
-            <form class="needs-validation it-upload-form" novalidate>
+            @*<form class="needs-validation it-upload-form" novalidate>*@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group selectemp-div">
                             <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
                             <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected> -- Select Employee Name -- </option>
+                                <option disabled selected value=""> -- Select Employee Name -- </option>
                             </select>
+                            <div class="invalid-emp" style="display: none; color: red">
+                                Please Select Employee
+                            </div>
                         </div>
                     </div>
 
@@ -24,12 +27,11 @@
                         <div class="form-group">
                             <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
                             <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Asset ID</option>
-                                @foreach (var asset in Model.AmbcNewITAssetMgmt)
-                                {
-                                    <option value="@asset.AssetSerialNo">@asset.AssetSerialNo</option>
-                                }
+                                <option value="" disabled selected>Select Asset ID</option>                               
                             </select>
+                            <div class="invalid-assetid" style="display: none; color: red">
+                                Please Select Aseet ID
+                            </div>
                         </div>
                     </div>
 
@@ -43,6 +45,9 @@
                                     <option value="@month.Value">@month.Text</option>
                                 }
                             </select>
+                            <div class="invalid-month" style="display: none; color: red">
+                                Please Select Month
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,6 +63,9 @@
                                 <option value="Vulnerability">Vulnerability</option>
                                 <option value="Others">Others</option>
                             </select>
+                            <div class="invalid-reporttype" style="display: none; color: red">
+                                Please Select Report type
+                            </div>
                         </div>
                     </div>
 
@@ -67,6 +75,9 @@
                             <label for="reportupload">Upload Report:<b style="color:red">*</b></label>
                             <div class="form-control">
                                 <input type="file" name="ExcelFile" id="reportupload" required />
+                                <div class="invalid-file" style="display: none; color: red">
+                                    Please upload file
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,6 +88,8 @@
                         <div class="form-group">
                             <label for="assetremarks">Remarks<b style="color:red"> </b></label>
                             <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>
+                            
+
                         </div>
                     </div>
                 </div>
@@ -85,13 +98,13 @@
                 <div class="modal-footer mt-xl-4">
                     <button type="submit" class="btn btn-info btn-lg btn-upload-it-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Upload Report</b></button>
                 </div>
-            </form>
+            @*</form>*@
         </div>
     </div>
 </div>
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml");
-@Html.Partial("~/Views/Home/_ModalAlerts.cshtml");
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
 <br />
 <script>
@@ -108,6 +121,15 @@
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
+        if (files.length == 0) {
+            jQuery('#reportupload').css("border", "1px solid red");
+            jQuery('.invalid-file').show();
+        }
+        else {
+            jQuery('#reportupload').css("border", "1px solid green");
+            jQuery('.invalid-file').hide();
+        }
+
         fileData = new FormData();
 
         // Looping over all files and add it to FormData object
@@ -116,8 +138,51 @@
         }
     });
 
+    jQuery(document).on("change", "#assetReportType", function () {     
+
+        if (jQuery('#assetReportType :selected').val() == "") {
+            jQuery('#assetReportType').css("border", "1px solid red");
+            jQuery('.invalid-reporttype').show();
+        }
+        else {
+            jQuery('#assetReportType').css("border", "1px solid green");
+            jQuery('.invalid-reporttype').hide();
+        }
+    });
+
     //Final submit post confirmation
     jQuery(".btn-upload-it-report").click(function () {
+
+        var isFormValidated = AssetFormValidated();
+
+        if (jQuery('#assetReportType :selected').val() == "") {
+            jQuery('.invalid-reporttype').show();
+            jQuery('#assetReportType').css("border", "1px red solid");
+            isFormValidated = false;
+        }
+        else {
+            jQuery('.invalid-reporttype').hide();
+            jQuery('#assetReportType').css("border", "1px red green");
+        }
+
+        var fileUpload = $("#reportupload").get(0);
+        var files = fileUpload.files;
+
+        if (files.length == 0) {
+            isFormValidated = false;
+            jQuery('.invalid-file').show();
+            jQuery('#reportupload').css("border", "1px red solid");
+
+        }
+        else {
+            jQuery('#reportupload').css("border", "1px green solid");
+            jQuery('.invalid-file').hide();
+        }
+
+        if (isFormValidated == false) {
+            return;
+        }
+
         var empName = jQuery('#selectEmployeenameandemail :selected').text();
         var EmployeeID = jQuery('#selectEmployeenameandemail :selected').val().split('|')[0];
         var Emailaddress = jQuery('#selectEmployeenameandemail :selected').val().split('|')[1];
@@ -148,16 +213,27 @@
             processData: false,
             async: false,
             data: fileData,
-            success: function (data) {
-                fileData = new FormData();
-                if (data.jsonResponse.StatusCode == 200) {
-                    window.location.href = "/it/uploadreport?success=true&selectedemp=" + empName;
+            success: function (obj) {
+                fileData = new FormData();             
+                if (obj.jsonResponse.StatusCode == 200) {
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>IT report uploaded successfully!.</h2>");
+                    jQuery('.message-success-popup').modal('show');
+
+                    jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+
+                    jQuery('#assetAssignID').empty();
+                    jQuery('#assetAssignID').append(' <option value="" disabled selected>Select Asset ID</option>');
+
+                    jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());                 
+
                 }
                 else {
-                    window.location.href = "/it/uploadreport?success=false&error=" + data.jsonResponse.Message + "";
-                }
-                jQuery('.upload-it-report-card').empty();
-                fileData = new FormData();
+                    jQuery('.error-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
+                    jQuery('#modal-db-error-alert').modal('show');
+                }              
+                
             }
         });
     });
