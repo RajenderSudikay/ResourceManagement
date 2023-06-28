@@ -25,5 +25,9 @@ namespace ResourceManagement
         public string UploadedByEmail { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string EmpClient { get; set; }
+        public string rptuniqkey { get; set; }
+        public string EmployeeID { get; set; }
+        public string EmployeeMailAddress { get; set; }
+        public int UniqNo { get; set; }
     }
 }

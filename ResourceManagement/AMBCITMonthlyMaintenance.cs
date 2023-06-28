@@ -32,5 +32,6 @@ namespace ResourceManagement
         public Nullable<bool> EmployeeAck { get; set; }
         public string EmpClient { get; set; }
         public string PerformedActivityInfo { get; set; }
+        public string AMBCITMMUniqKey { get; set; }
     }
 }
