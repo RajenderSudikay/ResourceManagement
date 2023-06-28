@@ -27,14 +27,11 @@
           <Property Name="EmployeeAck" Type="bit" />
           <Property Name="EmpClient" Type="varchar" MaxLength="1500" />
           <Property Name="PerformedActivityInfo" Type="varchar(max)" />
-          <Property Name="AMBCITMMUniqKey" Type="varchar" MaxLength="1500" />
+          <Property Name="AMBCITMMUniqKey" Type="varchar" MaxLength="900" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Timesheet-Dev.dbo.AMBCITRptUpload' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AMBCITRptUpload">
           <Key>
-            <PropertyRef Name="EmpAssetID" />
-            <PropertyRef Name="UniqNo" />
+            <PropertyRef Name="rptuniqkey" />
           </Key>
           <Property Name="EmployeeName" Type="varchar" MaxLength="1500" />
           <Property Name="EmpAssetID" Type="varchar" MaxLength="500" Nullable="false" />
@@ -47,7 +44,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.AMBCITRptUpload' does not have a
           <Property Name="UploadedByEmail" Type="varchar" MaxLength="1500" />
           <Property Name="CreatedDate" Type="date" />
           <Property Name="EmpClient" Type="varchar" MaxLength="1500" />
-          <Property Name="rptuniqkey" Type="varchar" MaxLength="1500" />
+          <Property Name="rptuniqkey" Type="varchar" MaxLength="900" Nullable="false" />
           <Property Name="EmployeeID" Type="varchar" MaxLength="1500" />
           <Property Name="EmployeeMailAddress" Type="varchar" MaxLength="1500" />
           <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -822,6 +819,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
         </EntityType>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
           <EntitySet Name="AMBCITMonthlyMaintenance" EntityType="Self.AMBCITMonthlyMaintenance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AMBCITRptUpload" EntityType="Self.AMBCITRptUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewITAssetMgmt" EntityType="Self.AmbcNewITAssetMgmt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewPeripherals" EntityType="Self.AmbcNewPeripherals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
@@ -839,7 +837,6 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AMBCITRptUpload" EntityType="Self.AMBCITRptUpload" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1781,7 +1778,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="EmployeeAck" Type="Boolean" />
           <Property Name="EmpClient" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="PerformedActivityInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="AMBCITMMUniqKey" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="AMBCITMMUniqKey" Type="String" MaxLength="900" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="AmbcNewITAssetMgmt">
           <Key>
@@ -1841,7 +1838,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="UploadedByEmail" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
           <Property Name="EmpClient" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="rptuniqkey" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="rptuniqkey" Type="String" MaxLength="900" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EmployeeID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="EmployeeMailAddress" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
