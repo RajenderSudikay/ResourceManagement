@@ -126,6 +126,8 @@ namespace ResourceManagement.Models.IT
         public string itadminIds { get; set; }
         public List<AMBC_Active_Emp_view> SelectedEmp { get; set; }
 
+        public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
+
     }
 
     public class ITMaintenanceAjaxModel

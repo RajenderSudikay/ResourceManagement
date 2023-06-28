@@ -136,6 +136,11 @@
     <div class="it-admin-list" style="display:none">@itEmpEmailIds.Trim(',')</div>
 </div>
 
+@using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
+{
+    <input type="hidden" name="GridHtml" />
+}
+
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
 @Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
@@ -277,8 +282,22 @@
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
                 if (obj.JsonResponse.StatusCode == 200) {
+
+                    var ITDownloadReportModel = {
+                        FileName: "MMR-" + obj.inputObject.AMBCITMonthlyMaintenance.EmployeeName + "-" + obj.inputObject.AMBCITMonthlyMaintenance.MaintenanceMonth,
+                        ReportMonth: obj.inputObject.AMBCITMonthlyMaintenance.MaintenanceMonth,
+                        UniqueNumber: obj.inputObject.AMBCITMonthlyMaintenance.UniqNo,
+                        EmpName: obj.inputObject.AMBCITMonthlyMaintenance.EmployeeName,
+                        EmpID: obj.inputObject.AMBCITMonthlyMaintenance.EmployeeID,
+                        ReportType: "MM Report",
+                        AssetID: obj.inputObject.AMBCITMonthlyMaintenance.AssetID,
+                    }
+
+                    var GridHtml = JSON.stringify(ITDownloadReportModel).toString();
+                    $("input[name='GridHtml']").val(GridHtml);
+
                     jQuery('.success-message-popup-title').html("Hey there");
-                    jQuery('.database-response').html("<h2>MM report acknowledge email sent successfully!.</h2>");
+                    jQuery('.database-response').html("<h2>MM report acknowledge email sent successfully!. click <a class='mm-report-download' href='#'>here<a> to download the report</h2>");
                     jQuery('.message-success-popup').modal('show');
 
                     jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
@@ -299,6 +318,12 @@
                 }
             }
         });
+    });
+
+
+    jQuery(document).on('click', '.mm-report-download', function () {
+     
+        $('form#itdownloadform').submit();
     });
 
 </script>

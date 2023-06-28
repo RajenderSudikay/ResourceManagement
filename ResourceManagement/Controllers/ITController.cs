@@ -116,21 +116,47 @@ namespace ResourceManagement.Controllers
 
         public JsonResult MMReportgenerateAjax(AMBCITMonthlyMaintenance monthlyMaintenanceModel, string itadminIds)
         {
-            var emailModel = new ITMaintenanceEmailAck();
-
-            monthlyMaintenanceModel.CreatedDate = System.DateTime.Now;
-            using (TimeSheetEntities context = new TimeSheetEntities())
+            var inputModel = new ITMaintenanceEmailAck();
+            var emailModel = new Models.Email.SendEmail();
+            try
             {
-                context.AMBCITMonthlyMaintenances.Add(monthlyMaintenanceModel);
-                context.SaveChanges();
-                emailModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == monthlyMaintenanceModel.EmployeeID).ToList();
+                monthlyMaintenanceModel.CreatedDate = System.DateTime.Now;
+                using (TimeSheetEntities context = new TimeSheetEntities())
+                {
+
+                    context.AMBCITMonthlyMaintenances.Add(monthlyMaintenanceModel);
+                    context.SaveChanges();
+                    inputModel.SelectedEmp = context.AMBC_Active_Emp_view.Where(x => x.Project_Status == "Active" && x.Employee_ID == monthlyMaintenanceModel.EmployeeID).ToList();
+
+                    inputModel.AMBCITMonthlyMaintenance = monthlyMaintenanceModel;
+                    inputModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(monthlyMaintenanceModel.PerformedActivityInfo.ToString());
+                    inputModel.itadminIds = itadminIds;
+                }
+
+                return ITMaintenaceAckEmailTrigger(inputModel);
             }
+            catch (System.Exception ex)
+            {
+                emailModel.JsonResponse.StatusCode = 500;
+                if (ex.InnerException != null && ex.InnerException.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.InnerException.Message))
+                {
+                    var actuallErrors = ex.InnerException.InnerException.Message.Split('.');
+                    foreach (var actuallError in actuallErrors)
+                    {
+                        if (actuallError.ToLowerInvariant().Contains("duplicate key value is"))
+                        {
+                            emailModel.JsonResponse.Message = actuallError;
+                        }
+                    }
+                }
+                else
+                {
+                    emailModel.JsonResponse.Message = ex.Message;
+                }
 
-            emailModel.AMBCITMonthlyMaintenance = monthlyMaintenanceModel;
-            emailModel.ITActivities = JsonConvert.DeserializeObject<List<ITMaintenanceActivityModel>>(monthlyMaintenanceModel.PerformedActivityInfo.ToString());
-            emailModel.itadminIds = itadminIds;
-
-            return ITMaintenaceAckEmailTrigger(emailModel);
+                emailModel.inputObject = monthlyMaintenanceModel;               
+            }
+            return Json(JsonConvert.SerializeObject(emailModel), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ITMaintenaceAckEmailTrigger(ITMaintenanceEmailAck ITMaintenanceEmailAck)
@@ -150,7 +176,8 @@ namespace ResourceManagement.Controllers
                 To = ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.Emailaddress,
                 Subject = "MM Report - " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ") + " - Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
                 CC = ITMaintenanceEmailAck.itadminIds,
-                EmailBody = emailBody
+                EmailBody = emailBody,
+                inputObject = ITMaintenanceEmailAck
             };
 
             var EmailResponse = SendEmailFromHRMS(emailModel);
