@@ -932,31 +932,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [AMBC_Active_Emp].[region] AS [region]
     FROM [dbo].[AMBC_Active_Emp] AS [AMBC_Active_Emp]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [AMBC_Active_Emp_view].[Employee ID] AS [Employee ID], 
-    [AMBC_Active_Emp_view].[Employee Name] AS [Employee Name], 
-    [AMBC_Active_Emp_view].[Contact Number] AS [Contact Number], 
-    [AMBC_Active_Emp_view].[Designation] AS [Designation], 
-    [AMBC_Active_Emp_view].[Client Report Manager] AS [Client Report Manager], 
-    [AMBC_Active_Emp_view].[Client] AS [Client], 
-    [AMBC_Active_Emp_view].[Shift] AS [Shift], 
-    [AMBC_Active_Emp_view].[Project Name] AS [Project Name], 
-    [AMBC_Active_Emp_view].[Project Status] AS [Project Status], 
-    [AMBC_Active_Emp_view].[Employee Status] AS [Employee Status], 
-    [AMBC_Active_Emp_view].[Location] AS [Location], 
-    [AMBC_Active_Emp_view].[AMBC Mail Address] AS [AMBC Mail Address], 
-    [AMBC_Active_Emp_view].[Access Role] AS [Access Role], 
-    [AMBC_Active_Emp_view].[AMBC Project Manager] AS [AMBC Project Manager], 
-    [AMBC_Active_Emp_view].[AMBC PM Mail Address] AS [AMBC PM Mail Address], 
-    [AMBC_Active_Emp_view].[Employee Joining Day] AS [Employee Joining Day], 
-    [AMBC_Active_Emp_view].[Employee Image Path] AS [Employee Image Path], 
-    [AMBC_Active_Emp_view].[Project Code] AS [Project Code], 
-    [AMBC_Active_Emp_view].[Client Project Name] AS [Client Project Name], 
-    [AMBC_Active_Emp_view].[Roles Responsibilities] AS [Roles Responsibilities], 
-    [AMBC_Active_Emp_view].[Client MailAddress] AS [Client MailAddress]
-    FROM [dbo].[AMBC_Active_Emp_view] AS [AMBC_Active_Emp_view]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="AMBC_Active_Emp_view" EntityType="Self.AMBC_Active_Emp_view" store:Type="Views" Schema="dbo" />
           <EntitySet Name="ambclogin_leave_view" EntityType="Self.ambclogin_leave_view" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ambclogin_leave_view].[Employee Code] AS [Employee Code], 
