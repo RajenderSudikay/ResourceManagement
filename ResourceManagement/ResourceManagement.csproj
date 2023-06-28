@@ -371,6 +371,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AMBC_Logo.png" />
     <Content Include="Assets\Appraisal.png" />
     <Content Include="Assets\Arrows\back-arrow.png" />
     <Content Include="Assets\Arrows\pdf.png" />
