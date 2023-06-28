@@ -193,9 +193,10 @@
                 var obj = jQuery.parseJSON(data);
                 if (obj.JsonResponse.StatusCode == 200) {
                     jQuery('.success-message-popup-title').html("Hey there");
-                    jQuery('.database-response').html("<h2>Schedule Maintenance email sent successfully!.</h2>");
+                    jQuery('.database-response').html("<h2>Schedule Maintenance email sent successfully to <b>" + obj.inputObject.EmpName + "</b>!.</h2>");
                     jQuery('.message-success-popup').modal('show');
-                    $("#selectEmployeenameandemail option:first").attr('selected', 'selected');
+                    jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+                    GenerateEmailBody();
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");

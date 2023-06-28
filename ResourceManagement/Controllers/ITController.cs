@@ -74,7 +74,8 @@ namespace ResourceManagement.Controllers
                 BCC = maintenanceModel.BCC,
                 Subject = maintenanceModel.Subject,
                 CC = maintenanceModel.CC,
-                EmailBody = emailBody
+                EmailBody = emailBody,
+                inputObject = maintenanceModel
             };
 
             var EmailResponse = SendEmailFromHRMS(emailModel);
@@ -227,6 +228,8 @@ namespace ResourceManagement.Controllers
                         var contextModel = new AMBCITRptUpload()
                         {
                             EmpAssetID = fileData.AssetID,
+                            EmployeeID = fileData.EmployeeID,
+                            EmployeeMailAddress = fileData.Emailaddress,
                             EmployeeName = fileData.EmployeeName,
                             ReportMonth = fileData.UploadedMonth,
                             UploadedByID = fileData.Uploadedbyempid,
@@ -235,7 +238,8 @@ namespace ResourceManagement.Controllers
                             UploadReportPathDetail = systemGeneratedFileName,
                             ReportType = fileData.ReportType,
                             UploadRemarks = fileData.Remarks,
-                            CreatedDate = System.DateTime.Now
+                            CreatedDate = System.DateTime.Now,
+                            rptuniqkey = fileData.ManualGenaratedUniqueNum
                         };
 
                         context.AMBCITRptUploads.Add(contextModel);

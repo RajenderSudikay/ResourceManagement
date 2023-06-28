@@ -10,94 +10,94 @@
     <div class="card upload-it-report-card">
         <div class="card-body ">
             @*<form class="needs-validation it-upload-form" novalidate>*@
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group selectemp-div">
-                            <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
-                            <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                                <option disabled selected value=""> -- Select Employee Name -- </option>
-                            </select>
-                            <div class="invalid-emp" style="display: none; color: red">
-                                Please Select Employee
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                            <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Asset ID</option>                               
-                            </select>
-                            <div class="invalid-assetid" style="display: none; color: red">
-                                Please Select Aseet ID
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetUploadMonth">Month<b style="color:red">*</b></label>
-                            <select id="assetUploadMonth" name="assetUploadMonth" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Month</option>
-                                @foreach (var month in Model.MonthsList)
-                                {
-                                    <option value="@month.Value">@month.Text</option>
-                                }
-                            </select>
-                            <div class="invalid-month" style="display: none; color: red">
-                                Please Select Month
-                            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group selectemp-div">
+                        <label for="selectEmployeenameandemail">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected value=""> -- Select Employee Name -- </option>
+                        </select>
+                        <div class="invalid-emp" style="display: none; color: red">
+                            Please Select Employee
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
+                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Asset ID</option>
+                        </select>
+                        <div class="invalid-assetid" style="display: none; color: red">
+                            Please Select Aseet ID
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="assetReportType">Report Type<b style="color:red">*</b></label>
-                            <select id="assetReportType" name="assetReportType" class="form-control form-select form-select-lg mb-3" required>
-                                <option value="" disabled selected>Select Report Type</option>
-                                @*<option value="Monthly Maintenance">Monthly Maintenance</option>*@
-                                <option value="Vulnerability">Vulnerability</option>
-                                <option value="Others">Others</option>
-                            </select>
-                            <div class="invalid-reporttype" style="display: none; color: red">
-                                Please Select Report type
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetUploadMonth">Month<b style="color:red">*</b></label>
+                        <select id="assetUploadMonth" name="assetUploadMonth" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Month</option>
+                            @foreach (var month in Model.MonthsList)
+                            {
+                                <option value="@month.Value">@month.Text</option>
+                            }
+                        </select>
+                        <div class="invalid-month" style="display: none; color: red">
+                            Please Select Month
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetReportType">Report Type<b style="color:red">*</b></label>
+                        <select id="assetReportType" name="assetReportType" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Report Type</option>
+                            @*<option value="Monthly Maintenance">Monthly Maintenance</option>*@
+                            <option value="Vulnerability">Vulnerability</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <div class="invalid-reporttype" style="display: none; color: red">
+                            Please Select Report type
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label for="reportupload">Upload Report:<b style="color:red">*</b></label>
+                        <div class="form-control">
+                            <input type="file" name="ExcelFile" id="reportupload" required />
+                            <div class="invalid-file" style="display: none; color: red">
+                                Please upload file
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="assetremarks">Remarks<b style="color:red"> </b></label>
+                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>
 
-                        <div class="form-group">
-                            <label for="reportupload">Upload Report:<b style="color:red">*</b></label>
-                            <div class="form-control">
-                                <input type="file" name="ExcelFile" id="reportupload" required />
-                                <div class="invalid-file" style="display: none; color: red">
-                                    Please upload file
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="assetremarks">Remarks<b style="color:red"> </b></label>
-                            <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Incident Description" required></textarea>
-                            
-
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <div class="modal-footer mt-xl-4">
-                    <button type="submit" class="btn btn-info btn-lg btn-upload-it-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Upload Report</b></button>
-                </div>
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-upload-it-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Upload Report</b></button>
+            </div>
             @*</form>*@
         </div>
     </div>
@@ -138,7 +138,7 @@
         }
     });
 
-    jQuery(document).on("change", "#assetReportType", function () {     
+    jQuery(document).on("change", "#assetReportType", function () {
 
         if (jQuery('#assetReportType :selected').val() == "") {
             jQuery('#assetReportType').css("border", "1px solid red");
@@ -193,6 +193,7 @@
         var UploadedByEmpName = jQuery('.agent-full-name').text();
         var UploadedByEmpID = jQuery('.agent-navdrop-empid').text();
         var UploadedByEmpEmail = jQuery('.agent-navdrop-empemail').text();
+        var uniqueNumber = jQuery('#selectEmployeenameandemail :selected').val().split('|')[0] + "_" + AssetID + "_" + reportMonth + "_" + ReportType;
 
         fileData.append('EmployeeName', empName);
         fileData.append('EmployeeID', EmployeeID);
@@ -204,6 +205,7 @@
         fileData.append('Uploadedbyempid', UploadedByEmpID);
         fileData.append('Uploadedempname', UploadedByEmpName);
         fileData.append('UploadedByEmpEmail', UploadedByEmpEmail);
+        fileData.append('ManualGenaratedUniqueNum', uniqueNumber);
 
         jQuery.ajax({
             type: "POST",
@@ -214,10 +216,10 @@
             async: false,
             data: fileData,
             success: function (obj) {
-                fileData = new FormData();             
+                fileData = new FormData();
                 if (obj.jsonResponse.StatusCode == 200) {
                     jQuery('.success-message-popup-title').html("Hey there");
-                    jQuery('.database-response').html("<h2>IT report uploaded successfully!.</h2>");
+                    jQuery('.database-response').html("<h2><b>" + jQuery('#selectEmployeenameandemail :selected').text() + "</b> report has been uploaded successfully!.</h2>");
                     jQuery('.message-success-popup').modal('show');
 
                     jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
@@ -225,15 +227,20 @@
                     jQuery('#assetAssignID').empty();
                     jQuery('#assetAssignID').append(' <option value="" disabled selected>Select Asset ID</option>');
 
-                    jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());                 
+                    jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());
+
+                    jQuery("#assetReportType").val($("#assetReportType option:first").val());
+                    jQuery("#assetremarks").val("");
+                    fileData = new FormData();
+                    jQuery('#reportupload').val('');
 
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");
                     jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
                     jQuery('#modal-db-error-alert').modal('show');
-                }              
-                
+                }
+
             }
         });
     });

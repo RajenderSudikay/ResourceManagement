@@ -39,7 +39,10 @@ namespace ResourceManagement.Models.IT
         public string UploadedFileName { get; set; }
         public string Activities { get; set; }
         public string Action { get; set; }
+
+        //system generated uniquenum
         public int UniqueNo { get; set; }
+        public string ManualGenaratedUniqueNum { get; set; }
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();
     }
 
