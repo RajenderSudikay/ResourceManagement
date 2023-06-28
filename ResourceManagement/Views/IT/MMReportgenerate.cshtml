@@ -265,7 +265,8 @@
             UploadedByName: jQuery('.agent-full-name').text(),
             UploadedByID: jQuery('.agent-navdrop-empid').text(),
             UploadedByEmail: jQuery('.agent-navdrop-empemail').text(),
-            PerformedActivityInfo: jsonActivityInfo
+            PerformedActivityInfo: jsonActivityInfo,
+            AMBCITMMUniqKey: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0] + "_" + jQuery('#assetAssignID :selected').val() + "_" + jQuery('#assetUploadMonth :selected').val()
         };
 
         jQuery.ajax({

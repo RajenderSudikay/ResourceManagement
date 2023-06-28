@@ -220,26 +220,28 @@
                 if (obj.jsonResponse.StatusCode == 200) {
                     jQuery('.success-message-popup-title').html("Hey there");
                     jQuery('.database-response').html("<h2><b>" + jQuery('#selectEmployeenameandemail :selected').text() + "</b> report has been uploaded successfully!.</h2>");
-                    jQuery('.message-success-popup').modal('show');
-
-                    jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
-
-                    jQuery('#assetAssignID').empty();
-                    jQuery('#assetAssignID').append(' <option value="" disabled selected>Select Asset ID</option>');
-
-                    jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());
-
-                    jQuery("#assetReportType").val($("#assetReportType option:first").val());
-                    jQuery("#assetremarks").val("");
-                    fileData = new FormData();
-                    jQuery('#reportupload').val('');
-
+                    jQuery('.message-success-popup').modal('show');                   
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");
-                    jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
+                    var message = "<h2>You have already submitted the report for the selected month</h2>";
+                    message += "<h2>" + obj.jsonResponse.Message + "</h2>";
+                    jQuery('.database-response').html(message);                  
                     jQuery('#modal-db-error-alert').modal('show');
                 }
+
+                jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+
+                jQuery('#assetAssignID').empty();
+                jQuery('#assetAssignID').append(' <option value="" disabled selected>Select Asset ID</option>');
+
+                jQuery("#assetUploadMonth").val($("#assetUploadMonth option:first").val());
+
+                jQuery("#assetReportType").val($("#assetReportType option:first").val());
+                jQuery("#assetremarks").val("");
+                fileData = new FormData();
+                jQuery('#reportupload').val('');
+
 
             }
         });
