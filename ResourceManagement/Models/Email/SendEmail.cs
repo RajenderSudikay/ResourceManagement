@@ -10,5 +10,7 @@
         public string EmailBody { get; set; }
         public JsonResponseModel JsonResponse { get; set; } = new JsonResponseModel();
         public dynamic inputObject { get; set; }
+        public string SpecificUserName { get; set; }
+        public string SpecificPassword { get; set; }
     }
 }

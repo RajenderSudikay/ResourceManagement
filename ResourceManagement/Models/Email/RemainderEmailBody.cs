@@ -115,7 +115,7 @@ namespace ResourceManagement.Models.Email
         <br />
         <br />
         <div class='email-foote' style='text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; '>
-            auto generated email.Please do  not reply.
+            auto generated email. please do  not reply.
         </div>
     </div>";
 
@@ -225,7 +225,7 @@ namespace ResourceManagement.Models.Email
         <br />
         <br />
         <div class='email-foote' style='text-align: center; padding-top: 6px; vertical-align: middle; font-family: Calibri; '>
-            auto generated email.Please do  not reply.
+            auto generated email. please do  not reply.
         </div>
     </div>";
 

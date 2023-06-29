@@ -13,20 +13,20 @@ namespace ResourceManagement.Helpers
         {
             try
             {
-                using (MailMessage mm = new MailMessage(ConfigurationManager.AppSettings["SMTPUserName"], emailModel.To))
+                var SMTPUserName = !string.IsNullOrWhiteSpace(emailModel.SpecificUserName) ? emailModel.SpecificUserName : ConfigurationManager.AppSettings["SMTPUserName"];
+                using (MailMessage mm = new MailMessage(SMTPUserName, emailModel.To))
                 {
                     mm.Subject = emailModel.Subject;
                     mm.Body = HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(emailModel.EmailBody));
 
-
                     if (!string.IsNullOrWhiteSpace(emailModel.CC))
                     {
                         var ccEmails = emailModel.CC.Split(',');
-                        foreach(var ccEmail in ccEmails)
+                        foreach (var ccEmail in ccEmails)
                         {
                             mm.CC.Add(ccEmail.Trim());
                         }
-                       
+
                     }
 
                     if (!string.IsNullOrWhiteSpace(emailModel.BCC))
@@ -35,7 +35,7 @@ namespace ResourceManagement.Helpers
                         foreach (var bccEmail in bccEmails)
                         {
                             mm.Bcc.Add(bccEmail.Trim());
-                        }                      
+                        }
                     }
 
                     mm.IsBodyHtml = true;
@@ -43,8 +43,8 @@ namespace ResourceManagement.Helpers
                     smtp.Host = ConfigurationManager.AppSettings["SMTPHost"];
                     smtp.EnableSsl = true;
                     NetworkCredential credentials = new NetworkCredential();
-                    credentials.UserName = ConfigurationManager.AppSettings["SMTPUserName"];
-                    credentials.Password = ConfigurationManager.AppSettings["SMTPPassword"];
+                    credentials.UserName = !string.IsNullOrWhiteSpace(emailModel.SpecificUserName) ? emailModel.SpecificUserName : ConfigurationManager.AppSettings["SMTPUserName"];
+                    credentials.Password = !string.IsNullOrWhiteSpace(emailModel.SpecificPassword) ? emailModel.SpecificPassword : ConfigurationManager.AppSettings["SMTPPassword"];
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = credentials;
                     smtp.Port = System.Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);

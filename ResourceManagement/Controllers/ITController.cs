@@ -75,7 +75,10 @@ namespace ResourceManagement.Controllers
                 Subject = maintenanceModel.Subject,
                 CC = maintenanceModel.CC,
                 EmailBody = emailBody,
-                inputObject = maintenanceModel
+                inputObject = maintenanceModel,
+                SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
+                SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]
+
             };
 
             var EmailResponse = SendEmailFromHRMS(emailModel);
@@ -177,7 +180,9 @@ namespace ResourceManagement.Controllers
                 Subject = "MM Report - " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.MaintenanceMonth.Replace("-", ", ") + " - Asset#: " + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.AssetID,
                 CC = ITMaintenanceEmailAck.itadminIds,
                 EmailBody = emailBody,
-                inputObject = ITMaintenanceEmailAck
+                inputObject = ITMaintenanceEmailAck,
+                SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
+                SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]
             };
 
             var EmailResponse = SendEmailFromHRMS(emailModel);
