@@ -88,8 +88,8 @@
 
                     @foreach (var activity in MMActivities)
                     {
-                        <tr style="background-color: #fff">
-                            <td scope="row" style="max-width: 120px"><textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" rows="1">@activity</textarea></td>
+                        <tr style="background-color: #fff" class="sample-it-maintenace-report">
+                            <td scope="row" style="max-width: 120px"><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1">@activity</textarea></td>
                             <td scope="row" style="max-width:100px">
                                 <select name="selectstatus" class="form-control form-select form-select-lg mb-3 selectstatus" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="background-color:white">
                                     <option value="" disabled selected> -- Select Status -- </option>
@@ -181,7 +181,7 @@
     jQuery(".btn-add-maintenance-report").click(function () {
         //var sampletr = jQuery('.sample-it-maintenace-report');
 
-        var sampletr = '<tr class="sample-it-maintenace-report">'
+        var sampletr = '<tr class="sample-it-maintenace-report dynamic-tr">'
             + '<td scope = "row" style = "max-width:120px"><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1" resize="none"></textarea></td>'
             + '<td scope="row" style="max-width:100px">'
             + '<select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">'
@@ -314,7 +314,7 @@
 
                     jQuery(".selectstatus").val($(".selectstatus option:first").val());
                     jQuery(".maintenance-remarks").val("");
-                    jQuery('.sample-it-maintenace-report').empty();
+                    jQuery('.dynamic-tr').empty();
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");
