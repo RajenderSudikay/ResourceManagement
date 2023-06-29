@@ -12,7 +12,7 @@ namespace ResourceManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class AMBCITRptUpload
+    public partial class AMBCITReportUpload
     {
         public string EmployeeName { get; set; }
         public string EmpAssetID { get; set; }
@@ -25,9 +25,8 @@ namespace ResourceManagement
         public string UploadedByEmail { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string EmpClient { get; set; }
-        public string rptuniqkey { get; set; }
         public string EmployeeID { get; set; }
         public string EmployeeMailAddress { get; set; }
-        public int UniqNo { get; set; }
+        public string ambcrptuniqkey { get; set; }
     }
 }

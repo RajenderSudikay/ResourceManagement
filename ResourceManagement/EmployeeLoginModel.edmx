@@ -29,25 +29,24 @@
           <Property Name="PerformedActivityInfo" Type="varchar(max)" />
           <Property Name="AMBCITMMUniqKey" Type="varchar" MaxLength="900" Nullable="false" />
         </EntityType>
-        <EntityType Name="AMBCITRptUpload">
+        <EntityType Name="AMBCITReportUpload">
           <Key>
-            <PropertyRef Name="rptuniqkey" />
+            <PropertyRef Name="ambcrptuniqkey" />
           </Key>
-          <Property Name="EmployeeName" Type="varchar" MaxLength="1500" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="500" />
           <Property Name="EmpAssetID" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="ReportMonth" Type="varchar" MaxLength="1500" />
-          <Property Name="ReportType" Type="varchar" MaxLength="1500" />
+          <Property Name="ReportMonth" Type="varchar" MaxLength="500" />
+          <Property Name="ReportType" Type="varchar" MaxLength="500" />
           <Property Name="UploadReportPathDetail" Type="varchar" MaxLength="1500" />
           <Property Name="UploadRemarks" Type="varchar" MaxLength="1500" />
-          <Property Name="UploadedByID" Type="varchar" MaxLength="1500" />
-          <Property Name="UploadedByName" Type="varchar" MaxLength="1500" />
-          <Property Name="UploadedByEmail" Type="varchar" MaxLength="1500" />
+          <Property Name="UploadedByID" Type="varchar" MaxLength="500" />
+          <Property Name="UploadedByName" Type="varchar" MaxLength="500" />
+          <Property Name="UploadedByEmail" Type="varchar" MaxLength="500" />
           <Property Name="CreatedDate" Type="date" />
-          <Property Name="EmpClient" Type="varchar" MaxLength="1500" />
-          <Property Name="rptuniqkey" Type="varchar" MaxLength="900" Nullable="false" />
-          <Property Name="EmployeeID" Type="varchar" MaxLength="1500" />
-          <Property Name="EmployeeMailAddress" Type="varchar" MaxLength="1500" />
-          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpClient" Type="varchar" MaxLength="500" />
+          <Property Name="EmployeeID" Type="varchar" MaxLength="500" />
+          <Property Name="EmployeeMailAddress" Type="varchar" MaxLength="500" />
+          <Property Name="ambcrptuniqkey" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="AmbcNewITAssetMgmt">
           <Key>
@@ -819,7 +818,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
         </EntityType>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
           <EntitySet Name="AMBCITMonthlyMaintenance" EntityType="Self.AMBCITMonthlyMaintenance" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AMBCITRptUpload" EntityType="Self.AMBCITRptUpload" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AMBCITReportUpload" EntityType="Self.AMBCITReportUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewITAssetMgmt" EntityType="Self.AmbcNewITAssetMgmt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewPeripherals" EntityType="Self.AmbcNewPeripherals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
@@ -1528,7 +1527,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="AMBCITMonthlyMaintenances" EntityType="TimesheetDBModel.AMBCITMonthlyMaintenance" />
           <EntitySet Name="AmbcNewITAssetMgmts" EntityType="TimesheetDBModel.AmbcNewITAssetMgmt" />
           <EntitySet Name="AmbcNewPeripherals" EntityType="TimesheetDBModel.AmbcNewPeripheral" />
-          <EntitySet Name="AMBCITRptUploads" EntityType="TimesheetDBModel.AMBCITRptUpload" />
+          <EntitySet Name="AMBCITReportUploads" EntityType="TimesheetDBModel.AMBCITReportUpload" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1821,27 +1820,25 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="PPSWarrentyStatus" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="PPSWarrentyStartDate" Type="DateTime" Precision="0" />
           <Property Name="PPSWarrentyEndDate" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="AMBCITRptUpload">
+        </EntityType>        
+        <EntityType Name="AMBCITReportUpload">
           <Key>
-            <PropertyRef Name="EmpAssetID" />
-            <PropertyRef Name="UniqNo" />
+            <PropertyRef Name="ambcrptuniqkey" />
           </Key>
-          <Property Name="EmployeeName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="EmpAssetID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ReportMonth" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="ReportType" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ReportMonth" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ReportType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="UploadReportPathDetail" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="UploadRemarks" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="UploadedByID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="UploadedByName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="UploadedByEmail" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedByID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedByName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedByEmail" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
-          <Property Name="EmpClient" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="rptuniqkey" Type="String" MaxLength="900" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EmployeeID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeMailAddress" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpClient" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeMailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ambcrptuniqkey" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2582,13 +2579,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AMBCITRptUploads">
-            <EntityTypeMapping TypeName="TimesheetDBModel.AMBCITRptUpload">
-              <MappingFragment StoreEntitySet="AMBCITRptUpload">
-                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
+          <EntitySetMapping Name="AMBCITReportUploads">
+            <EntityTypeMapping TypeName="TimesheetDBModel.AMBCITReportUpload">
+              <MappingFragment StoreEntitySet="AMBCITReportUpload">
+                <ScalarProperty Name="ambcrptuniqkey" ColumnName="ambcrptuniqkey" />
                 <ScalarProperty Name="EmployeeMailAddress" ColumnName="EmployeeMailAddress" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-                <ScalarProperty Name="rptuniqkey" ColumnName="rptuniqkey" />
                 <ScalarProperty Name="EmpClient" ColumnName="EmpClient" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UploadedByEmail" ColumnName="UploadedByEmail" />

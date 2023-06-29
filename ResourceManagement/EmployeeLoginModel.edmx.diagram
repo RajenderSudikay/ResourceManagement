@@ -49,6 +49,7 @@
         <EntityTypeShape EntityType="TimesheetDBModel.AmbcNewITAssetMgmt" Width="1.5" PointX="19.375" PointY="10.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.AmbcNewPeripheral" Width="1.5" PointX="17.375" PointY="19.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.AMBCITRptUpload" Width="1.5" PointX="19.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.AMBCITReportUpload" Width="1.5" PointX="11.375" PointY="20.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

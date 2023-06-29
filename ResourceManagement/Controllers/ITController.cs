@@ -252,7 +252,7 @@ namespace ResourceManagement.Controllers
 
                     using (var context = new TimeSheetEntities())
                     {
-                        var contextModel = new AMBCITRptUpload()
+                        var contextModel = new AMBCITReportUpload()
                         {
                             EmpAssetID = fileData.AssetID,
                             EmployeeID = fileData.EmployeeID,
@@ -266,10 +266,10 @@ namespace ResourceManagement.Controllers
                             ReportType = fileData.ReportType,
                             UploadRemarks = fileData.Remarks,
                             CreatedDate = System.DateTime.Now,
-                            rptuniqkey = fileData.ManualGenaratedUniqueNum
+                            ambcrptuniqkey = fileData.ManualGenaratedUniqueNum
                         };
 
-                        context.AMBCITRptUploads.Add(contextModel);
+                        context.AMBCITReportUploads.Add(contextModel);
                         context.SaveChanges();
                     }
 
@@ -353,11 +353,11 @@ namespace ResourceManagement.Controllers
                     }
                     else
                     {
-                        var deleteRecord = db.AMBCITRptUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).FirstOrDefault();
+                        var deleteRecord = db.AMBCITReportUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).FirstOrDefault();
 
                         if (deleteRecord != null)
                         {
-                            db.AMBCITRptUploads.Remove(deleteRecord);
+                            db.AMBCITReportUploads.Remove(deleteRecord);
                             db.SaveChanges();
                         }
                     }
@@ -385,7 +385,7 @@ namespace ResourceManagement.Controllers
                     }
                 }
 
-                var ITOtherReports = db.AMBCITRptUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).ToList();
+                var ITOtherReports = db.AMBCITReportUploads.Where(x => x.EmployeeName == itReportModel.EmployeeName && x.ReportMonth == itReportModel.UploadedMonth && x.EmpAssetID == itReportModel.AssetID).ToList();
 
                 if (ITOtherReports != null && ITOtherReports.Count > 0)
                 {

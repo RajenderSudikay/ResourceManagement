@@ -66,6 +66,6 @@ namespace ResourceManagement
         public virtual DbSet<AMBCITMonthlyMaintenance> AMBCITMonthlyMaintenances { get; set; }
         public virtual DbSet<AmbcNewITAssetMgmt> AmbcNewITAssetMgmts { get; set; }
         public virtual DbSet<AmbcNewPeripheral> AmbcNewPeripherals { get; set; }
-        public virtual DbSet<AMBCITRptUpload> AMBCITRptUploads { get; set; }
+        public virtual DbSet<AMBCITReportUpload> AMBCITReportUploads { get; set; }
     }
 }

@@ -199,7 +199,7 @@
     <Compile Include="AMBCITMonthlyMaintenance.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AMBCITRptUpload.cs">
+    <Compile Include="AMBCITReportUpload.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ambclogin_leave_view.cs">
