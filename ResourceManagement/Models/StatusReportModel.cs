@@ -39,6 +39,7 @@ namespace ResourceManagement.Models
         public string Uploadedby { get; set; }
         public bool IsAuditReport { get; set; }
         public string ProjectCategory { get; set; }
+        public string ProjectList { get; set; }
     }
     public class FieldsIndex
     {
@@ -63,6 +64,8 @@ namespace ResourceManagement.Models
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
         public StatusReportModel StatusReportInfo { get; set; } = new StatusReportModel();
         public JsonResponseModel Response { get; set; } = new JsonResponseModel();
+
+        public string Name { get; set; }
     }
 
     public class RMA_StatusReportViewModel
@@ -262,11 +265,24 @@ namespace ResourceManagement.Models
     }
 
     public class CategoryModel
-    {    
+    {
 
         public string StausName { get; set; }
         public string CategoryName { get; set; }
         public string ColorCode { get; set; }
+    }
+
+    public class ProjectModel
+    {
+        public string Project_Name { get; set; }
+        public DateTime Project_Created_Date { get; set; }
+        public DateTime? Project_Closing_Date_Target { get; set; }
+        public string Project_Priority { get; set; }
+        public string Project_Status { get; set; }
+        public DateTime? Project_Closed_Date_Actual { get; set; }
+        public Decimal CompletedPercentage { get; set; }
+        public Decimal RemainingPercentage { get; set; }
+        public string Project_Summary { get; set; }
     }
 
 }

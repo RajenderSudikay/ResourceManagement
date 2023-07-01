@@ -1606,13 +1606,13 @@ namespace ResourceManagement.Controllers
                             }
 
                             context.con_leaveupdate.AddRange(contextModelList);
-                            context.SaveChanges();                           
+                            context.SaveChanges();
                         }
                     }
 
-                   var leaveEmailInfo = SubmitLeavesEmailGenerate(leaveModel);
+                    var leaveEmailInfo = SubmitLeavesEmailGenerate(leaveModel);
 
-                    if(leaveEmailInfo.EmailSent)
+                    if (leaveEmailInfo.EmailSent)
                     {
                         respone.jsonResponse.StatusCode = 200;
                         respone.jsonResponse.Message = "Leave Apply Email Sent Successfully!";
@@ -1622,7 +1622,7 @@ namespace ResourceManagement.Controllers
                         respone.jsonResponse.StatusCode = 201;
                         respone.jsonResponse.Message = "Leave Apply Email Sent failed to send!";
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -2105,7 +2105,7 @@ namespace ResourceManagement.Controllers
                             break;
 
                         case "Template2":
-                            Template2Updates(fileData, file, workSheet, noOfRow, indexList, model);
+                            //Template2Updates(fileData, file, workSheet, noOfRow, indexList, model);
                             break;
 
                         case "Template3":
@@ -2114,6 +2114,13 @@ namespace ResourceManagement.Controllers
                             //Template3Updates(fileData, file, workSheet, noOfRow, indexList, model);
                             break;
                     }
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(fileData.ProjectList))
+                {
+                    Template2Updates(fileData, model);
                 }
             }
 
@@ -2364,151 +2371,158 @@ namespace ResourceManagement.Controllers
             }
         }
 
-        private static void Template2Updates(StatusReportModel fileData, HttpPostedFileBase file, ExcelWorksheet workSheet, int noOfRow, List<FieldsIndex> indexList, RMA_StatusReportModel model)
+        private static void Template2Updates(StatusReportModel fileData, RMA_StatusReportModel model)
         {
             try
             {
 
                 //Ticket_Prioriy & Ticket& Status
-                var MappingValuesList = new List<FieldsIndex>();
-                MappingValuesList = JsonConvert.DeserializeObject<List<FieldsIndex>>(fileData.ValuesMappingJson);
-
-                int Project_NameIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Name").FirstOrDefault().Index);
-                int Project_SummaryIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Summary").FirstOrDefault().Index);
-                var Project_Created_DateIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Created_Date").FirstOrDefault().Index);
-                var Project_Closing_Date_TargetIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closing_Date_Target").FirstOrDefault().Index);
-                var Project_PriorityIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Priority").FirstOrDefault().Index);
-                var Project_StatusIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Status").FirstOrDefault().Index);
-                var Project_Closed_Date_ActualIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "Project_Closed_Date_Actual").FirstOrDefault().Index);
-                var CompletedPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "CompletedPercentage").FirstOrDefault().Index);
-                var RemainingPercentageIndex = System.Convert.ToInt32(indexList.Where(x => x.FieldName == "RemainingPercentage").FirstOrDefault().Index);
+                var projectList = new List<ProjectModel>();
+                projectList = JsonConvert.DeserializeObject<List<ProjectModel>>(fileData.ProjectList);
 
                 var reportModel = new StatusReport_Template2Model();
 
-                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                foreach (var project in projectList)
                 {
-                    if (workSheet.Cells[rowIterator, Project_NameIndex].Value != null)
+
+                    //PRIORITY LOGIC
+                    var projectPriority = "";
+                    if (!string.IsNullOrWhiteSpace(project.Project_Priority))
                     {
-                        //PRIORITY LOGIC
-                        var projectPriority = "";
-                        if (workSheet.Cells[rowIterator, Project_PriorityIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString()))
-                        {
-                            var rowIteratorPriority = workSheet.Cells[rowIterator, Project_PriorityIndex].Value.ToString();
-                            var mappingListItem = MappingValuesList.Where(x => x.Index == rowIteratorPriority).FirstOrDefault();
-                            if (mappingListItem != null)
-                            {
-                                projectPriority = mappingListItem.FieldName.Trim();
-                            }
-                            else
-                            {
-                                projectPriority = "Low";
-                            }
-                        }
-                        else
-                        {
-                            projectPriority = "Low";
-                        }
-
-                        bool IsOpenProject = false;
-                        bool IsClosedProject = false;
-                        bool IsTODOProject = false;
-                        bool IsCancelledProject = false;
-
-                        var defaultStatus = "default";
-
-                        if (workSheet.Cells[rowIterator, Project_StatusIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString()))
-                        {
-                            var rowIteratorStatus = workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString();
-                            var mappingClosedListItem = MappingValuesList.Where(x => x.FieldName == "Closed" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
-                            if (mappingClosedListItem != null)
-                            {
-                                rowIteratorStatus = mappingClosedListItem.FieldName.Trim();
-                                IsClosedProject = true;
-                            }
-                            else
-                            {
-                                var mappingTODOListItem = MappingValuesList.Where(x => x.FieldName == "TODO" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
-                                if (mappingTODOListItem != null)
-                                {
-                                    IsTODOProject = true;
-                                }
-
-                                var mappingCancelledListItem = MappingValuesList.Where(x => x.FieldName == "Cancelled" && x.Index.Contains(rowIteratorStatus)).FirstOrDefault();
-                                if (mappingCancelledListItem != null)
-                                {
-                                    IsCancelledProject = true;
-                                }
-
-                                if (!IsCancelledProject)
-                                {
-                                    IsOpenProject = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            IsOpenProject = true;
-                        }
-
-                        var closedYear = 0;
-                        var closedMonth = 0;
-                        var createdYear = 0;
-                        var createdMonth = 0;
-
-                        if (workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()))
-                        {
-                            var ticketDateCreated = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString());
-                            var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
-                            createdYear = ticketDateCreated.Year;
-                            createdMonth = ticketDateCreated.Month;
-                        }
-
-                        if (workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()))
-                        {
-                            var ticketDateClosed = System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString());
-                            closedYear = ticketDateClosed.Year;
-                            closedMonth = ticketDateClosed.Month;
-                        }
-
-                        reportModel.Template2Reports.Add(new monthlyreports_Template2()
-                        {
-                            Project_Closed_Date_Actual = workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closed_Date_ActualIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Closing_Date_Target = workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Closing_Date_TargetIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Created_Date = workSheet.Cells[rowIterator, Project_Created_DateIndex].Value != null && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) ? System.Convert.ToDateTime(workSheet.Cells[rowIterator, Project_Created_DateIndex].Value.ToString()) : DateTime.MinValue,
-                            Project_Name = workSheet.Cells[rowIterator, Project_NameIndex].Value != null ? workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString().Trim() : "",
-                            Project_Summary = workSheet.Cells[rowIterator, Project_SummaryIndex].Value != null ? workSheet.Cells[rowIterator, Project_SummaryIndex].Value.ToString().Trim() : "",
-                            Project_Priority = projectPriority,
-                            Project_Status = workSheet.Cells[rowIterator, Project_StatusIndex].Value != null ? workSheet.Cells[rowIterator, Project_StatusIndex].Value.ToString().Trim() : defaultStatus,
-                            Project_Category = fileData.ProjectCategory,
-
-                            CompletedPercentage = workSheet.Cells[rowIterator, CompletedPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, CompletedPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
-                            RemainingPercentage = workSheet.Cells[rowIterator, RemainingPercentageIndex].Value != null ? System.Convert.ToDecimal(workSheet.Cells[rowIterator, RemainingPercentageIndex].Value.ToString().Replace("%", "").Trim()) : 0,
-
-                            Uploadedby = fileData.Uploadedby,
-                            FileNamee = file.FileName,
-                            ConsultantName = fileData.EmployeeName,
-                            Uploaded_Month = fileData.Month,
-                            ProjectID = System.Convert.ToInt32(fileData.ProjectID),
-                            EmplyeeID = fileData.EmployeeID,
-                            Is_Cancelled = IsCancelledProject,
-                            Is_Closed = IsClosedProject,
-                            Is_Open = IsOpenProject,
-                            Is_ToDo = IsTODOProject,
-
-                            Created_Month = createdMonth,
-                            Created_Year = createdYear,
-                            Closed_Month = closedMonth,
-                            Closed_Year = closedYear,
-                            Project_Raisedby = "DELETE DUMMY",
-                            Client_Name = fileData.ClientName,
-
-                            //NEED TO DECIDE
-                            uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Project_NameIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
-
-                        });
+                        projectPriority = project.Project_Priority;
+                    }
+                    else
+                    {
+                        projectPriority = "Low";
                     }
 
+                    bool IsOpenProject = false;
+                    bool IsClosedProject = false;
+                    bool IsTODOProject = false;
+                    bool IsCancelledProject = false;
+
+                    var defaultStatus = "default";
+
+                    if (!string.IsNullOrWhiteSpace(project.Project_Status))
+                    {
+                        if (project.Project_Status == "Closed")
+                        {
+                            IsClosedProject = true;
+                        }
+                        else
+                        {
+                            if (project.Project_Status == "TODO")
+                            {
+                                IsTODOProject = true;
+                            }
+
+                            if (project.Project_Status == "Cancelled")
+                            {
+                                IsCancelledProject = true;
+                            }
+
+                            if (!IsCancelledProject)
+                            {
+                                IsOpenProject = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        IsOpenProject = true;
+                    }
+
+                    var closedYear = 0;
+                    var closedMonth = 0;
+                    var createdYear = 0;
+                    var createdMonth = 0;
+
+                    if (project.Project_Created_Date != DateTime.MinValue)
+                    {
+                        var ticketDateCreated = System.Convert.ToDateTime(project.Project_Created_Date);
+                        var ticketMonthYear = ticketDateCreated.ToString("MMM") + "-" + ticketDateCreated.Year;
+                        createdYear = ticketDateCreated.Year;
+                        createdMonth = ticketDateCreated.Month;
+                    }
+
+                    if (project.Project_Created_Date != DateTime.MinValue)
+                    {
+                        var ticketDateClosed = System.Convert.ToDateTime(project.Project_Created_Date);
+                        closedYear = ticketDateClosed.Year;
+                        closedMonth = ticketDateClosed.Month;
+                    }
+
+                    var Project_Closed_Date_Actual = project.Project_Closed_Date_Actual;
+                    var Project_Closing_Date_Target = project.Project_Closing_Date_Target;
+                    var Project_Created_Date = project.Project_Created_Date;
+
+                    var Project_Name = project.Project_Name;
+                    var Project_Summary = project.Project_Summary;
+                    var Project_Priority = project.Project_Priority;
+                    var Project_Status = project.Project_Status;
+                    var Project_Category = fileData.ProjectCategory;
+
+                    var CompletedPercentage = project.CompletedPercentage;
+                    var RemainingPercentage = project.RemainingPercentage;
+
+                    var Uploadedby = fileData.Uploadedby;
+                    var FileNamee = "NA";
+                    var ConsultantName = fileData.EmployeeName;
+                    var Uploaded_Month = fileData.Month;
+                    var ProjectID = System.Convert.ToInt32(fileData.ProjectID);
+                    var EmplyeeID = fileData.EmployeeID;
+                    var Is_Cancelled = IsCancelledProject;
+                    var Is_Closed = IsClosedProject;
+                    var Is_Open = IsOpenProject;
+                    var Is_ToDo = IsTODOProject;
+
+                    var Created_Month = createdMonth;
+                    var Created_Year = createdYear;
+                    var Closed_Month = closedMonth;
+                    var Closed_Year = closedYear;
+                    var Project_Raisedby = "NA";
+                    var Client_Name = fileData.ClientName;
+
+                    //NEED TO DECIDE
+                    var uniquekey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID;
+                    reportModel.Template2Reports.Add(new monthlyreports_Template2()
+                    {
+                        Project_Closed_Date_Actual = project.Project_Closed_Date_Actual,
+                        Project_Closing_Date_Target = project.Project_Closing_Date_Target,
+                        Project_Created_Date = project.Project_Created_Date,
+                        Project_Name = project.Project_Name,
+                        Project_Summary = project.Project_Summary,
+                        Project_Priority = project.Project_Priority,
+                        Project_Status = project.Project_Status,
+                        Project_Category = fileData.ProjectCategory,
+
+                        CompletedPercentage = project.CompletedPercentage,
+                        RemainingPercentage = project.RemainingPercentage,
+
+                        Uploadedby = fileData.Uploadedby,
+                        FileNamee = "NA",
+                        ConsultantName = fileData.EmployeeName,
+                        Uploaded_Month = fileData.Month,
+                        ProjectID = System.Convert.ToInt32(fileData.ProjectID),
+                        EmplyeeID = fileData.EmployeeID,
+                        Is_Cancelled = IsCancelledProject,
+                        Is_Closed = IsClosedProject,
+                        Is_Open = IsOpenProject,
+                        Is_ToDo = IsTODOProject,
+
+                        Created_Month = createdMonth,
+                        Created_Year = createdYear,
+                        Closed_Month = closedMonth,
+                        Closed_Year = closedYear,
+                        Project_Raisedby = "NA",
+                        Client_Name = fileData.ClientName,
+
+                        //NEED TO DECIDE
+                        uniquekey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID
+
+                    });
                 }
+
                 using (var context = new TimeSheetEntities())
                 {
                     context.monthlyreports_Template2.AddRange(reportModel.Template2Reports);
@@ -4158,6 +4172,34 @@ namespace ResourceManagement.Controllers
                 if (employeeInfo != null && employeeInfo.Count() > 0)
                 {
                     return Json(employeeInfo, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        //projectID IS from Active EMP View table
+        // for one consultant for one client will have one project code
+        //ClientProject Name, this is the project which emp worked upon
+        public JsonResult GetClientProjectsBasedOnEmpId(string empID, int? projectID, string projectName)
+        {
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var empClientProject = new List<monthlyreports_Template2>();
+                if (projectID != null && !string.IsNullOrEmpty(empID) && string.IsNullOrWhiteSpace(projectName))
+                {
+                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
+                }
+                else
+                {
+                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName).OrderBy(x => x.CompletedPercentage).ToList();
+
+                    empClientProject.Reverse();
+                }
+
+                if (empClientProject != null && empClientProject.Count() > 0)
+                {
+                    return Json(JsonConvert.SerializeObject(empClientProject.DistinctBy(x => x.Project_Name)), JsonRequestBehavior.AllowGet);
                 }
             }
             return null;
