@@ -207,8 +207,8 @@
             <div class="clearfix"></div>
 
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group div-statusreporttype">
+                <div class="col-md-4 div-statusreporttype" style="display: none">
+                    <div class="form-group ">
                         <label for="reporttype">Report Type: <b style="color:red">*</b></label>
                         <select id="statusreporttype" name="reporttype" class="form-control form-select form-select-lg mb-3" required>
                             <option value="Please Select Report Type">Please Select Report Type</option>
@@ -583,8 +583,8 @@
         var trID = GenerateGUID();
         var sampletr = '<tr id="' + trID + '" style="background-color: #fff" class="project-report-tr">'
             + ' <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a><select id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" name="projectname" class="form-control projectname" required></td>'
-            + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="' + GenerateGUID() + '" /></td>'
-            + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="' + GenerateGUID() + '" /></td>'
+            + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate table-date" id="' + GenerateGUID() + '" /></td>'
+            + '<td><input disabled type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget table-date" id="' + GenerateGUID() + '" /></td>'
             + '<td>'
             + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>'
             + '<option value="">Select Priority</option>'
@@ -596,7 +596,7 @@
             + '</td>'
             + '<td>'
             + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
-            + '<option value="Please Select Status">Select Status</option>'
+            + '<option value="">Select Status</option>'
             + '<option value="Active">Active</option>'
             + '<option value="Closed">Closed</option>'
             + '<option value="Hold">Hold</option>'
@@ -604,7 +604,7 @@
             + '<option value="TODO">TODO</option>'
             + '</select>'
             + '</td>'
-            + '<td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
+            + '<td><input type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
             + '<td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="' + GenerateGUID() + '" />'
             + '<small class="complpercenhelp" style="color: green; min-width: 100%" ></small></td>'
             + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
@@ -616,7 +616,7 @@
     });
 
     jQuery(document).on("change", ".projectname", function () {
-          //new project add from dropdown selection
+        //new project add from dropdown selection
         if (jQuery(this).val() == "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template2") {
             var parentElemnt = jQuery(this).closest('tr');
             parentElemnt.remove();
@@ -624,8 +624,8 @@
 
             var sampletr = '<tr id=' + trID + ' style="background-color: #fff" class="project-report-tr">'
                 + ' <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a> <textarea class="form-control projectname" id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" rows="1"></textarea></td>'
-                + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="' + GenerateGUID() + '" /></td>'
-                + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="' + GenerateGUID() + '" /></td>'
+                + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate table-date" id="' + GenerateGUID() + '" /></td>'
+                + '<td><input disabled type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget table-date" id="' + GenerateGUID() + '" /></td>'
                 + '<td>'
                 + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>'
                 + '<option value="">--Select--</option>'
@@ -645,7 +645,7 @@
                 + '<option value="TODO">TODO</option>'
                 + '</select>'
                 + '</td>'
-                + '<td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
+                + '<td><input type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
                 + '<td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
                 + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
                 + '</tr>';
@@ -771,13 +771,33 @@
                         var data = JSON.parse(obj);
                         if (data.length > 0) {
                             parentElemnt.find('.projectname').val(data[0].Project_Name);
+                            parentElemnt.find('.projectname').css("border", "1px solid green");
+
                             parentElemnt.find('.projectcreateddate').val(moment(data[0].Project_Created_Date).format("YYYY-MM-DD"));
+                            parentElemnt.find('.projectcreateddate').css("border", "1px solid green");
+
                             parentElemnt.find('.projectenddatetarget').val(moment(data[0].Project_Closing_Date_Target).format("YYYY-MM-DD"));
+                            parentElemnt.find('.projectenddatetarget').css("border", "1px solid green");
+
                             parentElemnt.find('.projectpriority').val(data[0].Project_Priority);
+                            parentElemnt.find('.projectpriority').css("border", "1px solid green");
+
                             parentElemnt.find('.projectstatus').val(data[0].Project_Status);
+                            parentElemnt.find('.projectstatus').css("border", "1px solid green");
+
                             parentElemnt.find('.projectenddateactual').val(moment(data[0].Project_Closed_Date_Actual).format("YYYY-MM-DD"));
-                            parentElemnt.find('.complpercenhelp').text(data[0].CompletedPercentage + "% till last month");
+                            if (data[0].Project_Closed_Date_Actual != null && data[0].Project_Closed_Date_Actual != "") {
+                                parentElemnt.find('.projectenddateactual').css("border", "1px solid green");
+                            }
+                           
+
+                            parentElemnt.find('.complpercenhelp').text(data[0].CompletedPercentage + "% till last month");                         
+
                             parentElemnt.find('.projectsummary').val(data[0].Project_Summary);
+                            if (data[0].Project_Summary != null && data[0].Project_Summary != "") {
+                                parentElemnt.find('.projectsummary').css("border", "1px solid green");
+                            }
+                           
                         }
                     }
 
@@ -785,9 +805,17 @@
                         var parentElemnt = $ele.closest('tr');
                         var data = JSON.parse(obj);
                         if (data.length > 0) {
-                            parentElemnt.find('.projectname').val(data[0].Project_Name);                         
-                            parentElemnt.find('.projectstatus').val(data[0].Project_Status);                         
+                            parentElemnt.find('.projectname').val(data[0].Project_Name);
+                            parentElemnt.find('.projectname').css("border", "1px solid green");
+
+                            parentElemnt.find('.projectstatus').val(data[0].Project_Status);
+                            parentElemnt.find('.projectstatus').css("border", "1px solid green");
+
                             parentElemnt.find('.projectsummary').val(data[0].Project_Summary);
+                            if (data[0].Project_Summary != null && data[0].Project_Summary != "") {
+                                parentElemnt.find('.projectsummary').css("border", "1px solid green");
+                            }
+                          
                         }
                     }
                 }
@@ -1035,6 +1063,7 @@
     });
 
     jQuery(document).on("change", "#StatusReportInfo_Month", function () {
+        jQuery('.div-statusreporttype').show();
         if (jQuery('#StatusReportInfo_Month :selected').text() == "Please select month") {
             jQuery('#StatusReportInfo_Month').css("border", "1px solid red");
             jQuery('.month-invalid-feedback').show();
@@ -1255,6 +1284,68 @@
         }
     });
 
+    jQuery(document).on('change', 'textarea', function () {     
+
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+    jQuery(document).on('keyup input', "input[type='number']", function () {
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+   
+ 
+
+    jQuery(document).on('change', '.table-date', function () {
+        var parentElement = jQuery(this).parents('.project-report-tr');
+        var currentField = jQuery(this);
+        jQuery('.projectenddatetarget').prop("disabled", false);
+        if (jQuery(this).hasClass('projectcreateddate')) {
+            var minDate = jQuery(this).val();
+            minDate = new Date(minDate);
+            minDate = moment(minDate).format("YYYY-MM-DD");
+            parentElement.find('.projectenddatetarget').attr("min", minDate);
+        }      
+
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+    jQuery(document).on("change", "select", function () {
+        var currentField = jQuery(this);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId + ' :selected').val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+
 
     //Final submit post confirmation
     jQuery(".btn-upload-report").click(function () {
@@ -1387,25 +1478,74 @@
             if (jQuery('#statusreporttype :selected').val() == "Template2") {
                 var projectRows = jQuery('.project-report-tr');
                 jQuery.each(projectRows, function (i, item) {
-                    var projectname = jQuery(this).find('.projectname').val();
-                    var projectcreateddate = jQuery(this).find('.projectcreateddate').val();
-                    var projectenddatetarget = jQuery(this).find('.projectenddatetarget').val();
-                    var projectpriority = jQuery(this).find('.projectpriority').val();
-                    var projectstatus = jQuery(this).find('.projectstatus').val();
+                    var projectname = jQuery(this).find('.projectname');
+                    if (projectname.val() == "") {
+                        projectname.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectname.css("border", "1px solid green");
+                    }
+
+                    var projectcreateddate = jQuery(this).find('.projectcreateddate');
+                    if (projectcreateddate.val() == "") {
+                        projectcreateddate.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectcreateddate.css("border", "1px solid green");
+                    }
+
+                    var projectenddatetarget = jQuery(this).find('.projectenddatetarget');
+                    if (projectenddatetarget.val() == "") {
+                        projectenddatetarget.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectenddatetarget.css("border", "1px solid green");
+                    }
+
+                    var projectpriority = jQuery(this).find('.projectpriority');
+                    if (projectpriority.val() == "") {
+                        projectpriority.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectpriority.css("border", "1px solid green");
+                    }
+
+                    var projectstatus = jQuery(this).find('.projectstatus');
+                    if (projectstatus.val() == "") {
+                        projectstatus.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectstatus.css("border", "1px solid green");
+                    }
+
                     var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
-                    var projectcompletedpercen = jQuery(this).find('.projectcompletedpercen').val();
+
+                    var projectcompletedpercen = jQuery(this).find('.projectcompletedpercen');
+                    if (projectcompletedpercen.val() == "") {
+                        projectcompletedpercen.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectcompletedpercen.css("border", "1px solid green");
+                    }
+
                     var projectsummary = jQuery(this).find('.projectsummary').val();
 
                     projectCategory = "newrunningprojects";
 
                     var projectModel = {
-                        Project_Name: projectname,
-                        Project_Created_Date: projectcreateddate,
-                        Project_Closing_Date_Target: projectenddatetarget,
-                        Project_Priority: projectpriority,
-                        Project_Status: projectstatus,
+                        Project_Name: projectname.val(),
+                        Project_Created_Date: projectcreateddate.val(),
+                        Project_Closing_Date_Target: projectenddatetarget.val(),
+                        Project_Priority: projectpriority.val(),
+                        Project_Status: projectstatus.val(),
                         Project_Closed_Date_Actual: projectenddateactual,
-                        CompletedPercentage: projectcompletedpercen,
+                        CompletedPercentage: projectcompletedpercen.val(),
                         RemainingPercentage: "0",
                         Project_Summary: projectsummary
                     };
@@ -1417,31 +1557,52 @@
             if (jQuery('#statusreporttype :selected').val() == "Template4") {
                 var projectRows = jQuery('.activity-report-tr');
                 jQuery.each(projectRows, function (i, item) {
-                    var projectname = jQuery(this).find('.projectname').val();
-                    var projectcreateddate = jQuery(this).find('.projectcreateddate').val();
-                    var projectenddatetarget = jQuery(this).find('.projectenddatetarget').val();
-                    var projectpriority = "";
-                    var projectstatus = jQuery(this).find('.projectstatus').val();
-                    var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
+                    var projectname = jQuery(this).find('.projectname');
+                    if (projectname.val() == "") {
+                        projectname.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectname.css("border", "1px solid green");
+                    }
+
+                
+
+                    var projectstatus = jQuery(this).find('.projectstatus');
+                    if (projectstatus.val() == "") {
+                        projectstatus.css("border", "1px solid red");
+                        fileValidated = false;
+                    }
+                    else {
+                        projectstatus.css("border", "1px solid green");
+                    }
+
+                  
                     var projectcompletedpercen = "100";
                     var projectsummary = jQuery(this).find('.projectsummary').val();
 
                     projectCategory = "regularprojects";
 
                     var projectModel = {
-                        Project_Name: projectname,
-                        Project_Created_Date: projectcreateddate,
-                        Project_Closing_Date_Target: projectenddatetarget,
-                        Project_Priority: projectpriority,
-                        Project_Status: projectstatus,
-                        Project_Closed_Date_Actual: projectenddateactual,
+                        Project_Name: projectname.val(),                      
+                        Project_Status: projectstatus.val(),
                         CompletedPercentage: projectcompletedpercen,
                         RemainingPercentage: "0",
+                        Project_Priority: "Low",
                         Project_Summary: projectsummary
                     };
 
                     projectReportList.push(projectModel);
                 });
+            }
+        }
+
+        if (jQuery('#statusreporttype :selected').val() == "Template2" || jQuery('#statusreporttype :selected').val() == "Template4") {
+            if (projectReportList.length == 0) {
+                fileValidated = false;
+                jQuery('.error-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                jQuery('.database-response').html("<h2>Please add project/activities to upload.</h2>");
+                jQuery('#modal-db-error-alert').modal('show');
             }
         }
 

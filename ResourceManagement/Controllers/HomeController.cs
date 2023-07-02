@@ -2452,39 +2452,6 @@ namespace ResourceManagement.Controllers
                         closedMonth = ticketDateClosed.Month;
                     }
 
-                    var Project_Closed_Date_Actual = project.Project_Closed_Date_Actual;
-                    var Project_Closing_Date_Target = project.Project_Closing_Date_Target;
-                    var Project_Created_Date = project.Project_Created_Date;
-
-                    var Project_Name = project.Project_Name;
-                    var Project_Summary = project.Project_Summary;
-                    var Project_Priority = project.Project_Priority;
-                    var Project_Status = project.Project_Status;
-                    var Project_Category = fileData.ProjectCategory;
-
-                    var CompletedPercentage = project.CompletedPercentage;
-                    var RemainingPercentage = project.RemainingPercentage;
-
-                    var Uploadedby = fileData.Uploadedby;
-                    var FileNamee = "NA";
-                    var ConsultantName = fileData.EmployeeName;
-                    var Uploaded_Month = fileData.Month;
-                    var ProjectID = System.Convert.ToInt32(fileData.ProjectID);
-                    var EmplyeeID = fileData.EmployeeID;
-                    var Is_Cancelled = IsCancelledProject;
-                    var Is_Closed = IsClosedProject;
-                    var Is_Open = IsOpenProject;
-                    var Is_ToDo = IsTODOProject;
-
-                    var Created_Month = createdMonth;
-                    var Created_Year = createdYear;
-                    var Closed_Month = closedMonth;
-                    var Closed_Year = closedYear;
-                    var Project_Raisedby = "NA";
-                    var Client_Name = fileData.ClientName;
-
-                    //NEED TO DECIDE
-                    var uniquekey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID;
                     reportModel.Template2Reports.Add(new monthlyreports_Template2()
                     {
                         Project_Closed_Date_Actual = project.Project_Closed_Date_Actual,
