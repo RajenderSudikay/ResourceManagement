@@ -215,6 +215,7 @@
                             <option value="Template1">Incident Report</option>
                             <option value="Template2">Project Report</option>
                             <option value="Template3">Audit Report</option>
+                            <option value="Template4">Monthly Activities</option>
                         </select>
 
                         <div class="invalid-feedback reporttype-invalid-feedback">
@@ -304,7 +305,51 @@
                     </tr>
                 </thead>
 
-                <tbody class="maintenance-report-table-grid">
+                <tbody class="project-report-table-grid">
+                    @*<tr style="background-color: #fff; display: none" class="project-report-tr">
+                            <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>
+                                    <option value="Please Select Priority">Select Priority</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>
+                                    <option value="Please Select Status">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="Hold">Hold</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="TBD">TBD</option>
+                                    <option value="NA">NA</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+
+                            <td><textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%;" rows="1"></textarea></td>
+                        </tr>*@
+                </tbody>
+            </table>
+
+
+            <table class="table" id="monthlyactivity-report-table" style="margin-top: 2px; display: none">
+                <thead class="table-bordered">
+                    <tr style="background-color: #005983">
+                        <th class="" scope="col" style="color: white; text-align: center;">Activity</th>
+                        <th class="" scope="col" style="color: white; text-align: center;">Status</th>
+                        <th class="" scope="col" style="color: white; text-align: center;">Summary</th>
+
+                    </tr>
+                </thead>
+
+                <tbody class="monthlyactivity-report-table-grid">
                     @*<tr style="background-color: #fff; display: none" class="project-report-tr">
                             <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
                             <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
@@ -345,7 +390,7 @@
                 <div class="col-md-offset-2 col-md-10 ">
                     <input value="Use Recommended Templates" class="btn btn-download-template custom-button" style="border-radius: 10px; font-weight: bold; width: 230px; color: white !important" />
                     <button type="submit" class="btn btn-success btn-lg update-project-report" style="display: none; width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Add project</b></button>
-
+                    <button type="submit" class="btn btn-success btn-lg activity-project-report" style="display: none; width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Add activity</b></button>
                     <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; height: 40px; color: white !important " />
                 </div>
             </div>
@@ -504,6 +549,36 @@
         return guid;
     }
 
+    function DeleteMMReport(ele) {
+        var parentElement = $(ele).parents('.project-report-tr');
+        parentElement.remove();
+
+        var parentElement = $(ele).parents('.activity-report-tr');
+        parentElement.remove();
+    }
+
+    jQuery(".activity-project-report").click(function () {
+        var trID = GenerateGUID();
+        var sampletr = '<tr id="' + trID + '" style="background-color: #fff" class="activity-report-tr">'
+            + '<td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a><select id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" name="projectname" class="form-control projectname" required></td>'
+            + '<td>'
+            + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
+            + '<option value="">--Select--</option>'
+            + '<option value="Active">Active</option>'
+            + '<option value="Closed">Closed</option>'
+            + '<option value="Hold">Hold</option>'
+            + '<option value="Cancelled">Cancelled</option>'
+            + '<option value="TODO">TODO</option>'
+            + '</select>'
+            + '</td>'
+            + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
+            + '</tr>';
+
+        $('.monthlyactivity-report-table-grid').append(sampletr);
+
+        GetEmpClientWorkingProjects(null, null, trID, "regularprojects", false);
+    });
+
     jQuery(".update-project-report").click(function () {
         var trID = GenerateGUID();
         var sampletr = '<tr id="' + trID + '" style="background-color: #fff" class="project-report-tr">'
@@ -527,7 +602,6 @@
             + '<option value="Hold">Hold</option>'
             + '<option value="Cancelled">Cancelled</option>'
             + '<option value="TODO">TODO</option>'
-            /*   + '<option value="NA">NA</option>'*/
             + '</select>'
             + '</td>'
             + '<td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
@@ -536,13 +610,14 @@
             + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
             + '</tr>';
 
-        $('.maintenance-report-table-grid').append(sampletr);
+        $('.project-report-table-grid').append(sampletr);
 
-        GetEmpClientWorkingProjects(null, null, trID);
+        GetEmpClientWorkingProjects(null, null, trID, "newrunningprojects", false);
     });
 
     jQuery(document).on("change", ".projectname", function () {
-        if (jQuery(this).val() == "Add New Project") {
+          //new project add from dropdown selection
+        if (jQuery(this).val() == "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template2") {
             var parentElemnt = jQuery(this).closest('tr');
             parentElemnt.remove();
             var trID = GenerateGUID();
@@ -553,7 +628,7 @@
                 + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="' + GenerateGUID() + '" /></td>'
                 + '<td>'
                 + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>'
-                + '<option value="">Select Priority</option>'
+                + '<option value="">--Select--</option>'
                 + '<option value="Critical">Critical</option>'
                 + '<option value="High">High</option>'
                 + '<option value="Medium">Medium</option>'
@@ -562,13 +637,12 @@
                 + '</td>'
                 + '<td>'
                 + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
-                + '<option value="Please Select Status">Select Status</option>'
+                + '<option value="">--Select--</option>'
                 + '<option value="Active">Active</option>'
                 + '<option value="Closed">Closed</option>'
                 + '<option value="Hold">Hold</option>'
                 + '<option value="Cancelled">Cancelled</option>'
                 + '<option value="TODO">TODO</option>'
-                /*   + '<option value="NA">NA</option>'*/
                 + '</select>'
                 + '</td>'
                 + '<td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
@@ -576,8 +650,42 @@
                 + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
                 + '</tr>';
 
-            $('.maintenance-report-table-grid').append(sampletr);
-            GetEmpClientWorkingProjects(null, null, null);
+            $('.project-report-table-grid').append(sampletr);
+            GetEmpClientWorkingProjects(null, null, null, "newrunningprojects", false);
+        }
+        //By deault loading client projects
+        if (jQuery(this).val() != "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template2") {
+            GetEmpClientWorkingProjects(jQuery(this), jQuery(this).val(), null, "newrunningprojects", true);
+        }
+
+        //new project add from dropdown selection
+        if (jQuery(this).val() == "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template4") {
+            var parentElemnt = jQuery(this).closest('tr');
+            parentElemnt.remove();
+
+            var trID = GenerateGUID();
+            var sampletr = '<tr id="' + trID + '" style="background-color: #fff" class="activity-report-tr">'
+                + ' <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a><textarea id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" rows="1" name="projectname" class="form-control projectname" required></textarea></td>'
+                + '<td>'
+                + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
+                + '<option value="">--Select--</option>'
+                + '<option value="Active">Active</option>'
+                + '<option value="Closed">Closed</option>'
+                + '<option value="Hold">Hold</option>'
+                + '<option value="Cancelled">Cancelled</option>'
+                + '<option value="TODO">TODO</option>'
+                + '</select>'
+                + '</td>'
+                + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
+                + '</tr>';
+
+            $('.monthlyactivity-report-table-grid').append(sampletr);
+            GetEmpClientWorkingProjects(null, null, null, "regularprojects", false);
+        }
+
+        //By deault loading client projects
+        if (jQuery(this).val() != "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template4") {
+            GetEmpClientWorkingProjects(jQuery(this), jQuery(this).val(), null, "regularprojects", true);
         }
 
     });
@@ -638,48 +746,59 @@
     });
 
 
-    function GetEmpClientWorkingProjects($ele, projectName, $trelementID) {
+    function GetEmpClientWorkingProjects($ele, projectName, $trelementID, projectCategory, dropdownChangeEvent) {
         jQuery.ajax({
             type: "POST",
             url: "/GetClientProjectsBasedOnEmpId",
             dataType: "JSON",
-            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "projectID": jQuery('#statusreportEmpClient :selected').val(), "projectName": projectName },
+            data: { "empID": jQuery('#StatusReportInfo_EmployeeName :selected').val(), "projectID": jQuery('#statusreportEmpClient :selected').val(), "projectName": projectName, "projectCategory": projectCategory },
             success: function (obj) {
                 var data = JSON.parse(obj);
                 //This condition to fill the projects
-                if (projectName == undefined || projectName == "") {
+                if (dropdownChangeEvent == false) {
                     $trElement = jQuery('#' + $trelementID);
                     /*  $trElement.find('.projectname').empty();*/
-                    $trElement.find('.projectname').append('<option value="">Select Project</option>');
-                    $trElement.find('.projectname').append('<option value="Add New Project">Add New Project</option>');
+                    $trElement.find('.projectname').append('<option value="">--Select--</option>');
+                    $trElement.find('.projectname').append('<option value="Add New Project" style="color:lightgreen; font-weight:bold">Add New</option>');
                     jQuery.each(data, function (i, item) {
                         $trElement.find('.projectname').append('<option value="' + item.Project_Name + '">' + item.Project_Name + '</option>');
                     });
                 }
                 //Based on project selection fill other details like date, status, compl percenatgs
                 else {
-                    var parentElemnt = $ele.closest('tr');
-                    var data = JSON.parse(obj);
-                    /*  jQuery.each(data, function (i, item) {*/
-                    parentElemnt.find('.projectname').val(data[0].Project_Name);
-                    parentElemnt.find('.projectcreateddate').val(moment(data[0].Project_Created_Date).format("YYYY-MM-DD"));
-                    parentElemnt.find('.projectenddatetarget').val(moment(data[0].Project_Closing_Date_Target).format("YYYY-MM-DD"));
-                    parentElemnt.find('.projectpriority').val(data[0].Project_Priority);
-                    parentElemnt.find('.projectstatus').val(data[0].Project_Status);
-                    parentElemnt.find('.projectenddateactual').val(moment(data[0].Project_Closed_Date_Actual).format("YYYY-MM-DD"));
-                    parentElemnt.find('.complpercenhelp').text(data[0].CompletedPercentage + "% till last month");
-                    parentElemnt.find('.projectsummary').val(data[0].Project_Summary);
-                    return;
-                    /* });*/
+                    if (jQuery('#statusreporttype :selected').val() == "Template2") {
+                        var parentElemnt = $ele.closest('tr');
+                        var data = JSON.parse(obj);
+                        if (data.length > 0) {
+                            parentElemnt.find('.projectname').val(data[0].Project_Name);
+                            parentElemnt.find('.projectcreateddate').val(moment(data[0].Project_Created_Date).format("YYYY-MM-DD"));
+                            parentElemnt.find('.projectenddatetarget').val(moment(data[0].Project_Closing_Date_Target).format("YYYY-MM-DD"));
+                            parentElemnt.find('.projectpriority').val(data[0].Project_Priority);
+                            parentElemnt.find('.projectstatus').val(data[0].Project_Status);
+                            parentElemnt.find('.projectenddateactual').val(moment(data[0].Project_Closed_Date_Actual).format("YYYY-MM-DD"));
+                            parentElemnt.find('.complpercenhelp').text(data[0].CompletedPercentage + "% till last month");
+                            parentElemnt.find('.projectsummary').val(data[0].Project_Summary);
+                        }
+                    }
+
+                    if (jQuery('#statusreporttype :selected').val() == "Template4") {
+                        var parentElemnt = $ele.closest('tr');
+                        var data = JSON.parse(obj);
+                        if (data.length > 0) {
+                            parentElemnt.find('.projectname').val(data[0].Project_Name);                         
+                            parentElemnt.find('.projectstatus').val(data[0].Project_Status);                         
+                            parentElemnt.find('.projectsummary').val(data[0].Project_Summary);
+                        }
+                    }
                 }
             }
         });
     }
 
 
-    jQuery(document).on("change", ".projectname", function () {
-        GetEmpClientWorkingProjects(jQuery(this), jQuery(this).val());
-    });
+    //jQuery(document).on("change", ".projectname", function () {
+    //    GetEmpClientWorkingProjects(jQuery(this), jQuery(this).val());
+    //});
 
     jQuery('textarea').on('input', function () {
         this.style.height = 'auto';
@@ -847,6 +966,8 @@
 
     jQuery('#statusreporttype').change(function (evt) {
         jQuery(".dynamic-field-binding").empty();
+        jQuery('.monthlyactivity-report-table').empty();
+        jQuery('.project-report-table-grid').empty();
 
         if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
             jQuery('#statusreporttype').css("border", "1px solid red");
@@ -860,6 +981,17 @@
         }
 
         jQuery('#reportcategory :selected').val('');
+
+        jQuery('.update-project-report').hide();
+        jQuery('.add-project-report').hide();
+        jQuery('.div-statusreportcategory').hide();
+        jQuery('#project-report-table').hide();
+        jQuery('.btn-download-template').show();
+        jQuery('.file-ipload-div').hide();
+        jQuery('#project-report-table').hide();
+        jQuery('#monthlyactivity-report-table').hide();
+        jQuery('.activity-project-report').hide();
+
 
         if (jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") {
             jQuery('.file-ipload-div').show();
@@ -882,13 +1014,18 @@
             jQuery('.div-statusreportcategory').show();
             jQuery('#project-report-table').show();
         }
-        else {
-            jQuery('.update-project-report').hide();
-            jQuery('.add-project-report').hide();
-            jQuery('.div-statusreportcategory').hide();
+
+
+        if (jQuery('#statusreporttype :selected').val() == "Template4") {
+            jQuery('.file-ipload-div').hide();
+            jQuery('.add-project-report').show();
+            jQuery('.btn-download-template').hide();
+            jQuery('.excel-field-mapping-div').hide();
+            jQuery('.div-statusreportcategory').show();
             jQuery('#project-report-table').hide();
-            jQuery('.btn-download-template').show();
-            jQuery('.file-ipload-div').show();
+            jQuery('#monthlyactivity-report-table').show();
+            jQuery('.update-project-report').hide();
+            jQuery('.activity-project-report').show();
         }
 
         jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
@@ -1138,7 +1275,7 @@
             jQuery('.reportupload-invalid-feedback').hide();
         }
 
-        if (jQuery('#statusreporttype :selected').val() == "Template2") {
+        if (jQuery('#statusreporttype :selected').val() == "Template2" || jQuery('#statusreporttype :selected').val() == "Template4") {
 
             fileValidated = true;
         }
@@ -1187,7 +1324,7 @@
         var projectReportList = new Array();
         var projectCategory = "";
 
-        if (jQuery('#statusreporttype :selected').val() != "Template2") {
+        if (jQuery('#statusreporttype :selected').val() != "Template2" && jQuery('#statusreporttype :selected').val() != "Template4") {
             var fieldMapping = jQuery('.excel-columns');
             var excelColumnMappingFieldIndexs = new Array();
 
@@ -1247,35 +1384,65 @@
             });
         }
         else {
-            var projectRows = jQuery('.project-report-tr');
-            jQuery.each(projectRows, function (i, item) {
-                var projectname = jQuery(this).find('.projectname').val();
-                var projectcreateddate = jQuery(this).find('.projectcreateddate').val();
-                var projectenddatetarget = jQuery(this).find('.projectenddatetarget').val();
-                var projectpriority = jQuery(this).find('.projectpriority').val();
-                var projectstatus = jQuery(this).find('.projectstatus').val();
-                var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
-                var projectcompletedpercen = jQuery(this).find('.projectcompletedpercen').val();
-                var projectsummary = jQuery(this).find('.projectsummary').val();
+            if (jQuery('#statusreporttype :selected').val() == "Template2") {
+                var projectRows = jQuery('.project-report-tr');
+                jQuery.each(projectRows, function (i, item) {
+                    var projectname = jQuery(this).find('.projectname').val();
+                    var projectcreateddate = jQuery(this).find('.projectcreateddate').val();
+                    var projectenddatetarget = jQuery(this).find('.projectenddatetarget').val();
+                    var projectpriority = jQuery(this).find('.projectpriority').val();
+                    var projectstatus = jQuery(this).find('.projectstatus').val();
+                    var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
+                    var projectcompletedpercen = jQuery(this).find('.projectcompletedpercen').val();
+                    var projectsummary = jQuery(this).find('.projectsummary').val();
 
-                projectCategory = "newrunningprojects";
+                    projectCategory = "newrunningprojects";
 
-                var projectModel = {
-                    Project_Name: projectname,
-                    Project_Created_Date: projectcreateddate,
-                    Project_Closing_Date_Target: projectenddatetarget,
-                    Project_Priority: projectpriority,
-                    Project_Status: projectstatus,
-                    Project_Closed_Date_Actual: projectenddateactual,
-                    CompletedPercentage: projectcompletedpercen,
-                    RemainingPercentage: "0",
-                    Project_Summary: projectsummary
-                };
+                    var projectModel = {
+                        Project_Name: projectname,
+                        Project_Created_Date: projectcreateddate,
+                        Project_Closing_Date_Target: projectenddatetarget,
+                        Project_Priority: projectpriority,
+                        Project_Status: projectstatus,
+                        Project_Closed_Date_Actual: projectenddateactual,
+                        CompletedPercentage: projectcompletedpercen,
+                        RemainingPercentage: "0",
+                        Project_Summary: projectsummary
+                    };
 
-                projectReportList.push(projectModel);
-            });
+                    projectReportList.push(projectModel);
+                });
+            }
 
+            if (jQuery('#statusreporttype :selected').val() == "Template4") {
+                var projectRows = jQuery('.activity-report-tr');
+                jQuery.each(projectRows, function (i, item) {
+                    var projectname = jQuery(this).find('.projectname').val();
+                    var projectcreateddate = jQuery(this).find('.projectcreateddate').val();
+                    var projectenddatetarget = jQuery(this).find('.projectenddatetarget').val();
+                    var projectpriority = "";
+                    var projectstatus = jQuery(this).find('.projectstatus').val();
+                    var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
+                    var projectcompletedpercen = "100";
+                    var projectsummary = jQuery(this).find('.projectsummary').val();
 
+                    projectCategory = "regularprojects";
+
+                    var projectModel = {
+                        Project_Name: projectname,
+                        Project_Created_Date: projectcreateddate,
+                        Project_Closing_Date_Target: projectenddatetarget,
+                        Project_Priority: projectpriority,
+                        Project_Status: projectstatus,
+                        Project_Closed_Date_Actual: projectenddateactual,
+                        CompletedPercentage: projectcompletedpercen,
+                        RemainingPercentage: "0",
+                        Project_Summary: projectsummary
+                    };
+
+                    projectReportList.push(projectModel);
+                });
+            }
         }
 
         if (fileValidated) {
@@ -1295,7 +1462,7 @@
             fileData.append('ValuesMappingJson', fieldValuesMappingJson);
             fileData.append('ToolName', jQuery('#statusreportToolName :selected').val().trim());
             fileData.append('Uploadedby', jQuery('.agent-full-name').text());
-            fileData.append('ProjectCategory', jQuery('#reportcategory :selected').val());
+            fileData.append('ProjectCategory', projectCategory);
             fileData.append('ProjectList', JSON.stringify(projectReportList));
 
             jQuery.ajax({

@@ -4181,19 +4181,19 @@ namespace ResourceManagement.Controllers
         //projectID IS from Active EMP View table
         // for one consultant for one client will have one project code
         //ClientProject Name, this is the project which emp worked upon
-        public JsonResult GetClientProjectsBasedOnEmpId(string empID, int? projectID, string projectName)
+        public JsonResult GetClientProjectsBasedOnEmpId(string empID, int? projectID, string projectName, string projectCategory)
         {
+            var empClientProject = new List<monthlyreports_Template2>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var empClientProject = new List<monthlyreports_Template2>();
+               
                 if (projectID != null && !string.IsNullOrEmpty(empID) && string.IsNullOrWhiteSpace(projectName))
                 {
-                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
+                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
                 }
                 else
                 {
-                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName).OrderBy(x => x.CompletedPercentage).ToList();
-
+                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName && a.Project_Category == projectCategory).OrderBy(x => x.CompletedPercentage).ToList();
                     empClientProject.Reverse();
                 }
 
@@ -4202,7 +4202,7 @@ namespace ResourceManagement.Controllers
                     return Json(JsonConvert.SerializeObject(empClientProject.DistinctBy(x => x.Project_Name)), JsonRequestBehavior.AllowGet);
                 }
             }
-            return null;
+            return Json(JsonConvert.SerializeObject(empClientProject), JsonRequestBehavior.AllowGet); ;
         }
 
         [HttpPost]
