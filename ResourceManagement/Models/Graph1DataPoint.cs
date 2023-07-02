@@ -116,6 +116,8 @@ namespace ResourceManagement.Models
             [DataMember(Name = "legendMarkerColor")]
             public string legendMarkerColor { get; set; }
 
+            public string color { get; set; }
+
 
             public System.DateTime? ProjestStartDate { get; set; }
             public System.DateTime? TargetClosingDate { get; set; }

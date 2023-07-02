@@ -3447,13 +3447,12 @@ namespace ResourceManagement.Controllers
                     var ProjectRemainingDataPoints = new List<ProjectGraphDataPoint.DataPoint>();
 
                     var ProjectsChart = new List<ProjectChartInfo>();
-
+                    var colorCodes = ResourceManagement.Helpers.ColorCodes.Colors();
+                    var index = 1;
                     if (ProjectReports != null && ProjectReports.Count > 0)
-                    {
+                    {                      
                         graphModel.IsProjectReportExists = true;
-
                         var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
-
                         var projectReportHeight = "140px";
 
                         model.ProjectReportHeight = projectReportHeight;
@@ -3479,7 +3478,7 @@ namespace ResourceManagement.Controllers
                                 ProjectRemainingDataPoints.Add(new ProjectGraphDataPoint.DataPoint()
                                 {
                                     label = project.ChartLabelWithStartEndDate,
-                                    y = project.remainingPercenatge
+                                    y = 100 - project.completionPercenatge
                                 });
                             }
                         }
@@ -3510,25 +3509,32 @@ namespace ResourceManagement.Controllers
                         //Adding carry forward month to list
                         projectReportMonths.AddRange(requiredReportMonths);
 
-                        var dummyMonthToCalculatePendingPercenatge = new MonthWiseReportModel();
-                        dummyMonthToCalculatePendingPercenatge.Month = "pending-month";
+                        //Incase wnats to display future remaining percebatge un comment below 3 lins
+                        //var dummyMonthToCalculatePendingPercenatge = new MonthWiseReportModel();
+                        //dummyMonthToCalculatePendingPercenatge.Month = "pending-month";
 
-                        projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
+                        //projectReportMonths.Add(dummyMonthToCalculatePendingPercenatge);
 
                         var projectsCompletedStatus = new Dictionary<string, decimal?>();
 
                         var firstMonthOfTheReport = 1;
                         foreach (var projectReportMonth in projectReportMonths)
                         {
+                            var color = colorCodes[index];
+                            index = index + 1;
+
                             var chartInfo = new ProjectChartInfo();
                             if (StatusReportChartModel.ReportType == "Month Report" && firstMonthOfTheReport == 1)
                             {
                                 chartInfo.name = "till " + projectReportMonth.Month;
                                 firstMonthOfTheReport++;
+                                chartInfo.color = color;
+                               
                             }
                             else
                             {
                                 chartInfo.name = projectReportMonth.Month == carryForwardMonthInfo.Month ? "till " + projectReportMonth.Month : projectReportMonth.Month == "pending-month" ? "Remaining" : projectReportMonth.Month;
+                                chartInfo.color = color;
                             }
 
                             foreach (var uniqueProject in uniqueProjects)
@@ -3546,8 +3552,28 @@ namespace ResourceManagement.Controllers
                                     }
                                     else
                                     {
+                                        //OLD LOGIC Show month wise actual completed percentage
+                                        //var currentMonthCompletePercentage = requiredProject.completionPercenatge;
+                                        //var previousMonthsCompletePercenatge = projectsCompletedStatus[uniqueProject].Value;
+
+                                        //if (currentMonthCompletePercentage > previousMonthsCompletePercenatge)
+                                        //{
+                                        //    actualCompletedPercenatge = currentMonthCompletePercentage - previousMonthsCompletePercenatge;
+                                        //}
+                                        //else
+                                        //{
+                                        //    actualCompletedPercenatge = previousMonthsCompletePercenatge - currentMonthCompletePercentage;
+                                        //}
+
+                                        //projectsCompletedStatus.Remove(uniqueProject);
+
+                                        //var totalCompletedPercenatage = actualCompletedPercenatge + previousMonthsCompletePercenatge;
+
+                                        //projectsCompletedStatus.Add(uniqueProject, totalCompletedPercenatage);
+
+                                        //NEW LOGIC show what ever we conter as a completed percenatge
                                         var currentMonthCompletePercentage = requiredProject.completionPercenatge;
-                                        var previousMonthsCompletePercenatge = projectsCompletedStatus[uniqueProject].Value;
+                                        var previousMonthsCompletePercenatge = 0;
 
                                         if (currentMonthCompletePercentage > previousMonthsCompletePercenatge)
                                         {
@@ -3563,6 +3589,7 @@ namespace ResourceManagement.Controllers
                                         var totalCompletedPercenatage = actualCompletedPercenatge + previousMonthsCompletePercenatge;
 
                                         projectsCompletedStatus.Add(uniqueProject, totalCompletedPercenatage);
+                                       
                                     }
 
                                     chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
@@ -3575,6 +3602,7 @@ namespace ResourceManagement.Controllers
                                     chartInfo.ProjestStartDate = requiredProject.ProjestStartDate;
                                     chartInfo.TargetClosingDate = requiredProject.TargetClosingDate;
                                     chartInfo.ActualClosedDate = requiredProject.ActualClosedDate;
+                                    chartInfo.color = color;
 
                                 }
                                 else
@@ -3588,6 +3616,7 @@ namespace ResourceManagement.Controllers
                                         });
 
                                         chartInfo.indexLabel = "{y}%";
+                                        chartInfo.color = color;
 
                                         if (!projectsCompletedStatus.ContainsKey(uniqueProject))
                                         {
@@ -3606,6 +3635,7 @@ namespace ResourceManagement.Controllers
                                         });
 
                                         chartInfo.indexLabel = "{y}%";
+                                        chartInfo.color = color;
                                     }
 
                                 }
@@ -4153,7 +4183,7 @@ namespace ResourceManagement.Controllers
             var empClientProject = new List<monthlyreports_Template2>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-               
+
                 if (projectID != null && !string.IsNullOrEmpty(empID) && string.IsNullOrWhiteSpace(projectName))
                 {
                     empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
