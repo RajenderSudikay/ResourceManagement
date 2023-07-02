@@ -180,11 +180,11 @@
 
     jQuery(".btn-add-maintenance-report").click(function () {
         //var sampletr = jQuery('.sample-it-maintenace-report');
-
+        var trID = GenerateGUID();
         var sampletr = '<tr class="sample-it-maintenace-report dynamic-tr">'
-            + '<td scope = "row" style = "max-width:120px"><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control maintenance-activity" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1" resize="none"></textarea></td>'
+            + '<td scope = "row" style = "max-width:120px"><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a> <textarea class="form-control maintenance-activity" id="' + GenerateGUID()+'" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1" resize="none"></textarea></td>'
             + '<td scope="row" style="max-width:100px">'
-            + '<select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" name="selectstatus" class="form-control form-select form-select-lg mb-3" style="background-color:white">'
+            + '<select id="' + GenerateGUID()+'" name="selectstatus" class="form-control form-select form-select-lg mb-3 selectstatus" style="background-color:white">'
             + '<option disabled selected value=""> -- Select Status -- </option>'
             + '<option value="Activited">Activited</option>'
             + '<option value="Blocked">Blocked</option>'
@@ -198,7 +198,7 @@
             + '<option value="NA">NA</option>'
             + '</select>'
             + '</td>'
-            + '<td scope="row" style="max-width:200px"><textarea id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" class="form-control maintenance-remarks" style="min-width: 100%"  rows="1" resize="none"></textarea></td>'
+            + '<td scope="row" style="max-width:200px"><textarea id="' + GenerateGUID()+'" class="form-control maintenance-remarks" style="min-width: 100%"  rows="1" resize="none"></textarea></td>'
             //+ '<td scope="row" style="max-width:200px"><textarea class="form-control maintenance-addi-comments" style="min-width: 100%"  rows="1" resize="none"></textarea> </td>'
             + '</tr>';
 
