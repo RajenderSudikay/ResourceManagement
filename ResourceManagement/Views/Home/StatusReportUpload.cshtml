@@ -603,7 +603,7 @@
             + '<option value="TODO">TODO</option>'
             + '</select>'
             + '</td>'
-            + '<td><input type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
+            + '<td><input disabled type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
             + '<td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="' + GenerateGUID() + '" />'
             + '<small class="complpercenhelp" style="color: green; min-width: 100%" ></small></td>'
             + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
@@ -644,7 +644,7 @@
                 + '<option value="TODO">TODO</option>'
                 + '</select>'
                 + '</td>'
-                + '<td><input type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
+                + '<td><input disabled type="date" class="form-control col-md-2 projectenddateactual table-date" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
                 + '<td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="' + GenerateGUID() + '" /></td>'
                 + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
                 + '</tr>';
@@ -1316,11 +1316,13 @@
         var parentElement = jQuery(this).parents('.project-report-tr');
         var currentField = jQuery(this);
         jQuery('.projectenddatetarget').prop("disabled", false);
+        jQuery('.projectenddateactual').prop("disabled", false);
         if (jQuery(this).hasClass('projectcreateddate')) {
             var minDate = jQuery(this).val();
             minDate = new Date(minDate);
             minDate = moment(minDate).format("YYYY-MM-DD");
             parentElement.find('.projectenddatetarget').attr("min", minDate);
+            parentElement.find('.projectenddateactual').attr("min", minDate);
         }
 
         var fieldId = currentField.attr("id");
