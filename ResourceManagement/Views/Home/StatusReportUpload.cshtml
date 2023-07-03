@@ -211,13 +211,12 @@
                     <div class="form-group ">
                         <label for="reporttype">Report Type: <b style="color:red">*</b></label>
                         <select id="statusreporttype" name="reporttype" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="Please Select Report Type">Please Select Report Type</option>
+                            <option value="">Please Select Report Type</option>
                             <option value="Template1">Incident Report</option>
-                            <option value="Template2">Project Report</option>
+                            <option value="Template2" style="display:none">Project Report</option>
                             <option value="Template3">Audit Report</option>
-                            <option value="Template4">Monthly Activities</option>
+                            <option value="Template4" style="display:none">Monthly Activities</option>
                         </select>
-
                         <div class="invalid-feedback reporttype-invalid-feedback">
                             Please select Report Type
                         </div>
@@ -225,7 +224,7 @@
                 </div>
                 <div class="col-md-4 file-ipload-div" style="display:none">
                     <div class="form-group ">
-                        <label for="StatusReportInfo.ExcelPath">Upload file: <b style="color:red">*</b></label>
+                        <label for="StatusReportInfo.ExcelPath">Upload file: <b style="color:red">*  </b><a href="#" style="color: green !important;">[Download template here]</a></label>
                         <div class="form-control form-select form-select-lg mb-3 reportupload-div">
                             <input type="file" name="ExcelFile" id="reportupload" required />
                         </div>
@@ -255,22 +254,22 @@
             </div>
 
             @*<div class="row">
-            <div class="col-md-4 div-statusreportcategory" style="display:none">
-                <div class="form-group">
-                    <label for="reportcategory">Report Category: <b style="color:red">*</b></label>
-                    <select id="reportcategory" name="reportcategory" class="form-control form-select form-select-lg mb-3" required>
-                        <option value="newrunningprojects">New/Running Projects</option>
-                        <option value="regularprojects">Regular Project Activities</option>
-                    </select>
-                    <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:230px">
-                        Please select Report Category
+                    <div class="col-md-4 div-statusreportcategory" style="display:none">
+                        <div class="form-group">
+                            <label for="reportcategory">Report Category: <b style="color:red">*</b></label>
+                            <select id="reportcategory" name="reportcategory" class="form-control form-select form-select-lg mb-3" required>
+                                <option value="newrunningprojects">New/Running Projects</option>
+                                <option value="regularprojects">Regular Project Activities</option>
+                            </select>
+                            <div class="invalid-feedback reportcategory-invalid-feedback" style="padding-left:230px">
+                                Please select Report Category
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-        </div>*@
-            <br />          
-          
+                </div>*@
+            <br />
+
             <div class="row">
                 <div class="card excel-field-mapping-div" style="padding-top: 10px; width: 60%; border: 3px solid #2167ae; color: #2167ae; display:none">
                     <div class="card-body">
@@ -306,34 +305,34 @@
 
                 <tbody class="project-report-table-grid">
                     @*<tr style="background-color: #fff; display: none" class="project-report-tr">
-                    <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
-                    <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td>
-                        <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>
-                            <option value="Please Select Priority">Select Priority</option>
-                            <option value="Critical">Critical</option>
-                            <option value="Critical">Critical</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>
-                            <option value="Please Select Status">Select Status</option>
-                            <option value="Active">Active</option>
-                            <option value="Closed">Closed</option>
-                            <option value="Hold">Hold</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="TBD">TBD</option>
-                            <option value="NA">NA</option>
-                        </select>
-                    </td>
-                    <td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>
+                                    <option value="Please Select Priority">Select Priority</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>
+                                    <option value="Please Select Status">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="Hold">Hold</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="TBD">TBD</option>
+                                    <option value="NA">NA</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
 
-                    <td><textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%;" rows="1"></textarea></td>
-                </tr>*@
+                            <td><textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%;" rows="1"></textarea></td>
+                        </tr>*@
                 </tbody>
             </table>
 
@@ -350,34 +349,34 @@
 
                 <tbody class="monthlyactivity-report-table-grid">
                     @*<tr style="background-color: #fff; display: none" class="project-report-tr">
-                    <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
-                    <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td>
-                        <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>
-                            <option value="Please Select Priority">Select Priority</option>
-                            <option value="Critical">Critical</option>
-                            <option value="Critical">Critical</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>
-                            <option value="Please Select Status">Select Status</option>
-                            <option value="Active">Active</option>
-                            <option value="Closed">Closed</option>
-                            <option value="Hold">Hold</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="TBD">TBD</option>
-                            <option value="NA">NA</option>
-                        </select>
-                    </td>
-                    <td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
-                    <td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" data-uniqueid="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" onclick=DeleteMMReport(this)></a> <textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 99%; margin-top: -20px; margin-left: 0px" rows="1"></textarea></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectpriority" class="form-control col-md-2 projectpriority" required>
+                                    <option value="Please Select Priority">Select Priority</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>
+                                    <option value="Please Select Status">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="Hold">Hold</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="TBD">TBD</option>
+                                    <option value="NA">NA</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="form-control col-md-2 projectenddateactual" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
+                            <td><input type="number" class="form-control col-md-1 projectcompletedpercen" style="min-width: 100%" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" /></td>
 
-                    <td><textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%;" rows="1"></textarea></td>
-                </tr>*@
+                            <td><textarea class="form-control project-name" id="@ResourceManagement.Helpers.MVCExtension.GUIDGenerate()" style="min-width: 100%;" rows="1"></textarea></td>
+                        </tr>*@
                 </tbody>
             </table>
 
@@ -498,18 +497,18 @@
                                     }
                                 </div>
                                 @*<div class="form-group row">
-                                    @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
-                                    {
+                                        @using (Html.BeginForm("SampleProjectReport", "Home", FormMethod.Post))
+                                        {
 
-                                        <input type="hidden" name="GridHtml" />
+                                            <input type="hidden" name="GridHtml" />
 
-                                        <div class="form-group col-lg-4" style="margin-left:10px">
-                                            <div class="btn-group">
-                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px; height: 35px; font-weight: bold " />
+                                            <div class="form-group col-lg-4" style="margin-left:10px">
+                                                <div class="btn-group">
+                                                    <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Project Template" style="border-radius: 10px; background-color: rgb(74, 172, 197); width: 163px; height: 35px; font-weight: bold " />
+                                                </div>
                                             </div>
-                                        </div>
-                                    }
-                                </div>*@
+                                        }
+                                    </div>*@
 
                                 <div class="form-group row">
                                     @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
@@ -564,10 +563,11 @@
             + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
             + '<option value="">--Select--</option>'
             + '<option value="Active">Active</option>'
+            + '<option value="In progress">In progress</option>'
+            + '<option value="On going">On going</option>'
             + '<option value="Closed">Closed</option>'
             + '<option value="Hold">Hold</option>'
             + '<option value="Cancelled">Cancelled</option>'
-            + '<option value="TODO">TODO</option>'
             + '</select>'
             + '</td>'
             + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
@@ -581,7 +581,7 @@
     jQuery(".update-project-report").click(function () {
         var trID = GenerateGUID();
         var sampletr = '<tr id="' + trID + '" style="background-color: #fff" class="project-report-tr">'
-            + ' <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a><select id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" name="projectname" class="form-control projectname" required></td>'
+            + ' <td><a class="glyphicon glyphicon-remove" style="min-width: 1%; margin-left: -25px" href="javascript: void (0);" id="' + GenerateGUID() + '" onclick=DeleteMMReport(this)></a><select id="' + GenerateGUID() + '" style="min-width: 99%; margin-top: -20px;" name="projectname" class="form-control projectname dropdown-projectnamefield" required></td>'
             + '<td><input type="date" style="min-width: 100%" class="form-control col-md-2 projectcreateddate table-date" id="' + GenerateGUID() + '" /></td>'
             + '<td><input disabled type="date" style="min-width: 100%" class="form-control col-md-2 projectenddatetarget table-date" id="' + GenerateGUID() + '" /></td>'
             + '<td>'
@@ -597,6 +597,8 @@
             + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
             + '<option value="">Select Status</option>'
             + '<option value="Active">Active</option>'
+            + '<option value="In progress">In progress</option>'
+            + '<option value="On going">On going</option>'
             + '<option value="Closed">Closed</option>'
             + '<option value="Hold">Hold</option>'
             + '<option value="Cancelled">Cancelled</option>'
@@ -614,7 +616,46 @@
         GetEmpClientWorkingProjects(null, null, trID, "newrunningprojects", false);
     });
 
+
+
+    jQuery(document).on('focusout', 'textarea', function () {
+        this.style.height = 'auto';
+        this.style.height =
+            (this.scrollHeight) + 'px';
+
+        var currentField = jQuery($ele);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+    jQuery(document).on('keypress', 'textarea', function () {
+        this.style.height = 'auto';
+        this.style.height =
+            (this.scrollHeight) + 'px';
+
+        var currentField = jQuery($ele);
+        var fieldId = currentField.attr("id");
+
+        if (jQuery('#' + fieldId).val() == "") {
+            jQuery('#' + fieldId).css("border", "1px solid red");
+        }
+        else {
+            jQuery('#' + fieldId).css("border", "1px solid green");
+        }
+    });
+
+
     jQuery(document).on("change", ".projectname", function () {
+        if (!jQuery(this).hasClass('dropdown-projectnamefield')) {
+            return;
+        }
+
         //new project add from dropdown selection
         if (jQuery(this).val() == "Add New Project" && jQuery('#statusreporttype :selected').val() == "Template2") {
             var parentElemnt = jQuery(this).closest('tr');
@@ -638,6 +679,8 @@
                 + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
                 + '<option value="">--Select--</option>'
                 + '<option value="Active">Active</option>'
+                + '<option value="In progress">In progress</option>'
+                + '<option value="On going">On going</option>'
                 + '<option value="Closed">Closed</option>'
                 + '<option value="Hold">Hold</option>'
                 + '<option value="Cancelled">Cancelled</option>'
@@ -669,10 +712,11 @@
                 + '<select id="' + GenerateGUID() + '" style="min-width: 100%" name="projectstatus" class="form-control col-md-2 projectstatus" required>'
                 + '<option value="">--Select--</option>'
                 + '<option value="Active">Active</option>'
+                + '<option value="In progress">In progress</option>'
+                + '<option value="On going">On going</option>'
                 + '<option value="Closed">Closed</option>'
                 + '<option value="Hold">Hold</option>'
                 + '<option value="Cancelled">Cancelled</option>'
-                + '<option value="TODO">TODO</option>'
                 + '</select>'
                 + '</td>'
                 + '<td><textarea class="form-control projectsummary" id="' + GenerateGUID() + '" style="min-width: 100%;" rows="1"></textarea></td>'
@@ -769,6 +813,10 @@
                         var parentElemnt = $ele.closest('tr');
                         var data = JSON.parse(obj);
                         if (data.length > 0) {
+
+                            jQuery('.projectenddatetarget').prop("disabled", false);
+                            jQuery('.projectenddateactual').prop("disabled", false);
+
                             parentElemnt.find('.projectname').val(data[0].Project_Name);
                             parentElemnt.find('.projectname').css("border", "1px solid green");
 
@@ -827,12 +875,12 @@
     //    GetEmpClientWorkingProjects(jQuery(this), jQuery(this).val());
     //});
 
-    jQuery('textarea').on('input', function () {
-        this.style.height = 'auto';
+    //jQuery('textarea').on('input', function () {
+    //    this.style.height = 'auto';
 
-        this.style.height =
-            (this.scrollHeight) + 'px';
-    });
+    //    this.style.height =
+    //        (this.scrollHeight) + 'px';
+    //});
 
 
     jQuery("#statusreportEmpClient").change(function () {
@@ -925,7 +973,7 @@
             + '<option value="Please Select Required Value" disabled selected>Please Select Required Value</option>'
             + '</select>'
             + '</div>'
-         
+
     }
     // Create FormData object
     var fileData = new FormData();
@@ -992,12 +1040,12 @@
         }, 2000);
     });
 
-    jQuery('#statusreporttype').change(function (evt) {
+    function StatusReportType() {
         jQuery(".dynamic-field-binding").empty();
         jQuery('.monthlyactivity-report-table').empty();
         jQuery('.project-report-table-grid').empty();
 
-        if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
+        if (jQuery('#statusreporttype :selected').val() == "") {
             jQuery('#statusreporttype').css("border", "1px solid red");
             jQuery('.reporttype-invalid-feedback').show();
             jQuery('.excel-field-mapping-div').hide();
@@ -1056,14 +1104,35 @@
             jQuery('.activity-project-report').show();
         }
 
-        jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
-        jQuery('.warning-message-popup').html("<h2>The <b>Status report</b> will be generated based on the data you upload. Your attention to this detail is greatly appreciated, and we thank you for your cooperation.</h2>");
-        $('#modal-warning-message-popup').modal('show');
+        if (jQuery('#statusreporttype :selected').val() != "Template4" && jQuery('#statusreporttype :selected').val() != "Template2") {
+            jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+            jQuery('.warning-message-popup').html("<h2>The <b>Status report</b> will be generated based on the data you upload. Your attention to this detail is greatly appreciated, and we thank you for your cooperation.</h2>");
+            $('#modal-warning-message-popup').modal('show');
+        }
+    }
 
+    jQuery('#statusreporttype').change(function (evt) {
+        StatusReportType();
     });
 
     jQuery(document).on("change", "#StatusReportInfo_Month", function () {
-        jQuery('.div-statusreporttype').show();
+        var responseSuccess = getUrlVars()["type"];
+        if (responseSuccess != undefined && (responseSuccess == "projectreport" || responseSuccess == "mmactivities")) {
+            if (responseSuccess == "projectreport") {
+                jQuery('#statusreporttype :selected').val("Template2");
+            }
+
+            if (responseSuccess == "mmactivities") {
+                jQuery('#statusreporttype :selected').val("Template4");
+            }
+
+            StatusReportType();
+            jQuery('.div-statusreporttype').hide();
+        }
+        else {
+            jQuery('.div-statusreporttype').show();
+        }
+
         if (jQuery('#StatusReportInfo_Month :selected').text() == "Please select month") {
             jQuery('#StatusReportInfo_Month').css("border", "1px solid red");
             jQuery('.month-invalid-feedback').show();
@@ -1284,18 +1353,6 @@
         }
     });
 
-    jQuery(document).on('change', 'textarea', function () {
-
-        var currentField = jQuery(this);
-        var fieldId = currentField.attr("id");
-
-        if (jQuery('#' + fieldId).val() == "") {
-            jQuery('#' + fieldId).css("border", "1px solid red");
-        }
-        else {
-            jQuery('#' + fieldId).css("border", "1px solid green");
-        }
-    });
 
     jQuery(document).on('keyup input', "input[type='number']", function () {
         var currentField = jQuery(this);
@@ -1350,7 +1407,7 @@
 
 
     //Final submit post confirmation
-    jQuery(".btn-upload-report").click(function () {     
+    jQuery(".btn-upload-report").click(function () {
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
 
@@ -1393,7 +1450,7 @@
             jQuery('.month-invalid-feedback').hide();
         }
 
-        if (jQuery('#statusreporttype :selected').text() == "Please Select Report Type") {
+        if (jQuery('#statusreporttype :selected').val() == "") {
             jQuery('#statusreporttype').css("border", "1px solid red");
             jQuery('.reporttype-invalid-feedback').show();
             fileValidated = false;
@@ -1525,6 +1582,19 @@
                     }
 
                     var projectenddateactual = jQuery(this).find('.projectenddateactual').val();
+
+                    if (projectstatus.val() != "" && projectstatus.val() == "Closed") {
+                        if (projectenddateactual == "") {
+                            jQuery(this).find('.projectenddateactual').css("border", "1px solid red");
+                            fileValidated = false;
+                        }
+                        else {
+                            jQuery(this).find('.projectenddateactual').css("border", "1px solid green");
+                        }
+                    }
+                    else {
+                        jQuery(this).find('.projectenddateactual').css("border", "1px solid green");
+                    }
 
                     var projectcompletedpercen = jQuery(this).find('.projectcompletedpercen');
                     if (projectcompletedpercen.val() == "") {

@@ -30,7 +30,9 @@
                 <img src="~/Assets/MenuIcons/business-report.png" width="15" /> <b>My Reports</b>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/StatusReportUpload"> <b>Upload Status Report</b> </a></li>
+                <li><a class="dropdown-item" href="/StatusReportUpload"> <b>Upload Reports</b> </a></li>
+                <li><a class="dropdown-item" href="/StatusReportUpload?type=projectreport"> <b>Enter Projects</b> </a></li>
+                <li><a class="dropdown-item" href="/StatusReportUpload?type=mmactivities"> <b>Monthly Activities</b> </a></li>
                 <li><a class="dropdown-item" href="/StatusReport"> <b>View Report</b> </a></li>
             </ul>
         </li>
@@ -70,13 +72,13 @@
                         </ul>
                     </li>
 
-                    <li>
+                    @*<li>
                         <a class="dropdown-item" href="#"> <b>Assets</b> </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
                             <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>
                         </ul>
-                    </li>
+                    </li>*@
 
                     @*<li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Schedule Maintenance</b> </a></li>
         <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b> </a></li>*@
