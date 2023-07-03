@@ -224,8 +224,34 @@
                 </div>
                 <div class="col-md-4 file-ipload-div" style="display:none">
                     <div class="form-group ">
-                        <label for="StatusReportInfo.ExcelPath">Upload file: <b style="color:red">*  </b><a href="#" style="color: green !important;">[Download template here]</a></label>
-                        <div class="form-control form-select form-select-lg mb-3 reportupload-div">
+                        <label for="StatusReportInfo.ExcelPath">
+                            Upload file: <b style="color:red">*  </b>
+                        </label>
+                        <div class="incident-report-template" style="display: none">
+                            @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
+                            {
+                                <input type="hidden" name="GridHtml" />
+                                <div class="form-group" style="">
+                                    <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
+                                        <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="audit-report-template" style="display: none">
+                            @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
+                            {
+                                <input type="hidden" name="GridHtml" />
+                                <div class="form-group" style="">
+                                    <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
+                                        <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-control form-select form-select-lg mb-3 reportupload-div" style="margin-top: -30px !important">
                             <input type="file" name="ExcelFile" id="reportupload" required />
                         </div>
                         <div class="invalid-feedback reportupload-invalid-feedback">
@@ -386,7 +412,7 @@
 
             <div class="form-group row modal-footer" style="border-radius: 10px">
                 <div class="col-md-offset-2 col-md-10 ">
-                    <input value="Use Recommended Templates" class="btn btn-download-template custom-button" style="border-radius: 10px; font-weight: bold; width: 230px; color: white !important" />
+                    @*<input value="Use Recommended Templates" class="btn btn-download-template custom-button" style="border-radius: 10px; font-weight: bold; width: 230px; color: white !important" />*@
                     <button type="submit" class="btn btn-success btn-lg update-project-report" style="display: none; width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Add project</b></button>
                     <button type="submit" class="btn btn-success btn-lg activity-project-report" style="display: none; width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">Add activity</b></button>
                     <input type="submit" value="Upload Records" class="btn btn-info btn-lg btn-upload-report" style="border-radius: 10px; font-weight: bold; height: 40px; color: white !important " />
@@ -1044,6 +1070,21 @@
         jQuery(".dynamic-field-binding").empty();
         jQuery('.monthlyactivity-report-table').empty();
         jQuery('.project-report-table-grid').empty();
+
+        if (jQuery('#statusreporttype :selected').val() == "Template1") {
+            jQuery('.incident-report-template').show();
+        }
+        else {
+            jQuery('.incident-report-template').hide();
+        }
+
+        if (jQuery('#statusreporttype :selected').val() == "Template3") {
+            jQuery('.audit-report-template').show();
+        }
+        else {
+            jQuery('.audit-report-template').hide();
+        }
+
 
         if (jQuery('#statusreporttype :selected').val() == "") {
             jQuery('#statusreporttype').css("border", "1px solid red");
