@@ -63,10 +63,30 @@ namespace ResourceManagement.Helpers
             if (date.ToString().Contains("/"))
             {
                 var actualDate = date.ToString().Replace("00:00:00", "").Replace("12:00:00 AM", "").Replace('/', '-').Trim().Split('-');
-                return actualDate[1].Trim()  + "-" + actualDate[0].Trim() + "-" + actualDate[2].Trim();
+                return actualDate[1].Trim() + "-" + actualDate[0].Trim() + "-" + actualDate[2].Trim();
             }
 
             return "";
+        }
+
+
+        public static string DateShortFormats(string shortName, string longName)
+        {
+            var dates = new Dictionary<string, string>();
+            dates.Add("Jan", "January");
+            dates.Add("Feb", "February");
+            dates.Add("Mar", "March");
+            dates.Add("Apr", "April");
+            dates.Add("May", "May");
+            dates.Add("Jun", "June");
+            dates.Add("Jul", "July");
+            dates.Add("Aug", "August");
+            dates.Add("Sep", "September");
+            dates.Add("Oct", "October");
+            dates.Add("Nov", "November");
+            dates.Add("Dec", "December");
+
+            return !string.IsNullOrEmpty(shortName) ? dates[shortName] : dates[longName];
         }
     }
 }

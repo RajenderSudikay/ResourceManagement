@@ -28,6 +28,7 @@ namespace ResourceManagement.Controllers
     using static ResourceManagement.Models.TimesheetReportModel;
     using DataPoint = Models.DataPoint;
     using static ResourceManagement.Models.Email.RemainderEmailBody;
+    using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
     {
@@ -2376,16 +2377,13 @@ namespace ResourceManagement.Controllers
         {
             try
             {
-
                 //Ticket_Prioriy & Ticket& Status
                 var projectList = new List<ProjectModel>();
                 projectList = JsonConvert.DeserializeObject<List<ProjectModel>>(fileData.ProjectList);
-
                 var reportModel = new StatusReport_Template2Model();
 
                 foreach (var project in projectList)
                 {
-
                     //PRIORITY LOGIC
                     var projectPriority = "";
                     if (!string.IsNullOrWhiteSpace(project.Project_Priority))
@@ -2453,6 +2451,18 @@ namespace ResourceManagement.Controllers
                         closedMonth = ticketDateClosed.Month;
                     }
 
+                    var currentMonthNumber = DateTime.Now.Month;
+                    var lastMonthNumBasedOnCurrentMonth = DateTime.Today.AddMonths(-1).Month;
+                    var lastMonthNumBasedOnCurrentYear = DateTime.Today.AddMonths(-1).Year;
+
+                    var selectedMonth = fileData.Month.Split('-')[0];
+                    var selectedMonthFullName = DateShortFormats(selectedMonth, "");
+                    int selelctedMonthNumber = DateTime.ParseExact(selectedMonthFullName, "MMMM", CultureInfo.CurrentCulture).Month;
+                    int selelctedYearNumber = DateTime.ParseExact(selectedMonthFullName, "MMMM", CultureInfo.CurrentCulture).Year;
+
+                    var recordEnteredDate = DateTime.MinValue;
+                    recordEnteredDate = lastMonthNumBasedOnCurrentMonth == selelctedMonthNumber ? DateTime.Now : DateTime.ParseExact(selectedMonthFullName, "MMMM", @System.Globalization.CultureInfo.CurrentCulture);
+
                     reportModel.Template2Reports.Add(new MonthlyReport_Template2()
                     {
                         Project_Closed_Date_Actual = project.Project_Closed_Date_Actual,
@@ -2463,10 +2473,8 @@ namespace ResourceManagement.Controllers
                         Project_Priority = project.Project_Priority,
                         Project_Status = project.Project_Status,
                         Project_Category = fileData.ProjectCategory,
-
                         CompletedPercentage = project.CompletedPercentage,
                         RemainingPercentage = project.RemainingPercentage,
-
                         Uploadedby = fileData.Uploadedby,
                         FileNamee = "NA",
                         ConsultantName = fileData.EmployeeName,
@@ -2477,18 +2485,16 @@ namespace ResourceManagement.Controllers
                         Is_Closed = IsClosedProject,
                         Is_Open = IsOpenProject,
                         Is_ToDo = IsTODOProject,
-
                         Created_Month = createdMonth,
                         Created_Year = createdYear,
                         Closed_Month = closedMonth,
                         Closed_Year = closedYear,
                         Project_Raisedby = "NA",
                         Client_Name = fileData.ClientName,
-                        CreatedDate= DateTime.Now,
+                        CreatedDate = recordEnteredDate,
 
                         //NEED TO DECIDE
                         RecordUniqueKey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID
-
                     });
                 }
 
@@ -2559,9 +2565,7 @@ namespace ResourceManagement.Controllers
                             Uploadedmonth = fileData.Month,
 
                             //NEED TO DECIDE
-
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Test_IDIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
-
                         });
                     }
 
@@ -3452,7 +3456,7 @@ namespace ResourceManagement.Controllers
                     var colorCodes = ResourceManagement.Helpers.ColorCodes.Colors();
                     var index = 1;
                     if (ProjectReports != null && ProjectReports.Count > 0)
-                    {                      
+                    {
                         graphModel.IsProjectReportExists = true;
                         var allProjects = ProjectReports.OrderByDescending(x => x.completionPercenatge).ToList();
                         var projectReportHeight = "140px";
@@ -3531,7 +3535,7 @@ namespace ResourceManagement.Controllers
                                 chartInfo.name = "till " + projectReportMonth.Month;
                                 firstMonthOfTheReport++;
                                 chartInfo.color = color;
-                               
+
                             }
                             else
                             {
@@ -3591,7 +3595,7 @@ namespace ResourceManagement.Controllers
                                         var totalCompletedPercenatage = actualCompletedPercenatge + previousMonthsCompletePercenatge;
 
                                         projectsCompletedStatus.Add(uniqueProject, totalCompletedPercenatage);
-                                       
+
                                     }
 
                                     chartInfo.dataPoints.Add(new ProjectGraphDataPoint.DataPoint()
@@ -4185,14 +4189,13 @@ namespace ResourceManagement.Controllers
             var empClientProject = new List<MonthlyReport_Template2>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-
                 if (projectID != null && !string.IsNullOrEmpty(empID) && string.IsNullOrWhiteSpace(projectName))
                 {
-                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderByDescending(x => x.Project_Name).ToList();
+                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
                 }
                 else
                 {
-                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName && a.Project_Category == projectCategory).OrderByDescending(x => x.CompletedPercentage).ToList();
+                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName && a.Project_Category == projectCategory).OrderBy(x => x.CompletedPercentage).ToList();
                     empClientProject.Reverse();
                 }
 
