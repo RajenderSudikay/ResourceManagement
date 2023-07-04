@@ -407,7 +407,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="Created_Month" Type="int" />
           <Property Name="Closed_Year" Type="int" />
           <Property Name="Closed_Month" Type="int" />
-          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1832,7 +1832,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Created_Month" Type="Int32" />
           <Property Name="Closed_Year" Type="Int32" />
           <Property Name="Closed_Month" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
