@@ -53,7 +53,7 @@ namespace ResourceManagement.Models
     }
     public class StatusReport_Template2Model
     {
-        public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
+        public List<MonthlyReport_Template2> Template2Reports { get; set; } = new List<MonthlyReport_Template2>();
     }
     public class StatusReport_Template3Model
     {
@@ -210,7 +210,7 @@ namespace ResourceManagement.Models
 
         public Int32 EmaployeeAvailabity { get; set; }
         public List<monthlyreports_Template1> Template1Reports { get; set; } = new List<monthlyreports_Template1>();
-        public List<monthlyreports_Template2> Template2Reports { get; set; } = new List<monthlyreports_Template2>();
+        public List<MonthlyReport_Template2> Template2Reports { get; set; } = new List<MonthlyReport_Template2>();
         public List<monthlyreports_Template3> Template3Reports { get; set; } = new List<monthlyreports_Template3>();
     }
 

@@ -45,5 +45,6 @@ namespace ResourceManagement
         public Nullable<int> ProjectID { get; set; }
         public Nullable<bool> IsAuditReport { get; set; }
         public string TicketingToolName { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

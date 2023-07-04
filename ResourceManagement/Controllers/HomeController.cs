@@ -1294,7 +1294,7 @@ namespace ResourceManagement.Controllers
                         {
                             continue;
                         }
-                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
+                        var currentEmpTemplate2Repots = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(projectSpecificEmployee.Employee_ID) && a.Uploaded_Month == lastMonthSf && a.Client_Name == projectSpecificEmployee.Client).ToList();
                         if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
                         {
                             continue;
@@ -2327,6 +2327,7 @@ namespace ResourceManagement.Controllers
                             ProjectID = System.Convert.ToInt32(fileData.ProjectID),
                             IsAuditReport = fileData.IsAuditReport,
                             TicketingToolName = fileData.ToolName,
+                            CreatedDate = DateTime.Now,
                             Uniquekey = fileData.EmployeeID + "_" + workSheet.Cells[rowIterator, Ticket_NumberIndex].Value.ToString() + "_" + fileData.Month + "_" + fileData.ProjectID
                         }); ;
                     }
@@ -2452,7 +2453,7 @@ namespace ResourceManagement.Controllers
                         closedMonth = ticketDateClosed.Month;
                     }
 
-                    reportModel.Template2Reports.Add(new monthlyreports_Template2()
+                    reportModel.Template2Reports.Add(new MonthlyReport_Template2()
                     {
                         Project_Closed_Date_Actual = project.Project_Closed_Date_Actual,
                         Project_Closing_Date_Target = project.Project_Closing_Date_Target,
@@ -2483,16 +2484,17 @@ namespace ResourceManagement.Controllers
                         Closed_Year = closedYear,
                         Project_Raisedby = "NA",
                         Client_Name = fileData.ClientName,
+                        CreatedDate= DateTime.Now,
 
                         //NEED TO DECIDE
-                        uniquekey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID
+                        RecordUniqueKey = fileData.EmployeeID + "_" + project.Project_Name + "_" + fileData.Month + "_" + fileData.ProjectID
 
                     });
                 }
 
                 using (var context = new TimeSheetEntities())
                 {
-                    context.monthlyreports_Template2.AddRange(reportModel.Template2Reports);
+                    context.MonthlyReport_Template2.AddRange(reportModel.Template2Reports);
                     context.SaveChanges();
                     model.Response.StatusCode = 200;
                     model.Response.Message = "Status Report Uploaded Successfully!";
@@ -3149,7 +3151,7 @@ namespace ResourceManagement.Controllers
                         //TEMPLATE2 code updates
                         if (firstMonthFromrequiredReportMonths == 0)
                         {
-                            var projectDetailsForCarryForwardMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == carryForwardMonthInfo.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
+                            var projectDetailsForCarryForwardMonth = db.MonthlyReport_Template2.Where(project => project.Uploaded_Month == carryForwardMonthInfo.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
 
                             if (projectDetailsForCarryForwardMonth != null && projectDetailsForCarryForwardMonth.Count() > 0)
                             {
@@ -3158,7 +3160,7 @@ namespace ResourceManagement.Controllers
                         }
 
 
-                        var projectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
+                        var projectDetailsForSelectedMonth = db.MonthlyReport_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category != "regularprojects").ToList();
 
                         //In case of Month report for selected month only report will generate
                         //if (StatusReportChartModel.ReportType == "Month Report" && graphModel.SelectedReportMonth.ShortFormat == requiredReportMonth.Month)
@@ -3171,7 +3173,7 @@ namespace ResourceManagement.Controllers
                         //}
 
                         //REPEATED MONTHLY ACTIVITIES CONSIDERING HERE
-                        var runningProjectDetailsForSelectedMonth = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category == "regularprojects").ToList();
+                        var runningProjectDetailsForSelectedMonth = db.MonthlyReport_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.EmplyeeID == empID && project.Is_Cancelled == false && project.Is_ToDo == false && project.Client_Name == StatusReportChartModel.ClientName && project.Project_Category == "regularprojects").ToList();
                         ProjectReport(RegularProjectReports, runningProjectDetailsForSelectedMonth);
 
                         firstMonthFromrequiredReportMonths++;
@@ -3435,7 +3437,7 @@ namespace ResourceManagement.Controllers
                     model.PastAttedenceFlowTillDate = JsonConvert.SerializeObject(MonthWiseAttedenceFlowTillDate);
 
                     //TEMPLTE 2 UPDATES  
-                    var empBasedFutureProjects = db.monthlyreports_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID && project.Project_Category != "regularprojects").ToList();
+                    var empBasedFutureProjects = db.MonthlyReport_Template2.Where(project => project.Is_ToDo == true && project.Client_Name == StatusReportChartModel.ClientName && project.EmplyeeID == empID && project.Project_Category != "regularprojects").ToList();
 
                     if (empBasedFutureProjects != null && empBasedFutureProjects.Count() > 0)
                     {
@@ -3840,7 +3842,7 @@ namespace ResourceManagement.Controllers
             return PartialView(graphModel);
         }
 
-        private static List<ProjectGraphDataPoint.Reports> ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<monthlyreports_Template2> projectDetailsForSelectedMonth, bool isCarryForardMonthInfo = false)
+        private static List<ProjectGraphDataPoint.Reports> ProjectReport(List<ProjectGraphDataPoint.Reports> ProjectReports, List<MonthlyReport_Template2> projectDetailsForSelectedMonth, bool isCarryForardMonthInfo = false)
         {
             foreach (var projectDetailForSelectedMonth in projectDetailsForSelectedMonth)
             {
@@ -3851,7 +3853,7 @@ namespace ResourceManagement.Controllers
 
                 if (projectDetailForSelectedMonth.Project_Created_Date != DateTime.MinValue)
                 {
-                    projectStartMonthYear = projectDetailForSelectedMonth.Project_Created_Date.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Created_Date.ToString("yyyy");
+                    projectStartMonthYear = projectDetailForSelectedMonth.Project_Created_Date?.ToString("MMM") + "," + projectDetailForSelectedMonth.Project_Created_Date?.ToString("yyyy");
                 }
 
                 if (projectDetailForSelectedMonth.Project_Closing_Date_Target != DateTime.MinValue)
@@ -4001,10 +4003,10 @@ namespace ResourceManagement.Controllers
                         //TEMPLATE2 code updates
                         if (StatusReportChartModel.TemplateNumber == "Template2")
                         {
-                            var monthProjectReport = db.monthlyreports_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.Is_Cancelled == false && project.EmplyeeID == empID).ToList();
+                            var monthProjectReport = db.MonthlyReport_Template2.Where(project => project.Uploaded_Month == requiredReportMonth.Month && project.Is_Cancelled == false && project.EmplyeeID == empID).ToList();
                             if (StatusReportChartModel.IsDelete && monthProjectReport != null && monthProjectReport.Count > 0)
                             {
-                                db.monthlyreports_Template2.RemoveRange(monthProjectReport);
+                                db.MonthlyReport_Template2.RemoveRange(monthProjectReport);
                                 db.SaveChanges();
                                 monthProjectReport = null;
                             }
@@ -4180,17 +4182,17 @@ namespace ResourceManagement.Controllers
         //ClientProject Name, this is the project which emp worked upon
         public JsonResult GetClientProjectsBasedOnEmpId(string empID, int? projectID, string projectName, string projectCategory)
         {
-            var empClientProject = new List<monthlyreports_Template2>();
+            var empClientProject = new List<MonthlyReport_Template2>();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
 
                 if (projectID != null && !string.IsNullOrEmpty(empID) && string.IsNullOrWhiteSpace(projectName))
                 {
-                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderBy(x => x.Project_Name).ToList();
+                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Category == projectCategory).DistinctBy(x => x.Project_Name).OrderByDescending(x => x.Project_Name).ToList();
                 }
                 else
                 {
-                    empClientProject = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName && a.Project_Category == projectCategory).OrderBy(x => x.CompletedPercentage).ToList();
+                    empClientProject = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.ProjectID == projectID && a.Project_Name == projectName && a.Project_Category == projectCategory).OrderByDescending(x => x.CompletedPercentage).ToList();
                     empClientProject.Reverse();
                 }
 
@@ -4306,7 +4308,7 @@ namespace ResourceManagement.Controllers
                         {
                             continue;
                         }
-                        var currentEmpTemplate2Repots = db.monthlyreports_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
+                        var currentEmpTemplate2Repots = db.MonthlyReport_Template2.Where(a => a.EmplyeeID.Equals(empID) && a.Uploaded_Month == requiredReportMonth.Month && a.Client_Name == StatusReportRemainderModel.ClientName).ToList();
                         if (currentEmpTemplate1Repots != null && currentEmpTemplate1Repots.Count() > 0)
                         {
                             continue;

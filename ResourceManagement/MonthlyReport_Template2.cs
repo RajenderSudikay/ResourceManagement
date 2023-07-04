@@ -12,11 +12,12 @@ namespace ResourceManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class monthlyreports_Template2
+    public partial class MonthlyReport_Template2
     {
+        public int RecordNo { get; set; }
         public string Project_Name { get; set; }
         public string Project_Summary { get; set; }
-        public System.DateTime Project_Created_Date { get; set; }
+        public Nullable<System.DateTime> Project_Created_Date { get; set; }
         public Nullable<System.DateTime> Project_Closing_Date_Target { get; set; }
         public string Project_Category { get; set; }
         public string Project_Raisedby { get; set; }
@@ -27,7 +28,7 @@ namespace ResourceManagement
         public string Comments { get; set; }
         public string ConsultantName { get; set; }
         public string Uploaded_Month { get; set; }
-        public string uniquekey { get; set; }
+        public string RecordUniqueKey { get; set; }
         public string Uploadedby { get; set; }
         public string FileNamee { get; set; }
         public string Client_Name { get; set; }
@@ -43,5 +44,6 @@ namespace ResourceManagement
         public Nullable<int> Created_Month { get; set; }
         public Nullable<int> Closed_Year { get; set; }
         public Nullable<int> Closed_Month { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

@@ -335,10 +335,10 @@
     <Compile Include="monthlyreports_Template1.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="monthlyreports_Template2.cs">
+    <Compile Include="monthlyreports_Template3.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="monthlyreports_Template3.cs">
+    <Compile Include="MonthlyReport_Template2.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
