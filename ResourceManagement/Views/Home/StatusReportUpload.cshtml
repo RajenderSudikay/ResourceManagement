@@ -29,46 +29,46 @@
         {
             imagePath = "/Assets/EmployeeImagesPNG/" + @Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID + ".png";
 
-        <div class="agent-navigation">
-            <div class="">
-                <div class="dropdownheading text-white">
-                    <div class="profile-img">
-                        <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+            <div class="agent-navigation">
+                <div class="">
+                    <div class="dropdownheading text-white">
+                        <div class="profile-img">
+                            <img src="@imagePath" class="img-fluid rounded-circle" width="40" alt="Cinque Terre">
+                        </div>
+                        <p class="agent-full-name">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</p>
                     </div>
-                    <p class="agent-full-name">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</p>
-                </div>
 
-                <div class="agent-description hide" style="">
-                    <div class="agent-details">
-                        <div class="agent-img">
-                            <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
+                    <div class="agent-description hide" style="">
+                        <div class="agent-details">
+                            <div class="agent-img">
+                                <img alt="Bantle_Martin Bantle_625x313" src="@imagePath" data-imagehash="datazwpimghash" loading="lazy">
 
-                        </div>
+                            </div>
 
-                        <div class="agent-fullname">
-                            <b>@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</b>
-                        </div>
-                        <ul>
-                            <li>
-                                <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
-                                <div class="agent-navdrop-empid emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID</div>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
-                                <div class="agent-navdrop-empdesig emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Designation</div>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
-                                <div class="agent-navdrop-empmanager emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client_Report_Manager</div>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
-                                <br />
-                                <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Contact_Number</a>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
-                                @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
+                            <div class="agent-fullname">
+                                <b>@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_Name</b>
+                            </div>
+                            <ul>
+                                <li>
+                                    <img src="~/Assets/Icons/id-card.png" width="30" /> <b>Emp ID:</b>
+                                    <div class="agent-navdrop-empid emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Employee_ID</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/graphic-designer.png" width="20" /> &nbsp;&nbsp; <b>Designation:</b>
+                                    <div class="agent-navdrop-empdesig emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Designation</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/hierarchical-structure.png" width="20" />&nbsp;&nbsp; <b>Reporting Manager:</b>
+                                    <div class="agent-navdrop-empmanager emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client_Report_Manager</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/phone.png" width="20" />&nbsp;&nbsp;<b>Contact Number:</b>
+                                    <br />
+                                    <a class="agent-navdrop-phone emp-data-nav" href="tel:07531 282590">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Contact_Number</a>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/woman.png" width="20" />&nbsp;&nbsp;<b>Client:</b>
+                                    @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
                                     {
                                         var clients = new List<string>();
                                         foreach (var empProject in Model.RMA_EmployeeModel.projectInfo)
@@ -76,19 +76,19 @@
                                             clients.Add(empProject.Client);
                                         }
                                         var empClients = string.Join(", ", clients);
-                                <div class="agent-navdrop-client emp-data-nav">@empClients</div>
+                                        <div class="agent-navdrop-client emp-data-nav">@empClients</div>
 
                                     }
                                     else
                                     {
-                                <div class="agent-navdrop-client emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client</div>
+                                        <div class="agent-navdrop-client emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Client</div>
                                     }
 
 
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
-                                @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project.png" width="20" />&nbsp;&nbsp;<b>Project:</b>
+                                    @if (Model.RMA_EmployeeModel.projectInfo.Count() > 1)
                                     {
                                         var projects = new List<string>();
                                         foreach (var empProject in Model.RMA_EmployeeModel.projectInfo)
@@ -108,42 +108,42 @@
 
                                         }
                                         var empProjects = string.Join(", ", projects);
-                                <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
+                                        <div class="agent-navdrop-client emp-data-nav">@empProjects</div>
 
                                     }
                                     else
                                     {
-                                <div class="agent-navdrop-project emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Name</div>
+                                        <div class="agent-navdrop-project emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Name</div>
                                     }
 
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
-                                <div class="agent-navdrop-prostatus emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Status</div>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
-                                <div class="agent-navdrop-empemail emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
-                            </li>
-                            <li>
-                                <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
-                                <div class="agent-navdrop-emplocation emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Location</div>
-                            </li>
-                        </ul>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/project-status.png" width="20" />&nbsp;&nbsp;<b>Project Status:</b>
+                                    <div class="agent-navdrop-prostatus emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Project_Status</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/email.png" width="20" /> &nbsp;&nbsp;<b>E-Mail Address:</b>
+                                    <div class="agent-navdrop-empemail emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.AMBC_Mail_Address</div>
+                                </li>
+                                <li>
+                                    <img src="~/Assets/Icons/location.png" width="20" /> &nbsp;&nbsp;<b>Location:</b>
+                                    <div class="agent-navdrop-emplocation emp-data-nav">@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Location</div>
+                                </li>
+                            </ul>
 
+                        </div>
+
+                        <div class="modal-footer header-nav-modalfooter">
+                            <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
+                        </div>
                     </div>
 
-                    <div class="modal-footer header-nav-modalfooter">
-                        <a href="/logout"><img src="~/Assets/Icons/logout.png" width="30" />&nbsp;<b>Logout</b></a>
-                    </div>
+
                 </div>
-
-
             </div>
-        </div>
 
-        <input type="hidden" class="emprole" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
-        <input type="hidden" class="emproles" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities" />
+            <input type="hidden" class="emprole" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role" />
+            <input type="hidden" class="emproles" value="@Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Roles_Responsibilities" />
 
         }
 
@@ -161,7 +161,7 @@
                             <option value="">Please select employee</option>
                             @foreach (var emp in Model.StatusReportInfo.EmployeeList)
                             {
-                            <option value="@emp.Value">@emp.Text</option>
+                                <option value="@emp.Value">@emp.Text</option>
                             }
                         </select>
 
@@ -178,7 +178,7 @@
 
                             @foreach (var project in Model.RMA_EmployeeModel.projectInfo)
                             {
-                            <option value="@project.Project_Code">@project.Client</option>
+                                <option value="@project.Project_Code">@project.Client</option>
                             }
                         </select>
                         <div class="invalid-feedback client-invalid-feedback">
@@ -194,7 +194,7 @@
                             <option value="">Please select month</option>
                             @foreach (var month in Model.StatusReportInfo.MonthList)
                             {
-                            <option value="@month.Value">@month.Value</option>
+                                <option value="@month.Value">@month.Value</option>
                             }
                         </select>
                         <div class="invalid-feedback month-invalid-feedback">
@@ -230,24 +230,24 @@
                         <div class="incident-report-template" style="display: none">
                             @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
                             {
-                            <input type="hidden" name="GridHtml" />
-                            <div class="form-group" style="">
-                                <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
-                                    <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                <input type="hidden" name="GridHtml" />
+                                <div class="form-group" style="">
+                                    <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
+                                        <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                    </div>
                                 </div>
-                            </div>
                             }
                         </div>
 
                         <div class="audit-report-template" style="display: none">
                             @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
                             {
-                            <input type="hidden" name="GridHtml" />
-                            <div class="form-group" style="">
-                                <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
-                                    <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                <input type="hidden" name="GridHtml" />
+                                <div class="form-group" style="">
+                                    <div class="btn-group" style="margin-top: -60px !important; margin-left: 25px !important; ">
+                                        <input type="submit" class="" value="[Download template here]" style="font-weight: bold; border: 0; color: green !important; background-color: transparent; margin-left: 65px; margin-bottom: 0px;" />
+                                    </div>
                                 </div>
-                            </div>
                             }
                         </div>
 
@@ -264,7 +264,7 @@
                     <div class="form-group ">
                         <label for="statusreportToolName">Tool Name<b style="color:red">*</b></label>
                         <select id="statusreportToolName" name="statusreportToolName" class="form-control form-select form-select-lg mb-3">
-                            <option value="Please Select Tool Name">Please Select Tool Name</option>
+                            <option value="">Please Select Tool Name</option>
                             <option value="Halo">Halo</option>
                             <option value="Ivanti">Ivanti</option>
                             <option value="Jira">Jira</option>
@@ -296,7 +296,7 @@
                 </div>*@
             <br />
 
-            <div class="row">
+            <div class="row excel-field-mapping-parent-div" >
                 <div class="card excel-field-mapping-div" style="padding-top: 10px; width: 60%; border: 3px solid #2167ae; color: #2167ae; display:none">
                     <div class="card-body">
                         <h5 class="card-title"><b>Database and Excel Fields mapping</b></h5>
@@ -447,24 +447,24 @@
 
                             //if (empRole != "")
                             //{
-                    <div class='div-parent-textarea'>
-                        <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                            <div class='div-parent-textarea'>
+                                <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
                                 @empRole
                                 </textarea>
-                        <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
-                    </div>
+                                <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                            </div>
                             //}
 
                         }
                     }
                     else
                     {
-                    <div class='div-parent-textarea'>
-                        <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
+                        <div class='div-parent-textarea'>
+                            <textarea class='activity-details-textarea' style='min-width: 650px;height: 30px;border-radius: 10px;color: #005983;border: 1px solid #005983;'>
                             </textarea>
-                        @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'></a>*@
-                        <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
-                    </div>
+                            @*<a class='glyphicon glyphicon-plus add-roles' href='javascript: void (0)' style='margin-left:10px'></a>*@
+                            <a class='glyphicon glyphicon-remove remove' href='javascript: void (0)' style='margin-left:10px'></a>
+                        </div>
                     }
 
 
@@ -476,10 +476,7 @@
                     <input type="submit" id="Add" value="Upload Activities" class="btn btn-info btn-lg btn-activity-details" style="border-radius: 10px" />
                 </div>
             </div>
-        </div>
-
-        <br />
-        <br />
+        </div>      
 
     </div>
 </div>
@@ -513,13 +510,13 @@
                                     @using (Html.BeginForm("SampleIncidentReport", "Home", FormMethod.Post))
                                     {
 
-                                    <input type="hidden" name="GridHtml" />
+                                        <input type="hidden" name="GridHtml" />
 
-                                    <div class="form-group col-lg-4" style="margin-left:10px">
-                                        <div class="btn-group">
-                                            <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px; height: 35px; font-weight: bold" />
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-lg text-white btn-status-report-generate" id="btnIncidentReportDownload" value="Incident Template" style="border-radius: 10px; background-color: #005983; width: 163px; height: 35px; font-weight: bold" />
+                                            </div>
                                         </div>
-                                    </div>
                                     }
                                 </div>
                                 @*<div class="form-group row">
@@ -540,13 +537,13 @@
                                     @using (Html.BeginForm("SampleAuditReport", "Home", FormMethod.Post))
                                     {
 
-                                    <input type="hidden" name="GridHtml" />
+                                        <input type="hidden" name="GridHtml" />
 
-                                    <div class="form-group col-lg-4" style="margin-left:10px">
-                                        <div class="btn-group">
-                                            <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px; height: 35px; font-weight: bold " />
+                                        <div class="form-group col-lg-4" style="margin-left:10px">
+                                            <div class="btn-group">
+                                                <input type="submit" class="btn btn-success btn-lg text-white btn-status-report-generate" id="btnProjectReportDownload" value="Audit Template" style="border-radius: 10px; background-color: #00344d; width: 163px; height: 35px; font-weight: bold " />
+                                            </div>
                                         </div>
-                                    </div>
                                     }
                                 </div>
                             </div>
@@ -660,7 +657,7 @@
                 jQuery('#' + fieldId).css("border", "1px solid green");
             }
         }
-        
+
     });
 
     jQuery(document).on('keypress', 'textarea', function () {
@@ -1009,6 +1006,7 @@
 
     jQuery("#reportupload").change(function () {
         jQuery(".dynamic-field-binding").empty();
+        jQuery('.excel-field-mapping-parent-div').show();
         jQuery('.btn-download-template').attr('disabled', 'disabled');
         var fileUpload = $("#reportupload").get(0);
         var files = fileUpload.files;
@@ -1156,6 +1154,7 @@
     }
 
     jQuery('#statusreporttype').change(function (evt) {
+        jQuery('#reportupload').val('');
         StatusReportType();
     });
 
@@ -1504,7 +1503,7 @@
             jQuery('.reporttype-invalid-feedback').hide();
         }
 
-        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") && jQuery('#statusreportToolName :selected').val() == "Please Select Tool Name") {
+        if ((jQuery('#statusreporttype :selected').val() == "Template1" || jQuery('#statusreporttype :selected').val() == "Template3") && jQuery('#statusreportToolName :selected').val() == "") {
             jQuery('#statusreportToolName').css("border", "1px solid red");
             jQuery('.client-invalid-toolname').show();
             fileValidated = false;
@@ -1714,7 +1713,7 @@
 
         var projectListAdded = new Array();
         projectListAdded.push({ 'name': "" });
-      
+
         var duplicateProjectNames = "";
         jQuery.each(projectReportList, function (i, item) {
             var projectName = item.Project_Name.toLowerCase();
@@ -1735,7 +1734,7 @@
         if (duplicateProjectNames != "") {
             jQuery('.warning-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
             var finalMessage = "<h2>Looks like you have entered duplicare project names. Please make sure Project names are identical.</h2>";
-             finalMessage += "<h2><b>Duplicate Projects.</b></h2>";
+            finalMessage += "<h2><b>Duplicate Projects.</b></h2>";
             finalMessage += duplicateProjectNames;
             jQuery('.warning-message-popup').html(finalMessage);
             jQuery('#modal-warning-message-popup').modal('show');
@@ -1783,14 +1782,32 @@
                         var clientName = jQuery('#statusreportEmpClient :selected').text();
                         var toolName = jQuery('#statusreportToolName :selected').val();
 
-                        jQuery('.status-report-card').empty();
+                        /*  jQuery('.status-report-card').empty();*/
                         fileData = new FormData();
-                        window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";
+
+                        jQuery('.success-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2><b> " + empName + "</b> details have been successfully saved, and we greatly appreciate your cooperation.</h2><br> Click <a href='/statusreport?viewreport=true&empID=" + EmployeeID + "&reportMonth=" + reportMonth + "&templateType=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "'>HERE</a> to see the report for the uploded data.");
+                        jQuery('.message-success-popup').modal('show');
+                        jQuery('.monthlyactivity-report-table-grid').empty();
+                        jQuery('.project-report-table-grid').empty();
+                        jQuery('.excel-field-mapping-parent-div').hide();
+                        jQuery('#reportupload').val('');
+                        jQuery('.file-ipload-div').hide();
+                        jQuery('.divtoolname').hide();
+                        jQuery('#statusreportToolName').val($("#statusreportToolName option:first").val());
+                        jQuery('#statusreporttype').val($("#statusreporttype option:first").val());
+                        jQuery('#statusreporttype').val($("#statusreporttype option:first").val());
+
+                        /* window.location.href = "/statusreportupload?success=true&selectedemp=" + empName + "&empID=" + EmployeeID + "&month=" + reportMonth + "&templatetype=" + jQuery('#statusreporttype :selected').val() + "&clientName=" + clientName + "&toolName=" + toolName + "";*/
                     }
                     else {
-                        jQuery('.status-report-card').empty();
+                        /* jQuery('.status-report-card').empty();*/
                         fileData = new FormData();
-                        window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";
+                        jQuery('.error-message-popup-title').html("Hey " + jQuery('.agent-full-name').text())
+                        jQuery('.database-response').html("<h2>" + data.Response.Message + "</h2>");
+                        jQuery('#modal-db-error-alert').modal('show');
+
+                        /* window.location.href = "/statusreportupload?success=false&error=" + data.Response.Message + "";*/
                     }
                 }
             });

@@ -1117,7 +1117,15 @@
 
             jQuery('#reportCategory  option[value=KPAReport]').attr("selected", "selected");
             jQuery('#reportClient  option[value=' + clientName + ']').attr("selected", "selected");
+
+            //for specifc tool based results uncomment of condition
+            //if (toolName == "") {
+            //    $('#statusreportToolName option').prop('selected', true);
+            //}
+            //else {
             jQuery('#statusreportToolName  option[value=' + toolName + ']').attr("selected", "selected");
+            /* }*/
+
 
             setTimeout(function () {
                 jQuery("#reportmonth option").each(function () {
