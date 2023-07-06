@@ -59,13 +59,9 @@ namespace ResourceManagement.Controllers
             maintenanceModel.EmailBody = maintenanceModel.EmailBody.Trim();
             var emailBody = RenderPartialToString(this, "schedulemaintenanceemail", maintenanceModel, ViewData, TempData);
 
-            if (maintenanceModel.CC != null && !maintenanceModel.CC.Contains(maintenanceModel.UploadedByEmail))
+            if (!string.IsNullOrWhiteSpace(maintenanceModel.CC) && !maintenanceModel.CC.Contains(maintenanceModel.UploadedByEmail))
             {
                 maintenanceModel.CC += "," + maintenanceModel.UploadedByEmail;
-            }
-            else
-            {
-                maintenanceModel.CC = maintenanceModel.UploadedByEmail;
             }
 
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
@@ -157,7 +153,7 @@ namespace ResourceManagement.Controllers
                     emailModel.JsonResponse.Message = ex.Message;
                 }
 
-                emailModel.inputObject = monthlyMaintenanceModel;               
+                emailModel.inputObject = monthlyMaintenanceModel;
             }
             return Json(JsonConvert.SerializeObject(emailModel), JsonRequestBehavior.AllowGet);
         }
@@ -165,13 +161,9 @@ namespace ResourceManagement.Controllers
         public JsonResult ITMaintenaceAckEmailTrigger(ITMaintenanceEmailAck ITMaintenanceEmailAck)
         {
             var emailBody = RenderPartialToString(this, "MMAckEmail", ITMaintenanceEmailAck, ViewData, TempData);
-            if (ITMaintenanceEmailAck.itadminIds != null && !ITMaintenanceEmailAck.itadminIds.Contains(ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail))
+            if (!string.IsNullOrWhiteSpace(ITMaintenanceEmailAck.itadminIds) && !ITMaintenanceEmailAck.itadminIds.Contains(ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail))
             {
                 ITMaintenanceEmailAck.itadminIds += "," + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
-            }
-            else
-            {
-                ITMaintenanceEmailAck.itadminIds += ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
             }
 
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
