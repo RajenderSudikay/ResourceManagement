@@ -394,7 +394,7 @@
                         <select id="selectEmployeename" name="reportemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white" @multipleAllow>
                             @if (multipleAllow == "")
                             {
-                                <option disabled selected>-- Select Employee Name --</option>
+                                <option value="" disabled selected>-- Select Employee Name --</option>
                             }
                         </select>
                         <div class="invalid-feedback-reportemployeename" style="color:red; display:none">
@@ -755,7 +755,7 @@
             jQuery('.invalid-feedback-reportClient').hide();
         }
 
-        if (jQuery('#selectEmployeename').val() == "") {
+        if (jQuery('#selectEmployeename  :selected').val() == "") {
             jQuery('#selectEmployeename').css("border", "1px solid red");
             jQuery('.invalid-feedback-selectEmployeename').show();
             formValidated = false;
@@ -929,6 +929,8 @@
                     obj = obj.filter(v => v.Client === type);
                 }
 
+                $('#selectEmployeename').append('<option value="" disabled selected>-- Select Employee Name --</option>');
+
                 jQuery.each(obj, function (i, item) {
                     $('#selectEmployeename').append('<option value="' + item.Employee_ID + '">' + item.Employee_Name + '</option>');
                 });
@@ -939,10 +941,10 @@
 
                 var useRole = jQuery('.emprole').val();
 
-                if (type == undefined || type == "") {
+               /* if (type == undefined || type == "") {*/
                     var empId = jQuery('.agent-navdrop-empid').text();
                     $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
-                }
+                /*}*/
 
                 if (useRole != "administrator") {
                     $("#selectEmployeename").prop("disabled", true);
@@ -996,7 +998,6 @@
             jQuery('#reporttype').css("border", "1px solid green");
             jQuery('.invalid-feedback-reporttype').hide();
         }
-
 
         if (formValidated == true) {
 

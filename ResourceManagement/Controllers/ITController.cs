@@ -63,6 +63,13 @@ namespace ResourceManagement.Controllers
             {
                 maintenanceModel.CC += "," + maintenanceModel.UploadedByEmail;
             }
+            else
+            {
+                if(string.IsNullOrWhiteSpace(maintenanceModel.CC))
+                {
+                    maintenanceModel.CC += maintenanceModel.UploadedByEmail;
+                }
+            }
 
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
@@ -165,6 +172,14 @@ namespace ResourceManagement.Controllers
             {
                 ITMaintenanceEmailAck.itadminIds += "," + ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
             }
+            else
+            {
+                if(string.IsNullOrWhiteSpace(ITMaintenanceEmailAck.itadminIds))
+                {
+                    ITMaintenanceEmailAck.itadminIds += ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
+                }
+            }
+
 
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {

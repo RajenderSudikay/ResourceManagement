@@ -4303,6 +4303,10 @@ namespace ResourceManagement.Controllers
 
                 foreach (var empID in StatusReportRemainderModel.Employees)
                 {
+                    if(string.IsNullOrWhiteSpace(empID))
+                    {
+                        continue;
+                    }
                     var remainderEmpInfo = new StatusReportRemainderEmpModel();
                     using (TimeSheetEntities db = new TimeSheetEntities())
                     {
@@ -4323,10 +4327,11 @@ namespace ResourceManagement.Controllers
                         {
                             remainderEmpInfo.RemainderMonthInfo = requiredReportMonth;
                             remainderEmpInfo.RemainderEmployee = currentEmpInfo[0];
+                            model.RemainderEmployees.Add(remainderEmpInfo);
                         }
                     }
 
-                    model.RemainderEmployees.Add(remainderEmpInfo);
+                    
                 }
             }
 
