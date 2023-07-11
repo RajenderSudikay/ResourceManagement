@@ -81,9 +81,9 @@
                     </li>*@
 
                     @*<li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Schedule Maintenance</b> </a></li>
-        <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b> </a></li>*@
+                    <li><a class="dropdown-item" href="/it/mmreportgenerate"> <b>M&M Report Generate</b> </a></li>*@
                     @*<li><a class="dropdown-item" href="/it/uploadreport"> <b>Upload IT Report</b> </a></li>
-        <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>*@
+                    <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>*@
                     @*<li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
                     <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>*@
                 </ul>
@@ -92,6 +92,64 @@
 
         @if (isAdminUser)
         {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/hr.png" width="15" /> <b>HR</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>HR Letter</b> </a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/calendar.png" width="15" /> <b>Payroll</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Payslip</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Form 16</b> </a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/contact-info.png" width="15" /> <b>Service Central</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Help Desk</b> </a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/ticket.png" width="15" /><b>Tickets</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Create Ticket</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/viewreport"> <b>View Ticket</b> </a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img src="~/Assets/MenuIcons/learning.png" width="15" /><b>E-Learning</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Register course</b> </a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+
+                    <img src="~/Assets/MenuIcons/airplane-ticket.png" width="15" /><b>Travelling</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Raise Request</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/viewreport"> <b>View Request</b> </a></li>
+                </ul>
+            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
                     <img src="~/Assets/MenuIcons/manager.png" width="15" /> <b>Admin</b>
