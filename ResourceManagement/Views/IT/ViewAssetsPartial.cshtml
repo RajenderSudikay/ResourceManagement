@@ -1,0 +1,47 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+
+@if (Model != null)
+{
+    <div>
+        <table class="table table-bordered table-timesheet-remainder">
+            <thead style="background-color: #005983">
+                <tr>
+                    <th scope="col" style="width: 95px; color: white; font-size: initial">S No</th>
+                    <th scope="col" style="color: white; font-size:initial">Asset#</th>
+                    <th scope="col" style="color: white; font-size: initial">Assigned Emp</th>
+                    <th scope="col" style="color: white; font-size: initial">AssetType</th>
+                    <th scope="col" style="color: white; font-size: initial">Warranty</th>
+                    <th scope="col" style="color: white; font-size: initial">History</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int sno = 1;
+                }
+                @foreach (var asset in Model.AmbcNewITAssetMgmt)
+                {
+                    <tr>
+                        <td class="asset-serialnumdynamic">@sno</td>
+                        <td class="asset-serialnum">@asset.AssetSerialNo</td>
+                        <td class="asset-assignedemp">@asset.AssetAssignedToEmpName</td>
+                        <td class="asset-type">@asset.AssetType</td>
+                        <td class="asset-warrntystatus">@asset.WarrentyStatus</td>
+                        <td class="asset-history">
+                           <a class="a-history" href="#"><img src="~/Assets/history.png" width="25" height="25" /></a> 
+                        </td>
+                    </tr>
+                    sno = sno + 1;
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+
+
+

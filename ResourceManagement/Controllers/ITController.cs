@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using System;
 
 namespace ResourceManagement.Controllers
 {
@@ -201,6 +202,39 @@ namespace ResourceManagement.Controllers
         {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             return View(employeeModel);
+        }
+
+        public ActionResult ViewAssets()
+        {
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            return View(employeeModel);
+        }
+
+        public JsonResult GetAssets()
+        {
+            var assetsInfo = string.Empty;
+            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+            var ITModel = new ITModel();
+            ITModel.RMA_EmployeeModel = employeeModel;
+
+            try
+            {
+                using (TimeSheetEntities db = new TimeSheetEntities())
+                {
+                    var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                    if (Assets != null && Assets.Count() > 0)
+                    {
+                        ITModel.AmbcNewITAssetMgmt = Assets;
+                        assetsInfo = RenderPartialToString(this, "ViewAssetsPartial", ITModel, ViewData, TempData);
+                    }
+                }
+
+                return Json(assetsInfo);
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
         }
 
         public ActionResult UploadReport()

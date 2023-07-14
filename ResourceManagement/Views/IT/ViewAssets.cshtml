@@ -1,0 +1,418 @@
+﻿@model ResourceManagement.Models.RMA_EmployeeModel
+
+@{
+    ViewBag.Title = "Asset Assign Page";
+}
+
+<style>
+    div.boxItem {
+        display: inline-block;
+        border: 1px solid black;
+        padding: 1em;
+    }
+
+    div.line {
+        display: inline-block;
+        border-top: 1px solid black;
+        width: 2em;
+    }
+
+    .vertical {
+        border-left: 3px solid black;
+        height: 35px;
+        position: absolute;
+        left: 50%;
+        margin-top: -35px;
+    }
+
+    .center {
+        margin: auto;
+        width: 50%;
+        border: 3px solid green;
+        padding: 10px;
+    }
+
+    .asset-details p {
+        margin-bottom: 0rem;
+    }
+
+    .asset-details {
+        margin-top: -85px;
+        margin-left: 120px;
+        font-size: unset;
+    }
+
+    .asset-details-child p {
+        margin-bottom: 0rem;
+    }
+
+    .asset-details-child {
+        margin-top: -85px;
+        margin-left: 100px;
+        font-size: unset;
+    }
+
+    .asset-info {
+        border: 2px solid green;
+        height: 100px;
+        margin-top: 25px;
+        width: 300px;
+        background-color: lightgoldenrodyellow
+    }
+
+
+
+    .asset-emp {
+        border: 1px solid #3a3d6e;
+        height: 110px;
+        margin-top: 35px;
+    }
+</style>
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="assetassettype">Filter By<b style="color:red">*</b></label>
+                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="Laptop">Asset</option>
+                        <option value="Desktop">Employee</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group selectemp-div">
+                    <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                    <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                        <option disabled selected value=""> -- Select Employee Name -- </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
+                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Desktop">Desktop</option>
+                        <option value="MacBook">MacBook</option>
+                        <option value="MacBook">Tablet</option>
+                        <option value="MacBook">Headset</option>
+                        <option value="MacBook">Mouse</option>
+                        <option value="MacBook">Charger</option>
+                        <option value="MacBook">Mobile</option>
+                        <option value="MacBook">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="assetassettype">Category<b style="color:red">*</b></label>
+                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="All">All</option>
+                        <option value="Desktop">Assigned</option>
+                        <option value="MacBook">Not Assigned</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
+                    <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                        <option value="" disabled selected>Select Asset ID</option>
+                        <option value="Asset1">Asset1</option>
+                        <option value="Asset2">Asset2</option>
+                        <option value="Asset3">Asset3</option>
+                        <option value="Asset4">Asset4</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <br />
+            <div class="clearfix"></div>
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-view-assets" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">View Asset's</b></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card">
+        <div class="card-body ">
+            <div class="assets-info-container"></div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none" class="showassetinfo">
+    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-warning-message-popup">
+    <div class="modal-dialog" role="document" style="max-width: 95% !important; height: 200px !important">
+        <div class="modal-content" style="overflow: auto">
+
+            <div class="modal-body" style="text-align: left">
+                <h2 class="warning-message-popup-title"></h2>
+                <div class="custom-container-fullwidth100">
+                    <div class="center asset-info ">
+                        <img alt="" src="~/Assets/Laptop.jpg" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -5px; max-width: 90px;height: 90px; margin-top: -6px;">
+
+                        <div class="asset-details">
+                            <p style="color: green; font-weight: bold">
+                                Dell Laptop
+                            </p>
+                            <p style="color: #3a3d6e; ">
+                                <b>Asset#:</b> 10/08/2020
+                            </p>
+                            <p style="color: #3a3d6e;  ">
+                                <b>Warranty Startdate:</b>  10/08/2023
+                            </p>
+                            <p style="color: #3a3d6e;  ">
+                                <b>Warranty enddate:</b> Hyderabad
+                            </p>
+                            <p style="color: #3a3d6e;">
+                                <b>Location:</b>  Hyderabad
+                            </p>
+                        </div>
+
+                    </div>
+                    <br />
+                    <hr class="custom-container-fullwidth" style="border: 2px solid gray; width: 95% !important; margin-bottom: 0px !important" />
+
+                    <div class="custom-container-fullwidth" style="width: 95% !important">
+                        <div style="" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="/Assets/EmployeeImagesPNG/1075.png" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>Ravi Kumar Manthri</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 55px" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="~/Assets/mouse.jpg" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>Dell Mouse</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 55px" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="~/Assets/charger.jpg" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>Charger</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 55px" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="~/Assets/headset.jpg" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>Headset</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 55px; background-color: black; color: white" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="~/Assets/sold.png" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: white;">
+                                    <b>SOLDOUT</b>
+                                </p>
+                                <p style="color: white; ">
+                                    <b>Vendor:</b> Satyam Computers
+                                </p>
+                                <p style="color: white; ">
+                                    <b>Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: white; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: white;">
+                                    <b>Price:</b> 3000/-
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="height: 40px" />
+                    <br />
+
+                    <div class="custom-container-fullwidth" style="width: 95% !important; margin-top: 40px">
+                        <div style="" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="/Assets/EmployeeImagesPNG/C4046.png" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>Rajender Sudikay</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 55px" class="col-lg-2 asset-emp">
+                            <div class="vertical"></div>
+                            <img alt="" src="~/Assets/mouse.jpg" width="120" class="card-img-top img-fluid rounded-circle img-fluid-dashboard" style="margin-left: -10px; max-width: 90px;height: 90px; margin-top: 10px;">
+
+                            <div class="asset-details-child">
+                                <p style="color: green;">
+                                    <b>HP Mouse</b>
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>From Date:</b> 10/08/2020
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>To Date:</b> 10/08/2023
+                                </p>
+                                <p style="color: #3a3d6e; ">
+                                    <b>Location:</b>  Hyderabad
+                                </p>
+                                <p style="color: #3a3d6e;">
+                                    <b>Client:</b> Littelfuse
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+                </div>
+            </div>
+
+            <div class="modal-footer header-nav-modalfooter">
+                <button type="button" class="btn btn-secondary modal-warning-popup-btn" data-dismiss="modal" style="margin-top: 0px; margin-right: 0px"><b style="font-size:medium">Close</b></button>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<br />
+
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model)
+<script>
+
+    // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
+    jQuery('#assetAssignID').change(function (evt) {
+        jQuery('.showassetinfo').show();
+    });
+
+
+    jQuery(document).on("click", ".btn-view-assets", function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/getassets",
+            /* data: JSON.stringify({ leaveReportModel: leaveReportsInputs }),*/
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('.assets-info-container').html(data);
+            }
+        });
+    });
+
+
+    jQuery(document).on("click", ".a-history", function () {
+        jQuery('#modal-warning-message-popup').show();
+    });
+
+    jQuery(document).on("click", ".modal-warning-popup-btn", function () {
+        jQuery('#modal-warning-message-popup').hide();
+    });
+
+
+</script>
