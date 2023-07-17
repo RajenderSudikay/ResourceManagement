@@ -562,6 +562,7 @@
     <Content Include="Views\IT\MMreportAckFromEmail.cshtml" />
     <Content Include="Views\IT\ViewAssets.cshtml" />
     <Content Include="Views\IT\ViewAssetsPartial.cshtml" />
+    <Content Include="Views\IT\AssignAssetEmailPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

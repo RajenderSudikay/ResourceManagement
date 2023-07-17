@@ -1,28 +1,21 @@
-﻿@model ResourceManagement.Models.RMA_EmployeeModel
+﻿@model ResourceManagement.Models.IT.ITModel
 
 @{
     ViewBag.Title = "Asset Assign Page";
 }
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model);
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
-        <div class="card-body ">          
+        <div class="card-body ">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group selectemp-div">
-                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                        <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
-                            <option disabled selected> -- Select Employee Name -- </option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
-                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required multiple>                         
+                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" selected disabled>Select Type</option>
                             <option value="Laptop">Laptop</option>
                             <option value="Desktop">Desktop</option>
                             <option value="MacBook">MacBook</option>
@@ -38,8 +31,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                        <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Asset ID</option>
+                        <select id="assetAssign" name="assetAssign" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Asset</option>
                             <option value="Asset1">Asset1</option>
                             <option value="Asset2">Asset2</option>
                             <option value="Asset3">Asset3</option>
@@ -47,30 +40,100 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="form-group selectemp-div">
+                        <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
+                        <select id="selectEmployeenameandemail" name="selectEmployeenameandemail" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                            <option disabled selected> -- Select Employee Name -- </option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-                <br />
-                <div class="modal-footer mt-xl-4">
-                    <button type="submit" class="btn btn-info btn-lg" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Assign Asset</b></button>
-                </div>
-           
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-asset-assign" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Assign Asset</b></button>
+            </div>
+
         </div>
     </div>
 </div>
 
 <div style="display: none" class="showassetinfo">
-    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model);
+    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model.RMA_EmployeeModel)
+</div>
+
+<div>
+    @{
+        var itEmpEmailIds = "";
+    }
+    @foreach (var itAdmin in Model.ITAdminUsers)
+    {
+        itEmpEmailIds += itAdmin.AMBC_Mail_Address.Trim() + ",";
+    }
+
+    <div class="it-admin-list" style="display:none">@itEmpEmailIds.Trim(',')</div>
 </div>
 
 
 <br />
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
+
 <script>
 
+
+
     // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
-    jQuery('#assetAssignID').change(function (evt) {
+    jQuery('#assetAssign').change(function (evt) {
         jQuery('.showassetinfo').show();
+    });
+
+
+    //This logic to handle out side clik of agent popup
+    jQuery(document).on('change', '#assetassettype', function (e) {
+
+        GetAssetsByAssetType(jQuery('#assetassettype :selected').val());
+    });
+
+    jQuery(document).on('click', '.btn-asset-assign', function (e) {
+        var AssetAssignModelInput = {
+            AssetType: jQuery('#assetassettype :selected').val(),
+            AssetID: jQuery('#assetAssign :selected').val(),
+            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
+            EmployeeEmail: jQuery('#selectEmployeenameandemail :selected').val().split('|')[1],
+            itadminIds: jQuery('.it-admin-list').text()
+        };
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/AssignAsset",
+            data: JSON.stringify({ AssetAssignModel: AssetAssignModelInput }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                if (obj.JsonResponse.StatusCode == 200) {
+
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>Asset assigned email sent successfully to " + jQuery('#selectEmployeenameandemail :selected').text() + " </h2>");
+                    jQuery('.message-success-popup').modal('show');
+
+                    jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+                    jQuery('#assetAssign').empty();
+                    jQuery('#assetAssign').append(' <option value="" disabled selected>Select Asset ID</option>');
+                    jQuery("#assetassettype").val($("#assetassettype option:first").val());
+
+                }
+                else {
+                    jQuery('.error-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>" + obj.JsonResponse.Message + "</h2>");
+                    jQuery('#modal-db-error-alert').modal('show');
+                }
+            }
+        });
+
     });
 
 </script>

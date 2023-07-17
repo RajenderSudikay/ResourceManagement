@@ -13,6 +13,8 @@ using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using System;
 
+using Microsoft.Ajax.Utilities;
+
 namespace ResourceManagement.Controllers
 {
     using static Helpers.DateHelper;
@@ -66,7 +68,7 @@ namespace ResourceManagement.Controllers
             }
             else
             {
-                if(string.IsNullOrWhiteSpace(maintenanceModel.CC))
+                if (string.IsNullOrWhiteSpace(maintenanceModel.CC))
                 {
                     maintenanceModel.CC += maintenanceModel.UploadedByEmail;
                 }
@@ -98,6 +100,12 @@ namespace ResourceManagement.Controllers
 
         public ActionResult MMReportgenerate()
         {
+            ITModel ITModel = FilDefaultITModel();
+            return View(ITModel);
+        }
+
+        private ITModel FilDefaultITModel()
+        {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             var ITModel = new ITModel();
             ITModel.RMA_EmployeeModel = employeeModel;
@@ -118,7 +126,7 @@ namespace ResourceManagement.Controllers
                 }
             }
 
-            return View(ITModel);
+            return ITModel;
         }
 
         public JsonResult MMReportgenerateAjax(AMBCITMonthlyMaintenance monthlyMaintenanceModel, string itadminIds)
@@ -175,7 +183,7 @@ namespace ResourceManagement.Controllers
             }
             else
             {
-                if(string.IsNullOrWhiteSpace(ITMaintenanceEmailAck.itadminIds))
+                if (string.IsNullOrWhiteSpace(ITMaintenanceEmailAck.itadminIds))
                 {
                     ITMaintenanceEmailAck.itadminIds += ITMaintenanceEmailAck.AMBCITMonthlyMaintenance.UploadedByEmail;
                 }
@@ -199,9 +207,9 @@ namespace ResourceManagement.Controllers
         }
 
         public ActionResult AssetAssign()
-        {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-            return View(employeeModel);
+        {           
+            var defaultModel = FilDefaultITModel();
+            return View(defaultModel);
         }
 
         public ActionResult ViewAssets()
@@ -210,21 +218,107 @@ namespace ResourceManagement.Controllers
             return View(employeeModel);
         }
 
-        public JsonResult GetAssets()
+        public JsonResult GetAssets(GetAssetModel getAssetModel)
         {
             var assetsInfo = string.Empty;
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
             var ITModel = new ITModel();
             ITModel.RMA_EmployeeModel = employeeModel;
 
+            var AssetsTotal = new List<AssetDataPoint>();
+            var AssetsAssigned = new List<AssetDataPoint>();
+            var AssetsNotAssigned = new List<AssetDataPoint>();
+            var AssetsSoldOut = new List<AssetDataPoint>();
+
             try
             {
+                var Assets = new List<AmbcNewITAssetMgmt>();
                 using (TimeSheetEntities db = new TimeSheetEntities())
                 {
-                    var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                    if (getAssetModel.FilterBy == "Asset")
+                    {
+                        if (getAssetModel.AssetType == "All")
+                        {
+                            Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "").ToList();
+                        }
+                        else
+                        {
+                            Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == getAssetModel.AssetType).ToList();
+                        }
+
+                        if (getAssetModel.Category != "All")
+                        {
+                            if (getAssetModel.Category == "Assigned")
+                            {
+                                Assets = Assets.Where(x => x.AssetAssignedToEmpName != "NA").ToList();
+                            }
+                            else
+                            {
+                                Assets = Assets.Where(x => x.AssetAssignedToEmpName == "NA").ToList();
+                            }
+                        }
+                    }
+
+                    if (getAssetModel.FilterBy == "Employee")
+                    {
+                        Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAssignedToEmpID == getAssetModel.EmployeeID && x.AssetSerialNo == getAssetModel.AssetID).ToList();
+                    }
+
+
                     if (Assets != null && Assets.Count() > 0)
                     {
+                        var uniqueAssets = Assets.Where(x => x.AssetType != "").DistinctBy(x => x.AssetType);
+
+                        foreach (var uniqueAsset in uniqueAssets)
+                        {
+                            var totalAssets = Assets.Where(x => x.AssetType == uniqueAsset.AssetType);
+
+                            if (totalAssets != null && totalAssets.Count() > 0)
+                            {
+                                AssetsTotal.Add(new AssetDataPoint()
+                                {
+                                    Priority = "Total",
+                                    label = uniqueAsset.AssetType,
+                                    y = totalAssets != null && totalAssets.Count() > 0 ? totalAssets.Count() : 0
+                                });
+
+                                var assignedAssets = totalAssets.Where(x => x.AssetAssignedToEmpName != "NA");
+
+                                AssetsAssigned.Add(new AssetDataPoint()
+                                {
+                                    Priority = "Assigned",
+                                    label = uniqueAsset.AssetType,
+                                    y = assignedAssets != null && assignedAssets.Count() > 0 ? assignedAssets.Count() : 0
+                                });
+
+                                var notAssignedAssets = totalAssets.Where(x => x.AssetAssignedToEmpName == "NA");
+
+                                AssetsNotAssigned.Add(new AssetDataPoint()
+                                {
+                                    Priority = "Not Assigned",
+                                    label = uniqueAsset.AssetType,
+                                    y = notAssignedAssets != null && notAssignedAssets.Count() > 0 ? notAssignedAssets.Count() : 0
+                                });
+
+                                var soldOutAssets = totalAssets.Where(x => x.AssetAssignedToEmpName == "NA");
+
+                                AssetsSoldOut.Add(new AssetDataPoint()
+                                {
+                                    Priority = "Sold Out",
+                                    label = uniqueAsset.AssetType,
+                                    y = notAssignedAssets != null && notAssignedAssets.Count() > 0 ? notAssignedAssets.Count() : 0
+                                });
+
+                            }
+                        }
+
                         ITModel.AmbcNewITAssetMgmt = Assets;
+
+                        ITModel.AssetsTotalDataPoints = JsonConvert.SerializeObject(AssetsTotal);
+                        ITModel.AssetsAssignedDataPoints = JsonConvert.SerializeObject(AssetsAssigned);
+                        ITModel.AssetsNotAssignedDataPoints = JsonConvert.SerializeObject(AssetsNotAssigned);
+                        ITModel.AssetsSoldOutDataPoints = JsonConvert.SerializeObject(AssetsSoldOut);
+
                         assetsInfo = RenderPartialToString(this, "ViewAssetsPartial", ITModel, ViewData, TempData);
                     }
                 }
@@ -613,6 +707,44 @@ namespace ResourceManagement.Controllers
                 }
             }
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAssetsByAssetType(GetAssetModelByAsset GetAssetModel)
+        {
+            var model = new ITModel();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == GetAssetModel.AssetType && x.AssetAssignedToEmpName == "NA").ToList();
+                if (Assets != null && Assets.Count() > 0)
+                {
+                    model.AssetsByAssetType = Assets;
+                }
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AssignAsset(AssignAssetModel AssetAssignModel)
+        {
+            var model = new ITModel();
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+
+            }
+
+            var emailBody = RenderPartialToString(this, "AssignAssetEmailPartial", AssetAssignModel, ViewData, TempData);
+
+            Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
+            {
+                To = AssetAssignModel.EmployeeEmail,
+                Subject = "Asset assigned - " + AssetAssignModel.AssetType + " (" + AssetAssignModel.AssetID + ")",
+                CC = AssetAssignModel.itadminIds,
+                EmailBody = emailBody,
+                SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
+                SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]
+            };
+
+            var EmailResponse = SendEmailFromHRMS(emailModel);
+            return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
     }
 }

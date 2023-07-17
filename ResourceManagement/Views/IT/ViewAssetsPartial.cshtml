@@ -1,5 +1,12 @@
 ﻿@model ResourceManagement.Models.IT.ITModel
 
+<br />
+<br />
+
+<div id="AssetchartContainer" style="height: 250px; max-width: 100%; position: relative"></div>
+
+<br />
+<br />
 
 @if (Model != null)
 {
@@ -29,7 +36,7 @@
                         <td class="asset-type">@asset.AssetType</td>
                         <td class="asset-warrntystatus">@asset.WarrentyStatus</td>
                         <td class="asset-history">
-                           <a class="a-history" href="#"><img src="~/Assets/history.png" width="25" height="25" /></a> 
+                            <a class="a-history" href="#"><img src="~/Assets/history.png" width="25" height="25" /></a>
                         </td>
                     </tr>
                     sno = sno + 1;
@@ -39,6 +46,115 @@
         </table>
     </div>
 }
+
+
+<script>
+
+
+    var chart = new CanvasJS.Chart("AssetchartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        exportEnabled: true,
+        willReadFrequently: true,
+        title: {
+            text: "Assets Overview",
+            fontColor: "white",
+            labelFontSize: 15,
+            padding: 10,
+            margin: 15,
+            backgroundColor: "Black",
+            cornerRadius: 10,
+            fontWeight: "bold"
+        },
+        legend: {
+            horizontalAlign: "right",
+            verticalAlign: "center",
+            margin: 15,
+        },
+        axisX: {
+            labelTextAlign: "left",
+            labelFontSize: 15,
+            tickLength: 6,
+            tickThickness: 6,
+            tickColor: "red",
+            labelFontColor: "#005983",
+        },
+        axisY: {
+            title: "Assets",
+            titleMaxWidth: 400,
+            fontSize: 50,
+            titleFontWeight: "bold",
+            gridThickness: 0,
+            labelTextAlign: "left",
+            labelFontColor: "#005983",
+            stripLines: [
+                {
+                    value: 0,
+                    showOnTop: true,
+                    color: "gray",
+                    thickness: 0
+                }
+            ]
+        },
+
+        data: [
+            {
+                type: "column",
+                showInLegend: true,
+                name: "Total Assets",
+                legendText: "Total Assets",
+                indexLabel: "{y}",
+                indexLabelFontWeight: "bold",
+                indexLabelFontColor: "#4F81BC",
+                legendMarkerColor: "#4F81BC",
+                color: "#4F81BC",
+                indexLabelFontSize: 10,
+                    dataPoints:@Html.Raw(Model.AssetsTotalDataPoints),
+
+            },
+            {
+                type: "column",
+                legendText: "Assigned Assets",
+                indexLabel: "{y}",
+                indexLabelFontWeight: "bold",
+                name: "Assigned",
+                showInLegend: true,
+                legendMarkerColor: "#008080",
+                color: "#008080",
+                indexLabelFontSize: 10,
+                indexLabelFontColor: "#008080",
+                 dataPoints:@Html.Raw(Model.AssetsAssignedDataPoints),
+            },
+            {
+                type: "column",
+                legendText: "Not Assigned Assets",
+                indexLabel: "{y}",
+                indexLabelFontWeight: "bold",
+                name: "Not Assigned",
+                showInLegend: true,
+                legendMarkerColor: "#23BFAA",
+                color: "#23BFAA",
+                indexLabelFontColor: "#23BFAA",
+                indexLabelFontSize: 10,
+                dataPoints:@Html.Raw(Model.AssetsNotAssignedDataPoints),
+            },
+            {
+                type: "column",
+                legendText: "Sold Out Assets",
+                name: "Sold Out",
+                indexLabel: "{y}",
+                indexLabelFontWeight: "bold",
+                showInLegend: true,
+                legendMarkerColor: "red",
+                color: "red",
+                indexLabelFontColor: "red",
+                indexLabelFontSize: 10,
+                 dataPoints:@Html.Raw(Model.AssetsSoldOutDataPoints),
+            }
+        ]
+    });
+    chart.render();
+</script>
 
 
 

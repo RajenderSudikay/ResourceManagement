@@ -77,29 +77,30 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="assetassettype">Filter By<b style="color:red">*</b></label>
-                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                    <label for="assetfilterby">Filter By<b style="color:red">*</b></label>
+                    <select id="assetfilterby" name="assetfilterby" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Type</option>
-                        <option value="Laptop">Asset</option>
-                        <option value="Desktop">Employee</option>
+                        <option value="Asset">Asset</option>
+                        <option value="Employee">Employee</option>
                     </select>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 asset-emp-div" style="display: none">
                 <div class="form-group selectemp-div">
                     <label for="assetemployeename">Employee Name<b style="color:red">*</b></label>
-                    <select id="selectEmployeename" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
+                    <select id="selectEmployeenameandemail" name="assetemployeename" class="form-control form-select form-select-lg mb-3" style="background-color:white">
                         <option disabled selected value=""> -- Select Employee Name -- </option>
                     </select>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 asset-type-div" style="display: none">
                 <div class="form-group">
                     <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
                     <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Type</option>
+                        <option value="All">All</option>
                         <option value="Laptop">Laptop</option>
                         <option value="Desktop">Desktop</option>
                         <option value="MacBook">MacBook</option>
@@ -113,22 +114,22 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 asset-category-div" style="display: none">
                 <div class="form-group">
-                    <label for="assetassettype">Category<b style="color:red">*</b></label>
-                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
+                    <label for="assetcategory">Category<b style="color:red">*</b></label>
+                    <select id="assetcategory" name="assetcategory" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Category</option>
                         <option value="All">All</option>
-                        <option value="Desktop">Assigned</option>
-                        <option value="MacBook">Not Assigned</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="Not Assigned">Not Assigned</option>
 
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 asset-assetid-div" style="display: none">
                 <div class="form-group">
                     <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
-                    <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3" required>
+                    <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Asset ID</option>
                         <option value="Asset1">Asset1</option>
                         <option value="Asset2">Asset2</option>
@@ -150,6 +151,10 @@
 </div>
 <br />
 <br />
+
+
+
+
 <div class="card card-body" style="border-radius: 10px">
     <div class="card">
         <div class="card-body ">
@@ -387,17 +392,51 @@
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model)
 <script>
 
+  
+
+
     // If employee works multiple projects then based on client updateing the employee details like Client name project name reportung managet etc..
     jQuery('#assetAssignID').change(function (evt) {
         jQuery('.showassetinfo').show();
     });
 
+    jQuery(document).on("change", "#assetfilterby", function () {
+        if (jQuery(this).val() == "Asset") {
+            jQuery('.asset-type-div').show();
+            jQuery('.asset-category-div').show();
+
+            jQuery('.asset-emp-div').hide();
+            jQuery('.asset-assetid-div').hide();
+
+        }
+        else {
+
+            jQuery("#selectEmployeenameandemail").val($("#selectEmployeenameandemail option:first").val());
+
+            jQuery('.asset-emp-div').show();
+            jQuery('.asset-assetid-div').show();
+
+            jQuery('.asset-type-div').hide();
+            jQuery('.asset-category-div').hide();
+        }
+    });
+
 
     jQuery(document).on("click", ".btn-view-assets", function () {
+
+        var GetAssetModel = {
+            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
+            AssetID: jQuery('#assetAssignID :selected').val(),
+            AssetType: jQuery('#assetassettype :selected').val(),
+            Category: jQuery('#assetcategory :selected').val(),
+            FilterBy: jQuery('#assetfilterby :selected').val()
+        };
+
         jQuery.ajax({
             type: "POST",
             url: "/it/getassets",
-            /* data: JSON.stringify({ leaveReportModel: leaveReportsInputs }),*/
+            data: JSON.stringify({ getAssetModel: GetAssetModel }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 jQuery('.assets-info-container').html(data);
@@ -406,11 +445,14 @@
     });
 
 
-    jQuery(document).on("click", ".a-history", function () {
+    jQuery(document).on("click", ".a-history", function (e) {
+        e.preventDefault();
         jQuery('#modal-warning-message-popup').show();
+
     });
 
-    jQuery(document).on("click", ".modal-warning-popup-btn", function () {
+    jQuery(document).on("click", ".modal-warning-popup-btn", function (e) {
+        e.preventDefault();
         jQuery('#modal-warning-message-popup').hide();
     });
 

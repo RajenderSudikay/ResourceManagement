@@ -145,8 +145,8 @@ function GetAssetsByEmpID(empID) {
         data: JSON.stringify({ GetAssetModelByEmp: GetAssetEmpModel }),
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            jQuery.each(data.EmpSpecificAssets, function (i, item) {
-                jQuery('#assetAssignID').empty();
+            jQuery('#assetAssignID').empty();
+            jQuery.each(data.EmpSpecificAssets, function (i, item) {            
                 $('#assetAssignID').append('<option value="' + item.AssetSerialNo + '">' + item.AssetSerialNo + '</option>');
             });
 
@@ -158,6 +158,26 @@ function GetAssetsByEmpID(empID) {
                 jQuery('#assetAssignID').css("border", "1px solid green");
                 jQuery('.invalid-assetid').hide();
             }
+        }
+    });
+}
+
+function GetAssetsByAssetType(type) {
+    var GetAssetModel = {
+        AssetType: type,
+    };
+
+    jQuery.ajax({
+        type: "POST",
+        url: "/it/GetAssetsByAssetType",
+        data: JSON.stringify({ GetAssetModel: GetAssetModel }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            jQuery('#assetAssign').empty();
+            $('#assetAssign').append('<option value="">Select Asset</option>');
+            jQuery.each(data.AssetsByAssetType, function (i, item) {
+                $('#assetAssign').append('<option value="' + item.AssetSerialNo + '">' + item.AssetSerialNo + '</option>');
+            });           
         }
     });
 }

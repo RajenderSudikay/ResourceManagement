@@ -96,4 +96,39 @@ namespace ResourceManagement.Models.IT
         //
         public string EmpID { get; set; }
     }
+
+    public class GetAssetModelByAsset
+    {
+        //
+        public string AssetType { get; set; }
+    }
+
+
+    public class GetAssetModel
+    {
+        public string EmployeeID { get; set; }
+        public string FilterBy { get; set; }
+        public string AssetType { get; set; }
+        public string Category { get; set; }
+        public string EmployeeName { get; set; }
+        public string AssetID { get; set; }
+    }
+
+    public class AssignAssetModel
+    {
+        public string EmployeeID { get; set; }
+        public string AssetType { get; set; }
+        public string EmployeeName { get; set; }
+        public string EmployeeEmail { get; set; }
+        public string AssetID { get; set; }
+        public string itadminIds { get; set; }        
+    }
+
+    public class AssetDataPoint
+    {
+        public string Priority { get; set; }
+        public string label { get; set; }
+        public double y { get; set; }
+        public double totalTickets { get; set; }
+    }
 }

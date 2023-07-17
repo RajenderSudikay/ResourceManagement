@@ -53,6 +53,11 @@ namespace ResourceManagement.Models.IT
         public List<SelectListItem> MonthsList { get; set; }
         public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
         public List<AmbcNewITAssetMgmt> EmpSpecificAssets { get; set; } = new List<AmbcNewITAssetMgmt>();
+        public List<AmbcNewITAssetMgmt> AssetsByAssetType { get; set; } = new List<AmbcNewITAssetMgmt>();
+        public string AssetsTotalDataPoints { get; set; }
+        public string AssetsAssignedDataPoints { get; set; }
+        public string AssetsNotAssignedDataPoints { get; set; }
+        public string AssetsSoldOutDataPoints { get; set; }
     }
 
     public class ITDownloadReportModel
