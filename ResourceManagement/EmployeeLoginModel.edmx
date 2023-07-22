@@ -74,6 +74,18 @@
           <Property Name="AssetAssignedToEmpID" Type="varchar" MaxLength="1500" />
           <Property Name="AssetAssignedToEmpName" Type="varchar" MaxLength="1500" />
           <Property Name="AssetAssignedToEmailAddress" Type="varchar" MaxLength="1500" />
+          <Property Name="SoldOutStatus" Type="varchar" MaxLength="50" />
+          <Property Name="SoldOutDate" Type="datetime" />
+          <Property Name="SoldOutVendor" Type="varchar" MaxLength="100" />
+          <Property Name="SoldoutPrice" Type="int" />
+          <Property Name="AllocationStatus" Type="varchar" MaxLength="100" />
+          <Property Name="AssetPurchaseLocation" Type="varchar" MaxLength="100" />
+          <Property Name="AssetPurchaseVendor" Type="varchar" MaxLength="100" />
+          <Property Name="AssetDescription" Type="varchar" MaxLength="500" />
+          <Property Name="HeadsetDetail" Type="varchar" MaxLength="100" />
+          <Property Name="AssetRemarks" Type="varchar" MaxLength="500" />
+          <Property Name="MouseDetail" Type="varchar" MaxLength="150" />
+          <Property Name="AccessControl" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="AmbcNewPeripherals">
           <Key>
@@ -833,7 +845,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo"/>
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
@@ -886,7 +898,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
     FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo"/>
           <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1763,6 +1775,18 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="AssetAssignedToEmpID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="AssetAssignedToEmpName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="AssetAssignedToEmailAddress" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="SoldOutStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SoldOutDate" Type="DateTime" Precision="3" />
+          <Property Name="SoldOutVendor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SoldoutPrice" Type="Int32" />
+          <Property Name="AllocationStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AssetPurchaseLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AssetPurchaseVendor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AssetDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HeadsetDetail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AssetRemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MouseDetail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AccessControl" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AmbcNewPeripheral">
           <Key>
@@ -2498,6 +2522,18 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AmbcNewITAssetMgmts">
             <EntityTypeMapping TypeName="TimesheetDBModel.AmbcNewITAssetMgmt">
               <MappingFragment StoreEntitySet="AmbcNewITAssetMgmt">
+                <ScalarProperty Name="AccessControl" ColumnName="AccessControl" />
+                <ScalarProperty Name="MouseDetail" ColumnName="MouseDetail" />
+                <ScalarProperty Name="AssetRemarks" ColumnName="AssetRemarks" />
+                <ScalarProperty Name="HeadsetDetail" ColumnName="HeadsetDetail" />
+                <ScalarProperty Name="AssetDescription" ColumnName="AssetDescription" />
+                <ScalarProperty Name="AssetPurchaseVendor" ColumnName="AssetPurchaseVendor" />
+                <ScalarProperty Name="AssetPurchaseLocation" ColumnName="AssetPurchaseLocation" />
+                <ScalarProperty Name="AllocationStatus" ColumnName="AllocationStatus" />
+                <ScalarProperty Name="SoldoutPrice" ColumnName="SoldoutPrice" />
+                <ScalarProperty Name="SoldOutVendor" ColumnName="SoldOutVendor" />
+                <ScalarProperty Name="SoldOutDate" ColumnName="SoldOutDate" />
+                <ScalarProperty Name="SoldOutStatus" ColumnName="SoldOutStatus" />
                 <ScalarProperty Name="AssetAssignedToEmailAddress" ColumnName="AssetAssignedToEmailAddress" />
                 <ScalarProperty Name="AssetAssignedToEmpName" ColumnName="AssetAssignedToEmpName" />
                 <ScalarProperty Name="AssetAssignedToEmpID" ColumnName="AssetAssignedToEmpID" />
