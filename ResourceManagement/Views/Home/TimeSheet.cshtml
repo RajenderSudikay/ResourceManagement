@@ -823,8 +823,17 @@
 
         //If Friday 5 PM allowing user to enter timesheet
         var maxWeekStartDate = "";
-        if (dow >= 5 && currentTime >= 17) {
-            maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
+        if (dow >= 5) {
+            //On friday After 5 PM allowing timesheet to enter
+            if (dow == 5)
+            {
+                if (currentTime >= 17) {
+                    maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
+                }
+            }
+            else {
+                maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
+            }           
         }
         else {
             var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();

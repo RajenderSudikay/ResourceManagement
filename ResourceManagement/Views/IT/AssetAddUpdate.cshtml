@@ -2,9 +2,14 @@
 
 @{
     ViewBag.Title = "Asset Add Update Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "INVENTORY ADD OR UPDATE";
+    bannerModel.BannerImagePath = "/Assets/Banner/assest-allocate.jpg";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
 
@@ -18,7 +23,7 @@
 
     jQuery("#assetassettype").change(function (evt) {
         if (jQuery(this).val() == "Laptop" || jQuery(this).val() == "Desktop") {
-            jQuery('.showhide').show();           
+            jQuery('.showhide').show();
             jQuery(".showhide-required").prop('required', true);
         }
         else {
@@ -39,7 +44,7 @@
     });
 
 
-    
+
 
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -119,10 +124,10 @@
             };
             jQuery.ajax({
                 url: "/it/assetsaddupdateajax",
-                type: "POST",             
-                data: { assetInfo: assetInfoModel },          
+                type: "POST",
+                data: { assetInfo: assetInfoModel },
                 success: function (data) {
-                    var obj = jQuery.parseJSON(data);                 
+                    var obj = jQuery.parseJSON(data);
                     if (obj.jsonResponse.StatusCode == 200) {
                         jQuery('.success-message-popup-title').html("Hey there");
                         jQuery('.database-response').html("<h2>Asset details have been successfully saved, and we greatly appreciate your cooperation.</h2>");

@@ -379,9 +379,11 @@
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\b11.png" />
+    <Content Include="Assets\Banner\allocate-asset.jpg" />
     <Content Include="Assets\Banner\apply-leave.jpg" />
     <Content Include="Assets\Banner\assest-allocate.jpg" />
-    <Content Include="Assets\Banner\assets-history.jpg" />
+    <Content Include="Assets\Banner\asset-history.png" />
+    <Content Include="Assets\Banner\dashboard-report.png" />
     <Content Include="Assets\Banner\enter-projects.png" />
     <Content Include="Assets\Banner\leave-report.png" />
     <Content Include="Assets\Banner\monthly_reports.jpg" />
