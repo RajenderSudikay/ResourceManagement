@@ -1,0 +1,198 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+@{
+    ViewBag.Title = "View Vendor page";
+}
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card upload-it-report-card">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorlocation">Vendor Location<b style="color:red">*</b></label>
+                        <select id="vendorlocation" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Madurai">Madurai</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorstatus">Vendor Status<b style="color:red">*</b></label>
+                        <select id="vendorstatus" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="In-Active">In-Active</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-view-vendor-report" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View Vendors</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<div class="card card-body vendors-report-body" style="border-radius: 10px;">
+    <div class="card vendors-report-card">
+        <div class="card-body ">
+            @using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
+            {
+                <input type="hidden" name="GridHtml" />
+                <div id="report-container">
+                    <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
+                        <thead class="table-bordered" style="height: 35px !important">
+                            <tr style="background-color: #005983">
+                                @if (Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
+                                {
+                                    <th class="" scope="col" width="30" style="color: white; text-align: center">Action</th>
+                                }
+                                else
+                                {
+                                    <th class="" scope="col" width="30" style="color: white; text-align: center; display:none">Action</th>
+                                }
+
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Name</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Email</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Location</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Status</th>
+                                <th class="" scope="col" width="30" style="color: white; text-align: center">Address</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="vendorreport-table-grid">
+                            <tr style="background-color: #ccffcc">
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
+
+<br />
+<script>
+
+    jQuery("#selectEmployeenameandemail").change(function (evt) {
+        GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);
+    });
+
+
+    function DownloadITReport(ele) {
+        var parentElement = $(ele).parents('.it-report-tr');
+
+        var ITDownloadReportModel = {
+            FileName: $(ele).html(),
+            ReportMonth: parentElement.find('td.report-month').html(),
+            UniqueNumber: $(ele).attr("data-uniqueid"),
+            EmpName: parentElement.find('td.report-empname').html(),
+            EmpID: parentElement.find('td.report-empname').attr("data-empid"),
+            ReportType: parentElement.find('td.report-type').html(),
+            AssetID: parentElement.find('td.report-assetid').html(),
+        }
+
+        var GridHtml = JSON.stringify(ITDownloadReportModel).toString();
+        $("input[name='GridHtml']").val(GridHtml);
+
+        $('form#itdownloadform').submit();
+    }
+
+    function DeleteITReport(ele) {
+        var parentElement = $(ele).parents('.it-report-tr');
+        var ITReportDeleModel = {
+            Action: "Delete",
+            UniqueNumber: $(ele).attr("data-uniqueid"),
+            ReportType: parentElement.find('td.report-type').html(),
+            AssetID: parentElement.find('td.report-assetid').html(),
+        }
+        ViewReport(ITReportDeleModel);
+    }
+
+
+    function ViewReport(model) {
+        var isFormValidated = AssetFormValidated();
+        if (isFormValidated == false) {
+            return;
+        }
+
+        jQuery('.vendors-report-body').show();
+        jQuery('.vendorreport-table-grid').empty();
+
+        var itReportModel = {
+            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
+            UploadedMonth: jQuery('#assetUploadMonth :selected').val(),
+            AssetID: jQuery('#assetAssignID :selected').val(),
+            Action: model != undefined ? model.Action : "",
+            UniqueNo: model != undefined ? model.UniqueNumber : "",
+            ReportType: model != undefined ? model.ReportType : ""
+        };
+
+        jQuery.ajax({
+            url: "/it/viewitajaxreports",
+            type: "POST",
+            data: JSON.stringify({ itReportModel: itReportModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                var i = 0;
+                jQuery.each(obj, function (i, item) {
+                    var backgroundColor = "";
+
+                    if (jQuery('.emprole').val() == "administrator") {
+                        $('.vendorreport-table-grid').append(
+
+                            '<tr style="height: 30px;" class="it-report-tr">'
+                            + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqueNumber + '" onclick=DeleteITReport(this)></a></td>'
+                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
+                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
+                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
+                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
+                            + '</tr>'
+                        )
+                    }
+                    else {
+                        $('.vendorreport-table-grid').append(
+
+                            '<tr style="height: 30px;" class="it-report-tr">'
+                            + '<td scope="row" style="padding-left: 25px; display:none"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
+                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
+                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
+                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
+                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
+                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
+                            + '</tr>'
+                        )
+                    }
+
+                });
+            }
+        });
+    }
+
+
+    jQuery(".btn-view-it-report").click(function () {
+        ViewReport();
+    });
+
+</script>

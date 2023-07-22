@@ -563,6 +563,9 @@
     <Content Include="Views\IT\ViewAssets.cshtml" />
     <Content Include="Views\IT\ViewAssetsPartial.cshtml" />
     <Content Include="Views\IT\AssignAssetEmailPartial.cshtml" />
+    <Content Include="Views\IT\VendorAddUpdate.cshtml" />
+    <Content Include="Views\IT\ViewVendors.cshtml" />
+    <Content Include="Views\IT\PurchaseRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

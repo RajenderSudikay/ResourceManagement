@@ -98,6 +98,24 @@ namespace ResourceManagement.Controllers
             return View(employeeModel);
         }
 
+        public ActionResult VendorAddUpdate()
+        {
+            var model = FilDefaultITModel();
+            return View(model);
+        }
+
+        public ActionResult ViewVendors()
+        {
+            var model = FilDefaultITModel();
+            return View(model);
+        }
+
+        public ActionResult PurchaseRequest()
+        {
+            var model = FilDefaultITModel();
+            return View(model);
+        }
+
         public ActionResult MMReportgenerate()
         {
             ITModel ITModel = FilDefaultITModel();
@@ -207,7 +225,7 @@ namespace ResourceManagement.Controllers
         }
 
         public ActionResult AssetAssign()
-        {           
+        {
             var defaultModel = FilDefaultITModel();
             return View(defaultModel);
         }

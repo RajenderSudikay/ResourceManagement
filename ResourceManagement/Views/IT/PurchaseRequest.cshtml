@@ -1,0 +1,100 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+@{
+    ViewBag.Title = "Purchase request page";
+}
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
+                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="MacBook">MacBook</option>
+                            <option value="MacBook">Tablet</option>
+                            <option value="MacBook">Headset</option>
+                            <option value="MacBook">Mouse</option>
+                            <option value="MacBook">Charger</option>
+                            <option value="MacBook">Mobile</option>
+                            <option value="MacBook">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorlocation">Vendor Location<b style="color:red">*</b></label>
+                        <select id="vendorlocation" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Madurai">Madurai</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorstatus">Vendors<b style="color:red">*</b></label>
+                        <select id="vendorstatus" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Vendor</option>
+                            <option value="Hyderabad">Vendor1</option>
+                            <option value="Madurai">Vendor2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="vendoraddress">Upload quotetion<b style="color:red">*</b></label>
+                        <input type="file" name="ExcelFile" id="reportupload" required />
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="vendorremarks">Remarks</label>
+                        <textarea class="form-control" id="vendorremarks" style="min-width: 100%" placeholder="vendorremarks"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                <button type="submit" class="btn btn-info btn-lg btn-vendor-addupdate" style="width:140px; height:35px; border-radius:10px"><b style="font-size: 16px">Purchase Request</b></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @{
+        var itEmpEmailIds = "";
+    }
+    @foreach (var itAdmin in Model.ITAdminUsers)
+    {
+        itEmpEmailIds += itAdmin.AMBC_Mail_Address.Trim() + ",";
+    }
+
+    <div class="it-admin-list" style="display:none">@itEmpEmailIds.Trim(',')</div>
+</div>
+
+
+<br />
+
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
+
+<script>
+
+</script>

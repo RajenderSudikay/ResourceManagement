@@ -6,6 +6,17 @@
     var isITUser = Model != null && Model.Access_Role == "ITAdmin" ? true : false;
 }
 
+<style>
+    .dropdown-menu > li > a {
+        color: #23366f !important;
+    }
+
+        .dropdown-menu > li > a:hover {          
+            background-color: #91bfe3 !important;
+            color: white !important;
+        }
+</style>
+
 <div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: #3a3d6e; height: 50px !important; margin-right: -610px ">
     <ul class="navbar-nav custom-navbar-nav" style="margin-top: 6px !important; margin-left: 30px !important">
         <li class="nav-item">
@@ -75,11 +86,26 @@
                     <li>
                         <a class="dropdown-item" href="#"> <b>Assets</b> </a>
                         <ul class="submenu dropdown-menu">
-                            <li><a class="dropdown-item" href="/it/vendoraddupdate"> <b>Vendor add/update</b> </a></li>
-                            <li><a class="dropdown-item" href="/it/purchaserequest"> <b>New purchase request</b> </a></li>
-                            <li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Asset add/update</b> </a></li>
-                            <li><a class="dropdown-item" href="/it/assetassign"> <b>Asset Assign</b> </a></li>
-                            <li><a class="dropdown-item" href="/it/viewassets"> <b>View Assets</b> </a></li>
+                            <li>
+                                <a class="dropdown-item" href="#"> <b>Vendor</b> </a>
+                                <ul class="submenu dropdown-menu">
+                                    <li><a class="dropdown-item" href="/it/vendoraddupdate"> <b>Add or Update</b> </a></li>
+                                    <li><a class="dropdown-item" href="/it/viewvendors"> <b>Vendor List</b> </a></li>
+                                </ul>
+                            </li>
+
+                            <li><a class="dropdown-item" href="/it/purchaserequest"> <b>Purchase</b> </a></li>
+
+                            <li>
+                                <a class="dropdown-item" href="#"> <b>Manage</b> </a>
+                                <ul class="submenu dropdown-menu">
+                                    <li><a class="dropdown-item" href="/it/assetaddupdate"> <b>Inventory Add or Udate</b> </a></li>
+                                    <li><a class="dropdown-item" href="/it/assetassign"> <b>Allocate</b> </a></li>
+                                    <li><a class="dropdown-item" href="/it/viewassets"> <b>View Assets</b> </a></li>
+                                </ul>
+                            </li>
+
+                           
                         </ul>
                     </li>
 
