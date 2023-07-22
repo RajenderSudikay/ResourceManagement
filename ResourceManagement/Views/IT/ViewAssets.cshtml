@@ -2,6 +2,9 @@
 
 @{
     ViewBag.Title = "Asset Assign Page";
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "VIEW ASSETS";
+    bannerModel.BannerImagePath = "/Assets/Banner/assets-history.jpg";
 }
 
 <style>
@@ -67,12 +70,10 @@
         height: 110px;
         margin-top: 35px;
     }
-
-
 </style>
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
-
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">

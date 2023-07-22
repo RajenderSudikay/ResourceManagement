@@ -2,10 +2,15 @@
 
 @{
     ViewBag.Title = "TimeSheet Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "ENTER TIME-SHEET";
+    bannerModel.BannerImagePath = "/Assets/Banner/Online-Timesheet.png";
 }
 
 @{
     Html.RenderPartial("_MenuNavigation", Model);
+    @Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 }
 
 <p>

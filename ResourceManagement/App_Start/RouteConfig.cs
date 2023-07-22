@@ -21,6 +21,14 @@ namespace ResourceManagement
                  name = UrlParameter.Optional
              });
 
+            routes.MapRoute(
+           "MasterData", "MasterData/{action}/{name}", new
+           {
+               controller = "MasterData",
+               action = "Index",
+               name = UrlParameter.Optional
+           });
+
             //routes.MapRoute(
             // "assetaddupdate", "asset-addupdate/{name}", new
             // {

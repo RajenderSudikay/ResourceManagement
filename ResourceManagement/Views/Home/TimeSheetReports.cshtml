@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "TimeSheets Report Page";
     var imagePath = "";
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "TIME-SHEET REPORTS";
+    bannerModel.BannerImagePath = "/Assets/Banner/Timesheet-report.jpg";
 }
 
 <style>
@@ -133,6 +136,9 @@
 
     </div>
 </nav>
+
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card timesheet-card">
     <div class="card-body ">

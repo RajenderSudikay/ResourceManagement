@@ -8,37 +8,41 @@
 
 <style>
     .dropdown-menu > li > a {
-        color: #23366f !important;
+        color: #2167ae !important;
     }
 
-        .dropdown-menu > li > a:hover {          
-            background-color: #91bfe3 !important;
-            color: white !important;
-        }
+    .menuname {
+        color: #2167ae !important;
+    }
+
+    .dropdown-menu > li > a:hover {
+        background-color: #91bfe3 !important;
+        color: #2167ae !important;
+    }
 </style>
 
-<div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: #3a3d6e; height: 50px !important; margin-right: -610px ">
+<div class="collapse navbar-collapse" id="main_nav" style="margin-bottom: -48px !important; margin-left: -260px !important; margin-top: 40px; background-color: white; height: 50px !important; margin-right: -610px ">
     <ul class="navbar-nav custom-navbar-nav" style="margin-top: 6px !important; margin-left: 30px !important">
         <li class="nav-item">
             <a class="nav-link" href="/dashboard">
-                <img src="~/Assets/MenuIcons/icons8-home-20.png" width="15" /> <b>Home</b>
+                @*<img src="~/Assets/MenuIcons/icons8-home-20.png" width="15" />*@ <b class="menuname">Home</b>
             </a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/document.png" width="15" /> <b>TimeSheet</b>
+                @*<img src="~/Assets/MenuIcons/document.png" width="15" />*@ <b class="menuname">TimeSheet</b>
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/timesheet"> <b>Enter Timesheet</b> </a></li>
                 @if (isAdminUser)
                 {
-                    <li><a class="dropdown-item" href="/timesheetreports"> <b>View Report</b> </a></li>
+                    <li><a class="dropdown-item" href="/timesheetreports"> <b class="menuname">View Report</b> </a></li>
                 }
             </ul>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/business-report.png" width="15" /> <b>My Reports</b>
+                @*<img src="~/Assets/MenuIcons/business-report.png" width="15" />*@ <b class="menuname">My Reports</b>
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/StatusReportUpload"> <b>Upload Reports</b> </a></li>
@@ -49,7 +53,7 @@
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                <img src="~/Assets/MenuIcons/management.png" width="15" />  <b>LMS</b>
+                @*<img src="~/Assets/MenuIcons/management.png" width="15" />*@  <b class="menuname">LMS</b>
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/applyleave"> <b>Apply Leave</b> </a></li>
@@ -64,7 +68,7 @@
         {
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/technical-support.png" width="15" />  <b>IT</b>
+                    @*<img src="~/Assets/MenuIcons/technical-support.png" width="15" />*@  <b class="menuname">IT</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
@@ -76,7 +80,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item" href="#"> <b>Reports</b> </a>
+                        <a class="dropdown-item" href="#"> <b class="menuname">Reports</b> </a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" href="/it/uploadreport"> <b>Upload IT Report</b> </a></li>
                             <li><a class="dropdown-item" href="/it/viewreport"> <b>View IT Report</b> </a></li>
@@ -105,7 +109,7 @@
                                 </ul>
                             </li>
 
-                           
+
                         </ul>
                     </li>
 
@@ -117,7 +121,7 @@
         {
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/hr.png" width="15" /> <b>HR</b>
+                    @*<img src="~/Assets/MenuIcons/hr.png" width="15" />*@ <b class="menuname">HR</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>HR Letter</b> </a></li>
@@ -126,7 +130,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/calendar.png" width="15" /> <b>Payroll</b>
+                    @*<img src="~/Assets/MenuIcons/calendar.png" width="15" />*@ <b class="menuname">Payroll</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Payslip</b> </a></li>
@@ -136,16 +140,16 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/contact-info.png" width="15" /> <b>Service Central</b>
+                    @*<img src="~/Assets/MenuIcons/contact-info.png" width="15" />*@ <b class="menuname">Service Central</b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Help Desk</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b class="menuname">Help Desk</b> </a></li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/ticket.png" width="15" /><b>Tickets</b>
+                    @*<img src="~/Assets/MenuIcons/ticket.png" width="15" />*@<b class="menuname">Tickets</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Create Ticket</b> </a></li>
@@ -155,17 +159,17 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/learning.png" width="15" /><b>E-Learning</b>
+                    @*<img src="~/Assets/MenuIcons/learning.png" width="15" />*@<b class="menuname">E-Learning</b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Register course</b> </a></li>
+                    <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b class="menuname">Register course</b> </a></li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
 
-                    <img src="~/Assets/MenuIcons/airplane-ticket.png" width="15" /><b>Travelling</b>
+                    @*<img src="~/Assets/MenuIcons/airplane-ticket.png" width="15" />*@<b class="menuname">Travelling</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/it/schedulemaintenance"> <b>Raise Request</b> </a></li>
@@ -175,13 +179,23 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img src="~/Assets/MenuIcons/manager.png" width="15" /> <b>Admin</b>
+                    @*<img src="~/Assets/MenuIcons/manager.png" width="15" />*@ <b class="menuname">Admin</b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/zohosigninupdate"> <b>Check In Adjust</b> </a></li>
                     <li><a class="dropdown-item" href="/checkinadjust"> <b>Check In Day wise</b> </a></li>
                 </ul>
             </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle my-dropdown-toggle" href="#" data-toggle="dropdown">
+                    @*<img src="~/Assets/MenuIcons/manager.png" width="15" />*@ <b class="menuname">Master Data</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/zohosigninupdate"> <b>Add or update</b> </a></li>
+                </ul>
+            </li>
         }
     </ul>
 </div>
+

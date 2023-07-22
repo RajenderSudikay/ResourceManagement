@@ -2,9 +2,16 @@
 
 @{
     ViewBag.Title = "Asset Upload Report Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "UPLOAD IT REPORTS";
+    bannerModel.BannerImagePath = "/Assets/Banner/upload-itreports.jpeg";
+
 }
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel);
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card upload-it-report-card">
@@ -220,13 +227,13 @@
                 if (obj.jsonResponse.StatusCode == 200) {
                     jQuery('.success-message-popup-title').html("Hey there");
                     jQuery('.database-response').html("<h2><b>" + jQuery('#selectEmployeenameandemail :selected').text() + "</b> report has been uploaded successfully!.</h2>");
-                    jQuery('.message-success-popup').modal('show');                   
+                    jQuery('.message-success-popup').modal('show');
                 }
                 else {
                     jQuery('.error-message-popup-title').html("Hey there");
                     var message = "<h2>You have already submitted the report for the selected month</h2>";
                     message += "<h2>" + obj.jsonResponse.Message + "</h2>";
-                    jQuery('.database-response').html(message);                  
+                    jQuery('.database-response').html(message);
                     jQuery('#modal-db-error-alert').modal('show');
                 }
 

@@ -2,9 +2,15 @@
 
 @{
     ViewBag.Title = "Vendor add update page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "ADD UPDATE VENDOR";
+    bannerModel.BannerImagePath = "/Assets/Banner/vendor.jpg";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">

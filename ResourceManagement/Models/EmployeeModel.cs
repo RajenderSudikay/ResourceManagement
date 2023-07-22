@@ -12,7 +12,7 @@ namespace ResourceManagement.Models
         public string leaveOrHolidayInfo { get; set; }
         public tbld_ambclogininformation signInOutInfo { get; set; }
         public List<TimeSheetReportViewModel> TimeSheetReports { get; set; }
-        public RMA_SystemDetails SystemInfo { get; set; }
+        public RMA_SystemDetails SystemInfo { get; set; }      
     }
 
     public class RMA_SystemDetails
@@ -150,4 +150,10 @@ namespace ResourceManagement.Models
         public string ClientName { get; set; }
     }
 
+    public class BannerInfo
+    {
+        public string BannerName { get; set; }
+        public bool ShowBanner { get; set; } = true;
+        public string BannerImagePath { get; set; }
+    }
 }

@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "TimeSheet Page";
     var imagePath = "";
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "APPLY LEAVE";
+    bannerModel.BannerImagePath = "/Assets/Banner/outofoffice.jpg";
 }
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
@@ -147,6 +150,7 @@
     </div>
 </nav>
 
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">

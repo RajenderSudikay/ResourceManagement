@@ -2,9 +2,14 @@
 
 @{
     ViewBag.Title = "Asset Assign Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "ASSIGN ASSET";
+    bannerModel.BannerImagePath = "/Assets/Banner/vendor.jpg";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">

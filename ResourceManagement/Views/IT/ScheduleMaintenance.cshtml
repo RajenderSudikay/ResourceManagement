@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = "Asset Upload Report Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "IT SCHEDULE MAINTENANCE";
+    bannerModel.BannerImagePath = "/Assets/Banner/schedulemainte.jpg";
+
 }
 
 @{
@@ -32,6 +37,7 @@
 <script src="~/src/jquery.richtext.js"></script>
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card ">

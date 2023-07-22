@@ -2,9 +2,14 @@
 
 @{
     ViewBag.Title = "Purchase request page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "PURCHASE REQUEST";
+    bannerModel.BannerImagePath = "/Assets/Banner/purchase.jpg";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">

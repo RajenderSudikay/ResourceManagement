@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "TimeSheet Page";
     var imagePath = "";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "LEAVE REPORT";
+    bannerModel.BannerImagePath = "/Assets/Banner/leave-report.png";
+
 }
 
 <nav class="navbar navbar-expand-lg nav-bar-bg navbar-inverse navbar-fixed-top">
@@ -146,6 +151,8 @@
 
     </div>
 </nav>
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 @if (Model.AMBC_Active_Emp_view.Access_Role == "timesheetuser" || Model.AMBC_Active_Emp_view.Access_Role == "administrator" || Model.AMBC_Active_Emp_view.Access_Role == "" || Model.AMBC_Active_Emp_view.Access_Role == "superadmin")
 {

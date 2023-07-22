@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Status Report Page";
     var imagePath = "";
+
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "STATUS REPORTS UPLOAD";
+    bannerModel.BannerImagePath = "/Assets/Banner/upload-itreports.jpeg";
 }
 
 
@@ -150,6 +155,8 @@
     </div>
 </nav>
 
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
+
 <div class="card card-body" style="border-radius: 10px">
     <div class="card status-report-card">
         <div class="card-body ">
@@ -296,7 +303,7 @@
                 </div>*@
             <br />
 
-            <div class="row excel-field-mapping-parent-div" >
+            <div class="row excel-field-mapping-parent-div">
                 <div class="card excel-field-mapping-div" style="padding-top: 10px; width: 60%; border: 3px solid #2167ae; color: #2167ae; display:none">
                     <div class="card-body">
                         <h5 class="card-title"><b>Database and Excel Fields mapping</b></h5>
@@ -476,7 +483,7 @@
                     <input type="submit" id="Add" value="Upload Activities" class="btn btn-info btn-lg btn-activity-details" style="border-radius: 10px" />
                 </div>
             </div>
-        </div>      
+        </div>
 
     </div>
 </div>

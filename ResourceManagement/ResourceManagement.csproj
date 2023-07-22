@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Controllers\ITController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MasterDataController.cs" />
     <Compile Include="con_leaveupdate.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -378,6 +379,21 @@
     <Content Include="Assets\Arrows\right-arrow.png" />
     <Content Include="Assets\Arrows\xls.png" />
     <Content Include="Assets\b11.png" />
+    <Content Include="Assets\Banner\apply-leave.jpg" />
+    <Content Include="Assets\Banner\assest-allocate.jpg" />
+    <Content Include="Assets\Banner\assets-history.jpg" />
+    <Content Include="Assets\Banner\enter-projects.png" />
+    <Content Include="Assets\Banner\leave-report.png" />
+    <Content Include="Assets\Banner\monthly_reports.jpg" />
+    <Content Include="Assets\Banner\Online-Timesheet.png" />
+    <Content Include="Assets\Banner\outofoffice.jpg" />
+    <Content Include="Assets\Banner\purchase.jpg" />
+    <Content Include="Assets\Banner\schedulemainte.jpg" />
+    <Content Include="Assets\Banner\Timesheet-report.jpg" />
+    <Content Include="Assets\Banner\upload-itreports.jpeg" />
+    <Content Include="Assets\Banner\Upload-report.jpg" />
+    <Content Include="Assets\Banner\vendor.jpg" />
+    <Content Include="Assets\Banner\View Assets.jpg" />
     <Content Include="Assets\charger.jpg" />
     <Content Include="Assets\Check-In.png" />
     <Content Include="Assets\ClientLogos\Federal Signal.png" />
@@ -566,9 +582,11 @@
     <Content Include="Views\IT\VendorAddUpdate.cshtml" />
     <Content Include="Views\IT\ViewVendors.cshtml" />
     <Content Include="Views\IT\PurchaseRequest.cshtml" />
+    <Content Include="Views\Home\_BannerInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\MasterData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

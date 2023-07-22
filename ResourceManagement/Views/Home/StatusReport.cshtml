@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "Status Report Page";
     var imagePath = "";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "DASHBOARD REPORTS";
+    bannerModel.BannerImagePath = "/Assets/Banner/upload-itreports.jpeg";
 }
 
 <style>
@@ -316,6 +320,7 @@
     </div>
 </nav>
 
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body status-report-view-options" style="border-radius: 10px">
     <div class="card statusreport-card">
@@ -941,9 +946,9 @@
 
                 var useRole = jQuery('.emprole').val();
 
-               /* if (type == undefined || type == "") {*/
-                    var empId = jQuery('.agent-navdrop-empid').text();
-                    $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
+                /* if (type == undefined || type == "") {*/
+                var empId = jQuery('.agent-navdrop-empid').text();
+                $('#selectEmployeename  option[value=' + empId + ']').attr("selected", "selected");
                 /*}*/
 
                 if (useRole != "administrator") {

@@ -2,9 +2,16 @@
 
 @{
     ViewBag.Title = "Asset Upload Report Page";
+
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "VIEW IT REPORTS";
+    bannerModel.BannerImagePath = "/Assets/Banner/leave-report.png";
 }
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel);
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card upload-it-report-card">
