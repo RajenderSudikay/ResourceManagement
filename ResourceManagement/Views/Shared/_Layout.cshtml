@@ -409,23 +409,20 @@
             $('.login-main').css("height", "720px !important");
         }
 
+        //START To highlate selected menu
         var links = $('.dropdown-item');
-
-        var pageURL = window.location.href;
-
-
+        var pageURL = window.location.pathname;
         jQuery.each(links, function (i, val) {
-            var currentLink = links[i].href;
+            var currentLink = $(this).attr("href");
             if (currentLink == pageURL) {
                 var parentElement = $(this).closest('.dropdown').addClass("selelctedlink");
-
                 var ccc = parentElement.children('a');
                 ccc.find('b').removeClass('menuname');
-                ccc.find('b').addClass('menuselectedcolor');               
-
-                return;
+                ccc.find('b').addClass('menuselectedcolor');              
+                return false;
             }
         });
+        //END
 
     </script>
 </body>
