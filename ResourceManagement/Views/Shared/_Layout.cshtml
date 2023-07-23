@@ -204,7 +204,7 @@
 
             .custom-navbar-nav > .open > a {
                 background-color: transparent !important;
-                border-bottom: 2px solid orange !important;
+                border-bottom: 2px solid #62d84e !important;
             }
 
             .custom-navbar-nav .dropdown-menu {
@@ -347,6 +347,10 @@
             color: #23366f !important;
         }
 
+        .menuselectedcolor {
+            color: #62d84e !important;
+        }
+
       
 
     </style>
@@ -404,6 +408,24 @@
         else {
             $('.login-main').css("height", "720px !important");
         }
+
+        var links = $('.dropdown-item');
+
+        var pageURL = window.location.href;
+
+
+        jQuery.each(links, function (i, val) {
+            var currentLink = links[i].href;
+            if (currentLink == pageURL) {
+                var parentElement = $(this).closest('.dropdown').addClass("selelctedlink");
+
+                var ccc = parentElement.children('a');
+                ccc.find('b').removeClass('menuname');
+                ccc.find('b').addClass('menuselectedcolor');               
+
+                return;
+            }
+        });
 
     </script>
 </body>
