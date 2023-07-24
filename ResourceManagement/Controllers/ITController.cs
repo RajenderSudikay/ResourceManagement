@@ -671,7 +671,7 @@ namespace ResourceManagement.Controllers
                         AssetManufacturer = assetInfo.AssetManufacturer,
                         AssetSerialNo = assetInfo.AssetSerialNo,
                         AssetType = assetInfo.AssetType,
-                        ChargerCapicity = assetInfo.ChargerCapicity,
+                        ChargerCapicity = assetInfo.ChargerDetails,
                         ChargerSerialNo = assetInfo.ChargerSerialNo,
                         OperatingSystemDetail = assetInfo.OperatingSystemDetail,
                         RAM_Size = assetInfo.RAM_Size,
@@ -680,7 +680,27 @@ namespace ResourceManagement.Controllers
                         WarrentyEndDate = assetInfo.WarrentyEndDate,
                         WarrentyStartDate = assetInfo.WarrentyStartDate,
                         WarrentyStatus = assetInfo.WarrentyStatus,
-                        Lastupdated = System.DateTime.Now
+                        Lastupdated = System.DateTime.Now,
+                        AccessControl = assetInfo.AccessControl,
+                        AllocationStatus = assetInfo.AllocationStatus,
+
+                        //THIS FILED TO BE UPDATED IN TABLE
+                        AssetAssignedToEmailAddress = assetInfo.CreatedByEmail,
+                        AssetAssignedToEmpID = assetInfo.CreatedByID,
+                        AssetAssignedToEmpName = assetInfo.CreatedByName,
+
+                        AssetDescription = assetInfo.Description,
+                        AssetPurchaseLocation = assetInfo.PurchaseLocation,
+                        AssetPurchaseVendor = assetInfo.PurchaseVendor,
+                        AssetRemarks = assetInfo.Remarks,
+                        DisplaySize = assetInfo.DisplaySize,
+                        HeadsetDetail = assetInfo.Headsets,
+                        MouseDetail = assetInfo.MouseDetails,
+                        ROM_Size = assetInfo.ROM_Size,
+                        SoldOutDate = assetInfo.SoldOutDate,
+                        SoldoutPrice = assetInfo.SoldoutPrice,
+                        SoldOutStatus = assetInfo.SoldOutStatus,
+                        SoldOutVendor = assetInfo.SoldOutVendor
                     };
 
                     context.AmbcNewITAssetMgmts.Add(contextModel);

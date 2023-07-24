@@ -22,6 +22,7 @@ namespace ResourceManagement.Models.IT
         public string ChargerCapicity { get; set; }
         public string AssetHostName { get; set; }
 
+
         //
         public string MouseDetails { get; set; }
         public string AssetModel { get; set; }
@@ -56,6 +57,8 @@ namespace ResourceManagement.Models.IT
         //OS Version
         public string OperatingSystemDetail { get; set; }
 
+        public string DisplaySize { get; set; }
+
         //
         public string IPAddress { get; set; }
 
@@ -72,10 +75,14 @@ namespace ResourceManagement.Models.IT
         //
         public string PurchaseLocation { get; set; }
 
+        public string PurchaseVendor { get; set; }
+
         public string WarrentyStatus { get; set; }
 
         //RAM
         public string RAM_Size { get; set; }
+
+        public string ROM_Size { get; set; }
 
         //
         public string OS { get; set; }
@@ -83,8 +90,16 @@ namespace ResourceManagement.Models.IT
         public string Remarks { get; set; }
 
         public string CreatedByName { get; set; }
-
         public string CreatedByID { get; set; }
+        public string CreatedByEmail { get; set; }
+
+        public DateTime SoldOutDate { get; set; }
+
+        public int SoldoutPrice { get; set; }
+
+        public string SoldOutStatus { get; set; }
+
+        public string SoldOutVendor { get; set; }
 
 
         public JsonResponseModel jsonResponse { get; set; } = new JsonResponseModel();

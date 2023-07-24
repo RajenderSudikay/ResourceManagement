@@ -48,11 +48,10 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetPurchaseLocation" class="">Asset Purchase Location<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetPurchaseLocation" required>
-                        <small style="color:teal !important; width: 200px !important">Please enter Location_Vendor Name (Ex: Hyderbad_Satyam computers)</small>
-                        <select id="assetPurchaseLocation" name="assetPurchaseLocation" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Location</option>
+                        <label for="assetVendor" class="">Asset Vendor<b style="color:red">*</b></label>
+                        @*<input type="text" class="form-control" id="assetVendor" required>*@
+                        <select id="assetVendor" name="assetVendor" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Vendor</option>
                             <option value="Hyderabad">Hyderabad</option>
                             <option value="Madurai">Madurai</option>
                             <option value="US">US</option>
@@ -65,12 +64,28 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
+                        <label for="assetVendorLocation" class="">Asset Vendor Location<b style="color:red">*</b></label>
+                        @*<input type="text" class="form-control" id="assetVendor" required>*@
+                        <select id="assetVendor" name="assetVendorLocation" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Vendor</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Madurai">Madurai</option>
+                            <option value="US">US</option>
+                            <option value="Other Location">Other Location</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
                         <label for="assetdescription">Description<b style="color:red">*</b></label>
                         <input type="text" class="form-control" id="assetdescription" required>
                     </div>
                 </div>
 
-                <div class="clearfix"></div>
+
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -89,6 +104,7 @@
                         </select>
                     </div>
                 </div>
+                <div class="clearfix"></div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="assetmodel">Model<b style="color:red">*</b></label>
@@ -180,16 +196,6 @@
 
 
 
-                <div class="col-md-4 div-os-version showhide" style="display: none">
-                    <div class="form-group">
-                        <label for="assetosversion">OS Version<b style="color:red">*</b></label>
-                        <select id="assetosversion" name="assetosversion" class="form-control form-select form-select-lg mb-3 showhide-required" required>
-                            <option value="" disabled selected>Select OS Version</option>
-                            <option value="64-bit">64-bit</option>
-                            <option value="32-bit">32-bit</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="clearfix"></div>
                 <div class="col-md-4 div-ip-address showhide" style="display: none">
                     <div class="form-group">
@@ -249,6 +255,17 @@
                         <input type="text" class="form-control showhide-required" id="assetos" required>
                     </div>
                 </div>
+
+                <div class="col-md-4 div-os-version showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetosversion">OS Version<b style="color:red">*</b></label>
+                        <select id="assetosversion" name="assetosversion" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select OS Version</option>
+                            <option value="64-bit">64-bit</option>
+                            <option value="32-bit">32-bit</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <div class="form-group">
@@ -285,8 +302,8 @@
 
                 <div class="col-md-4 div-os showhide-soldout" style="display: none">
                     <div class="form-group">
-                        <label for="assetos">Sold Out Price<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-soldout-required" id="assetos">
+                        <label for="assetsoldoutprice">Sold Out Price<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutprice">
                     </div>
                 </div>
 

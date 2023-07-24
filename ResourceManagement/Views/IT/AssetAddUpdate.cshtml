@@ -5,7 +5,7 @@
 
     var bannerModel = new ResourceManagement.Models.BannerInfo();
     bannerModel.BannerName = "INVENTORY ADD OR UPDATE";
-    bannerModel.BannerImagePath = "/Assets/Banner/assest-allocate.jpg";
+    bannerModel.BannerImagePath = "/Assets/Banner/View Assets.jpg";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
@@ -91,7 +91,11 @@
             var assetInfoModel = {
                 AllocationStatus: jQuery('#assetallocationstatus :selected').val(),
                 PurchaseDate: jQuery('#assetPurchaseDate').val(),
-                PurchaseLocation: jQuery('#assetPurchaseLocation').val(),
+
+                //TODO
+                PurchaseLocation: jQuery('#assetVendorLocation :selected').val(),
+                PurchaseVendor: jQuery('#assetVendor :selected').val(),
+
                 Description: jQuery('#assetdescription').val(),
                 AssetType: jQuery('#assetassettype :selected').val(),
                 AssetManufacturer: jQuery('#assetmanufacturer').val(),
@@ -119,8 +123,15 @@
                 RAM_Size: jQuery('#assetram :selected').val(),
                 OS: jQuery('#assetos').val(),
                 Remarks: jQuery('#assetremarks').val(),
+
                 CreatedByName: jQuery('.agent-full-name').text(),
-                CreatedByID: jQuery('.agent-navdrop-empid').text()
+                CreatedByID: jQuery('.agent-navdrop-empid').text(),
+                CreatedByEmail: jQuery('.agent-navdrop-empemail').text(),
+
+                SoldOutDate: jQuery('#assetsoldoutdate').val(),
+                SoldoutPrice: jQuery('#assetsoldoutprice').val(),
+                SoldOutStatus: jQuery('#assetsoldout :selected').val(),
+                SoldOutVendor: jQuery('#assetsoldoutvendor').val()
             };
             jQuery.ajax({
                 url: "/it/assetsaddupdateajax",
