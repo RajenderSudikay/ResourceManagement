@@ -330,6 +330,7 @@
     <Compile Include="Models\JobScheduler.cs" />
     <Compile Include="Models\JsonResponseModel.cs" />
     <Compile Include="Models\LeaveOrHolidayModel.cs" />
+    <Compile Include="Models\MasterData\MasterModel.cs" />
     <Compile Include="Models\StatusReportModel.cs" />
     <Compile Include="Models\TimesheetReportModel.cs" />
     <Compile Include="Models\ZohoSignInModel.cs" />
@@ -584,10 +585,10 @@
     <Content Include="Views\IT\ViewVendors.cshtml" />
     <Content Include="Views\IT\PurchaseRequest.cshtml" />
     <Content Include="Views\Home\_BannerInfo.cshtml" />
+    <Content Include="Views\MasterData\addupdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MasterData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
