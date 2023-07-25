@@ -51,6 +51,8 @@
         <EntityTypeShape EntityType="TimesheetDBModel.AMBCITRptUpload" Width="1.5" PointX="19.375" PointY="19.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.AMBCITReportUpload" Width="1.5" PointX="11.375" PointY="20.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.MonthlyReport_Template2" Width="1.5" PointX="19.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.AssetAllocationMgmt" Width="1.5" PointX="21.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.AssetType" Width="1.5" PointX="21.375" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -71,14 +71,10 @@
           <Property Name="OperatingSystemDetail" Type="varchar" MaxLength="1500" />
           <Property Name="Lastupdated" Type="date" />
           <Property Name="ServiceTag" Type="varchar" MaxLength="1500" />
-          <Property Name="AssetAssignedToEmpID" Type="varchar" MaxLength="1500" />
-          <Property Name="AssetAssignedToEmpName" Type="varchar" MaxLength="1500" />
-          <Property Name="AssetAssignedToEmailAddress" Type="varchar" MaxLength="1500" />
           <Property Name="SoldOutStatus" Type="varchar" MaxLength="50" />
           <Property Name="SoldOutDate" Type="datetime" />
           <Property Name="SoldOutVendor" Type="varchar" MaxLength="100" />
           <Property Name="SoldoutPrice" Type="int" />
-          <Property Name="AllocationStatus" Type="varchar" MaxLength="100" />
           <Property Name="AssetPurchaseLocation" Type="varchar" MaxLength="100" />
           <Property Name="AssetPurchaseVendor" Type="varchar" MaxLength="100" />
           <Property Name="AssetDescription" Type="varchar" MaxLength="500" />
@@ -86,6 +82,12 @@
           <Property Name="AssetRemarks" Type="varchar" MaxLength="500" />
           <Property Name="MouseDetail" Type="varchar" MaxLength="150" />
           <Property Name="AccessControl" Type="varchar" MaxLength="150" />
+          <Property Name="AssetUploadedByEmpid" Type="varchar" MaxLength="50" />
+          <Property Name="AssetUploadedByEmpName" Type="varchar" MaxLength="255" />
+          <Property Name="AssetUploadedByEmpEmailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocationStatus" Type="varchar" MaxLength="50" />
+          <Property Name="AssetEntryCreatedDate" Type="datetime" />
+          <Property Name="AssetEntryModifiedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="AmbcNewPeripherals">
           <Key>
@@ -139,6 +141,35 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.ambctaskcapture' does not have a
           <Property Name="overtime" Type="int" />
           <Property Name="recorduniqueid" Type="varchar" MaxLength="1500" />
           <Property Name="weekendworkstatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="AssetAllocationMgmt">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetSerialNo" Type="varchar" MaxLength="50" />
+          <Property Name="AssetType" Type="varchar" MaxLength="50" />
+          <Property Name="AssetHostName" Type="varchar" MaxLength="50" />
+          <Property Name="AssetMacNo" Type="varchar" MaxLength="50" />
+          <Property Name="AssetTxn" Type="varchar" MaxLength="50" />
+          <Property Name="AssetAllocatedToEmpID" Type="varchar" MaxLength="50" />
+          <Property Name="AssetAllocatedToEmpName" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocatedToEmailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocatedToMobileNo" Type="varchar" MaxLength="15" />
+          <Property Name="AssetAllocatedByEmpID" Type="varchar" MaxLength="50" />
+          <Property Name="AssetAllocatedByEmpName" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocatedByEmail" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocatedByMobile" Type="varchar" MaxLength="15" />
+          <Property Name="AssetAllocationRemarks" Type="varchar" MaxLength="255" />
+          <Property Name="AssetAllocationCreatedDate" Type="datetime" />
+          <Property Name="AssetAllocationModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AssetTypes">
+          <Key>
+            <PropertyRef Name="SNo" />
+          </Key>
+          <Property Name="SNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetType" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -829,6 +860,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="AMBCITReportUpload" EntityType="Self.AMBCITReportUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewITAssetMgmt" EntityType="Self.AmbcNewITAssetMgmt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewPeripherals" EntityType="Self.AmbcNewPeripherals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssetAllocationMgmt" EntityType="Self.AssetAllocationMgmt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssetTypes" EntityType="Self.AssetTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="con_leaveupdate" EntityType="Self.con_leaveupdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="desk_att_taskcapture" EntityType="Self.desk_att_taskcapture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="emp_info" EntityType="Self.emp_info" Schema="dbo" store:Type="Tables" />
@@ -845,7 +878,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo"/>
+          <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Category].[Id] AS [Id], 
@@ -898,7 +931,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [con_leaveupdate20220510].[leaveuniqkey] AS [leaveuniqkey]
     FROM [dbo].[con_leaveupdate20220510] AS [con_leaveupdate20220510]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo"/>
+          <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1536,6 +1569,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="AmbcNewPeripherals" EntityType="TimesheetDBModel.AmbcNewPeripheral" />
           <EntitySet Name="AMBCITReportUploads" EntityType="TimesheetDBModel.AMBCITReportUpload" />
           <EntitySet Name="MonthlyReport_Template2" EntityType="TimesheetDBModel.MonthlyReport_Template2" />
+          <EntitySet Name="AssetAllocationMgmts" EntityType="TimesheetDBModel.AssetAllocationMgmt" />
+          <EntitySet Name="AssetTypes" EntityType="TimesheetDBModel.AssetType" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1787,6 +1822,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="AssetRemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="MouseDetail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="AccessControl" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AssetUploadedByEmpid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetUploadedByEmpName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetUploadedByEmpEmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocationStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetEntryCreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="AssetEntryModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AmbcNewPeripheral">
           <Key>
@@ -1857,6 +1898,35 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Closed_Year" Type="Int32" />
           <Property Name="Closed_Month" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AssetAllocationMgmt">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetSerialNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetHostName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetMacNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetTxn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedToEmpID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedToEmpName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedToEmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedToMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedByEmpID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedByEmpName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedByEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocatedByMobile" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocationRemarks" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AssetAllocationCreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="AssetAllocationModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AssetType">
+          <Key>
+            <PropertyRef Name="SNo" />
+          </Key>
+          <Property Name="SNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetType1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2522,6 +2592,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AmbcNewITAssetMgmts">
             <EntityTypeMapping TypeName="TimesheetDBModel.AmbcNewITAssetMgmt">
               <MappingFragment StoreEntitySet="AmbcNewITAssetMgmt">
+                <ScalarProperty Name="AssetEntryModifiedDate" ColumnName="AssetEntryModifiedDate" />
+                <ScalarProperty Name="AssetEntryCreatedDate" ColumnName="AssetEntryCreatedDate" />
+                <ScalarProperty Name="AssetAllocationStatus" ColumnName="AssetAllocationStatus" />
+                <ScalarProperty Name="AssetUploadedByEmpEmailAddress" ColumnName="AssetUploadedByEmpEmailAddress" />
+                <ScalarProperty Name="AssetUploadedByEmpName" ColumnName="AssetUploadedByEmpName" />
+                <ScalarProperty Name="AssetUploadedByEmpid" ColumnName="AssetUploadedByEmpid" />
                 <ScalarProperty Name="AccessControl" ColumnName="AccessControl" />
                 <ScalarProperty Name="MouseDetail" ColumnName="MouseDetail" />
                 <ScalarProperty Name="AssetRemarks" ColumnName="AssetRemarks" />
@@ -2529,14 +2605,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="AssetDescription" ColumnName="AssetDescription" />
                 <ScalarProperty Name="AssetPurchaseVendor" ColumnName="AssetPurchaseVendor" />
                 <ScalarProperty Name="AssetPurchaseLocation" ColumnName="AssetPurchaseLocation" />
-                <ScalarProperty Name="AllocationStatus" ColumnName="AllocationStatus" />
                 <ScalarProperty Name="SoldoutPrice" ColumnName="SoldoutPrice" />
                 <ScalarProperty Name="SoldOutVendor" ColumnName="SoldOutVendor" />
                 <ScalarProperty Name="SoldOutDate" ColumnName="SoldOutDate" />
                 <ScalarProperty Name="SoldOutStatus" ColumnName="SoldOutStatus" />
-                <ScalarProperty Name="AssetAssignedToEmailAddress" ColumnName="AssetAssignedToEmailAddress" />
-                <ScalarProperty Name="AssetAssignedToEmpName" ColumnName="AssetAssignedToEmpName" />
-                <ScalarProperty Name="AssetAssignedToEmpID" ColumnName="AssetAssignedToEmpID" />
                 <ScalarProperty Name="ServiceTag" ColumnName="ServiceTag" />
                 <ScalarProperty Name="Lastupdated" ColumnName="Lastupdated" />
                 <ScalarProperty Name="OperatingSystemDetail" ColumnName="OperatingSystemDetail" />
@@ -2629,6 +2701,37 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="Project_Summary" ColumnName="Project_Summary" />
                 <ScalarProperty Name="Project_Name" ColumnName="Project_Name" />
                 <ScalarProperty Name="RecordNo" ColumnName="RecordNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssetAllocationMgmts">
+            <EntityTypeMapping TypeName="TimesheetDBModel.AssetAllocationMgmt">
+              <MappingFragment StoreEntitySet="AssetAllocationMgmt">
+                <ScalarProperty Name="AssetAllocationModifiedDate" ColumnName="AssetAllocationModifiedDate" />
+                <ScalarProperty Name="AssetAllocationCreatedDate" ColumnName="AssetAllocationCreatedDate" />
+                <ScalarProperty Name="AssetAllocationRemarks" ColumnName="AssetAllocationRemarks" />
+                <ScalarProperty Name="AssetAllocatedByMobile" ColumnName="AssetAllocatedByMobile" />
+                <ScalarProperty Name="AssetAllocatedByEmail" ColumnName="AssetAllocatedByEmail" />
+                <ScalarProperty Name="AssetAllocatedByEmpName" ColumnName="AssetAllocatedByEmpName" />
+                <ScalarProperty Name="AssetAllocatedByEmpID" ColumnName="AssetAllocatedByEmpID" />
+                <ScalarProperty Name="AssetAllocatedToMobileNo" ColumnName="AssetAllocatedToMobileNo" />
+                <ScalarProperty Name="AssetAllocatedToEmailAddress" ColumnName="AssetAllocatedToEmailAddress" />
+                <ScalarProperty Name="AssetAllocatedToEmpName" ColumnName="AssetAllocatedToEmpName" />
+                <ScalarProperty Name="AssetAllocatedToEmpID" ColumnName="AssetAllocatedToEmpID" />
+                <ScalarProperty Name="AssetTxn" ColumnName="AssetTxn" />
+                <ScalarProperty Name="AssetMacNo" ColumnName="AssetMacNo" />
+                <ScalarProperty Name="AssetHostName" ColumnName="AssetHostName" />
+                <ScalarProperty Name="AssetType" ColumnName="AssetType" />
+                <ScalarProperty Name="AssetSerialNo" ColumnName="AssetSerialNo" />
+                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssetTypes">
+            <EntityTypeMapping TypeName="TimesheetDBModel.AssetType">
+              <MappingFragment StoreEntitySet="AssetTypes">
+                <ScalarProperty Name="AssetType1" ColumnName="AssetType" />
+                <ScalarProperty Name="SNo" ColumnName="SNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

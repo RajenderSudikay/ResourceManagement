@@ -48,5 +48,11 @@ namespace ResourceManagement
         public string AssetRemarks { get; set; }
         public string MouseDetail { get; set; }
         public string AccessControl { get; set; }
+        public string AssetUploadedByEmpid { get; set; }
+        public string AssetUploadedByEmpName { get; set; }
+        public string AssetUploadedByEmpEmailAddress { get; set; }
+        public string AssetAllocationStatus { get; set; }
+        public Nullable<System.DateTime> AssetEntryCreatedDate { get; set; }
+        public Nullable<System.DateTime> AssetEntryModifiedDate { get; set; }
     }
 }
