@@ -33,14 +33,10 @@ namespace ResourceManagement
         public string OperatingSystemDetail { get; set; }
         public Nullable<System.DateTime> Lastupdated { get; set; }
         public string ServiceTag { get; set; }
-        public string AssetAssignedToEmpID { get; set; }
-        public string AssetAssignedToEmpName { get; set; }
-        public string AssetAssignedToEmailAddress { get; set; }
         public string SoldOutStatus { get; set; }
         public Nullable<System.DateTime> SoldOutDate { get; set; }
         public string SoldOutVendor { get; set; }
         public Nullable<int> SoldoutPrice { get; set; }
-        public string AllocationStatus { get; set; }
         public string AssetPurchaseLocation { get; set; }
         public string AssetPurchaseVendor { get; set; }
         public string AssetDescription { get; set; }

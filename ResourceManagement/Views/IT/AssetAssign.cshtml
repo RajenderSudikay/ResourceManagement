@@ -55,6 +55,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="assetRemarks">Remarks</label>
+                        <textarea class="form-control" id="assetRemarks" style="min-width: 100%" placeholder="assetRemarks"></textarea>
+                    </div>
+                </div>
+            </div>
 
             <br />
             <div class="modal-footer mt-xl-4">
@@ -110,11 +118,17 @@
             EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
             EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
             EmployeeEmail: jQuery('#selectEmployeenameandemail :selected').val().split('|')[1],
-            itadminIds: jQuery('.it-admin-list').text()
+            itadminIds: jQuery('.it-admin-list').text(),
+            UploadedByEmpName: jQuery('.agent-full-name').text(),
+            UploadedByEmpID: jQuery('.agent-navdrop-empid').text(),
+            UploadedByEmpEmail: jQuery('.agent-navdrop-empemail').text(),
+            UploadedByMobile: jQuery('.agent-navdrop-phone').text(),
+            Remarks: jQuery('#assetRemarks').val(),
+            AssetTxn: "Add"
         };
         jQuery.ajax({
             type: "POST",
-            url: "/it/AssignAsset",
+            url: "/it/assignasset",
             data: JSON.stringify({ AssetAssignModel: AssetAssignModelInput }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {

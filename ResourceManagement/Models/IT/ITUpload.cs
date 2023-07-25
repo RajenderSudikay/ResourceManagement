@@ -52,7 +52,7 @@ namespace ResourceManagement.Models.IT
         public List<AMBC_Active_Emp_view> ITAdminUsers { get; set; } = new List<AMBC_Active_Emp_view>();
         public List<SelectListItem> MonthsList { get; set; }
         public List<AmbcNewITAssetMgmt> AmbcNewITAssetMgmt { get; set; }
-        public List<AmbcNewITAssetMgmt> EmpSpecificAssets { get; set; } = new List<AmbcNewITAssetMgmt>();
+        public List<AssetAllocationMgmt> EmpSpecificAssets { get; set; } = new List<AssetAllocationMgmt>();
         public List<AmbcNewITAssetMgmt> AssetsByAssetType { get; set; } = new List<AmbcNewITAssetMgmt>();
         public string AssetsTotalDataPoints { get; set; }
         public string AssetsAssignedDataPoints { get; set; }

@@ -1820,15 +1820,11 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="WarrentyEndDate" Type="DateTime" Precision="0" />
           <Property Name="OperatingSystemDetail" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Lastupdated" Type="DateTime" Precision="0" />
-          <Property Name="ServiceTag" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="AssetAssignedToEmpID" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="AssetAssignedToEmpName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="AssetAssignedToEmailAddress" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceTag" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />         
           <Property Name="SoldOutStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SoldOutDate" Type="DateTime" Precision="3" />
           <Property Name="SoldOutVendor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="SoldoutPrice" Type="Int32" />
-          <Property Name="AllocationStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SoldoutPrice" Type="Int32" />        
           <Property Name="AssetPurchaseLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="AssetPurchaseVendor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="AssetDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />

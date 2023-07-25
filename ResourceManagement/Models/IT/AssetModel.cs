@@ -136,7 +136,14 @@ namespace ResourceManagement.Models.IT
         public string EmployeeName { get; set; }
         public string EmployeeEmail { get; set; }
         public string AssetID { get; set; }
-        public string itadminIds { get; set; }        
+        public string itadminIds { get; set; }
+        public string UploadedByEmpName { get; set; }
+        public string UploadedByEmpID { get; set; }
+        public string UploadedByEmpEmail { get; set; }
+        public string UploadedByMobile { get; set; }
+        public string Remarks { get; set; }
+        public string AssetTxn { get; set; }
+        
     }
 
     public class AssetDataPoint

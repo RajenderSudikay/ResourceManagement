@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="col" style="width: 95px; color: white; font-size: initial">S No</th>
                     <th scope="col" style="color: white; font-size:initial">Asset#</th>
-                    <th scope="col" style="color: white; font-size: initial">Assigned Emp</th>
+                    <th scope="col" style="color: white; font-size: initial">Assigned Status</th>
                     <th scope="col" style="color: white; font-size: initial">AssetType</th>
                     <th scope="col" style="color: white; font-size: initial">Warranty</th>
                     <th scope="col" style="color: white; font-size: initial">History</th>
@@ -29,10 +29,15 @@
                 }
                 @foreach (var asset in Model.AmbcNewITAssetMgmt)
                 {
-                    <tr>
+                    var nowarrantycolor = "";
+                    if (asset.WarrentyStatus == "No Warranty" && asset.SoldOutStatus != "Yes")
+                    {
+                        nowarrantycolor = "lightgray";
+                    }
+                    <tr style="background-color: @nowarrantycolor">
                         <td class="asset-serialnumdynamic">@sno</td>
                         <td class="asset-serialnum">@asset.AssetSerialNo</td>
-                        <td class="asset-assignedemp">@asset.AssetAssignedToEmpName</td>
+                        <td class="asset-assignedemp">@asset.AssetAllocationStatus</td>
                         <td class="asset-type">@asset.AssetType</td>
                         <td class="asset-warrntystatus">@asset.WarrentyStatus</td>
                         <td class="asset-history">

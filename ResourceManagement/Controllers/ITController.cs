@@ -14,6 +14,8 @@ using iTextSharp.text.pdf;
 using System;
 
 using Microsoft.Ajax.Utilities;
+using static ResourceManagement.Helpers.EmployeeHelper;
+using static ResourceManagement.Helpers.AssetsHelper;
 
 namespace ResourceManagement.Controllers
 {
@@ -21,6 +23,7 @@ namespace ResourceManagement.Controllers
     using static Helpers.MediaHelper;
     using static Helpers.MVCExtension;
     using static Helpers.EmailHelper;
+
 
     public class ITController : Controller
     {
@@ -268,18 +271,18 @@ namespace ResourceManagement.Controllers
                         {
                             if (getAssetModel.Category == "Assigned")
                             {
-                                Assets = Assets.Where(x => x.AssetAssignedToEmpName != "NA").ToList();
+                                Assets = Assets.Where(x => x.AssetAllocationStatus != "NA").ToList();
                             }
                             else
                             {
-                                Assets = Assets.Where(x => x.AssetAssignedToEmpName == "NA").ToList();
+                                Assets = Assets.Where(x => x.AssetAllocationStatus == "NA").ToList();
                             }
                         }
                     }
 
                     if (getAssetModel.FilterBy == "Employee")
                     {
-                        Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAssignedToEmpID == getAssetModel.EmployeeID && x.AssetSerialNo == getAssetModel.AssetID).ToList();
+                        //Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAssignedToEmpID == getAssetModel.EmployeeID && x.AssetSerialNo == getAssetModel.AssetID).ToList();
                     }
 
 
@@ -300,7 +303,7 @@ namespace ResourceManagement.Controllers
                                     y = totalAssets != null && totalAssets.Count() > 0 ? totalAssets.Count() : 0
                                 });
 
-                                var assignedAssets = totalAssets.Where(x => x.AssetAssignedToEmpName != "NA");
+                                var assignedAssets = totalAssets.Where(x => x.AssetAllocationStatus != "NA");
 
                                 AssetsAssigned.Add(new AssetDataPoint()
                                 {
@@ -309,7 +312,7 @@ namespace ResourceManagement.Controllers
                                     y = assignedAssets != null && assignedAssets.Count() > 0 ? assignedAssets.Count() : 0
                                 });
 
-                                var notAssignedAssets = totalAssets.Where(x => x.AssetAssignedToEmpName == "NA");
+                                var notAssignedAssets = totalAssets.Where(x => x.AssetAllocationStatus == "NA");
 
                                 AssetsNotAssigned.Add(new AssetDataPoint()
                                 {
@@ -318,7 +321,7 @@ namespace ResourceManagement.Controllers
                                     y = notAssignedAssets != null && notAssignedAssets.Count() > 0 ? notAssignedAssets.Count() : 0
                                 });
 
-                                var soldOutAssets = totalAssets.Where(x => x.AssetAssignedToEmpName == "NA");
+                                var soldOutAssets = totalAssets.Where(x => x.AssetAllocationStatus == "NA");
 
                                 AssetsSoldOut.Add(new AssetDataPoint()
                                 {
@@ -665,6 +668,7 @@ namespace ResourceManagement.Controllers
                 {
                     var contextModel = new AmbcNewITAssetMgmt()
                     {
+                        AssetAllocationStatus = assetInfo.AllocationStatus,
                         AssetHostName = assetInfo.AssetHostName,
                         AssetMacNo = assetInfo.AssetMacNo,
                         AssetModel = assetInfo.AssetModel,
@@ -682,12 +686,11 @@ namespace ResourceManagement.Controllers
                         WarrentyStatus = assetInfo.WarrentyStatus,
                         Lastupdated = System.DateTime.Now,
                         AccessControl = assetInfo.AccessControl,
-                        AllocationStatus = assetInfo.AllocationStatus,
 
                         //THIS FILED TO BE UPDATED IN TABLE
-                        AssetAssignedToEmailAddress = assetInfo.CreatedByEmail,
-                        AssetAssignedToEmpID = assetInfo.CreatedByID,
-                        AssetAssignedToEmpName = assetInfo.CreatedByName,
+                        AssetUploadedByEmpEmailAddress = assetInfo.CreatedByEmail,
+                        AssetUploadedByEmpid = assetInfo.CreatedByID,
+                        AssetUploadedByEmpName = assetInfo.CreatedByName,
 
                         AssetDescription = assetInfo.Description,
                         AssetPurchaseLocation = assetInfo.PurchaseLocation,
@@ -700,7 +703,9 @@ namespace ResourceManagement.Controllers
                         SoldOutDate = assetInfo.SoldOutDate,
                         SoldoutPrice = assetInfo.SoldoutPrice,
                         SoldOutStatus = assetInfo.SoldOutStatus,
-                        SoldOutVendor = assetInfo.SoldOutVendor
+                        SoldOutVendor = assetInfo.SoldOutVendor,
+                        AssetEntryCreatedDate = DateTime.Now,
+                        AssetEntryModifiedDate = DateTime.Now
                     };
 
                     context.AmbcNewITAssetMgmts.Add(contextModel);
@@ -738,7 +743,7 @@ namespace ResourceManagement.Controllers
             var model = new ITModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetAssignedToEmpID == GetAssetModelByEmp.EmpID).ToList();
+                var Assets = db.AssetAllocationMgmts.Where(x => x.AssetAllocatedToEmpID == GetAssetModelByEmp.EmpID).ToList();
                 if (Assets != null && Assets.Count() > 0)
                 {
                     model.EmpSpecificAssets = Assets;
@@ -747,12 +752,13 @@ namespace ResourceManagement.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        //THIS IS FOR ALLOWCATING ASSETS TO EMPLOYEES
         public JsonResult GetAssetsByAssetType(GetAssetModelByAsset GetAssetModel)
         {
             var model = new ITModel();
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
-                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == GetAssetModel.AssetType && x.AssetAssignedToEmpName == "NA").ToList();
+                var Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == GetAssetModel.AssetType && x.AssetAllocationStatus == "NA").ToList();
                 if (Assets != null && Assets.Count() > 0)
                 {
                     model.AssetsByAssetType = Assets;
@@ -764,18 +770,61 @@ namespace ResourceManagement.Controllers
         public JsonResult AssignAsset(AssignAssetModel AssetAssignModel)
         {
             var model = new ITModel();
-            using (TimeSheetEntities db = new TimeSheetEntities())
+            using (TimeSheetEntities context = new TimeSheetEntities())
             {
+                var assignedEmp = GetEmpByEmpID(AssetAssignModel.EmployeeID);
+                if (assignedEmp == null)
+                {
+                    return null;
+                }
 
+                var selectedAsset = GetAssetByAssetID(AssetAssignModel.AssetID);
+
+                if (selectedAsset == null)
+                {
+                    return null;
+                }
+
+
+                var inputModel = new AssetAllocationMgmt();
+                if (AssetAssignModel.AssetTxn == "Add")
+                {
+                    inputModel.AssetAllocationCreatedDate = DateTime.Now;
+                }
+                else
+                {
+                    inputModel.AssetAllocationModifiedDate = DateTime.Now;
+                }
+
+                inputModel.AssetAllocatedToEmpName = assignedEmp.Employee_Name;
+                inputModel.AssetAllocatedToEmailAddress = assignedEmp.AMBC_Mail_Address;
+                inputModel.AssetAllocatedToEmpID = assignedEmp.Employee_ID;
+                inputModel.AssetAllocatedToMobileNo = assignedEmp.Contact_Number;
+                inputModel.AssetAllocatedByEmail = AssetAssignModel.UploadedByEmpEmail;
+                inputModel.AssetAllocatedByEmpID = AssetAssignModel.UploadedByEmpID;
+                inputModel.AssetAllocatedByEmpName = AssetAssignModel.UploadedByEmpName;
+                inputModel.AssetAllocatedByMobile = AssetAssignModel.UploadedByMobile;
+
+
+                inputModel.AssetHostName = selectedAsset.AssetHostName;
+                inputModel.AssetMacNo = selectedAsset.AssetMacNo;
+                inputModel.AssetSerialNo = selectedAsset.AssetSerialNo;
+                inputModel.AssetType = selectedAsset.AssetType;
+                inputModel.AssetTxn = AssetAssignModel.AssetTxn;
+                inputModel.AssetAllocationRemarks = AssetAssignModel.Remarks;
+
+                context.AssetAllocationMgmts.Add(inputModel);
+                context.SaveChanges();
             }
 
             var emailBody = RenderPartialToString(this, "AssignAssetEmailPartial", AssetAssignModel, ViewData, TempData);
 
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
-                To = AssetAssignModel.EmployeeEmail,
+                //To = AssetAssignModel.EmployeeEmail,
+                To = "srajender@ambconline.com",
                 Subject = "Asset assigned - " + AssetAssignModel.AssetType + " (" + AssetAssignModel.AssetID + ")",
-                CC = AssetAssignModel.itadminIds,
+                //CC = AssetAssignModel.itadminIds,
                 EmailBody = emailBody,
                 SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
                 SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]

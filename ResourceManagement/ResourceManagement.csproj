@@ -321,9 +321,11 @@
     <Compile Include="halfday_leave_view.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AssetsHelper.cs" />
     <Compile Include="Helpers\ColorCodes.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\EmployeeHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\MVCExtension.cs" />
     <Compile Include="Models\DataPoint.cs" />
