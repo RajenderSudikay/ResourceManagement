@@ -196,6 +196,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmbcClient.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AMBCITMonthlyMaintenance.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>

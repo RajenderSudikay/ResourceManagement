@@ -69,5 +69,6 @@ namespace ResourceManagement
         public virtual DbSet<MonthlyReport_Template2> MonthlyReport_Template2 { get; set; }
         public virtual DbSet<AssetAllocationMgmt> AssetAllocationMgmts { get; set; }
         public virtual DbSet<AssetType> AssetTypes { get; set; }
+        public virtual DbSet<AmbcClient> AmbcClients { get; set; }
     }
 }

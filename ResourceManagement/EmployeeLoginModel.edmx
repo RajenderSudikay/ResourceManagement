@@ -5,6 +5,18 @@
 		<!-- SSDL content -->
 		<edmx:StorageModels>
 	  <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AmbcClients">
+          <Key>
+            <PropertyRef Name="Clientid" />
+          </Key>
+          <Property Name="Clientid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientName" Type="varchar" MaxLength="1500" />
+          <Property Name="ClientAddress" Type="varchar" MaxLength="1500" />
+          <Property Name="ClientDescription" Type="varchar" MaxLength="1500" />
+          <Property Name="ServicesProvidedByClient" Type="varchar" MaxLength="1500" />
+          <Property Name="ServicesProvidedByAMBC" Type="varchar" MaxLength="1500" />
+          <Property Name="CleintSF" Type="varchar" MaxLength="15" />
+        </EntityType>
         <EntityType Name="AMBCITMonthlyMaintenance">
           <Key>
             <PropertyRef Name="UniqNo" />
@@ -856,6 +868,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="Employee_IP" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
+          <EntitySet Name="AmbcClients" EntityType="Self.AmbcClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AMBCITMonthlyMaintenance" EntityType="Self.AMBCITMonthlyMaintenance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AMBCITReportUpload" EntityType="Self.AMBCITReportUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AmbcNewITAssetMgmt" EntityType="Self.AmbcNewITAssetMgmt" Schema="dbo" store:Type="Tables" />
@@ -1571,6 +1584,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="MonthlyReport_Template2" EntityType="TimesheetDBModel.MonthlyReport_Template2" />
           <EntitySet Name="AssetAllocationMgmts" EntityType="TimesheetDBModel.AssetAllocationMgmt" />
           <EntitySet Name="AssetTypes" EntityType="TimesheetDBModel.AssetType" />
+          <EntitySet Name="AmbcClients" EntityType="TimesheetDBModel.AmbcClient" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1927,6 +1941,18 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           </Key>
           <Property Name="SNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AssetType1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AmbcClient">
+          <Key>
+            <PropertyRef Name="Clientid" />
+          </Key>
+          <Property Name="Clientid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientName" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ClientAddress" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ClientDescription" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ServicesProvidedByClient" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="ServicesProvidedByAMBC" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="CleintSF" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2732,6 +2758,19 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
               <MappingFragment StoreEntitySet="AssetTypes">
                 <ScalarProperty Name="AssetType1" ColumnName="AssetType" />
                 <ScalarProperty Name="SNo" ColumnName="SNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AmbcClients">
+            <EntityTypeMapping TypeName="TimesheetDBModel.AmbcClient">
+              <MappingFragment StoreEntitySet="AmbcClients">
+                <ScalarProperty Name="CleintSF" ColumnName="CleintSF" />
+                <ScalarProperty Name="ServicesProvidedByAMBC" ColumnName="ServicesProvidedByAMBC" />
+                <ScalarProperty Name="ServicesProvidedByClient" ColumnName="ServicesProvidedByClient" />
+                <ScalarProperty Name="ClientDescription" ColumnName="ClientDescription" />
+                <ScalarProperty Name="ClientAddress" ColumnName="ClientAddress" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="Clientid" ColumnName="Clientid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
