@@ -379,10 +379,22 @@
     <Compile Include="tbl_LoginInformation_bkp.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tbl_Vendor_Detail.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ticket_category.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ticket_priority.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="timesheet_submission_log.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="today_att.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VenderQtnMgmt.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

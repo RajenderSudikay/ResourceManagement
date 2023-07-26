@@ -625,6 +625,21 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.tbl_LoginInformation_bkp' does n
           <Property Name="Employee_IP" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Concat_loginstring" Type="varchar" MaxLength="80" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbl_Vendor_Detail">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorName" Type="varchar" MaxLength="255" />
+          <Property Name="VendorAddress" Type="varchar" MaxLength="255" />
+          <Property Name="VendorCity" Type="varchar" MaxLength="50" />
+          <Property Name="VendorEmailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="VendorStatus" Type="varchar" MaxLength="20" />
+          <Property Name="VendorTxn" Type="varchar" MaxLength="20" />
+          <Property Name="VendorRemarks" Type="varchar" MaxLength="255" />
+          <Property Name="VendorCreatedDate" Type="datetime" />
+          <Property Name="VendorModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblambcholiday">
           <Key>
             <PropertyRef Name="holidayno" />
@@ -678,6 +693,24 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.tblambcholiday_06May2022' does n
           <Property Name="IsSignOutBySystem" Type="bit" />
           <Property Name="Employee_LoginLocation" Type="varchar" MaxLength="255" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.ticket_category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ticket_category">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ticketcategory" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.ticket_priority' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ticket_priority">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ticketpriority" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="timesheet_submission_log">
           <Key>
             <PropertyRef Name="submissionid" />
@@ -692,6 +725,26 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.tblambcholiday_06May2022' does n
           <Property Name="submitted_time" Type="datetime" />
           <Property Name="submitted_ipaddress" Type="varchar" MaxLength="255" />
           <Property Name="submitted_hostname" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="VenderQtnMgmt">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuotationNumber" Type="varchar" MaxLength="50" />
+          <Property Name="QuotationDate" Type="date" />
+          <Property Name="QuotationAmount" Type="int" />
+          <Property Name="QuotationParticulers" Type="varchar" MaxLength="255" />
+          <Property Name="VendorName" Type="varchar" MaxLength="50" />
+          <Property Name="VendorAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Level1ApprovarName" Type="varchar" MaxLength="255" />
+          <Property Name="Level1ApprovalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="Level1ApprovalComments" Type="varchar" MaxLength="255" />
+          <Property Name="Level2ApprovarName" Type="varchar" MaxLength="255" />
+          <Property Name="Level2ApprovalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="Level2ApprovalComments" Type="varchar" MaxLength="255" />
+          <Property Name="QuotationFinalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="QuotationFinalRemarks" Type="varchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Timesheet-Dev.dbo.AMBC_Active_Emp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -895,10 +948,12 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="MonthlyReport_Template2" EntityType="Self.MonthlyReport_Template2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_ambclogininformation" EntityType="Self.tbl_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_LoginInformation" EntityType="Self.tbl_LoginInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Vendor_Detail" EntityType="Self.tbl_Vendor_Detail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblambcholiday" EntityType="Self.tblambcholiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblambcholidaylog" EntityType="Self.tblambcholidaylog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbld_ambclogininformation" EntityType="Self.tbld_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="timesheet_submission_log" EntityType="Self.timesheet_submission_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VenderQtnMgmt" EntityType="Self.VenderQtnMgmt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ambctaskcapture" EntityType="Self.ambctaskcapture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -978,6 +1033,18 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
     [tblambcholiday_06May2022].[holiday_name] AS [holiday_name], 
     [tblambcholiday_06May2022].[region] AS [region]
     FROM [dbo].[tblambcholiday_06May2022] AS [tblambcholiday_06May2022]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ticket_category" EntityType="Self.ticket_category" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ticket_category].[sno] AS [sno], 
+    [ticket_category].[ticketcategory] AS [ticketcategory]
+    FROM [dbo].[ticket_category] AS [ticket_category]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ticket_priority" EntityType="Self.ticket_priority" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ticket_priority].[sno] AS [sno], 
+    [ticket_priority].[ticketpriority] AS [ticketpriority]
+    FROM [dbo].[ticket_priority] AS [ticket_priority]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AMBC_Active_Emp" EntityType="Self.AMBC_Active_Emp" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1594,6 +1661,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="AssetTypes" EntityType="TimesheetDBModel.AssetType" />
           <EntitySet Name="AmbcClients" EntityType="TimesheetDBModel.AmbcClient" />
           <EntitySet Name="Locations" EntityType="TimesheetDBModel.Location" />
+          <EntitySet Name="tbl_Vendor_Detail" EntityType="TimesheetDBModel.tbl_Vendor_Detail" />
+          <EntitySet Name="VenderQtnMgmts" EntityType="TimesheetDBModel.VenderQtnMgmt" />
+          <EntitySet Name="ticket_category" EntityType="TimesheetDBModel.ticket_category" />
+          <EntitySet Name="ticket_priority" EntityType="TimesheetDBModel.ticket_priority" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1965,6 +2036,55 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           </Key>
           <Property Name="SNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LocationName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_Vendor_Detail">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorEmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="VendorTxn" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="VendorRemarks" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorCreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="VendorModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VenderQtnMgmt">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QuotationDate" Type="DateTime" Precision="0" />
+          <Property Name="QuotationAmount" Type="Int32" />
+          <Property Name="QuotationParticulers" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level1ApprovarName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level1ApprovalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Level1ApprovalComments" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level2ApprovarName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level2ApprovalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Level2ApprovalComments" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="QuotationFinalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QuotationFinalRemarks" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ticket_category">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ticketcategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ticket_priority">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ticketpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2791,6 +2911,59 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
               <MappingFragment StoreEntitySet="Locations">
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="SNo" ColumnName="SNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Vendor_Detail">
+            <EntityTypeMapping TypeName="TimesheetDBModel.tbl_Vendor_Detail">
+              <MappingFragment StoreEntitySet="tbl_Vendor_Detail">
+                <ScalarProperty Name="VendorModifiedDate" ColumnName="VendorModifiedDate" />
+                <ScalarProperty Name="VendorCreatedDate" ColumnName="VendorCreatedDate" />
+                <ScalarProperty Name="VendorRemarks" ColumnName="VendorRemarks" />
+                <ScalarProperty Name="VendorTxn" ColumnName="VendorTxn" />
+                <ScalarProperty Name="VendorStatus" ColumnName="VendorStatus" />
+                <ScalarProperty Name="VendorEmailAddress" ColumnName="VendorEmailAddress" />
+                <ScalarProperty Name="VendorCity" ColumnName="VendorCity" />
+                <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VenderQtnMgmts">
+            <EntityTypeMapping TypeName="TimesheetDBModel.VenderQtnMgmt">
+              <MappingFragment StoreEntitySet="VenderQtnMgmt">
+                <ScalarProperty Name="QuotationFinalRemarks" ColumnName="QuotationFinalRemarks" />
+                <ScalarProperty Name="QuotationFinalStatus" ColumnName="QuotationFinalStatus" />
+                <ScalarProperty Name="Level2ApprovalComments" ColumnName="Level2ApprovalComments" />
+                <ScalarProperty Name="Level2ApprovalStatus" ColumnName="Level2ApprovalStatus" />
+                <ScalarProperty Name="Level2ApprovarName" ColumnName="Level2ApprovarName" />
+                <ScalarProperty Name="Level1ApprovalComments" ColumnName="Level1ApprovalComments" />
+                <ScalarProperty Name="Level1ApprovalStatus" ColumnName="Level1ApprovalStatus" />
+                <ScalarProperty Name="Level1ApprovarName" ColumnName="Level1ApprovarName" />
+                <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QuotationParticulers" ColumnName="QuotationParticulers" />
+                <ScalarProperty Name="QuotationAmount" ColumnName="QuotationAmount" />
+                <ScalarProperty Name="QuotationDate" ColumnName="QuotationDate" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ticket_category">
+            <EntityTypeMapping TypeName="TimesheetDBModel.ticket_category">
+              <MappingFragment StoreEntitySet="ticket_category">
+                <ScalarProperty Name="ticketcategory" ColumnName="ticketcategory" />
+                <ScalarProperty Name="sno" ColumnName="sno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ticket_priority">
+            <EntityTypeMapping TypeName="TimesheetDBModel.ticket_priority">
+              <MappingFragment StoreEntitySet="ticket_priority">
+                <ScalarProperty Name="ticketpriority" ColumnName="ticketpriority" />
+                <ScalarProperty Name="sno" ColumnName="sno" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

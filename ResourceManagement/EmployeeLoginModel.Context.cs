@@ -71,5 +71,9 @@ namespace ResourceManagement
         public virtual DbSet<AssetType> AssetTypes { get; set; }
         public virtual DbSet<AmbcClient> AmbcClients { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<tbl_Vendor_Detail> tbl_Vendor_Detail { get; set; }
+        public virtual DbSet<VenderQtnMgmt> VenderQtnMgmts { get; set; }
+        public virtual DbSet<ticket_category> ticket_category { get; set; }
+        public virtual DbSet<ticket_priority> ticket_priority { get; set; }
     }
 }

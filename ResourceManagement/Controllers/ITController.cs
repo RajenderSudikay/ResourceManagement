@@ -864,5 +864,6 @@ namespace ResourceManagement.Controllers
             var EmailResponse = SendEmailFromHRMS(emailModel);
             return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
+
     }
 }

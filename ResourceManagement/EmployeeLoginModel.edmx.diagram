@@ -55,6 +55,10 @@
         <EntityTypeShape EntityType="TimesheetDBModel.AssetType" Width="1.5" PointX="21.375" PointY="12.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.AmbcClient" Width="1.5" PointX="13.375" PointY="21.75" />
         <EntityTypeShape EntityType="TimesheetDBModel.Location" Width="1.5" PointX="21.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.tbl_Vendor_Detail" Width="1.5" PointX="21.375" PointY="18.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.VenderQtnMgmt" Width="1.5" PointX="22.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.ticket_category" Width="1.5" PointX="3.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TimesheetDBModel.ticket_priority" Width="1.5" PointX="21.375" PointY="22.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

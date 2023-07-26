@@ -101,4 +101,27 @@
 
 <script>
 
+
+    jQuery(document).on("click", ".btn-vendor-addupdate", function () {
+
+        var GetAssetModel = {
+            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
+            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
+            AssetID: jQuery('#assetAssignID :selected').val(),
+            AssetType: jQuery('#assetassettype :selected').val(),
+            Category: jQuery('#assetcategory :selected').val(),
+            FilterBy: jQuery('#assetfilterby :selected').val()
+        };
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/getassets",
+            data: JSON.stringify({ getAssetModel: GetAssetModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('.assets-info-container').html(data);
+            }
+        });
+    });
+
 </script>
