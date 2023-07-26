@@ -58,6 +58,7 @@ namespace ResourceManagement.Models.IT
         public string AssetsAssignedDataPoints { get; set; }
         public string AssetsNotAssignedDataPoints { get; set; }
         public string AssetsSoldOutDataPoints { get; set; }
+
     }
 
     public class ITDownloadReportModel

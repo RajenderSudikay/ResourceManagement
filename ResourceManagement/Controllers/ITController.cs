@@ -282,7 +282,17 @@ namespace ResourceManagement.Controllers
 
                     if (getAssetModel.FilterBy == "Employee")
                     {
-                        //Assets = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAssignedToEmpID == getAssetModel.EmployeeID && x.AssetSerialNo == getAssetModel.AssetID).ToList();
+                        var assignedAssetsToEmp = db.AssetAllocationMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAllocatedToEmpID == getAssetModel.EmployeeID).ToList();
+
+                        foreach(var assignedAssetToEmp in assignedAssetsToEmp)
+                        {
+                            var asset = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == assignedAssetToEmp.AssetType && x.AssetSerialNo == assignedAssetToEmp.AssetSerialNo).ToList();
+
+                            if(asset != null)
+                            {
+                                Assets.AddRange(asset);
+                            }
+                        }
                     }
 
 
@@ -815,6 +825,14 @@ namespace ResourceManagement.Controllers
 
                 context.AssetAllocationMgmts.Add(inputModel);
                 context.SaveChanges();
+
+                var assetsInfo = context.AmbcNewITAssetMgmts.Where(b => b.AssetSerialNo == AssetAssignModel.AssetID).OrderBy(x => x.AssetEntryCreatedDate).FirstOrDefault();
+                if (assetsInfo != null)
+                {
+                    assetsInfo.AssetAllocationStatus = "Assigned";
+                    assetsInfo.AssetEntryModifiedDate = DateTime.Now;
+                    context.SaveChanges();
+                }
             }
 
             var emailBody = RenderPartialToString(this, "AssignAssetEmailPartial", AssetAssignModel, ViewData, TempData);
