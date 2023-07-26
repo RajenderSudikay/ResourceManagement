@@ -70,5 +70,6 @@ namespace ResourceManagement
         public virtual DbSet<AssetAllocationMgmt> AssetAllocationMgmts { get; set; }
         public virtual DbSet<AssetType> AssetTypes { get; set; }
         public virtual DbSet<AmbcClient> AmbcClients { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
     }
 }

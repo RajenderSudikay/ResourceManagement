@@ -328,6 +328,9 @@
     <Compile Include="Helpers\EmployeeHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\MVCExtension.cs" />
+    <Compile Include="Location.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Email\RemainderEmailBody.cs" />
     <Compile Include="Models\Email\SendEmail.cs" />

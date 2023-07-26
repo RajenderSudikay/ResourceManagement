@@ -428,6 +428,13 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.con_leaveupdate20220510' does no
           <Property Name="ErrorTime" Type="datetime" />
           <Property Name="ErrorMsg" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="SNo" />
+          </Key>
+          <Property Name="SNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="MonthlyReport_Template2">
           <Key>
             <PropertyRef Name="RecordUniqueKey" />
@@ -884,6 +891,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="emplogin" EntityType="Self.emplogin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="emplogin_log" EntityType="Self.emplogin_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Error_Log" EntityType="Self.Error_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyReport_Template2" EntityType="Self.MonthlyReport_Template2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_ambclogininformation" EntityType="Self.tbl_ambclogininformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_LoginInformation" EntityType="Self.tbl_LoginInformation" Schema="dbo" store:Type="Tables" />
@@ -1585,6 +1593,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="AssetAllocationMgmts" EntityType="TimesheetDBModel.AssetAllocationMgmt" />
           <EntitySet Name="AssetTypes" EntityType="TimesheetDBModel.AssetType" />
           <EntitySet Name="AmbcClients" EntityType="TimesheetDBModel.AmbcClient" />
+          <EntitySet Name="Locations" EntityType="TimesheetDBModel.Location" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1949,6 +1958,13 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="ServicesProvidedByClient" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="ServicesProvidedByAMBC" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="CleintSF" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="SNo" />
+          </Key>
+          <Property Name="SNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2767,6 +2783,14 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
                 <ScalarProperty Name="ClientAddress" ColumnName="ClientAddress" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="Clientid" ColumnName="Clientid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="TimesheetDBModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="SNo" ColumnName="SNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
