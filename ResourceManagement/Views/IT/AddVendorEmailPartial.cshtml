@@ -1,0 +1,158 @@
+﻿@model ResourceManagement.Models.IT.VendorModel
+
+@{
+    ViewBag.Title = "Assign Asset Email Page";
+}
+
+<style>
+    body {
+        background-color: #fff;
+        font-family: Calibri;
+        font-size: initial;
+        color: #2167ae;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 8px;
+        border: 0px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: grey;
+    }
+
+    .time-header {
+        color: white;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .emailbody {
+        font-family: "Lato", sans-serif;
+    }
+
+    .email-footer {
+        background-color: #eee;
+        font-size: medium;
+        height: 25px;
+        border-radius: 20px;
+    }
+
+    .emailbodycontent {
+        font-family: "Lato", sans-serif;
+        color: #2167ae;
+    }
+
+    #specifyColor {
+        accent-color: #d3d3d3;
+    }
+
+    .circle {
+        height: 20px;
+        width: 20px;
+        background-color: #d3d3d3;
+        border-radius: 50%;
+    }
+</style>
+
+
+
+<div class="emailbodycontent">
+    <table>
+        <tr>
+            <td style="width: 60%">
+                <div class="emailbody">
+                    <h2>Dear <b>Team</b>,</h2>
+                    <br />
+                </div>
+            </td>
+            <td style="width: 45%; float: right; margin-right: 13px;">
+                <div>
+                    <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2020/12/188x80.png" srcset="https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w, https://ambconline.com/wp-content/uploads/2020/12/188x80.png 188w" width="170" height="65" sizes="188px" alt="AMBC Inc">
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td style="width: 60%">
+
+                <div style="font-family: Calibri; ">
+                    Congartulations! New Vendor details have been successfully updated.
+                    <br />
+                    Please find the details below.
+                </div>
+
+                <br />
+
+                <b>Vendor Name:</b> <span style="color:indigo">
+                    @Model.VendorName
+                </span><br />
+                <b>Email ID:</b> <span style="color:indigo">
+                    @Model.VendorEmailAddress
+                </span><br />
+                <b>City</b> <span style="color:indigo">
+                    @Model.VendorCity
+                </span><br />
+                <b>Address:</b> <span style="color:indigo">
+                    @Model.VendorAddress
+                </span><br />
+                <b>Status:</b> <span style="color:indigo">
+                    @Model.VendorStatus
+                </span><br />
+                <b>Remarks:</b> <span style="color:indigo">
+                    @Model.VendorRemarks
+                </span><br />
+                <b>Created Date:</b> <span style="color:indigo">
+                    @DateTime.Today.ToString("MM-dd-yyyy")
+                </span><br />
+
+            </td>
+
+            <td style="width: 45%; float: right; margin-right: 13px;">
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <br />
+    <div style="font-family: Calibri; color: #2167ae; font-size: initial">
+        Thanks & Regards,
+        <br />
+        <b>IT Help Desk Team</b>
+        <br />
+        Development Office: Hi-Tech City - Hyderabad, India.
+        <br />
+        Centre of Excellence - Madurai, India
+        <br />
+        <a href="www.ambconline.com">www.ambconline.com</a>
+        <br />
+        <br />
+        <img class=" preload-me" src="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png" srcset="https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w, https://ambconline.com/wp-content/uploads/2022/12/AMBC-ISO-LOGO.png 188w" width="300" height="85" sizes="188px" alt="AMBC Inc">
+        <br />
+        <br />
+        “Pursuant to Federal Law, if you do not wish to receive future email messages from us, please send an email to remove@ambconline.com. If you wish to receive future email messages from us, please reply to this message with “ADD” in the subject line. Any inconvenience caused is unintentional and is sincerely regretted. Thank you".
+    </div>
+
+    <br />
+    <br />
+    <div class="email-footer" style="text-align: center; padding-top: 0px; vertical-align: middle; font-family: Calibri; ">
+        auto generated email. please do  not reply.
+    </div>
+</div>
+
+
+
+
+
+

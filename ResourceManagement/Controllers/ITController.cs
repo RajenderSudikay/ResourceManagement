@@ -97,8 +97,8 @@ namespace ResourceManagement.Controllers
 
         public ActionResult AssetAddUpdate()
         {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-            return View(employeeModel);
+            var model = FilDefaultITModel();
+            return View(model);
         }
 
         public ActionResult VendorAddUpdate()
@@ -131,7 +131,7 @@ namespace ResourceManagement.Controllers
             var ITModel = new ITModel();
             ITModel.RMA_EmployeeModel = employeeModel;
             ITModel.MonthsList = MonthList();
-           
+
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
@@ -297,11 +297,11 @@ namespace ResourceManagement.Controllers
                     {
                         var assignedAssetsToEmp = db.AssetAllocationMgmts.Where(x => x.AssetSerialNo != "" && x.AssetAllocatedToEmpID == getAssetModel.EmployeeID).ToList();
 
-                        foreach(var assignedAssetToEmp in assignedAssetsToEmp)
+                        foreach (var assignedAssetToEmp in assignedAssetsToEmp)
                         {
                             var asset = db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo != "" && x.AssetType == assignedAssetToEmp.AssetType && x.AssetSerialNo == assignedAssetToEmp.AssetSerialNo).ToList();
 
-                            if(asset != null)
+                            if (asset != null)
                             {
                                 Assets.AddRange(asset);
                             }
@@ -855,6 +855,49 @@ namespace ResourceManagement.Controllers
                 //To = AssetAssignModel.EmployeeEmail,
                 To = "srajender@ambconline.com",
                 Subject = "Asset assigned - " + AssetAssignModel.AssetType + " (" + AssetAssignModel.AssetID + ")",
+                //CC = AssetAssignModel.itadminIds,
+                EmailBody = emailBody,
+                SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
+                SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]
+            };
+
+            var EmailResponse = SendEmailFromHRMS(emailModel);
+            return Json(EmailResponse, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AddVendor(VendorModel addVendorModel)
+        {
+            var model = new ITModel();
+            using (TimeSheetEntities context = new TimeSheetEntities())
+            {
+                var inputModel = new tbl_Vendor_Detail();
+                if (addVendorModel.VendorTxn == "Add")
+                {
+                    inputModel.VendorCreatedDate = DateTime.Now;
+                }
+                else
+                {
+                    inputModel.VendorModifiedDate = DateTime.Now;
+                }
+
+                inputModel.VendorName = addVendorModel.VendorName;
+                inputModel.VendorCity = addVendorModel.VendorCity;
+                inputModel.VendorAddress = addVendorModel.VendorAddress;
+                inputModel.VendorEmailAddress = addVendorModel.VendorEmailAddress;
+                inputModel.VendorRemarks = addVendorModel.VendorRemarks;
+                inputModel.VendorStatus = addVendorModel.VendorStatus;
+
+                context.tbl_Vendor_Detail.Add(inputModel);
+                context.SaveChanges();
+            }
+
+            var emailBody = RenderPartialToString(this, "AddVendorEmailPartial", addVendorModel, ViewData, TempData);
+
+            Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
+            {
+                //To = AssetAssignModel.EmployeeEmail,
+                To = "srajender@ambconline.com",
+                Subject = "Vendor details updated successfully - " + addVendorModel.VendorName + " (" + addVendorModel.VendorCity + ")",
                 //CC = AssetAssignModel.itadminIds,
                 EmailBody = emailBody,
                 SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],

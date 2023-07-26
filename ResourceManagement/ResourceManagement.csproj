@@ -612,6 +612,7 @@
     <Content Include="Views\IT\PurchaseRequest.cshtml" />
     <Content Include="Views\Home\_BannerInfo.cshtml" />
     <Content Include="Views\MasterData\addupdate.cshtml" />
+    <Content Include="Views\IT\AddVendorEmailPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

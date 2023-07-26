@@ -1,4 +1,4 @@
-﻿@model ResourceManagement.Models.RMA_EmployeeModel
+﻿@model ResourceManagement.Models.IT.ITModel
 
 @{
     ViewBag.Title = "Asset Add Update Page";
@@ -8,14 +8,14 @@
     bannerModel.BannerImagePath = "/Assets/Banner/View Assets.jpg";
 }
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
 @Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
 
 <br />
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model)
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
 @Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
 <script>

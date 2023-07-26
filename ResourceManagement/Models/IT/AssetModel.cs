@@ -143,7 +143,7 @@ namespace ResourceManagement.Models.IT
         public string UploadedByMobile { get; set; }
         public string Remarks { get; set; }
         public string AssetTxn { get; set; }
-        
+
     }
 
     public class AssetDataPoint
@@ -152,5 +152,16 @@ namespace ResourceManagement.Models.IT
         public string label { get; set; }
         public double y { get; set; }
         public double totalTickets { get; set; }
+    }
+
+    public class VendorModel
+    {
+        public string VendorName { get; set; }
+        public string VendorAddress { get; set; }
+        public string VendorCity { get; set; }
+        public string VendorEmailAddress { get; set; }
+        public string VendorStatus { get; set; }
+        public string VendorTxn { get; set; }
+        public string VendorRemarks { get; set; }
     }
 }

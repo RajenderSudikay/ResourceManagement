@@ -1,4 +1,4 @@
-﻿@model ResourceManagement.Models.RMA_EmployeeModel
+﻿@model ResourceManagement.Models.IT.ITModel
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card timesheet-card">
@@ -10,12 +10,10 @@
                         <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
                         <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Type</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Desktop">Desktop</option>
-                            <option value="MacBook">MacBook</option>
-                            <option value="Tablet">Tablet</option>
-                            <option value="Mobile">Mobile</option>
-                            <option value="Other">Other</option>
+                            @foreach (var assetType in Model.AssetTypes)
+                            {
+                                <option value="@assetType.AssetType1">@assetType.AssetType1</option>
+                            }
                         </select>
                     </div>
                 </div>

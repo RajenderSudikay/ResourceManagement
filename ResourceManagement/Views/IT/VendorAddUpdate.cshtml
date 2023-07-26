@@ -43,6 +43,14 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorcontact">Vendor Contact<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="vendorcontact" required>
+                    </div>
+                </div>
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="vendorstatus">Vendor Status<b style="color:red">*</b></label>
@@ -54,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="vendoraddress">Vendor Address<b style="color:red">*</b></label>
                         <textarea class="form-control" id="vendoraddress" style="min-width: 100%" placeholder="vendoraddress"></textarea>
@@ -104,22 +112,42 @@
 
     jQuery(document).on("click", ".btn-vendor-addupdate", function () {
 
-        var GetAssetModel = {
-            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
-            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
-            AssetID: jQuery('#assetAssignID :selected').val(),
-            AssetType: jQuery('#assetassettype :selected').val(),
-            Category: jQuery('#assetcategory :selected').val(),
-            FilterBy: jQuery('#assetfilterby :selected').val()
+        var VendorModel = {
+            VendorName: jQuery('#vendorname').val(),
+            VendorAddress: jQuery('#vendoraddress').text(),
+            VendorCity: jQuery('#vendorlocation').val(),
+            VendorEmailAddress: jQuery('#vendoremail').val(),
+            VendorStatus: jQuery('#vendorstatus :selected').val(),
+            VendorTxn: "Add",
+            VendorRemarks: jQuery('#vendorremarks').val(),
         };
 
         jQuery.ajax({
             type: "POST",
-            url: "/it/getassets",
-            data: JSON.stringify({ getAssetModel: GetAssetModel }),
+            url: "/it/addvendor",
+            data: JSON.stringify({ addVendorModel: VendorModel }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                jQuery('.assets-info-container').html(data);
+                var obj = jQuery.parseJSON(data);
+                if (obj.JsonResponse.StatusCode == 200) {
+
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>Vendor details have been saved successfully.</h2>");
+                    jQuery('.message-success-popup').modal('show');
+
+                    jQuery("#vendorlocation").val($("#vendorlocation option:first").val());
+                    jQuery("#vendorstatus").val($("#vendorstatus option:first").val());
+                    jQuery('#vendorname').val('');
+                    jQuery('#vendoremail').val('');
+                    jQuery('#vendoraddress').val('');
+                    jQuery('#vendorremarks').val('');                  
+
+                }
+                else {
+                    jQuery('.error-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>" + obj.JsonResponse.Message + "</h2>");
+                    jQuery('#modal-db-error-alert').modal('show');
+                }
             }
         });
     });
