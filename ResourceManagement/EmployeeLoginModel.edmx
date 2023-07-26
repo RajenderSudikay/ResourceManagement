@@ -639,6 +639,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.tbl_LoginInformation_bkp' does n
           <Property Name="VendorRemarks" Type="varchar" MaxLength="255" />
           <Property Name="VendorCreatedDate" Type="datetime" />
           <Property Name="VendorModifiedDate" Type="datetime" />
+          <Property Name="VendorContactNumber" Type="varchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="tblambcholiday">
           <Key>
@@ -2051,6 +2052,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="VendorRemarks" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="VendorCreatedDate" Type="DateTime" Precision="3" />
           <Property Name="VendorModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="VendorContactNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VenderQtnMgmt">
           <Key>
@@ -2917,6 +2919,7 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="tbl_Vendor_Detail">
             <EntityTypeMapping TypeName="TimesheetDBModel.tbl_Vendor_Detail">
               <MappingFragment StoreEntitySet="tbl_Vendor_Detail">
+                <ScalarProperty Name="VendorContactNumber" ColumnName="VendorContactNumber" />
                 <ScalarProperty Name="VendorModifiedDate" ColumnName="VendorModifiedDate" />
                 <ScalarProperty Name="VendorCreatedDate" ColumnName="VendorCreatedDate" />
                 <ScalarProperty Name="VendorRemarks" ColumnName="VendorRemarks" />
