@@ -21,15 +21,10 @@
                         <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
                         <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" selected disabled>Select Type</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Desktop">Desktop</option>
-                            <option value="MacBook">MacBook</option>
-                            <option value="MacBook">Tablet</option>
-                            <option value="MacBook">Headset</option>
-                            <option value="MacBook">Mouse</option>
-                            <option value="MacBook">Charger</option>
-                            <option value="MacBook">Mobile</option>
-                            <option value="MacBook">Other</option>
+                            @foreach (var assetType in Model.AssetTypes)
+                            {
+                                <option value="@assetType.AssetType1">@assetType.AssetType1</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -37,11 +32,7 @@
                     <div class="form-group">
                         <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
                         <select id="assetAssign" name="assetAssign" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Asset</option>
-                            <option value="Asset1">Asset1</option>
-                            <option value="Asset2">Asset2</option>
-                            <option value="Asset3">Asset3</option>
-                            <option value="Asset4">Asset4</option>
+                            <option value="" disabled selected>Select Asset</option>                           
                         </select>
                     </div>
                 </div>

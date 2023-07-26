@@ -1,4 +1,4 @@
-﻿@model ResourceManagement.Models.RMA_EmployeeModel
+﻿@model ResourceManagement.Models.IT.ITModel
 
 @{
     ViewBag.Title = "Asset Assign Page";
@@ -104,15 +104,10 @@
                     <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Type</option>
                         <option value="All">All</option>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Desktop">Desktop</option>
-                        <option value="MacBook">MacBook</option>
-                        <option value="MacBook">Tablet</option>
-                        <option value="MacBook">Headset</option>
-                        <option value="MacBook">Mouse</option>
-                        <option value="MacBook">Charger</option>
-                        <option value="MacBook">Mobile</option>
-                        <option value="MacBook">Other</option>
+                        @foreach (var assetType in Model.AssetTypes)
+                        {
+                            <option value="@assetType.AssetType1">@assetType.AssetType1</option>
+                        }
                     </select>
                 </div>
             </div>
@@ -134,10 +129,6 @@
                     <label for="assetAssignID">Asset ID<b style="color:red">*</b></label>
                     <select id="assetAssignID" name="assetAssignID" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Asset ID</option>
-                        <option value="Asset1">Asset1</option>
-                        <option value="Asset2">Asset2</option>
-                        <option value="Asset3">Asset3</option>
-                        <option value="Asset4">Asset4</option>
                     </select>
                 </div>
             </div>
@@ -167,7 +158,7 @@
 </div>
 
 <div style="display: none" class="showassetinfo">
-    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
+    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model.RMA_EmployeeModel)
 </div>
 
 
@@ -394,7 +385,7 @@
 
 <br />
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model)
+@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
 <script>
 
 

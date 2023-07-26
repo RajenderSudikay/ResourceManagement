@@ -131,6 +131,7 @@ namespace ResourceManagement.Controllers
             var ITModel = new ITModel();
             ITModel.RMA_EmployeeModel = employeeModel;
             ITModel.MonthsList = MonthList();
+           
 
             using (TimeSheetEntities db = new TimeSheetEntities())
             {
@@ -144,6 +145,18 @@ namespace ResourceManagement.Controllers
                 if (itAdminEmplist != null && itAdminEmplist.Count() > 0)
                 {
                     ITModel.ITAdminUsers = itAdminEmplist;
+                }
+
+                var locations = db.Locations.ToList();
+                if (locations != null && locations.Count() > 0)
+                {
+                    ITModel.Locations = locations;
+                }
+
+                var assetLocations = db.AssetTypes.ToList();
+                if (assetLocations != null && assetLocations.Count() > 0)
+                {
+                    ITModel.AssetTypes = assetLocations;
                 }
             }
 
@@ -235,8 +248,8 @@ namespace ResourceManagement.Controllers
 
         public ActionResult ViewAssets()
         {
-            var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
-            return View(employeeModel);
+            var defaultModel = FilDefaultITModel();
+            return View(defaultModel);
         }
 
         public JsonResult GetAssets(GetAssetModel getAssetModel)

@@ -35,8 +35,10 @@
                         <label for="vendorlocation">Vendor Location<b style="color:red">*</b></label>
                         <select id="vendorlocation" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Location</option>
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Madurai">Madurai</option>
+                            @foreach (var location in Model.Locations)
+                            {
+                                <option value="@location.LocationName">@location.LocationName</option>
+                            }
                         </select>
                     </div>
                 </div>
