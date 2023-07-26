@@ -14,6 +14,14 @@ namespace ResourceManagement.Models
         [JsonPropertyName("statuscode")]
         public int StatusCode { get; set; } = 500;
 
+        [JsonPropertyName("IsDeleted")]
+        public bool IsDeleted { get; set; } = false;
+
+        [JsonPropertyName("IsEditedd")]
+        public bool IsEditedd { get; set; } = false;
+
+        [JsonPropertyName("IsAdded")]
+        public bool IsAdded { get; set; } = false;
 
     }
 

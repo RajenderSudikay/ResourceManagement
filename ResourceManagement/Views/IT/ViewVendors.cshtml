@@ -13,10 +13,12 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="vendorlocation">Vendor Location<b style="color:red">*</b></label>
-                        <select id="vendorlocation" name="vendorstatus" class="form-control form-select form-select-lg mb-3" required>
+                        <select id="vendorlocation" name="vendorlocation" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Location</option>
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Madurai">Madurai</option>
+                            @foreach (var location in Model.Locations)
+                            {
+                                <option value="@location.LocationName">@location.LocationName</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -46,38 +48,30 @@
 <div class="card card-body vendors-report-body" style="border-radius: 10px;">
     <div class="card vendors-report-card">
         <div class="card-body ">
-            @using (Html.BeginForm("DownloadReport", "IT", FormMethod.Post, new { id = "itdownloadform" }))
-            {
-                <input type="hidden" name="GridHtml" />
-                <div id="report-container">
-                    <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
-                        <thead class="table-bordered" style="height: 35px !important">
-                            <tr style="background-color: #005983">
-                                @if (Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
-                                {
-                                    <th class="" scope="col" width="30" style="color: white; text-align: center">Action</th>
-                                }
-                                else
-                                {
-                                    <th class="" scope="col" width="30" style="color: white; text-align: center; display:none">Action</th>
-                                }
+            <input type="hidden" name="GridHtml" />
+            <div id="report-container">
+                <table class="table-leaveinfo" style="margin-top: 4px; width:100%">
+                    <thead class="table-bordered" style="height: 35px !important">
+                        <tr style="background-color: #005983">
+                            <th class="" scope="col" width="30" style="color: white; text-align: center;">Action</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Name</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Email</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Location</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Contact</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Status</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Address</th>
+                            <th class="" scope="col" width="30" style="color: white; text-align: center">Remarks</th>
 
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Name</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Email</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Location</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Status</th>
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Address</th>
-                            </tr>
-                        </thead>
+                        </tr>
+                    </thead>
 
-                        <tbody class="vendorreport-table-grid">
-                            <tr style="background-color: #ccffcc">
-                            </tr>
+                    <tbody class="vendorreport-table-grid">
+                        <tr style="background-color: #ccffcc">
+                        </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -113,86 +107,67 @@
     }
 
     function DeleteITReport(ele) {
-        var parentElement = $(ele).parents('.it-report-tr');
-        var ITReportDeleModel = {
+        var parentElement = $(ele).parents('.vendor-report-tr');
+
+        var vendorReportModel = {
             Action: "Delete",
-            UniqueNumber: $(ele).attr("data-uniqueid"),
-            ReportType: parentElement.find('td.report-type').html(),
-            AssetID: parentElement.find('td.report-assetid').html(),
-        }
-        ViewReport(ITReportDeleModel);
+            UniqNo: $(ele).attr("data-uniqueid"),
+            VendorCity: jQuery('#vendorlocation :selected').val(),
+            VendorStatus: jQuery('#vendorstatus :selected').val()
+        };
+
+        ViewReport(vendorReportModel, parentElement);
     }
 
 
-    function ViewReport(model) {
-        var isFormValidated = AssetFormValidated();
-        if (isFormValidated == false) {
-            return;
+    function ViewReport(vendorReportModel, elementtodelete) {
+        if (vendorReportModel.Action == "View") {
+            jQuery('.vendors-report-body').show();
+            jQuery('.vendorreport-table-grid').empty();
         }
 
-        jQuery('.vendors-report-body').show();
-        jQuery('.vendorreport-table-grid').empty();
-
-        var itReportModel = {
-            EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
-            EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
-            UploadedMonth: jQuery('#assetUploadMonth :selected').val(),
-            AssetID: jQuery('#assetAssignID :selected').val(),
-            Action: model != undefined ? model.Action : "",
-            UniqueNo: model != undefined ? model.UniqueNumber : "",
-            ReportType: model != undefined ? model.ReportType : ""
-        };
-
         jQuery.ajax({
-            url: "/it/viewitajaxreports",
+            url: "/it/viewvendorajaxreports",
             type: "POST",
-            data: JSON.stringify({ itReportModel: itReportModel }),
+            data: JSON.stringify({ vendorModel: vendorReportModel }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 var obj = jQuery.parseJSON(data);
-                var i = 0;
-                jQuery.each(obj, function (i, item) {
-                    var backgroundColor = "";
+                if (obj.IsDeleted == true) {
+                    elementtodelete.remove();
+                }
+                else {
+                    jQuery.each(obj, function (i, item) {
+                        if (vendorReportModel.Action == "View") {
+                            $('.vendorreport-table-grid').append(
+                                '<tr style="height: 30px;" class="vendor-report-tr">'
+                                + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqNo + '" onclick=DeleteITReport(this)></a></td>'
+                                + '<td class="report-vendorname" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorName + '</td>'
+                                + '<td class="report-vendoremail" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorEmailAddress + '</td>'
+                                + '<td class="report-vendorcity" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorCity + '</td>'
+                                + '<td class="report-VendorContactNumber" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorContactNumber + '</td>'
+                                + '<td class="report-VendorStatus" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorStatus + '</td>'
+                                + '<td class="report-VendorAddress" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorAddress + '</td>'
+                                + '<td class="report-VendorRemarks" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorRemarks + '</td>'
+                                + '</tr>'
+                            )
+                        }
+                    });
+                }
 
-                    if (jQuery('.emprole').val() == "administrator") {
-                        $('.vendorreport-table-grid').append(
-
-                            '<tr style="height: 30px;" class="it-report-tr">'
-                            + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqueNumber + '" onclick=DeleteITReport(this)></a></td>'
-                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
-                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
-                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
-                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
-                            + '</tr>'
-                        )
-                    }
-                    else {
-                        $('.vendorreport-table-grid').append(
-
-                            '<tr style="height: 30px;" class="it-report-tr">'
-                            + '<td scope="row" style="padding-left: 25px; display:none"><a class="glyphicon glyphicon-remove" href="javascript: void (0);"></a></td>'
-                            + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
-                            + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
-                            + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
-                            + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
-                            + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
-                            + '</tr>'
-                        )
-                    }
-
-                });
             }
         });
     }
 
+    jQuery(".btn-view-vendor-report").click(function () {
 
-    jQuery(".btn-view-it-report").click(function () {
-        ViewReport();
+        var vendorReportModel = {
+            Action: "View",
+            VendorCity: jQuery('#vendorlocation :selected').val(),
+            VendorStatus: jQuery('#vendorstatus :selected').val()
+        };
+
+        ViewReport(vendorReportModel);
     });
 
 </script>

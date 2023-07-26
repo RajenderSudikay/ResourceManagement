@@ -165,5 +165,7 @@ namespace ResourceManagement.Models.IT
         public string VendorRemarks { get; set; }
         public string VendorContactNumber { get; set; }
         public string itadminIds { get; set; }
+        public string Action { get; set; }
+        public int UniqNo { get; set; }
     }
 }

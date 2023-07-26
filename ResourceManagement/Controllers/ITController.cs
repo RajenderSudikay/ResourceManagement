@@ -909,5 +909,38 @@ namespace ResourceManagement.Controllers
             return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
 
+
+        public JsonResult ViewVendorAjaxReports(VendorModel vendorModel)
+        {
+            var reportViewModel = new List<tbl_Vendor_Detail>();
+            var jsonResponse = new JsonResponseModel();
+
+            using (TimeSheetEntities db = new TimeSheetEntities())
+            {
+                if (vendorModel.Action == "Delete")
+                {
+                    var deleteRecord = db.tbl_Vendor_Detail.Where(x => x.UniqNo == vendorModel.UniqNo).FirstOrDefault();
+                    if (deleteRecord != null)
+                    {
+                        db.tbl_Vendor_Detail.Remove(deleteRecord);
+                        db.SaveChanges();
+                        jsonResponse.IsDeleted = true;
+                        jsonResponse.Message = "Record deleted successfully.";
+                        var response = JsonConvert.SerializeObject(jsonResponse);
+                        return Json(response, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                var vendorReports = db.tbl_Vendor_Detail.Where(x => x.VendorCity == vendorModel.VendorCity && x.VendorStatus == vendorModel.VendorStatus).ToList();
+                if (vendorReports != null && vendorReports.Count > 0)
+                {
+                    reportViewModel = vendorReports;
+                }
+
+                var jsonReponse = JsonConvert.SerializeObject(reportViewModel);
+                return Json(jsonReponse, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }
