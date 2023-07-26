@@ -79,11 +79,36 @@
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
 @Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
+<div class="modal" tabindex="-1" role="dialog" id="modal-edit-form-popup" data-editrecorduniquenum="">
+    <div class="modal-dialog" role="document" style="max-width: 90% !important">
+        <div class="modal-content">
+            <div class="modal-header" style="font-size: medium; background-color: #779ecb; display: flex; flex-direction: column-reverse; align-content: stretch; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-end; ">
+                <div style="border: 2px solid red !important"><b class="close-popup">X</b></div>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.ActionType = "edit-action";
+                }
+
+                @Html.Partial("~/Views/IT/VendorAddUpdatePartial.cshtml", Model)
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br />
 <script>
 
     jQuery("#selectEmployeenameandemail").change(function (evt) {
         GetAssetsByEmpID(jQuery('#selectEmployeenameandemail :selected').val().split('|')[0]);
+    });
+
+    jQuery(document).on("click", ".close-popup", function () {
+        jQuery('#modal-edit-form-popup').modal('hide');
     });
 
 
@@ -106,7 +131,7 @@
         $('form#itdownloadform').submit();
     }
 
-    function DeleteITReport(ele) {
+    function DeleteVendorReport(ele) {
         var parentElement = $(ele).parents('.vendor-report-tr');
 
         var vendorReportModel = {
@@ -117,6 +142,40 @@
         };
 
         ViewReport(vendorReportModel, parentElement);
+    }
+
+    function EditVendorReport(ele) {
+        jQuery("tr").removeClass("selectedvendorrecord");
+        var parentElement = $(ele).parents('.vendor-report-tr').addClass('selectedvendorrecord');
+
+        var vendorReportModel = {
+            Action: "Delete",
+            UniqNo: $(ele).attr("data-uniqueid"),
+            VendorCity: jQuery('#vendorlocation :selected').val(),
+            VendorStatus: jQuery('#vendorstatus :selected').val()
+        };
+        jQuery('#modal-edit-form-popup').attr("data-editrecorduniquenum", $(ele).attr("data-uniqueid"));
+
+        var uniqueNum = $(ele).attr("data-uniqueid");
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/getvendor",
+            data: JSON.stringify({ uniqueID: uniqueNum }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+
+                $(".vendorlocation").val(obj.VendorCity).attr("selected", "selected");
+                $(".vendorstatus").val(obj.VendorStatus).attr("selected", "selected");
+                jQuery('#vendorname').val(obj.VendorName);
+                jQuery('#vendoremail').val(obj.VendorEmailAddress);
+                jQuery('#vendoraddress').val(obj.VendorAddress);
+                jQuery('#vendorremarks').val(obj.VendorRemarks);
+                jQuery('#vendorcontact').val(obj.VendorContactNumber);
+            }
+        });
+
+        jQuery('#modal-edit-form-popup').modal('show');
     }
 
 
@@ -140,8 +199,8 @@
                     jQuery.each(obj, function (i, item) {
                         if (vendorReportModel.Action == "View") {
                             $('.vendorreport-table-grid').append(
-                                '<tr style="height: 30px;" class="vendor-report-tr">'
-                                + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqNo + '" onclick=DeleteITReport(this)></a></td>'
+                                '<tr style="height: 30px;" class="vendor-report-tr" data-recordnum=' + item.UniqNo + '>'
+                                + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqNo + '" onclick=DeleteVendorReport(this)>&nbsp;</a > <a class="glyphicon glyphicon-edit" href="javascript: void (0);" data-uniqueid="' + item.UniqNo + '" onclick=EditVendorReport(this) ></a ></td > '
                                 + '<td class="report-vendorname" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorName + '</td>'
                                 + '<td class="report-vendoremail" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorEmailAddress + '</td>'
                                 + '<td class="report-vendorcity" style="width: 80px;vertical-align: middle;text-align: center">' + item.VendorCity + '</td>'

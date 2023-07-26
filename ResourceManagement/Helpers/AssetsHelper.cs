@@ -11,8 +11,6 @@ namespace ResourceManagement.Helpers
             {
                 return db.AmbcNewITAssetMgmts.Where(x => x.AssetSerialNo == assetID).FirstOrDefault();
             }
-
-            return null;
         }
     }
 }

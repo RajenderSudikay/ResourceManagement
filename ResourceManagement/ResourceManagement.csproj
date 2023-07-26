@@ -328,6 +328,7 @@
     <Compile Include="Helpers\EmployeeHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\MVCExtension.cs" />
+    <Compile Include="Helpers\VendorHelper.cs" />
     <Compile Include="Location.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
@@ -613,6 +614,7 @@
     <Content Include="Views\Home\_BannerInfo.cshtml" />
     <Content Include="Views\MasterData\addupdate.cshtml" />
     <Content Include="Views\IT\AddVendorEmailPartial.cshtml" />
+    <Content Include="Views\IT\VendorAddUpdatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

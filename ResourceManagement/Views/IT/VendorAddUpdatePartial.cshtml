@@ -1,0 +1,181 @@
+﻿@model ResourceManagement.Models.IT.ITModel
+
+
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorname">Vendor Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="vendorname" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendoremail">Vendor Email<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="vendoremail" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorlocation">Vendor Location<b style="color:red">*</b></label>
+                        <select id="vendorlocation" name="vendorlocation" class="form-control form-select form-select-lg mb-3 vendorlocation" required>
+                            <option value="" disabled selected>Select Location</option>
+                            @foreach (var location in Model.Locations)
+                            {
+                                <option value="@location.LocationName">@location.LocationName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorcontact">Vendor Contact<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="vendorcontact" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="vendorstatus">Vendor Status<b style="color:red">*</b></label>
+                        <select id="vendorstatus" name="vendorstatus" class="form-control form-select form-select-lg mb-3 vendorstatus" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="In-Active">In-Active</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="vendoraddress">Vendor Address<b style="color:red">*</b></label>
+                        <textarea class="form-control" id="vendoraddress" style="min-width: 100%" placeholder="vendoraddress"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="vendorremarks">Remarks</label>
+                        <textarea class="form-control" id="vendorremarks" style="min-width: 100%" placeholder="vendorremarks"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <br />
+            <div class="modal-footer mt-xl-4">
+                @{
+                    var actionType = Model.ActionType;
+                }
+                <button type="submit" class="btn btn-info btn-lg btn-vendor-addupdate @actionType" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Add/Update</b></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @{
+        var itEmpEmailIds = "";
+    }
+    @foreach (var itAdmin in Model.ITAdminUsers)
+    {
+        itEmpEmailIds += itAdmin.AMBC_Mail_Address.Trim() + ",";
+    }
+
+    <div class="it-admin-list" style="display:none">@itEmpEmailIds.Trim(',')</div>
+</div>
+
+
+<script>
+
+    jQuery(document).on("click", ".btn-vendor-addupdate", function () {
+        var actionType = "";
+        var uniqueNum = "";
+        if (jQuery(this).hasClass("edit-action")) {
+            actionType = "Edit";
+            uniqueNum = jQuery('#modal-edit-form-popup').attr("data-editrecorduniquenum");
+        }
+
+        if (jQuery(this).hasClass("add-action")) {
+            actionType = "Add";
+        }
+
+        var VendorModel = {
+            VendorName: jQuery('#vendorname').val(),
+            VendorAddress: jQuery('#vendoraddress').val(),
+            VendorCity: jQuery('.vendorlocation :selected').val(),
+            VendorEmailAddress: jQuery('#vendoremail').val(),
+            VendorStatus: jQuery('.vendorstatus :selected').val(),
+            VendorTxn: actionType,
+            VendorRemarks: jQuery('#vendorremarks').val(),
+            VendorContactNumber: jQuery('#vendorcontact').val(),
+            itadminIds: jQuery('.it-admin-list').text(),
+            UniqNo: uniqueNum
+        };
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/addupdatevendor",
+            data: JSON.stringify({ addVendorModel: VendorModel }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+
+                if (obj.inputObject.VendorTxn == "Edit") {
+                    jQuery('#modal-edit-form-popup').modal('hide');
+
+                    var updatedRecord = jQuery(".selectedvendorrecord");
+                    jQuery(".selectedvendorrecord").css("background-color", "green !important");
+                    updatedRecord.find('.report-vendorname').html(jQuery('#vendorname').val());
+                    updatedRecord.find('.report-vendorcity').html(jQuery('.vendorlocation :selected').val());
+
+                    updatedRecord.find('.report-vendoremail').html(jQuery('#vendoremail').val());
+                    updatedRecord.find('.report-VendorContactNumber').html(jQuery('#vendorcontact').val());
+
+                    updatedRecord.find('.report-VendorStatus').html(jQuery('.vendorstatus :selected').val());
+                    updatedRecord.find('.report-VendorAddress').html(jQuery('#vendoraddress').val());
+
+                    updatedRecord.find('.report-VendorRemarks').html(jQuery('#vendorremarks').val());
+
+                    jQuery('.success-message-popup-title').html("Hey there");
+                    jQuery('.database-response').html("<h2>Vendor details have been saved successfully.</h2>");
+                    jQuery('.message-success-popup').modal('show');
+
+                }
+                else {
+                    if (obj.JsonResponse.StatusCode == 200) {
+                        jQuery('.success-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>Vendor details have been saved successfully.</h2>");
+                        jQuery('.message-success-popup').modal('show');
+
+                        jQuery("#vendorlocation").val($("#vendorlocation option:first").val());
+                        jQuery("#vendorstatus").val($("#vendorstatus option:first").val());
+                        jQuery('#vendorname').val('');
+                        jQuery('#vendoremail').val('');
+                        jQuery('#vendoraddress').val('');
+                        jQuery('#vendorremarks').val('');
+                        jQuery('#vendorcontact').val('');
+
+                    }
+                    else {
+                        jQuery('.error-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>" + obj.JsonResponse.Message + "</h2>");
+                        jQuery('#modal-db-error-alert').modal('show');
+                    }
+                }         
+            }
+        });
+    });
+
+
+
+</script>

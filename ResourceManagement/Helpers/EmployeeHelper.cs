@@ -11,8 +11,6 @@ namespace ResourceManagement.Helpers
             {
                 return db.AMBC_Active_Emp_view.Where(emp => emp.Employee_ID == empID).FirstOrDefault();
             }
-
-            return null;
         }
     }
 }

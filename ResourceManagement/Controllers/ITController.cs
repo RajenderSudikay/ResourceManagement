@@ -16,6 +16,7 @@ using System;
 using Microsoft.Ajax.Utilities;
 using static ResourceManagement.Helpers.EmployeeHelper;
 using static ResourceManagement.Helpers.AssetsHelper;
+using static ResourceManagement.Helpers.VendorHelper;
 
 namespace ResourceManagement.Controllers
 {
@@ -865,30 +866,40 @@ namespace ResourceManagement.Controllers
             return Json(EmailResponse, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AddVendor(VendorModel addVendorModel)
+        public JsonResult AddUpdateVendor(VendorModel addVendorModel)
         {
             var model = new ITModel();
             using (TimeSheetEntities context = new TimeSheetEntities())
             {
-                var inputModel = new tbl_Vendor_Detail();
                 if (addVendorModel.VendorTxn == "Add")
                 {
+                    var inputModel = new tbl_Vendor_Detail();
+                    inputModel.VendorName = addVendorModel.VendorName;
+                    inputModel.VendorCity = addVendorModel.VendorCity;
+                    inputModel.VendorAddress = addVendorModel.VendorAddress;
+                    inputModel.VendorEmailAddress = addVendorModel.VendorEmailAddress;
+                    inputModel.VendorRemarks = addVendorModel.VendorRemarks;
+                    inputModel.VendorStatus = addVendorModel.VendorStatus;
+                    inputModel.VendorContactNumber = addVendorModel.VendorContactNumber;
                     inputModel.VendorCreatedDate = DateTime.Now;
+                    context.tbl_Vendor_Detail.Add(inputModel);
+
                 }
                 else
                 {
-                    inputModel.VendorModifiedDate = DateTime.Now;
+                    var editableRecord = context.tbl_Vendor_Detail.Where(a => a.UniqNo == addVendorModel.UniqNo).FirstOrDefault();
+                    if (editableRecord != null)
+                    {
+                        editableRecord.VendorModifiedDate = DateTime.Now;
+                        editableRecord.VendorName = addVendorModel.VendorName;
+                        editableRecord.VendorCity = addVendorModel.VendorCity;
+                        editableRecord.VendorAddress = addVendorModel.VendorAddress;
+                        editableRecord.VendorEmailAddress = addVendorModel.VendorEmailAddress;
+                        editableRecord.VendorRemarks = addVendorModel.VendorRemarks;
+                        editableRecord.VendorStatus = addVendorModel.VendorStatus;
+                        editableRecord.VendorContactNumber = addVendorModel.VendorContactNumber;
+                    }
                 }
-
-                inputModel.VendorName = addVendorModel.VendorName;
-                inputModel.VendorCity = addVendorModel.VendorCity;
-                inputModel.VendorAddress = addVendorModel.VendorAddress;
-                inputModel.VendorEmailAddress = addVendorModel.VendorEmailAddress;
-                inputModel.VendorRemarks = addVendorModel.VendorRemarks;
-                inputModel.VendorStatus = addVendorModel.VendorStatus;
-                inputModel.VendorContactNumber = addVendorModel.VendorContactNumber;
-
-                context.tbl_Vendor_Detail.Add(inputModel);
                 context.SaveChanges();
             }
 
@@ -901,6 +912,7 @@ namespace ResourceManagement.Controllers
                 Subject = "Vendor details saved successfully - " + addVendorModel.VendorName + " (" + addVendorModel.VendorCity + ")",
                 CC = addVendorModel.itadminIds,
                 EmailBody = emailBody,
+                inputObject = addVendorModel,
                 SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
                 SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]
             };
@@ -942,5 +954,11 @@ namespace ResourceManagement.Controllers
             }
         }
 
+        public JsonResult GetVendor(int uniqueID)
+        {
+            var vendorRecord = GetVendorByUniqueID(uniqueID);
+            var jsonReponse = JsonConvert.SerializeObject(vendorRecord);
+            return Json(jsonReponse, JsonRequestBehavior.AllowGet);
+        }
     }
 }

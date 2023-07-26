@@ -60,6 +60,8 @@ namespace ResourceManagement.Models.IT
         public string AssetsSoldOutDataPoints { get; set; }
         public List<Location> Locations { get; set; } = new List<Location>();
         public List<AssetType> AssetTypes { get; set; } = new List<AssetType>();
+        public string ActionType { get; set; }
+        public string UniqueNumber { get; set; }
     }
 
     public class ITDownloadReportModel
