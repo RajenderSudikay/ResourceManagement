@@ -72,7 +72,7 @@
     }
 </style>
 
-@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model)
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
 @Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
@@ -158,7 +158,7 @@
 </div>
 
 <div style="display: none" class="showassetinfo">
-    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model.RMA_EmployeeModel)
+    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
 </div>
 
 

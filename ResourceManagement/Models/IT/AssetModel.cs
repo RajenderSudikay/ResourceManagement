@@ -163,5 +163,7 @@ namespace ResourceManagement.Models.IT
         public string VendorStatus { get; set; }
         public string VendorTxn { get; set; }
         public string VendorRemarks { get; set; }
+        public string VendorContactNumber { get; set; }
+        public string itadminIds { get; set; }
     }
 }

@@ -114,12 +114,14 @@
 
         var VendorModel = {
             VendorName: jQuery('#vendorname').val(),
-            VendorAddress: jQuery('#vendoraddress').text(),
+            VendorAddress: jQuery('#vendoraddress').val(),
             VendorCity: jQuery('#vendorlocation').val(),
             VendorEmailAddress: jQuery('#vendoremail').val(),
             VendorStatus: jQuery('#vendorstatus :selected').val(),
             VendorTxn: "Add",
             VendorRemarks: jQuery('#vendorremarks').val(),
+            VendorContactNumber: jQuery('#vendorcontact').val(),
+            itadminIds: jQuery('.it-admin-list').text(),
         };
 
         jQuery.ajax({
@@ -140,7 +142,8 @@
                     jQuery('#vendorname').val('');
                     jQuery('#vendoremail').val('');
                     jQuery('#vendoraddress').val('');
-                    jQuery('#vendorremarks').val('');                  
+                    jQuery('#vendorremarks').val('');
+                    jQuery('#vendorcontact').val('');
 
                 }
                 else {

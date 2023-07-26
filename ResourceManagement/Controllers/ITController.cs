@@ -886,6 +886,7 @@ namespace ResourceManagement.Controllers
                 inputModel.VendorEmailAddress = addVendorModel.VendorEmailAddress;
                 inputModel.VendorRemarks = addVendorModel.VendorRemarks;
                 inputModel.VendorStatus = addVendorModel.VendorStatus;
+                inputModel.VendorContactNumber = addVendorModel.VendorContactNumber;
 
                 context.tbl_Vendor_Detail.Add(inputModel);
                 context.SaveChanges();
@@ -896,9 +897,9 @@ namespace ResourceManagement.Controllers
             Models.Email.SendEmail emailModel = new Models.Email.SendEmail()
             {
                 //To = AssetAssignModel.EmployeeEmail,
-                To = "srajender@ambconline.com",
-                Subject = "Vendor details updated successfully - " + addVendorModel.VendorName + " (" + addVendorModel.VendorCity + ")",
-                //CC = AssetAssignModel.itadminIds,
+                To = "srajender@ambconline.com,ravikumarm@ambconline.com",
+                Subject = "Vendor details saved successfully - " + addVendorModel.VendorName + " (" + addVendorModel.VendorCity + ")",
+                CC = addVendorModel.itadminIds,
                 EmailBody = emailBody,
                 SpecificUserName = ConfigurationManager.AppSettings["ITSMTPUserName"],
                 SpecificPassword = ConfigurationManager.AppSettings["ITSMTPPassword"]

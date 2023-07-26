@@ -143,16 +143,4 @@ namespace ResourceManagement.Models.IT
         public AMBCITMonthlyMaintenance AMBCITMonthlyMaintenance { get; set; }
 
     }
-
-    public class VendorAddModel
-    {
-        public string ActivityName { get; set; }
-
-        public string Status { get; set; }
-
-        public string Remarks { get; set; }
-
-        public string Additionalcomments { get; set; }
-
-    }
 }
