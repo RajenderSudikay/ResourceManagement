@@ -25,5 +25,9 @@ namespace ResourceManagement
         public Nullable<System.DateTime> VendorCreatedDate { get; set; }
         public Nullable<System.DateTime> VendorModifiedDate { get; set; }
         public string VendorContactNumber { get; set; }
+        public string UploadedByName { get; set; }
+        public string UploadedByEmpID { get; set; }
+        public string UploadedbyEmail { get; set; }
+        public string ContactPersonDetail { get; set; }
     }
 }

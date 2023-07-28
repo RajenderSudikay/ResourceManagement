@@ -100,6 +100,11 @@
           <Property Name="AssetAllocationStatus" Type="varchar" MaxLength="50" />
           <Property Name="AssetEntryCreatedDate" Type="datetime" />
           <Property Name="AssetEntryModifiedDate" Type="datetime" />
+          <Property Name="AssetBarCodeId" Type="varchar" MaxLength="150" />
+          <Property Name="AssetIPaddress" Type="varchar" MaxLength="50" />
+          <Property Name="AssetWiFiIP" Type="varchar" MaxLength="50" />
+          <Property Name="AssetPurchaseDate" Type="date" />
+          <Property Name="AssetExpressCode" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AmbcNewPeripherals">
           <Key>
@@ -556,6 +561,25 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.monthlyreports_Template3' does n
           <Property Name="Closed_Year" Type="int" />
           <Property Name="Closed_Month" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.SysOSDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SysOSDetails">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OperatingSystemName" Type="varchar" MaxLength="150" />
+          <Property Name="TypsOfOS" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Timesheet-Dev.dbo.SysRAMDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SysRAMDetails">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RAMType" Type="varchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="tbl_ambclogininformation">
           <Key>
             <PropertyRef Name="Concat_loginstring" />
@@ -640,6 +664,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.tbl_LoginInformation_bkp' does n
           <Property Name="VendorCreatedDate" Type="datetime" />
           <Property Name="VendorModifiedDate" Type="datetime" />
           <Property Name="VendorContactNumber" Type="varchar" MaxLength="25" />
+          <Property Name="UploadedByName" Type="varchar" MaxLength="150" />
+          <Property Name="UploadedByEmpID" Type="varchar" MaxLength="150" />
+          <Property Name="UploadedbyEmail" Type="varchar" MaxLength="150" />
+          <Property Name="ContactPersonDetail" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="tblambcholiday">
           <Key>
@@ -1010,6 +1038,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           </EntitySet>
           <EntitySet Name="monthlyreports_Template1" EntityType="Self.monthlyreports_Template1" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="monthlyreports_Template3" EntityType="Self.monthlyreports_Template3" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SysOSDetails" EntityType="Self.SysOSDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SysRAMDetails" EntityType="Self.SysRAMDetails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tbl_LoginInformation_bkp" EntityType="Self.tbl_LoginInformation_bkp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_LoginInformation_bkp].[login_id] AS [login_id], 
@@ -1666,6 +1696,8 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySet Name="VenderQtnMgmts" EntityType="TimesheetDBModel.VenderQtnMgmt" />
           <EntitySet Name="ticket_category" EntityType="TimesheetDBModel.ticket_category" />
           <EntitySet Name="ticket_priority" EntityType="TimesheetDBModel.ticket_priority" />
+          <EntitySet Name="SysOSDetails" EntityType="TimesheetDBModel.SysOSDetail" />
+          <EntitySet Name="SysRAMDetails" EntityType="TimesheetDBModel.SysRAMDetail" />
 				</EntityContainer>
 				<EntityType Name="tbld_ambclogininformation">
 					<Key>
@@ -1919,6 +1951,11 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="AssetAllocationStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AssetEntryCreatedDate" Type="DateTime" Precision="3" />
           <Property Name="AssetEntryModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="AssetBarCodeId" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AssetIPaddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetWiFiIP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetPurchaseDate" Type="DateTime" Precision="0" />
+          <Property Name="AssetExpressCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AmbcNewPeripheral">
           <Key>
@@ -2053,6 +2090,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <Property Name="VendorCreatedDate" Type="DateTime" Precision="3" />
           <Property Name="VendorModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="VendorContactNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedByName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedByEmpID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedbyEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ContactPersonDetail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VenderQtnMgmt">
           <Key>
@@ -2087,6 +2128,21 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           </Key>
           <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ticketpriority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SysOSDetail">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OperatingSystemName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TypsOfOS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SysRAMDetail">
+          <Key>
+            <PropertyRef Name="UniqNo" />
+          </Key>
+          <Property Name="UniqNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RAMType" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
 			</Schema>
 		</edmx:ConceptualModels>
@@ -2752,6 +2808,11 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="AmbcNewITAssetMgmts">
             <EntityTypeMapping TypeName="TimesheetDBModel.AmbcNewITAssetMgmt">
               <MappingFragment StoreEntitySet="AmbcNewITAssetMgmt">
+                <ScalarProperty Name="AssetExpressCode" ColumnName="AssetExpressCode" />
+                <ScalarProperty Name="AssetPurchaseDate" ColumnName="AssetPurchaseDate" />
+                <ScalarProperty Name="AssetWiFiIP" ColumnName="AssetWiFiIP" />
+                <ScalarProperty Name="AssetIPaddress" ColumnName="AssetIPaddress" />
+                <ScalarProperty Name="AssetBarCodeId" ColumnName="AssetBarCodeId" />
                 <ScalarProperty Name="AssetEntryModifiedDate" ColumnName="AssetEntryModifiedDate" />
                 <ScalarProperty Name="AssetEntryCreatedDate" ColumnName="AssetEntryCreatedDate" />
                 <ScalarProperty Name="AssetAllocationStatus" ColumnName="AssetAllocationStatus" />
@@ -2919,6 +2980,10 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
           <EntitySetMapping Name="tbl_Vendor_Detail">
             <EntityTypeMapping TypeName="TimesheetDBModel.tbl_Vendor_Detail">
               <MappingFragment StoreEntitySet="tbl_Vendor_Detail">
+                <ScalarProperty Name="ContactPersonDetail" ColumnName="ContactPersonDetail" />
+                <ScalarProperty Name="UploadedbyEmail" ColumnName="UploadedbyEmail" />
+                <ScalarProperty Name="UploadedByEmpID" ColumnName="UploadedByEmpID" />
+                <ScalarProperty Name="UploadedByName" ColumnName="UploadedByName" />
                 <ScalarProperty Name="VendorContactNumber" ColumnName="VendorContactNumber" />
                 <ScalarProperty Name="VendorModifiedDate" ColumnName="VendorModifiedDate" />
                 <ScalarProperty Name="VendorCreatedDate" ColumnName="VendorCreatedDate" />
@@ -2967,6 +3032,23 @@ warning 6002: The table/view 'Timesheet-Dev.dbo.today_att' does not have a prima
               <MappingFragment StoreEntitySet="ticket_priority">
                 <ScalarProperty Name="ticketpriority" ColumnName="ticketpriority" />
                 <ScalarProperty Name="sno" ColumnName="sno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysOSDetails">
+            <EntityTypeMapping TypeName="TimesheetDBModel.SysOSDetail">
+              <MappingFragment StoreEntitySet="SysOSDetails">
+                <ScalarProperty Name="TypsOfOS" ColumnName="TypsOfOS" />
+                <ScalarProperty Name="OperatingSystemName" ColumnName="OperatingSystemName" />
+                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysRAMDetails">
+            <EntityTypeMapping TypeName="TimesheetDBModel.SysRAMDetail">
+              <MappingFragment StoreEntitySet="SysRAMDetails">
+                <ScalarProperty Name="RAMType" ColumnName="RAMType" />
+                <ScalarProperty Name="UniqNo" ColumnName="UniqNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

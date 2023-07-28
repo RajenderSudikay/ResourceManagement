@@ -75,5 +75,7 @@ namespace ResourceManagement
         public virtual DbSet<VenderQtnMgmt> VenderQtnMgmts { get; set; }
         public virtual DbSet<ticket_category> ticket_category { get; set; }
         public virtual DbSet<ticket_priority> ticket_priority { get; set; }
+        public virtual DbSet<SysOSDetail> SysOSDetails { get; set; }
+        public virtual DbSet<SysRAMDetail> SysRAMDetails { get; set; }
     }
 }

@@ -359,6 +359,12 @@
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysOSDetail.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysRAMDetail.cs">
+      <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblambcholiday.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>

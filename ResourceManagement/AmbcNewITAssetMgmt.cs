@@ -50,5 +50,10 @@ namespace ResourceManagement
         public string AssetAllocationStatus { get; set; }
         public Nullable<System.DateTime> AssetEntryCreatedDate { get; set; }
         public Nullable<System.DateTime> AssetEntryModifiedDate { get; set; }
+        public string AssetBarCodeId { get; set; }
+        public string AssetIPaddress { get; set; }
+        public string AssetWiFiIP { get; set; }
+        public Nullable<System.DateTime> AssetPurchaseDate { get; set; }
+        public string AssetExpressCode { get; set; }
     }
 }
