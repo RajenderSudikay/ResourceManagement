@@ -2,9 +2,16 @@
 
 @{
     ViewBag.Title = "View Vendor page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "VIEW VENDORS";
+    bannerModel.BannerImagePath = "/Assets/Banner/vendor.jpg";
+
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card upload-it-report-card">
@@ -82,8 +89,8 @@
 <div class="modal" tabindex="-1" role="dialog" id="modal-edit-form-popup" data-editrecorduniquenum="">
     <div class="modal-dialog" role="document" style="max-width: 90% !important">
         <div class="modal-content">
-            <div class="modal-header" style="font-size: medium; background-color: #779ecb; display: flex; flex-direction: column-reverse; align-content: stretch; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-end; ">
-                <div style="border: 2px solid red !important"><b class="close-popup">X</b></div>
+            <div class="modal-header" style="font-size: medium; background-color: #032d42 !important; display: flex; flex-direction: column-reverse; align-content: stretch; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-end; ">
+                <div style="border: 2px solid red !important; width: 20px !important; border-radius: 10px !important"><b class="close-popup" style="color: white !important; margin-left: 3px !important">X</b></div>
             </div>
             <div class="modal-body">
                 @{
@@ -146,14 +153,7 @@
 
     function EditVendorReport(ele) {
         jQuery("tr").removeClass("selectedvendorrecord");
-        var parentElement = $(ele).parents('.vendor-report-tr').addClass('selectedvendorrecord');
-
-        var vendorReportModel = {
-            Action: "Delete",
-            UniqNo: $(ele).attr("data-uniqueid"),
-            VendorCity: jQuery('#vendorlocation :selected').val(),
-            VendorStatus: jQuery('#vendorstatus :selected').val()
-        };
+        $(ele).parents('.vendor-report-tr').addClass('selectedvendorrecord');
         jQuery('#modal-edit-form-popup').attr("data-editrecorduniquenum", $(ele).attr("data-uniqueid"));
 
         var uniqueNum = $(ele).attr("data-uniqueid");

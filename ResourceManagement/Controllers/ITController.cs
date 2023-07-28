@@ -960,5 +960,12 @@ namespace ResourceManagement.Controllers
             var jsonReponse = JsonConvert.SerializeObject(vendorRecord);
             return Json(jsonReponse, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetAsset(int uniqueID)
+        {
+            var assetRecord = GetAssetByUniqueNum(uniqueID);
+            var jsonReponse = JsonConvert.SerializeObject(assetRecord);
+            return Json(jsonReponse, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -14,12 +14,13 @@
         <table class="table table-bordered table-timesheet-remainder">
             <thead style="background-color: #005983">
                 <tr>
+                    <th scope="col" style="color: white; font-size: initial; text-align: center">Action</th>
                     <th scope="col" style="width: 95px; color: white; font-size: initial">S No</th>
                     <th scope="col" style="color: white; font-size:initial">Asset#</th>
                     <th scope="col" style="color: white; font-size: initial">Assigned Status</th>
                     <th scope="col" style="color: white; font-size: initial">AssetType</th>
                     <th scope="col" style="color: white; font-size: initial">Warranty</th>
-                    <th scope="col" style="color: white; font-size: initial">History</th>
+
 
                 </tr>
             </thead>
@@ -34,16 +35,18 @@
                     {
                         nowarrantycolor = "lightgray";
                     }
-                    <tr style="background-color: @nowarrantycolor">
-                        <td class="asset-serialnumdynamic">@sno</td>
-                        <td class="asset-serialnum">@asset.AssetSerialNo</td>
-                        <td class="asset-assignedemp">@asset.AssetAllocationStatus</td>
-                        <td class="asset-type">@asset.AssetType</td>
-                        <td class="asset-warrntystatus">@asset.WarrentyStatus</td>
-                        <td class="asset-history">
-                            <a class="a-history" href="#"><img src="~/Assets/history.png" width="25" height="25" /></a>
-                        </td>
-                    </tr>
+                <tr style="background-color: @nowarrantycolor" class="assets-report-tr" data-uniqueid="@asset.UniqNo">
+                    <td class="asset-action" style="text-align: center">
+                        <a class="a-history" href="javascript: void (0);"><i class="glyphicon glyphicon-compressed"></i></a>&nbsp;
+                        <a class="a-edit" href="javascript: void (0);" onclick="EditAssetReport(this)"><i class="glyphicon glyphicon-edit"></i></a>
+                    </td>
+                    <td class="asset-serialnumdynamic">@sno</td>
+                    <td class="asset-serialnum">@asset.AssetSerialNo</td>
+                    <td class="asset-assignedemp">@asset.AssetAllocationStatus</td>
+                    <td class="asset-type">@asset.AssetType</td>
+                    <td class="asset-warrntystatus">@asset.WarrentyStatus</td>
+
+                </tr>
                     sno = sno + 1;
                 }
 

@@ -100,8 +100,8 @@
 
             <div class="col-md-4 asset-type-div" style="display: none">
                 <div class="form-group">
-                    <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
-                    <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3">
+                    <label for="assetassettype-view">Asset Type<b style="color:red">*</b></label>
+                    <select id="assetassettype-view" name="assetassettype-view" class="form-control form-select form-select-lg mb-3">
                         <option value="" disabled selected>Select Type</option>
                         <option value="All">All</option>
                         @foreach (var assetType in Model.AssetTypes)
@@ -157,9 +157,9 @@
     </div>
 </div>
 
-<div style="display: none" class="showassetinfo">
-    @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
-</div>
+@*<div style="display: none" class="showassetinfo">
+        @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
+    </div>*@
 
 
 
@@ -380,12 +380,30 @@
     </div>
 </div>
 
-
-
-
 <br />
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-edit-form-popup" data-editrecorduniquenum="">
+    <div class="modal-dialog" role="document" style="max-width: 90% !important; ">
+        <div class="modal-content">
+            <div class="modal-header" style="font-size: medium; background-color: #032d42 !important; display: flex; flex-direction: column-reverse; align-content: stretch; flex-wrap: wrap; justify-content: space-evenly; align-items: flex-end; ">
+                <div style="border: 2px solid red !important; width: 20px !important; border-radius: 10px !important"><b class="close-popup" style="color: white !important; margin-left: 3px !important">X</b></div>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.ActionType = "edit-action";
+                }
+
+                @Html.Partial("~/Views/IT/_AssetInfo.cshtml", Model)
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
 
@@ -419,12 +437,11 @@
 
 
     jQuery(document).on("click", ".btn-view-assets", function () {
-
         var GetAssetModel = {
             EmployeeID: jQuery('#selectEmployeenameandemail :selected').val().split('|')[0],
             EmployeeName: jQuery('#selectEmployeenameandemail :selected').text(),
             AssetID: jQuery('#assetAssignID :selected').val(),
-            AssetType: jQuery('#assetassettype :selected').val(),
+            AssetType: jQuery('#assetassettype-view :selected').val(),
             Category: jQuery('#assetcategory :selected').val(),
             FilterBy: jQuery('#assetfilterby :selected').val()
         };
@@ -445,7 +462,88 @@
         e.preventDefault();
         jQuery('#modal-warning-message-popup').show();
 
+    });  
+
+    function EditAssetReport(ele) {
+        jQuery("tr").removeClass("selectedassetrecord");
+        var uniqueNum = $(ele).parents('.assets-report-tr').attr("data-uniqueid");
+        $(ele).parents('.assets-report-tr').addClass('selectedassetrecord');
+        jQuery('#modal-edit-form-popup').attr("data-editrecorduniquenum", uniqueNum);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "/it/getasset",
+            data: JSON.stringify({ uniqueID: uniqueNum }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                jQuery('#modal-edit-form-popup').modal('show');
+                var obj = jQuery.parseJSON(data);
+
+                jQuery("#assetallocationstatus-info").val(obj.AssetAllocationStatus).attr("selected", "selected");
+                //jQuery('#assetPurchaseDate').val(obj.AssetAllocationStatus);
+
+                jQuery("#assetVendorLocation-info").val(obj.AssetPurchaseLocation).attr("selected", "selected");
+                jQuery("#assetVendor-info").val(obj.AssetPurchaseVendor).attr("selected", "selected");
+
+                jQuery('#assetdescription-info').val(obj.AssetDescription);
+                jQuery("#assetassettype-info").val(obj.AssetType).attr("selected", "selected");
+                jQuery('#assetmanufacturer-info').val(obj.AssetManufacturer);
+
+                //jQuery('#assetassignedasset').val();
+
+                jQuery('#assetchargerdetails-info').val(obj.ChargerCapicity);
+                jQuery('#assetchargerid-info').val(obj.ChargerSerialNo);
+                jQuery('#assethostname-info').val(obj.AssetHostName);
+                jQuery('#assetmousedetails-info').val(obj.MouseDetail);
+                jQuery('#assetmodel-info').val(obj.AssetModel);
+
+                jQuery('#assetaccesscontrol-info').val(obj.AccessControl);
+
+                //jQuery('#assetfunctionality :selected').val()
+
+                jQuery("#assetusbport-info").val(obj.USBPortStatus).attr("selected", "selected");
+                jQuery('#assetchargerid-info').val(obj.ChargerSerialNo);
+                jQuery('#assetheadsets-info').val(obj.HeadsetDetail);
+
+                //jQuery('#assetbarcodeid').val();
+
+                jQuery('#assetservicetag-info').val(obj.ServiceTag);
+                jQuery('#assetmac-info').val(obj.AssetMacNo);
+                jQuery('#assetid-info').val(obj.AssetSerialNo);
+
+                jQuery("#assetosversion-info").val(obj.OperatingSystemDetail).attr("selected", "selected");
+
+                //jQuery('#assetipaddress').val();
+
+                //jQuery('#assetwifiip').val();
+
+                jQuery('#assetwarrantystartdate-info').val(moment(obj.WarrentyStartDate).format('YYYY-MM-DD'));
+                jQuery('#assetwarantyenddate-info').val(moment(obj.WarrentyEndDate).format('YYYY-MM-DD'));
+                jQuery("#assetwarrantystatus-info").val(obj.WarrentyStatus).attr("selected", "selected");
+                jQuery("#assetram-info").val(obj.RAM_Size).attr("selected", "selected");
+
+                //jQuery('#assetos').val();
+                jQuery("#assetsoldout-info").val(obj.SoldOutStatus).attr("selected", "selected");
+                jQuery('#assetremarks-info').val(obj.AssetRemarks);
+              
+                jQuery('#assetsoldoutdate-info').val(moment(obj.SoldOutDate).format('YYYY-MM-DD'));
+                jQuery('#assetsoldoutprice-info').val(obj.SoldoutPrice)
+           
+                jQuery('#assetsoldoutvendor-info').val(obj.SoldOutVendor);
+
+                //ON POPUP LOAD
+                AssetType();              
+                AssetSoldOut();
+            }
+        });
+    }
+
+    jQuery(document).on("click", ".close-popup", function (e) {
+        e.preventDefault();
+        jQuery('#modal-edit-form-popup').hide();
+        jQuery('#modal-edit-form-popup').modal('hide');
     });
+
 
     jQuery(document).on("click", ".modal-warning-popup-btn", function (e) {
         e.preventDefault();

@@ -4,11 +4,10 @@
     <div class="card timesheet-card">
         <div class="card-body ">
             <form class="needs-validation asset-from" novalidate name="asset-from">
-
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetassettype">Asset Type<b style="color:red">*</b></label>
-                        <select id="assetassettype" name="assetassettype" class="form-control form-select form-select-lg mb-3" required>
+                        <label for="assetassettype-info">Asset Type<b style="color:red">*</b></label>
+                        <select id="assetassettype-info" name="assetassettype-info" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Type</option>
                             @foreach (var assetType in Model.AssetTypes)
                             {
@@ -20,25 +19,26 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetid">Asset ID<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetid" required>
+                        <label for="assetid-info">Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetid-info" required>
                     </div>
                 </div>
 
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetPurchaseDate" class="">Asset Purchase Date<b style="color:red">*</b></label>
-                        <input type="date" class="form-control" id="assetPurchaseDate" required>
+                        <label for="assetPurchaseDate-info" class="">Asset Purchase Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control" id="assetPurchaseDate-info" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetallocationstatus">Allocation Status<b style="color:red">*</b></label>
-                        <select id="assetallocationstatus" name="assetallocationstatus" class="form-control form-select form-select-lg mb-3" required>
+                        <label for="assetallocationstatus-info">Allocation Status<b style="color:red">*</b></label>
+                        <select id="assetallocationstatus-info" name="assetallocationstatus-info" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Allocation Status</option>
                             <option value="Assigned">Assigned</option>
                             <option value="NA">Not Assigned</option>
+                            <option value="NA">Not in good condition</option>
                         </select>
                     </div>
                 </div>
@@ -46,9 +46,9 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetVendor" class="">Asset Vendor<b style="color:red">*</b></label>
+                        <label for="assetVendor-info" class="">Asset Vendor<b style="color:red">*</b></label>
                         @*<input type="text" class="form-control" id="assetVendor" required>*@
-                        <select id="assetVendor" name="assetVendor" class="form-control form-select form-select-lg mb-3" required>
+                        <select id="assetVendor-info" name="assetVendor-info" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Vendor</option>
                             <option value="Hyderabad">Hyderabad</option>
                             <option value="Madurai">Madurai</option>
@@ -62,9 +62,9 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetVendorLocation" class="">Asset Vendor Location<b style="color:red">*</b></label>
+                        <label for="assetVendorLocation-info" class="">Asset Vendor Location<b style="color:red">*</b></label>
                         @*<input type="text" class="form-control" id="assetVendor" required>*@
-                        <select id="assetVendor" name="assetVendorLocation" class="form-control form-select form-select-lg mb-3" required>
+                        <select id="assetVendor-info" name="assetVendorLocation-info" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Vendor</option>
                             <option value="Hyderabad">Hyderabad</option>
                             <option value="Madurai">Madurai</option>
@@ -78,8 +78,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetdescription">Description<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetdescription" required>
+                        <label for="assetdescription-info">Description<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetdescription-info" required>
                     </div>
                 </div>
 
@@ -87,74 +87,88 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetmanufacturer">Manufacturer<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetmanufacturer" required>
+                        <label for="assetmanufacturer-info">Manufacturer<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmanufacturer-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetfunctionality">Working Condition<b style="color:red">*</b></label>
-                        <select id="assetfunctionality" name="assetfunctionality" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Condition</option>
-                            <option value="Good">Good</option>
-                            <option value="Bad">Bad</option>
+                        <label for="assetmodel-info">Model<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetmodel-info" required>
+                    </div>
+                </div>
+
+                @*<div class="col-md-4">
+                        <div class="form-group">
+                            <label for="assetfunctionality-info">Working Condition<b style="color:red">*</b></label>
+                            <select id="assetfunctionality-info" name="assetfunctionality-info" class="form-control form-select form-select-lg mb-3" required>
+                                <option value="" disabled selected>Select Condition</option>
+                                <option value="Good">Good</option>
+                                <option value="Bad">Bad</option>
+                            </select>
+                        </div>
+                    </div>*@
+                <div class="clearfix"></div>
+                <div class="col-md-4 div-os-version showhide" style="display: none">
+                    <div class="form-group">
+                        <label for="assetosversion-info">OS Details<b style="color:red">*</b></label>
+                        <select id="assetosversion-info" name="assetosversion-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                            <option value="" disabled selected>Select OS</option>
+                            <option value="64-bit">Windows10-(64bit)</option>
+                            <option value="32-bit">Windows10-(32bit)</option>
+                            <option value="64-bit">Windows7-(64bit)</option>
+                            <option value="32-bit">Windows7-(32bit)</option>
                         </select>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="assetmodel">Model<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetmodel" required>
-                    </div>
-                </div>
+
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetbarcodeid">Barcode ID<b style="color:red">*</b></label>
-                        <input type="text" class="form-control" id="assetbarcodeid" required>
+                        <label for="assetbarcodeid-info">Barcode ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="assetbarcodeid-info" required>
                     </div>
                 </div>
                 <div class="col-md-4 div-charger-details showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetchargerdetails">Charger Details<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetchargerdetails" required>
+                        <label for="assetchargerdetails-info">Charger Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetchargerdetails-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-host-name showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assethostname">Host Name<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assethostname" required>
+                        <label for="assethostname-info">Host Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assethostname-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-mouse-details showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetmousedetails">Mouse Details<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetmousedetails" required>
+                        <label for="assetmousedetails-info">Mouse Details<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetmousedetails-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-access-control showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetaccesscontrol">Access Control<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetaccesscontrol" required>
+                        <label for="assetaccesscontrol-info">Access Control<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetaccesscontrol-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-charger-assetid showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetchargerid">Charger Asset ID<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetchargerid" required>
+                        <label for="assetchargerid-info">Charger Asset ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetchargerid-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-usb-portstattus showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetusbport">USB Port Status<b style="color:red">*</b></label>
-                        <select id="assetusbport" name="assetusbport" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                        <label for="assetusbport-info">USB Port Status<b style="color:red">*</b></label>
+                        <select id="assetusbport-info" name="assetusbport-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
                             <option value="" disabled selected>Select Port Status</option>
                             <option value="Blocked">Blocked</option>
                             <option value="Not Blocked">Not Blocked</option>
@@ -164,15 +178,15 @@
 
                 <div class="col-md-4 div-express-code showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetexpresscode">Express Code<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetexpresscode" required>
+                        <label for="assetexpresscode-info">Express Code<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetexpresscode-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 div-headset showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetheadsets">Headsets<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetheadsets" required>
+                        <label for="assetheadsets-info">Headsets<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetheadsets-info" required>
                     </div>
                 </div>
 
@@ -180,15 +194,15 @@
 
                 <div class="col-md-4 div-servicetag showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetservicetag">Service Tag<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetservicetag" required>
+                        <label for="assetservicetag-info">Service Tag<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetservicetag-info" required>
                     </div>
                 </div>
 
                 <div class="col-md-4 showhide div-mac" style="display: none">
                     <div class="form-group">
-                        <label for="assetmac">Mac<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetmac" required>
+                        <label for="assetmac-info">Mac<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetmac-info" required>
                     </div>
                 </div>
 
@@ -197,34 +211,34 @@
                 <div class="clearfix"></div>
                 <div class="col-md-4 div-ip-address showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetipaddress">IP Address<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetipaddress" required>
+                        <label for="assetipaddress-info">IP Address<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetipaddress-info" required>
                     </div>
                 </div>
                 <div class="col-md-4 div-wifi-ip showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetwifiip">WIFI IP<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetwifiip" required>
+                        <label for="assetwifiip-info">WIFI IP<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-required" id="assetwifiip-info" required>
                     </div>
                 </div>
 
 
                 <div class="col-md-4 div-warranty-start showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetwarrantystartdate">Warranty Start Date<b style="color:red">*</b></label>
-                        <input type="date" class="form-control showhide-required" id="assetwarrantystartdate" required>
+                        <label for="assetwarrantystartdate-info">Warranty Start Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-required" id="assetwarrantystartdate-info" required>
                     </div>
                 </div>
                 <div class="col-md-4 div-warranty-end showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetwarantyenddate">Warranty End Date<b style="color:red">*</b></label>
-                        <input type="date" class="form-control showhide-required" id="assetwarantyenddate" required>
+                        <label for="assetwarantyenddate-info">Warranty End Date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-required" id="assetwarantyenddate-info" required>
                     </div>
                 </div>
                 <div class="col-md-4 div-warranty-status showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetwarrantystatus">Warranty Status<b style="color:red">*</b></label>
-                        <select id="assetwarrantystatus" name="assetusbport" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                        <label for="assetwarrantystatus-info">Warranty Status<b style="color:red">*</b></label>
+                        <select id="assetwarrantystatus-info" name="assetwarrantystatus-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
                             <option value="" disabled selected>Select Warranty Status</option>
                             <option value="In Warranty">In Warranty</option>
                             <option value="No Warranty">No Warranty</option>
@@ -235,8 +249,8 @@
 
                 <div class="col-md-4 div-ram showhide" style="display: none">
                     <div class="form-group">
-                        <label for="assetram">RAM<b style="color:red">*</b></label>
-                        <select id="assetram" name="assetram" class="form-control form-select form-select-lg mb-3 showhide-required" required>
+                        <label for="assetram-info">RAM<b style="color:red">*</b></label>
+                        <select id="assetram-info" name="assetram-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
                             <option value="" disabled selected>Select RAM</option>
                             <option value="4GB">4GB</option>
                             <option value="8GB">8GB</option>
@@ -247,28 +261,19 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="col-md-4 div-os showhide" style="display: none">
-                    <div class="form-group">
-                        <label for="assetos">OS<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-required" id="assetos" required>
-                    </div>
-                </div>
+                @*<div class="col-md-4 div-os showhide" style="display: none">
+                        <div class="form-group">
+                            <label for="assetos-info">OS<b style="color:red">*</b></label>
+                            <input type="text" class="form-control showhide-required" id="assetos-info" required>
+                        </div>
+                    </div>*@
 
-                <div class="col-md-4 div-os-version showhide" style="display: none">
-                    <div class="form-group">
-                        <label for="assetosversion">OS Version<b style="color:red">*</b></label>
-                        <select id="assetosversion" name="assetosversion" class="form-control form-select form-select-lg mb-3 showhide-required" required>
-                            <option value="" disabled selected>Select OS Version</option>
-                            <option value="64-bit">64-bit</option>
-                            <option value="32-bit">32-bit</option>
-                        </select>
-                    </div>
-                </div>
+
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="assetremarks">Remarks<b style="color:red"> </b></label>
-                        <textarea class="form-control" id="assetremarks" style="min-width: 100%" placeholder="Remarks..."></textarea>
+                        <label for="assetremarks-info">Remarks<b style="color:red"> </b></label>
+                        <textarea class="form-control" id="assetremarks-info" style="min-width: 100%" placeholder="Remarks..."></textarea>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -276,8 +281,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="assetsoldout">Asset Sold OUT<b style="color:red">*</b></label>
-                        <select id="assetsoldout" name="assetsoldout" class="form-control form-select form-select-lg mb-3">
+                        <label for="assetsoldout-info">Asset Sold OUT<b style="color:red">*</b></label>
+                        <select id="assetsoldout-info" name="assetsoldout-info" class="form-control form-select form-select-lg mb-3">
                             <option value="" disabled selected>Select Sold Out</option>
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
@@ -286,22 +291,22 @@
                 </div>
                 <div class="col-md-4 div-os showhide-soldout" style="display: none">
                     <div class="form-group">
-                        <label for="assetsoldoutdate">Sold Out date<b style="color:red">*</b></label>
-                        <input type="date" class="form-control showhide-soldout-required" id="assetsoldoutdate">
+                        <label for="assetsoldoutdate-info">Sold Out date<b style="color:red">*</b></label>
+                        <input type="date" class="form-control showhide-soldout-required" id="assetsoldoutdate-info">
                     </div>
                 </div>
 
                 <div class="col-md-4 div-os showhide-soldout" style="display: none">
                     <div class="form-group">
-                        <label for="assetsoldoutvendor">Sold Out Vendor<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutvendor">
+                        <label for="assetsoldoutvendor-info">Sold Out Vendor<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutvendor-info">
                     </div>
                 </div>
 
                 <div class="col-md-4 div-os showhide-soldout" style="display: none">
                     <div class="form-group">
-                        <label for="assetsoldoutprice">Sold Out Price<b style="color:red">*</b></label>
-                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutprice">
+                        <label for="assetsoldoutprice-info">Sold Out Price<b style="color:red">*</b></label>
+                        <input type="text" class="form-control showhide-soldout-required" id="assetsoldoutprice-info">
                     </div>
                 </div>
 
@@ -316,3 +321,141 @@
 </div>
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);
+
+
+<script>
+
+    function AssetType() {
+        if (jQuery('#assetassettype-info :selected').val() == "Laptop" || jQuery('#assetassettype-info :selected').val() == "Desktop") {
+            jQuery('.showhide').show();
+            jQuery(".showhide-required").prop('required', true);
+        }
+        else {
+            jQuery('.showhide').hide();
+            jQuery('.showhide-required').removeAttr("required");
+        }
+    }
+
+    //ON PAGE LOAD
+    AssetType();
+
+    jQuery(document).on("change", "#assetassettype-info", function () {
+        AssetType();
+    });
+
+
+
+
+    function AssetSoldOut() {
+        if (jQuery('#assetsoldout-info :selected').val() == "Yes") {
+            jQuery('.showhide-soldout').show();
+            jQuery(".showhide-soldout-required").prop('required', true);
+        }
+        else {
+            jQuery('.showhide-soldout').hide();
+            jQuery('.showhide-soldout-required').removeAttr("required");
+        }
+    }
+
+    //ON PAGE LOAD
+    AssetSoldOut();
+
+    jQuery("#assetsoldout-info").change(function (evt) {
+        AssetSoldOut();
+    });
+
+
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+
+    jQuery(".btn-asset-add-update").click(function (event) {
+        event.preventDefault();
+
+        var isModalValidated = true;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                isModalValidated = false;
+            }
+
+            form.classList.add('was-validated');
+        });
+
+        if (isModalValidated) {
+
+            var assetInfoModel = {
+                AllocationStatus: jQuery('#assetallocationstatus-info :selected').val(),
+                PurchaseDate: jQuery('#assetPurchaseDate-info').val(),
+
+                //TODO
+                PurchaseLocation: jQuery('#assetVendorLocation-info :selected').val(),
+                PurchaseVendor: jQuery('#assetVendor-info :selected').val(),
+
+                Description: jQuery('#assetdescription-info').val(),
+                AssetType: jQuery('#assetassettype-info :selected').val(),
+                AssetManufacturer: jQuery('#assetmanufacturer-info').val(),
+                AssignedAsset: jQuery('#assetassignedasset-info').val(),
+                ChargerDetails: jQuery('#assetchargerdetails-info').val(),
+                AssetHostName: jQuery('#assethostname-info').val(),
+                MouseDetails: jQuery('#assetmousedetails-info').val(),
+                AssetModel: jQuery('#assetmodel-info').val(),
+                AccessControl: jQuery('#assetaccesscontrol-info').val(),
+                ChargerSerialNo: jQuery('#assetchargerid-info').val(),
+                Functionality: jQuery('#assetfunctionality-info :selected').val(),
+                USBPortStatus: jQuery('#assetusbport-info :selected').val(),
+                ExpressCode: jQuery('#assetchargerid-info').val(),
+                Headsets: jQuery('#assetheadsets-info').val(),
+                BarcodeID: jQuery('#assetbarcodeid-info').val(),
+                ServiceTag: jQuery('#assetservicetag-info').val(),
+                AssetMacNo: jQuery('#assetmac-info').val(),
+                AssetSerialNo: jQuery('#assetid-info').val(),
+                OperatingSystemDetail: jQuery('#assetosversion-info :selected').val(),
+                IPAddress: jQuery('#assetipaddress-info').val(),
+                WIFIIP: jQuery('#assetwifiip-info').val(),
+                WarrentyStartDate: jQuery('#assetwarrantystartdate-info').val(),
+                WarrentyEndDate: jQuery('#assetwarantyenddate-info').val(),
+                WarrentyStatus: jQuery('#assetwarrantystatus-info :selected').val(),
+                RAM_Size: jQuery('#assetram-info :selected').val(),
+                /*  OS: jQuery('#assetos-info').val(),*/
+                Remarks: jQuery('#assetremarks-info').val(),
+
+                CreatedByName: jQuery('.agent-full-name').text(),
+                CreatedByID: jQuery('.agent-navdrop-empid').text(),
+                CreatedByEmail: jQuery('.agent-navdrop-empemail').text(),
+
+                SoldOutDate: jQuery('#assetsoldoutdate-info').val(),
+                SoldoutPrice: jQuery('#assetsoldoutprice-info').val(),
+                SoldOutStatus: jQuery('#assetsoldout-info :selected').val(),
+                SoldOutVendor: jQuery('#assetsoldoutvendor-info').val()
+            };
+            jQuery.ajax({
+                url: "/it/assetsaddupdateajax",
+                type: "POST",
+                data: { assetInfo: assetInfoModel },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.jsonResponse.StatusCode == 200) {
+                        jQuery('.success-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>Asset details have been successfully saved, and we greatly appreciate your cooperation.</h2>");
+                        jQuery('.message-success-popup').modal('show');
+                    }
+                    else {
+                        jQuery('.error-message-popup-title').html("Hey there");
+                        jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
+                        jQuery('#modal-db-error-alert').modal('show');
+                    }
+
+                    jQuery('form[name="asset-from"]').trigger("reset");
+                }
+            });
+            return false;
+        }
+    });
+
+
+</script>
