@@ -383,6 +383,7 @@
 <br />
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
 
 <div class="modal" tabindex="-1" role="dialog" id="modal-edit-form-popup" data-editrecorduniquenum="">
     <div class="modal-dialog" role="document" style="max-width: 90% !important; ">
@@ -462,7 +463,7 @@
         e.preventDefault();
         jQuery('#modal-warning-message-popup').show();
 
-    });  
+    });
 
     function EditAssetReport(ele) {
         jQuery("tr").removeClass("selectedassetrecord");
@@ -525,14 +526,14 @@
                 //jQuery('#assetos').val();
                 jQuery("#assetsoldout-info").val(obj.SoldOutStatus).attr("selected", "selected");
                 jQuery('#assetremarks-info').val(obj.AssetRemarks);
-              
+
                 jQuery('#assetsoldoutdate-info').val(moment(obj.SoldOutDate).format('YYYY-MM-DD'));
                 jQuery('#assetsoldoutprice-info').val(obj.SoldoutPrice)
-           
+
                 jQuery('#assetsoldoutvendor-info').val(obj.SoldOutVendor);
 
                 //ON POPUP LOAD
-                AssetType();              
+                AssetType();
                 AssetSoldOut();
             }
         });

@@ -154,10 +154,28 @@ namespace ResourceManagement.Controllers
                     ITModel.Locations = locations;
                 }
 
-                var assetLocations = db.AssetTypes.ToList();
-                if (assetLocations != null && assetLocations.Count() > 0)
+                var assetTypes = db.AssetTypes.ToList();
+                if (assetTypes != null && assetTypes.Count() > 0)
                 {
-                    ITModel.AssetTypes = assetLocations;
+                    ITModel.AssetTypes = assetTypes;
+                }
+
+                var sysRAMs = db.SysRAMDetails.ToList();
+                if (sysRAMs != null && sysRAMs.Count() > 0)
+                {
+                    ITModel.SysRAM = sysRAMs;
+                }
+
+                var sysOS = db.SysOSDetails.ToList();
+                if (sysOS != null && sysOS.Count() > 0)
+                {
+                    ITModel.SysOS = sysOS;
+                }
+
+                var vendors = db.tbl_Vendor_Detail.Where(x => x.VendorStatus == "Active").ToList();
+                if (vendors != null && vendors.Count() > 0)
+                {
+                    ITModel.Vendors = vendors;
                 }
             }
 
@@ -698,6 +716,10 @@ namespace ResourceManagement.Controllers
                         AssetModel = assetInfo.AssetModel,
                         AssetManufacturer = assetInfo.AssetManufacturer,
                         AssetSerialNo = assetInfo.AssetSerialNo,
+                        AssetBarCodeId = assetInfo.BarcodeID,
+                        AssetIPaddress = assetInfo.IPAddress,
+                        AssetWiFiIP = assetInfo.WIFIIP,
+                        AssetExpressCode = assetInfo.ExpressCode,
                         AssetType = assetInfo.AssetType,
                         ChargerCapicity = assetInfo.ChargerDetails,
                         ChargerSerialNo = assetInfo.ChargerSerialNo,
@@ -709,16 +731,14 @@ namespace ResourceManagement.Controllers
                         WarrentyStartDate = assetInfo.WarrentyStartDate,
                         WarrentyStatus = assetInfo.WarrentyStatus,
                         Lastupdated = System.DateTime.Now,
-                        AccessControl = assetInfo.AccessControl,
-
-                        //THIS FILED TO BE UPDATED IN TABLE
+                        AccessControl = assetInfo.AccessControl,                      
                         AssetUploadedByEmpEmailAddress = assetInfo.CreatedByEmail,
                         AssetUploadedByEmpid = assetInfo.CreatedByID,
                         AssetUploadedByEmpName = assetInfo.CreatedByName,
-
                         AssetDescription = assetInfo.Description,
                         AssetPurchaseLocation = assetInfo.PurchaseLocation,
                         AssetPurchaseVendor = assetInfo.PurchaseVendor,
+                        AssetPurchaseDate = assetInfo.PurchaseDate,
                         AssetRemarks = assetInfo.Remarks,
                         DisplaySize = assetInfo.DisplaySize,
                         HeadsetDetail = assetInfo.Headsets,

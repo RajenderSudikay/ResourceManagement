@@ -38,7 +38,7 @@
                             <option value="" disabled selected>Select Allocation Status</option>
                             <option value="Assigned">Assigned</option>
                             <option value="NA">Not Assigned</option>
-                            <option value="NA">Not in good condition</option>
+                            <option value="NGC">Not in good condition</option>
                         </select>
                     </div>
                 </div>
@@ -50,10 +50,10 @@
                         @*<input type="text" class="form-control" id="assetVendor" required>*@
                         <select id="assetVendor-info" name="assetVendor-info" class="form-control form-select form-select-lg mb-3" required>
                             <option value="" disabled selected>Select Vendor</option>
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Madurai">Madurai</option>
-                            <option value="US">US</option>
-                            <option value="Other Location">Other Location</option>
+                            @foreach (var vendor in Model.Vendors)
+                            {
+                                <option value="@vendor.VendorName">@vendor.VendorName</option>
+                            }
                         </select>
                     </div>
 
@@ -65,11 +65,12 @@
                         <label for="assetVendorLocation-info" class="">Asset Vendor Location<b style="color:red">*</b></label>
                         @*<input type="text" class="form-control" id="assetVendor" required>*@
                         <select id="assetVendor-info" name="assetVendorLocation-info" class="form-control form-select form-select-lg mb-3" required>
-                            <option value="" disabled selected>Select Vendor</option>
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Madurai">Madurai</option>
-                            <option value="US">US</option>
-                            <option value="Other Location">Other Location</option>
+                            <option value="" disabled selected>Select Location</option>
+                            @foreach (var location in Model.Locations)
+                            {
+                                <option value="@location.LocationName">@location.LocationName</option>
+                            }
+
                         </select>
                     </div>
 
@@ -115,10 +116,11 @@
                         <label for="assetosversion-info">OS Details<b style="color:red">*</b></label>
                         <select id="assetosversion-info" name="assetosversion-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
                             <option value="" disabled selected>Select OS</option>
-                            <option value="64-bit">Windows10-(64bit)</option>
-                            <option value="32-bit">Windows10-(32bit)</option>
-                            <option value="64-bit">Windows7-(64bit)</option>
-                            <option value="32-bit">Windows7-(32bit)</option>
+                            @foreach (var os in Model.SysOS)
+                            {
+                                var osandVersion = @os.OperatingSystemName + "_" + os.TypsOfOS;
+                                <option value="@osandVersion">@osandVersion</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -252,11 +254,10 @@
                         <label for="assetram-info">RAM<b style="color:red">*</b></label>
                         <select id="assetram-info" name="assetram-info" class="form-control form-select form-select-lg mb-3 showhide-required" required>
                             <option value="" disabled selected>Select RAM</option>
-                            <option value="4GB">4GB</option>
-                            <option value="8GB">8GB</option>
-                            <option value="16GB">16GB</option>
-                            <option value="20GB">20GB</option>
-                            <option value="32GB">32GB</option>
+                            @foreach (var ram in Model.SysRAM)
+                            {
+                                <option value="@ram.RAMType">@ram.RAMType</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -320,7 +321,7 @@
     </div>
 </div>
 
-@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);
+@*@Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml", Model);*@
 
 
 <script>
@@ -406,9 +407,9 @@
                 AssetModel: jQuery('#assetmodel-info').val(),
                 AccessControl: jQuery('#assetaccesscontrol-info').val(),
                 ChargerSerialNo: jQuery('#assetchargerid-info').val(),
-                Functionality: jQuery('#assetfunctionality-info :selected').val(),
+                /*   Functionality: jQuery('#assetfunctionality-info :selected').val(),*/
                 USBPortStatus: jQuery('#assetusbport-info :selected').val(),
-                ExpressCode: jQuery('#assetchargerid-info').val(),
+                ExpressCode: jQuery('#assetexpresscode-info').val(),
                 Headsets: jQuery('#assetheadsets-info').val(),
                 BarcodeID: jQuery('#assetbarcodeid-info').val(),
                 ServiceTag: jQuery('#assetservicetag-info').val(),
@@ -438,19 +439,19 @@
                 type: "POST",
                 data: { assetInfo: assetInfoModel },
                 success: function (data) {
+                    jQuery('#modal-edit-form-popup').modal('hide');
                     var obj = jQuery.parseJSON(data);
                     if (obj.jsonResponse.StatusCode == 200) {
                         jQuery('.success-message-popup-title').html("Hey there");
                         jQuery('.database-response').html("<h2>Asset details have been successfully saved, and we greatly appreciate your cooperation.</h2>");
                         jQuery('.message-success-popup').modal('show');
+                        jQuery('form[name="asset-from"]').trigger("reset");
                     }
                     else {
                         jQuery('.error-message-popup-title').html("Hey there");
                         jQuery('.database-response').html("<h2>" + obj.jsonResponse.Message + "</h2>");
                         jQuery('#modal-db-error-alert').modal('show');
-                    }
-
-                    jQuery('form[name="asset-from"]').trigger("reset");
+                    }                    
                 }
             });
             return false;

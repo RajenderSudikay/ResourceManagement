@@ -60,6 +60,9 @@ namespace ResourceManagement.Models.IT
         public string AssetsSoldOutDataPoints { get; set; }
         public List<Location> Locations { get; set; } = new List<Location>();
         public List<AssetType> AssetTypes { get; set; } = new List<AssetType>();
+        public List<SysRAMDetail> SysRAM { get; set; } = new List<SysRAMDetail>();
+        public List<SysOSDetail> SysOS { get; set; } = new List<SysOSDetail>();
+        public List<tbl_Vendor_Detail> Vendors { get; set; } = new List<tbl_Vendor_Detail>();
         public string ActionType { get; set; }
         public string UniqueNumber { get; set; }
     }
