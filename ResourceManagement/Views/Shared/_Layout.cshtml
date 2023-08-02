@@ -30,7 +30,6 @@
         body {
             font-family: Calibri;
             overflow-x: hidden;
-            
         }
 
         select option {
@@ -300,7 +299,7 @@
             border-radius: 10px !important;
             font-size: 15px !important;
             font-family: Calibri !important;
-            color: #23366f !important;          
+            color: #23366f !important;
         }
 
         select {
@@ -351,8 +350,20 @@
             color: #62d84e !important;
         }
 
-      
+        select, textarea, input[type="text"], input[type="file"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"]:focus, input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable- input {
+            outline: 1px solid #ADD8E6;
+            color: #2167ae !important;
+        }
 
+            select option {
+                color: #2167ae !important;
+            }
+
+    
+
+        /*  textarea:focus, input[type="text"]:focus, input[type="file"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable- input:focus {
+                outline: lightgreen auto 5px;
+            }*/
     </style>
 </head>
 <body>
@@ -418,11 +429,11 @@
                 var parentElement = $(this).closest('.dropdown').addClass("selelctedlink");
                 var ccc = parentElement.children('a');
                 ccc.find('b').removeClass('menuname');
-                ccc.find('b').addClass('menuselectedcolor');              
+                ccc.find('b').addClass('menuselectedcolor');
                 return false;
             }
         });
-        //END
+                //END
 
     </script>
 </body>
