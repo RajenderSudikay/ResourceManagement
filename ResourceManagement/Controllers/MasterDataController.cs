@@ -5,7 +5,12 @@ namespace ResourceManagement.Controllers
     using Newtonsoft.Json;
     using ResourceManagement.Models;
     using ResourceManagement.Models.MasterData;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
     using System.Linq;
+    using static Helpers.MVCExtension;
+    using static Helpers.MasterDataHelper;
 
     public class MasterDataController : Controller
     {
@@ -25,20 +30,19 @@ namespace ResourceManagement.Controllers
         }
 
         public JsonResult ViewMasterData(InputModel inputModel)
-        {           
-            using (TimeSheetEntities db = new TimeSheetEntities())
+        {
+            using (StreamReader r = new StreamReader(ConfigurationManager.AppSettings["MasterDataJson"]))
             {
-                var details = new object();
+                string json = r.ReadToEnd();
+                var inputJsonModel = JsonConvert.DeserializeObject<List<MasterJsonRoot>>(json);
 
-                if(inputModel.TypeOfData == "Category")
-                {
-                    details = db.Categories;
-                }
+                var model = new MasterViewPageModel();
+                model.InputJsonObject = inputJsonModel.Where(x => x.Name == inputModel.TypeOfData).FirstOrDefault();
+                model.SelectedMasterTypeObject = GetMasterTableInfo(inputModel.TypeOfData);
 
-                var jsonReponse = JsonConvert.SerializeObject(details);
-                return Json(jsonReponse, JsonRequestBehavior.AllowGet);
+                var viewModel = RenderPartialToString(this, "viewmasterdatapartial", model, ViewData, TempData);
+                return Json(viewModel, JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

@@ -1,0 +1,50 @@
+[  
+  {
+    "Name": "Client", 
+    "fields": {
+      "Field1": "ClientName",
+      "Field2": "ClientAddress",
+      "Field3": "ClientDescription",
+      "Field4": "ServicesProvidedByClient",
+      "Field5": "ServicesProvidedByAMBC",
+      "Field6": "CleintSF"
+    }
+  },
+  {
+    "Name": "Location",  
+    "fields": {
+      "Field1": "LocationName"
+    }
+  },
+  {
+    "Name": "AssetTypes",   
+    "fields": {
+      "Field1": "AssetType"
+    }
+  },
+  {
+    "Name": "OS Details",   
+    "fields": {
+      "Field1": "OperatingSystemName",
+      "Field2": "TypsOfOS"
+    }
+  },
+  {
+    "Name": "Priority", 
+    "fields": {
+      "Field1": "ticketpriority"
+    }
+  },
+  {
+    "Name": "Category",   
+    "fields": {
+      "Field1": "category"
+    }
+  },
+  {
+    "Name": "RAM Size",  
+    "fields": {
+      "Field1": "RAMType"
+    }
+  }
+]

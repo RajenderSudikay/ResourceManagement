@@ -326,6 +326,7 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\EmployeeHelper.cs" />
+    <Compile Include="Helpers\MasterDataHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\MVCExtension.cs" />
     <Compile Include="Helpers\VendorHelper.cs" />
@@ -621,6 +622,8 @@
     <Content Include="Views\MasterData\addupdate.cshtml" />
     <Content Include="Views\IT\AddVendorEmailPartial.cshtml" />
     <Content Include="Views\IT\VendorAddUpdatePartial.cshtml" />
+    <Content Include="MasterData.json" />
+    <Content Include="Views\MasterData\viewmasterdatapartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

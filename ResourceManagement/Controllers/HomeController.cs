@@ -9,6 +9,7 @@ namespace ResourceManagement.Controllers
     using Microsoft.Ajax.Utilities;
     using Models;
     using OfficeOpenXml;
+    using ResourceManagement.Models.MasterData;
     using SelectPdf;
     using System;
     using System.Configuration;
@@ -22,13 +23,12 @@ namespace ResourceManagement.Controllers
     using System.Web;
     using System.Web.UI;
     using static ResourceManagement.Helpers.DateHelper;
+    using static ResourceManagement.Models.Email.RemainderEmailBody;
     using static ResourceManagement.Models.Graph1DataPoint;
     using static ResourceManagement.Models.LeaveOrHolidayModel;
     using static ResourceManagement.Models.ProjectGraphDataPoint;
     using static ResourceManagement.Models.TimesheetReportModel;
     using DataPoint = Models.DataPoint;
-    using static ResourceManagement.Models.Email.RemainderEmailBody;
-    using static ResourceManagement.Helpers.DateHelper;
 
     public class HomeController : Controller
     {

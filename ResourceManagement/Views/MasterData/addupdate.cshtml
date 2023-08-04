@@ -2,9 +2,14 @@
 
 @{
     ViewBag.Title = "Master Data page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "MASTER DATA";
+    bannerModel.BannerImagePath = "/Assets/Banner/leave-report.png";
 }
 
 @Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
 
 <div class="card card-body" style="border-radius: 10px">
     <div class="card upload-it-report-card">
@@ -22,6 +27,7 @@
                             <option value="AssetTypes">AssetTypes</option>
                             <option value="Priority">Priority</option>
                             <option value="AssetTypes">AssetTypes</option>
+                            <option value="OS Details">OS Details</option>
                             <option value="Priority">Priority</option>
                             <option value="Category">Category</option>
                             <option value="RAM Size">RAM Size</option>
@@ -32,7 +38,8 @@
 
             <br />
             <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg btn-master-data" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View Details</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-master-data-add" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Add</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-master-data-view" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View</b></button>
             </div>
         </div>
     </div>
@@ -40,6 +47,12 @@
 
 <br />
 <br />
+
+<div id="master-data-add-section"></div>
+
+<br />
+<br />
+
 <div class="card card-body master-body" style="border-radius: 10px;">
     <div class="card master-card">
         <div class="card-body">
@@ -114,15 +127,7 @@
     }
 
 
-    function ViewReport(model) {
-        //var isFormValidated = AssetFormValidated();
-        //if (isFormValidated == false) {
-        //    return;
-        //}
-
-        //jQuery('.vendors-report-body').show();
-        //jQuery('.vendorreport-table-grid').empty();
-
+    function ViewReport(model) {      
         var InputModel = {
             TypeOfData: jQuery('#masterdatatype :selected').val()
         };
@@ -133,30 +138,13 @@
             data: JSON.stringify({ inputModel: InputModel }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                var obj = jQuery.parseJSON(data);
-                var i = 0;
-                jQuery.each(obj, function (i, item) {
-
-                    $('.masterdata-table-grid').append(
-                        '<tr style="height: 30px;" class="master-data-tr">'
-                        + '<td scope="row" style="padding-left: 25px"><a class="glyphicon glyphicon-remove" href="javascript: void (0);" data-uniqueid="' + item.UniqueNumber + '" onclick=DeleteITReport(this)></a></td>'
-                        + '<td class="report-empname" data-empid="' + item.EmpID + '" style="width: 80px;vertical-align: middle;text-align: center">' + item.EmpName + '</td>'
-                        + '<td class="report-assetid" style="width: 80px;vertical-align: middle;text-align: center">' + item.AssetID + '</td>'
-                        + '<td class="report-month" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportMonth + '</td>'
-                        + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportType + '</td>'
-                        + '<td class="report-filename" style="width: 80px;vertical-align: middle;text-align: center"><a href="#" data-uniqueid="' + item.UniqueNumber + '" onclick=DownloadITReport(this)>' + item.FileName + '</a></td>'
-                        + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.ReportDate + '</td>'
-                        + '<td class="report-type" style="width: 80px;vertical-align: middle;text-align: center">' + item.Ack + '</td>'
-                        + '</tr>'
-                    )
-
-                });
+                $('#master-data-add-section').html(data);
             }
         });
     }
 
 
-    jQuery(".btn-master-data").click(function () {
+    jQuery(".btn-master-data-add").click(function () {
         ViewReport();
     });
 
