@@ -1,0 +1,99 @@
+﻿@using Newtonsoft.Json;
+
+@model dynamic
+
+@{
+
+    // Create JObject from object
+    Newtonsoft.Json.Linq.JObject inputJson = Newtonsoft.Json.Linq.JObject.FromObject(Model.InputJsonObject);
+
+    var fieldsInfo = new Dictionary<string, string>();
+
+    // Read Properties of the JObject
+    var properties = inputJson.Properties();
+
+    foreach (var property in properties)
+    {
+        string fieldName = property.Name;
+        string fieldValue = property.Value.ToString();
+
+        if (property.Value.GetType() == typeof(Newtonsoft.Json.Linq.JObject) ||
+                     property.Value.GetType() == typeof(Newtonsoft.Json.Linq.JArray))
+        {
+            // If yes, enter the recursive loop to extract sub-field names
+            var subFields = property.Value.ToString();
+
+            if (!string.IsNullOrWhiteSpace(subFields))
+            {
+                string value = subFields;
+                var inputJsonModel = JsonConvert.DeserializeObject<dynamic>(value);
+
+                Newtonsoft.Json.Linq.JObject inputSubFields = Newtonsoft.Json.Linq.JObject.FromObject(inputJsonModel);
+
+                var subFieldProperties = inputSubFields.Properties();
+                foreach (var subFieldPropertie in subFieldProperties)
+                {
+                    string subfieldName = subFieldPropertie.Name;
+                    string subfieldValue = subFieldPropertie.Value.ToString();
+                    if ((!string.IsNullOrWhiteSpace(subfieldValue)))
+                    {
+                        fieldsInfo.Add(subfieldName, subfieldValue);
+                    }
+                }
+            }
+        }
+
+        else
+        {
+            if ((!string.IsNullOrWhiteSpace(fieldValue)))
+            {
+                fieldsInfo.Add(fieldName, fieldValue);
+            }
+        }
+    }
+}
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+            <div class="row">
+                <div class="card card-body" style="border-radius: 10px">
+                    <div class="card timesheet-card">
+                        <div class="card-body ">
+                            <div class="row">
+                                @{
+                                    var Name = @fieldsInfo.Where(x => x.Key == "Name").First();
+                                    <div class="col-md-12" style="">
+                                        <h2 style="font-size: xx-large; color: #62d84e !important; height: 45px; text-align: center; vertical-align: central; background-color: #032d42 !important "><b>Add @Name.Value</b></h2>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="row">
+                                @foreach (var field in fieldsInfo)
+                                {
+                                    if (field.Key.Contains("Field"))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="@field.Value">@field.Value<b style="color:red"> </b></label>
+                                                <textarea class="form-control" rows="1" id="@field.Value" style="min-width: 100%" placeholder="@field.Value"></textarea>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info btn-lg btn-master-add" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Add</b></button>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+

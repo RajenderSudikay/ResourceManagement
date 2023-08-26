@@ -38,8 +38,8 @@
 
             <br />
             <div class="modal-footer mt-xl-4">
-                <button type="submit" class="btn btn-info btn-lg btn-master-data-add" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Add</b></button>
-                <button type="submit" class="btn btn-info btn-lg btn-master-data-view" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-master-data add-action" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Add</b></button>
+                <button type="submit" class="btn btn-info btn-lg btn-master-data view-action" style="width:150px; height:35px; border-radius:10px"><b style="font-size: 16px">View</b></button>
             </div>
         </div>
     </div>
@@ -53,37 +53,7 @@
 <br />
 <br />
 
-<div class="card card-body master-body" style="border-radius: 10px;">
-    <div class="card master-card">
-        <div class="card-body">
-            <input type="hidden" name="GridHtml" />
-            <div id="report-container">
-                <table class="table-master-data" style="margin-top: 4px; width:100%">
-                    <thead class="table-bordered" style="height: 35px !important">
-                        <tr style="background-color: #005983">
-                            @if (Model.RMA_EmployeeModel.AMBC_Active_Emp_view.Access_Role == "administrator")
-                            {
-                                <th class="" scope="col" width="30" style="color: white; text-align: center">Action</th>
-                            }
-                            else
-                            {
-                                <th class="" scope="col" width="30" style="color: white; text-align: center; display:none">Action</th>
-                            }
 
-                        </tr>
-                    </thead>
-
-                    <tbody class="masterdata-table-grid">
-                        <tr style="background-color: #ccffcc">
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 @Html.Partial("~/Views/Shared/_EmployeeDetails.cshtml")
 @Html.Partial("~/Views/Home/_ModalAlerts.cshtml")
@@ -128,14 +98,11 @@
 
 
     function ViewReport(model) {      
-        var InputModel = {
-            TypeOfData: jQuery('#masterdatatype :selected').val()
-        };
 
         jQuery.ajax({
             url: "/masterdata/viewmasterdata",
             type: "POST",
-            data: JSON.stringify({ inputModel: InputModel }),
+            data: JSON.stringify({ inputModel: model }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 $('#master-data-add-section').html(data);
@@ -144,8 +111,15 @@
     }
 
 
-    jQuery(".btn-master-data-add").click(function () {
-        ViewReport();
+    jQuery(".btn-master-data").click(function () {
+        var actionType = jQuery(this).hasClass('add-action') ? "add" : "view";
+
+        var InputModel = {
+            TypeOfData: jQuery('#masterdatatype :selected').val(),
+            Action: actionType
+        };
+
+        ViewReport(InputModel);
     });
 
 </script>

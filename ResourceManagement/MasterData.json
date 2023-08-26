@@ -1,13 +1,13 @@
 [  
   {
-    "Name": "Client", 
+    "Name": "Client",
     "fields": {
-      "Field1": "ClientName",
-      "Field2": "ClientAddress",
-      "Field3": "ClientDescription",
-      "Field4": "ServicesProvidedByClient",
-      "Field5": "ServicesProvidedByAMBC",
-      "Field6": "CleintSF"
+      "ClientName": "Name",
+      "ClientAddress": "Address",
+      "ClientDescription": "Description",
+      "ServicesProvidedByClient": "Services By Client",
+      "ServicesProvidedByAMBC": "Services By AMBC",
+      "CleintSF": "Client Short Name"
     }
   },
   {

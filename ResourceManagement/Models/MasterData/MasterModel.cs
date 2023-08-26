@@ -7,11 +7,14 @@ namespace ResourceManagement.Models.MasterData
         public RMA_EmployeeModel RMA_EmployeeModel { get; set; } = new RMA_EmployeeModel();
 
         public InputModel InputModel { get; set; } = new InputModel();
+
+        public dynamic TypebasedObject { get; set; }
     }
 
     public class InputModel
     {
         public string TypeOfData { get; set; }
+        public string Action { get; set; }
     }
 
     public class MasterJsonFields
@@ -32,8 +35,7 @@ namespace ResourceManagement.Models.MasterData
 
     public class MasterJsonRoot
     {
-        public string Name { get; set; }
-        public int FieldLength { get; set; }
+        public string Name { get; set; }    
         public MasterJsonFields fields { get; set; }
     }
 

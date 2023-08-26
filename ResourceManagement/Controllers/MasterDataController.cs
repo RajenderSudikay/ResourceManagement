@@ -31,6 +31,7 @@ namespace ResourceManagement.Controllers
 
         public JsonResult ViewMasterData(InputModel inputModel)
         {
+            var masterModel = FillDefaultMasterModel();
             using (StreamReader r = new StreamReader(ConfigurationManager.AppSettings["MasterDataJson"]))
             {
                 string json = r.ReadToEnd();
@@ -40,7 +41,17 @@ namespace ResourceManagement.Controllers
                 model.InputJsonObject = inputJsonModel.Where(x => x.Name == inputModel.TypeOfData).FirstOrDefault();
                 model.SelectedMasterTypeObject = GetMasterTableInfo(inputModel.TypeOfData);
 
-                var viewModel = RenderPartialToString(this, "viewmasterdatapartial", model, ViewData, TempData);
+                var viewModel = "";
+                if (inputModel.Action == "add")
+                {
+                    viewModel = RenderPartialToString(this, "addmasterdatapartial", model, ViewData, TempData);
+                }
+
+                if (inputModel.Action == "view")
+                {
+                    masterModel.TypebasedObject = GetMasterTableInfo(inputModel.TypeOfData);
+                    viewModel = RenderPartialToString(this, "viewmasterdatapartial", masterModel, ViewData, TempData);
+                }
                 return Json(viewModel, JsonRequestBehavior.AllowGet);
             }
         }
