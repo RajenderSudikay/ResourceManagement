@@ -459,6 +459,7 @@ namespace ResourceManagement.Controllers
             {
                 var startDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekStartDate);
                 var endDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.WeekEndDate);
+                var empJoingDate = DateTime.Parse(timeSheetAjaxLeaveOrHolidayModel.EmpJoiningDate);
 
                 List<DateTime> datesBetweenStartAndEnd = GetWeekdays(startDate, endDate);
 
@@ -535,11 +536,22 @@ namespace ResourceManagement.Controllers
 
                             if (isAppliedLeaveOnSelctedDate == null)
                             {
-                                leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                                if (selecteddate >= empJoingDate)
                                 {
-                                    LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
-                                    Reason = "No Check-In / not applied leave"
-                                });
+                                    leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                                    {
+                                        LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
+                                        Reason = "No Check-In / not applied leave"
+                                    });
+                                }
+                                else
+                                {
+                                    leaveHolidaySignInData.LeaveHolidayInfo.Add(new RMA_LeaveOrHolidayInfo()
+                                    {
+                                        LeaveOrHolidayDate = GetDateInRequiredFormat(selecteddate.ToString()),
+                                        Reason = "before joining"
+                                    });
+                                }
                             }
                             else
                             {
@@ -1713,9 +1725,11 @@ namespace ResourceManagement.Controllers
         }
 
 
-        public JsonResult CheckeLeaveAppliiedStatus(List<RMA_LeaveOrHolidayInfo> leaveOrholidayModel)
+        public JsonResult CheckeLeaveAppliiedStatus(List<RMA_LeaveOrHolidayInfo> leaveOrholidayModel, string empJoingDate)
         {
             var employeeModel = Session["UserModel"] as RMA_EmployeeModel;
+
+            var emplJoingDate = System.Convert.ToDateTime(empJoingDate);
 
             var respone = new ApplyLeaveForMissedSidnInModel();
             if (leaveOrholidayModel != null)
@@ -1732,6 +1746,9 @@ namespace ResourceManagement.Controllers
                             var dayName = modeldate.ToString("dddd");
 
                             if (dayName == "Saturday" || dayName == "Sunday")
+                                continue;
+
+                            if (modeldate < emplJoingDate)
                                 continue;
 
                             var dateFallunderHoliday = db.tblambcholidays.Where(b => b.holiday_date == modeldate && b.region == employeeModel.AMBC_Active_Emp_view.Location).FirstOrDefault();
@@ -4303,7 +4320,7 @@ namespace ResourceManagement.Controllers
 
                 foreach (var empID in StatusReportRemainderModel.Employees)
                 {
-                    if(string.IsNullOrWhiteSpace(empID))
+                    if (string.IsNullOrWhiteSpace(empID))
                     {
                         continue;
                     }
@@ -4331,7 +4348,7 @@ namespace ResourceManagement.Controllers
                         }
                     }
 
-                    
+
                 }
             }
 

@@ -767,7 +767,13 @@
     }
 
     function InputTimeSheetdates(selectedWeekStartDate, empInputDates) {
+        var empJoingDate = new Date(jQuery('.emp-joining-date').text().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
         for (var i = 0; i < 7; i++) {
+            //var selectedDate = selectedWeekStartDate.addDays(i);
+            //if (selectedDate >= empJoingDate) {
+               /* empInputDates.push(moment(selectedDate).format("YYYY-MM-DD"));*/
+            /* }*/
+
             empInputDates.push(moment(selectedWeekStartDate.addDays(i)).format("YYYY-MM-DD"));
         }
     }
@@ -825,15 +831,14 @@
         var maxWeekStartDate = "";
         if (dow >= 5) {
             //On friday After 5 PM allowing timesheet to enter
-            if (dow == 5)
-            {
+            if (dow == 5) {
                 if (currentTime >= 17) {
                     maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
                 }
             }
             else {
                 maxWeekStartDate = moment(todayDate).format("YYYY-MM-DD");
-            }           
+            }
         }
         else {
             var startOfWeek = moment(new Date(todayDate)).startOf('week').toDate();
@@ -1059,7 +1064,8 @@
                 EmpRegion: $('.agent-navdrop-emplocation').text(),
                 WeekStartDate: startDate,
                 WeekEndDate: endDate,
-                WeekNumber: weekNum
+                WeekNumber: weekNum,
+                EmpJoiningDate: moment(new Date(jQuery('.emp-joining-date').text().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).format("YYYY-MM-DD")
             }
 
             var selectedProjectCode = $('#timeSheetEmpClient :selected').val();
@@ -1161,7 +1167,7 @@
                                 url: "/CheckeLeaveAppliiedStatus",
                                 type: "POST",
                                 contentType: 'application/json; charset=utf-8',
-                                data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays }),
+                                data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays, empJoingDate: moment(new Date(jQuery('.emp-joining-date').text().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).format("YYYY-MM-DD")  }),
                                 success: function (data) {
 
                                     if (data != null && data.jsonResponse.StatusCode == "404") {
@@ -1241,6 +1247,12 @@
                 var minDate = jQuery('#timeSheetStartWeekdate').val();
                 minDate = new Date(minDate);
                 minDate = moment(minDate).format("YYYY-MM-DD");
+                var empJoingDate = moment(new Date(jQuery('.emp-joining-date').text().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).format("YYYY-MM-DD");
+
+                if (new Date(empJoingDate) > new Date(jQuery('#timeSheetStartWeekdate').val())) {
+                    minDate = new Date(empJoingDate);
+                    minDate = moment(empJoingDate).format("YYYY-MM-DD");
+                }
 
                 if (minDate != "") {
                     jQuery('#collapseExample').removeClass('show');
@@ -1355,7 +1367,7 @@
                                     url: "/CheckeLeaveAppliiedStatus",
                                     type: "POST",
                                     contentType: 'application/json; charset=utf-8',
-                                    data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays }),
+                                    data: JSON.stringify({ leaveOrholidayModel: empLeaveAndHolidays, empJoingDate: moment(new Date(jQuery('.emp-joining-date').text().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).format("YYYY-MM-DD") }),
                                     success: function (data) {
 
                                         if (data != null && data.jsonResponse.StatusCode == "404") {

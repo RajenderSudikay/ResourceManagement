@@ -15,6 +15,7 @@ namespace ResourceManagement.Models
             public string WeekStartDate { get; set; }
             public string WeekEndDate { get; set; }
             public string WeekNumber { get; set; }
+            public string EmpJoiningDate { get; set; }
         }
 
         public class ReportLeaveOrHolidayInfo

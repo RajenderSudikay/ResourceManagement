@@ -265,7 +265,7 @@
                                                     totalhoursSpentInTheWeek += totalSpentHours;
                                                 }
 
-                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate</td>
+                                                <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@taskDisplayDate.Replace(" ","")</td>
                                                 <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; ">@task.category</td>
                                                 <td scope="row" style="font-family: Calibri; text-align: left; vertical-align: middle; max-width: 200px ">@task.incidentnumber.Replace(",", ", ")</td>
                                                 <td scope="row" style="font-family: Calibri; text-align: left; max-width: 200px; vertical-align: middle; ">@task.taskdetails</td>

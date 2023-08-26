@@ -261,7 +261,7 @@
                                                             totalhoursSpentInTheWeek += totalSpentHours;
                                                         }
 
-                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate</td>
+                                                        <td scope="row" style="max-width:70px; vertical-align:middle; text-align: center">@taskDisplayDate.Replace(" ","")</td>
                                                         <td scope="row" style="max-width: 100px; vertical-align: middle; text-align: center">@task.category</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.incidentnumber</td>
                                                         <td scope="row" style="max-width: 200px; vertical-align: middle; text-align: center">@task.taskdetails</td>
