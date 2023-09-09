@@ -260,6 +260,7 @@
     <Compile Include="consultantavailiability_Final.cs">
       <DependentUpon>EmployeeLoginModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\EmpController.cs" />
     <Compile Include="Controllers\ITController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MasterDataController.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Models\Email\RemainderEmailBody.cs" />
     <Compile Include="Models\Email\SendEmail.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\Emp\EmpModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Graph1DataPoint.cs" />
     <Compile Include="Models\IT\AssetModel.cs" />
@@ -625,6 +627,7 @@
     <Content Include="MasterData.json" />
     <Content Include="Views\MasterData\addmasterdatapartial.cshtml" />
     <Content Include="Views\MasterData\viewmasterdatapartial.cshtml" />
+    <Content Include="Views\EMP\AddUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

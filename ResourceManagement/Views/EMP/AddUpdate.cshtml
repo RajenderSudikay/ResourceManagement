@@ -1,0 +1,198 @@
+﻿@model ResourceManagement.Models.Emp.EmpModel
+
+
+@{
+    ViewBag.Title = "Employee Add Update Page";
+
+    var bannerModel = new ResourceManagement.Models.BannerInfo();
+    bannerModel.BannerName = "EMPLOYEE ADD OR UPDATE";
+    bannerModel.BannerImagePath = "/Assets/Banner/View Assets.jpg";
+}
+
+@Html.Partial("~/Views/Home/_MenuNavigation.cshtml", Model.RMA_EmployeeModel)
+@Html.Partial("~/Views/Home/_BannerInfo.cshtml", bannerModel)
+
+<div class="card card-body" style="border-radius: 10px">
+    <div class="card timesheet-card">
+        <div class="card-body ">
+            <form class="needs-validation asset-from" novalidate name="asset-from">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empid">Employee ID<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empid" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empname">Employee Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empname" required>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empcontactnum" class="">Contact Number<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empcontactnum" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empdesignation">Designation<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empdesignation" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empclient" class="">Client<b style="color:red">*</b></label>
+                        <select id="empclient" name="empclient" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Client</option>
+                            <option value="AMBC">AMBC</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="clientreptmangr" class="">Client Reporting Manager<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="clientreptmangr" required>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empcleintprojectname">Client Project Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empcleintprojectname" required>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4 div-headset showhide">
+                    <div class="form-group">
+                        <label for="empclientmailaddress">Client Mail Address<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empclientmailaddress" required>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empprojectcode">Project Code<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empprojectcodeo" required>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empprojectname">Project Name<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empprojectname" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empprojectstatus">Project Status<b style="color:red">*</b></label>
+                        <select id="empprojectstatus" name="empprojectstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="In Active">In Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empshift">Shift<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empshift" required>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empstatus">Employee Status<b style="color:red">*</b></label>
+                        <select id="empstatus" name="empstatus" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="In Active">In Active</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="emplocation">Location<b style="color:red">*</b></label>
+                        <select id="emplocation" name="emplocation" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="Active">Active</option>
+                            <option value="In Active">In Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="emprole">Role<b style="color:red">*</b></label>
+                        <select id="emprole" name="emprole" class="form-control form-select form-select-lg mb-3" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="consultant">consultant</option>
+                            <option value="timesheetuser">timesheetuser</option>
+                            <option value="administrator">administrator</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empinternalprojectmanager">Internal Project Manager<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empinternalprojectmanager" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empInternalMailaddress">Internal Mail Address<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="empInternalMailaddress" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="empimage">Emp Image<b style="color:red">*</b></label>
+                        <input type="file" class="form-control" id="empimage" required>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-4 div-express-code showhide">
+                    <div class="form-group">
+                        <label for="emprolesresponsibilities">Roles Responsibilties<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" id="emprolesresponsibilities" required>
+                    </div>
+                </div>
+
+
+                <br />
+                <div class="clearfix"></div>
+                <div class="modal-footer mt-xl-4">
+                    <button type="submit" class="btn btn-info btn-lg btn-asset-add-update" style="width:100px; height:35px; border-radius:10px"><b style="font-size: 16px">Submit</b></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+</script>
