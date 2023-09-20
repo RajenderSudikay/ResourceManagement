@@ -1850,16 +1850,30 @@ namespace ResourceManagement.Controllers
         [HttpGet]
         public ActionResult zohosigninupdate()
         {
+            var model = new ZohoSignInModel();
+            var empSessionModel = Session["UserModel"] as RMA_EmployeeModel;
 
-            return View();
+            if (empSessionModel != null)
+            {
+                model.EmpModel = empSessionModel;
+            }
+
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult zohosigninupdate(ZohoSignInModel membervalues)
         {
             var model = new ZohoSignInModel();
+            var empSessionModel = Session["UserModel"] as RMA_EmployeeModel;
+
+            if(empSessionModel != null)
+            {
+                model.EmpModel = empSessionModel;
+            }
             try
             {
+                var adjustMenttDate = membervalues.AdjustmentDate.ToString("yyyy-MM-dd");
                 if (membervalues != null && membervalues.ImageFile != null)
                 {
                     string FileName = Path.GetFileNameWithoutExtension(membervalues.ImageFile.FileName);
@@ -1897,6 +1911,11 @@ namespace ResourceManagement.Controllers
                                     if (employeeModel == null)
                                         continue;
 
+                                    var isEmpSignInExistsInDb = context.tbld_ambclogininformation.Where(x => x.Employee_Code == adjustmentEmployeeId && x.Login_date == membervalues.AdjustmentDate).FirstOrDefault();
+
+                                    if (isEmpSignInExistsInDb != null)
+                                        continue;
+
                                     var signIndate = System.Convert.ToDateTime(membervalues.AdjustmentDate);
                                     var SignInTime = signIndate.AddHours(9);
                                     var SignOutTime = signIndate.AddHours(18);
@@ -1928,9 +1947,9 @@ namespace ResourceManagement.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                model.FailureMessage = "Error occured when adding check-in. Please contact admin.";
+                model.FailureMessage = "Error occured when adding check-in. Please contact admin. " + ex.Message;
             }
 
             return View(model);

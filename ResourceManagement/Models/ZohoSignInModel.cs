@@ -29,6 +29,8 @@ namespace ResourceManagement.Models
         public string SuccessMessage { get; set; }
 
         public string FailureMessage { get; set; }
+
+        public RMA_EmployeeModel EmpModel = new RMA_EmployeeModel();
     }
 
     public class ZohoSignInReportModel
